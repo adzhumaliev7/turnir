@@ -1,0 +1,372 @@
+@import 'mixins';
+
+html, body {
+	font-size: 10px;
+	height: 100%;
+}
+body {
+	font-family: 'Montserrat', sans-serif;
+	font-family: 'Roboto', sans-serif;
+}
+input, textarea {
+	outline:  none;
+}
+$black: #000;
+
+.footer {
+
+	// .footer__inner
+
+	&__inner {
+	}
+
+	// .footer__link
+
+	&__link {
+	}
+
+	// .footer__icons
+
+	&__icons {
+	}
+
+	// .footer__text
+
+	&__text {
+	}
+}
+.container {
+}
+.row {
+}
+.col {
+}
+.fab {
+}
+.fa-telegram {
+}
+.fa-youtube {
+}
+.fa-discord {
+}
+.fa-instagram {
+}
+
+
+
+
+
+
+/* * absolute title */
+.title {
+	color: $black;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 1.8rem;
+	letter-spacing: 0.15em;
+}
+/* * absolute subtitle */
+.subtitle {
+	font-size: 1.6rem;
+	font-family: Montserrat;
+	font-style: 400;
+	font-weight: 600;
+}
+.nav-link {
+	font-size: 1.8rem;
+	color: $black !important;
+	font-weight: 400;
+	font-family: 'Roboto', sans-serif;
+}
+ul.navbar-nav {
+	width: 100%;
+
+}
+.header-indent {
+	margin: 2rem 6.5rem;
+}
+
+.logo-indent-mr {
+	margin-right: 13.4rem;
+}
+/* container*/ 
+.container {
+	max-width: 1170px;
+}
+.background-gray {
+	background-color: #C4C4C4;
+}
+.brd-img {
+	border-radius: 50%;
+
+}
+.font-sz {
+	font-size: 3.8rem;
+	letter-spacing: 0;
+}
+.row-indent-mr {
+	margin-right: 0;
+}
+.nav-tabss {
+	border: none;
+}
+.nav-link.active {
+    color: #495057;
+    background-color: #fff;
+	border-color: #fff !important;
+}
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {border-color: #fff;}
+
+.nav-link.nav-btn.active {
+	font-weight: 500;
+	
+}
+
+.line-bottom {
+	width: 100%;
+	background-color: $black;
+	height: 1px;
+	margin-top: 1rem;
+}
+.pubg-title { 
+	font-size: 1.4rem;
+}
+
+.first-table > td {
+	border: none !important;
+    border-color: #fff;
+    border-style: none;
+}
+.second-table {
+	border-bottom: 1px solid $black;
+
+}
+.third-table {
+	border-bottom: 1px solid $black;
+}
+
+.submit-btn {
+	width: 100%;
+	background-color:  #F27318;
+	padding: 11px;
+	text-align: center;
+	font-size: 1.6rem;
+	border: none;
+	border-radius: 0%;
+	border-radius: 19px;
+	color: #fff;
+
+}
+.btn-width {
+	max-width: 182px;
+}
+
+.text-btn {
+	font-family: Montserrat;
+	font-weight: 400;
+	color: #fff;
+	
+}
+.main-container {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+
+section {
+	flex: 1 1 auto;
+}
+
+/* Footer */
+.footer {
+	margin-top: 40px;
+
+	&__inner {
+		padding-top: 30px ;
+		background-color: #C4C4C4;
+		padding-bottom: 100px;
+	}
+
+	&__link {
+		text-decoration: none;
+		color: #000;
+		font-weight: 500;
+		font-size: 1.6rem;
+		font-family: Montserrat;
+	}
+
+	&__text {
+		color: #000;
+		font-weight: 500;
+		font-size: 1.6rem;
+		font-family: Montserrat;		
+	}
+	&__icons {
+		font-size: 2.2rem;
+		color: $black;
+	}
+}
+
+.input-footer {
+	width: 100%;
+	max-width: 264px;
+	border: none;
+	font-size: 1.4rem;
+	font-family: Montserrat;		
+	font-weight: 400;
+	border-bottom: 1px solid #474747;
+	padding-bottom: .5rem;
+
+}
+
+.block-view {
+	width: 100%;
+	max-width: 570px;
+}
+
+.orange-line {
+	width: 100%;
+	background-color: #F27318;
+	height: .2rem;
+	margin: 2rem 0rem;
+
+}
+
+.indent-input {
+	margin-right: 3.1rem;
+}
+.indent--row {
+	margin-top: 4rem;
+	margin-bottom: 4rem;
+}
+
+.input-title {
+	color: $black;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 1.8rem;
+}
+.indent-bl {
+	margin-top: 4rem;
+}
+
+.tab-content {
+	margin-top: 4rem;
+}
+
+.block-team {
+	width: 100%;
+	max-width: 26.9rem;
+
+
+	&__text {
+		font-size: 1.4rem;
+		color: $black;
+		font-family: Montserrat;
+		font-weight: 400;
+	}
+}
+.border--block {
+	border-bottom: 1px solid #474747;
+}
+.margin--block {
+	margin-top: 1.6rem;
+	margin-bottom: 1.6rem;
+}
+.btn--size {
+	max-width: 18.2rem;
+}
+
+.bg--none {
+	background: none !important;
+}
+
+.header-bg {
+	height: 100vh;
+
+	@include bg("../img/background/bg-header.png");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media ( max-width: 768px ) {
+	.logo-indent-mr {
+		margin-right: 0px;
+	}
+}
+
+@media (max-width: 480px) {
+
+	.table-block {
+		display: block;
+		overflow: scroll;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
