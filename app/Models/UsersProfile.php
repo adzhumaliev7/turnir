@@ -21,4 +21,5 @@ class UsersProfile extends Model
        }
      
    }
+   
 }

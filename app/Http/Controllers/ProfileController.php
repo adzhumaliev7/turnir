@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\UsersProfile;
+use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
@@ -11,11 +12,14 @@ class ProfileController extends Controller
     public function index(){
        $id = Auth::user()->id;
       $data = UsersProfile::getById($id);
+
+      $teams=Team::getTeamById($id);
      // $a=(array) $data;
 
      
           return view('profile',[
             'data'=>$data,
+            'teams'=>$teams,
           ]);
      }
    
@@ -60,7 +64,24 @@ class ProfileController extends Controller
         
        \Session::flash('flash_meassage', 'Сохранено');
         return view('profile');
-    
-     
     }
+
+
+    public function createTeam(Request $request){
+
+    $data =$request->validate([
+           
+            
+            'name' => 'required',
+         ]);
+    
+         $id = Auth::user()->id;
+      $data['user_id'] = $id;
+       $data['role']='captain';
+   UsersProfile::Team($data);
+       \Session::flash('flash_meassage', 'Сохранено');
+       return view('profile');  
+        } 
+    
+  
 }

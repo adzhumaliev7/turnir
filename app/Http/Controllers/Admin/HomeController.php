@@ -10,9 +10,11 @@ class HomeController extends Controller
 {
     public function index(){
         $users=Admin::getUsersCount();
+        $teams=Admin::getTeamsCount();
 
         return view('admin.home.index',[
-            'users'=>$users
+            'users'=>$users,
+            'teams'=>$teams,
         ]);
     }
     public function usersView(){
@@ -21,6 +23,14 @@ class HomeController extends Controller
            
          return view('admin.home.users',[
              'users'=>$users
+         ]);
+    }
+      public function teamsView(){
+           $teams=Admin::getTeams();
+        
+           
+         return view('admin.home.teams',[
+             'teams'=>$teams
          ]);
     }
     public function userCard($id){
