@@ -153,7 +153,7 @@
 
                     <div class="block-team">
                         <h1 class="input-title">Мои Команды</h1>
-
+                      @if($teams)          
                         @foreach($teams as $team)
                         <div class="row">
                             <div class="col d-flex justify-content-between border--block">
@@ -164,6 +164,7 @@
                             </div>
                         </div>
                         @endforeach
+                        @endif
                       <!---  <div class="row">
                             <div class="col d-flex justify-content-between border--block margin--block">
                                 <p class="block-team__text">Uventus_team</p>

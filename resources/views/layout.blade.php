@@ -54,4 +54,5 @@
             </div>
         </nav>       
     </header>
+  
       @yield('content')

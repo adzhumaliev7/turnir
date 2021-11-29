@@ -41,12 +41,15 @@
                     <div class="block-view">
                         <h4 class="input-title">Пригласить друзей в команду</h4>
                             <span class="subtitle subtitle--regular d-block subtitle--twelve">Скопируйте ссылку и отправьте друзьям которые хотят присоедениться вк вашей команды</span>
-                                <input class="subtitle subtitle--regular url-input url-input--margin" type="text" value="showmatch.pro/join-the-best-team-ever-341234123">
+                                <input class="subtitle subtitle--regular url-input url-input--margin" type="text" value="http://turnir/addmembers/{{$team_id}}">
                                     <button class="submit-btn btn--orange  btn--size btn--mr">Копировать</button>
 
                                         <div class="orange-line"></div>
 
                                     <h4 class="input-title">Пригласить друзей в команду</h4>
+
+
+
                     @if(!$members==NULL)
                         @foreach($members as $members)
                         
@@ -69,12 +72,10 @@
                                     <a href="#" class="orange item__tile">delete</a>  
                                     </div>
                                 </div>
-                                @endif
-               @endforeach
+                                @endif  
+                                 </div>  
+                         @endforeach
                     @endif
-                                
-                            
-                    </div>
                 </div>
               </div>
 

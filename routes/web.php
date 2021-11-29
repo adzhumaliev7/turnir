@@ -49,7 +49,7 @@ Route::name('user.')->group(function (){
  Route::post('/profile/createteam',[\App\Http\Controllers\ProfileController::class, 'createTeam'])->name('createteam');
  Route::post('/main',[\App\Http\Controllers\MainController::class, 'index'])->name('main');
  Route::get('/team/{id}',[\App\Http\Controllers\TeamController::class, 'index'])->name('team');
- 
+ Route::get('/addmembers/{id}',[\App\Http\Controllers\TeamController::class, 'addMembers'])->name('addmember'); 
  Route::get('/tournament',[\App\Http\Controllers\TournamentController::class, 'index'])->name('tournament');
 
 
@@ -58,6 +58,7 @@ Route::name('user.')->group(function (){
    Route::get('/users',[\App\Http\Controllers\Admin\HomeController::class, 'usersView']);
    Route::get('/users',[\App\Http\Controllers\Admin\HomeController::class, 'usersView'])->name('users'); 
    Route::get('/teams',[\App\Http\Controllers\Admin\HomeController::class, 'teamsView'])->name('teams'); 
+   
    Route::get('/users_card/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'userCard',]);
    Route::get('/verified/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'verified',])->name('verified');
 });
