@@ -12,11 +12,7 @@ class ProfileController extends Controller
     public function index(){
        $id = Auth::user()->id;
       $data = UsersProfile::getById($id);
-
       $teams=Team::getTeamById($id);
-     // $a=(array) $data;
-
-     
           return view('profile',[
             'data'=>$data,
             'teams'=>$teams,
@@ -70,18 +66,25 @@ class ProfileController extends Controller
     public function createTeam(Request $request){
 
     $data =$request->validate([
-           
-            
+
             'name' => 'required',
          ]);
-    
-         $id = Auth::user()->id;
+       $id = Auth::user()->id;
       $data['user_id'] = $id;
        $data['role']='captain';
-   UsersProfile::Team($data);
-       \Session::flash('flash_meassage', 'Сохранено');
-       return view('profile');  
-        } 
-    
-  
+       $data_m= array(
+         'user_id'=>$id,
+         'role' => 'captain',
+       );
+      $status=Team::createTeam($data, $data_m,$id);
+      if($status==true){
+        \Session::flash('flash_meassage2', 'Сохранено');
+        return redirect('profile');  
+      } 
+      else {
+        \Session::flash('flash_meassage_error', 'У вас уже есть команда');
+        return redirect('profile');  
+      }
+     
+  } 
 }

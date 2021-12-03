@@ -175,8 +175,11 @@
                                     
                             </div>
                         </div>--->
-                         @if(Session::has('flash_meassage'))
-                  <div class="alert alert-success">{{Session::get('flash_meassage')}}</div>
+                         @if(Session::has('flash_meassage2'))
+                  <div class="alert alert-success">{{Session::get('flash_meassage2')}}</div>
+                  @endif 
+                        @if(Session::has('flash_meassage_error'))
+                  <div class="alert alert-danger">{{Session::get('flash_meassage_error')}}</div>
                   @endif 
                          <form  method="POST" action="{{action('App\Http\Controllers\ProfileController@createTeam') }}">
                            @csrf

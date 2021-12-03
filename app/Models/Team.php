@@ -13,7 +13,8 @@ class Team extends Model
        $is_has = DB::table('team_members')->where('user_id', $id)->exists();
        if($is_has == true){
          return DB::table('team_members')
-            ->join('team','team.id','=','team_members.team_id')
+            ->join('team','team_members.team_id','=','team.id')
+            ->select('team_members.team_id','team_members.user_id', 'team.id', 'team.name')
             ->where('team_members.user_id', $id)
             ->get();
        }
@@ -22,21 +23,35 @@ class Team extends Model
        }
    }
     public function getTeamMembers($id){
-       $is_has = DB::table('team')->where('user_id', $id)->exists();
+       $is_has = DB::table('team_members')->where('team_id', $id)->exists();
        if($is_has == true){
-         return DB::table('team')
-            ->join('team_members','team_members.team_id','=','team.id')
-            ->join('users_profile2','users_profile2.user_id','=','team_members.user_id')
-            ->where('team.user_id', $id)
+         return DB::table('team_members')
+            ->join('team','team_members.team_id','=','team.id')
+            ->join('users_profile2','team_members.user_id','=','users_profile2.user_id')
+            ->select('team_members.user_id','team_members.role', 'users_profile2.id', 'users_profile2.login')
+            ->where('team_members.team_id', $id)
             ->get();
        }
        else {
           return NULL;
-       }
+       } 
    }
-
-   public function createTeam($data){
-       return DB::table('team')->insert($data);
+   public function getAllTeams(){
+      return DB::table('team')->select('id','user_id')->get();
+   }
+   public function createTeam($data, $data_m,$user_id){
+       $has_team = DB::table('team')->where('user_id', $user_id)->exists();
+       $is_team_members = DB::table('team_members')->where('user_id', $user_id)->exists();
+       if($has_team==false && $is_team_members ==false ){
+         $id= DB::table('team')->insertGetId($data);
+         $data_m['team_id']=$id;
+         return DB::table('team_members')->insert($data_m);
+       }
+       else {
+          return NULL;
+       }
+      
+      
     }
       public function addMembers($data){
        return DB::table('team_members')->insert($data);

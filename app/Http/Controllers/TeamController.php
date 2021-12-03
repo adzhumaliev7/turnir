@@ -9,12 +9,15 @@ class TeamController extends Controller
 {
     public function index($id){
         $data=Team::getTeamById($id);
+       
         foreach ($data as $key => $value) {
          $a=(array)$value;
          $team_id=$a['team_id'];
         }
-        $members=Team::getTeamMembers($id);
-       
+
+        $members=Team::getTeamMembers($team_id);
+        var_dump($members);
+    
          return view('team',[
             'data'=>$data,
             'members'=>$members,
