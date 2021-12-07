@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Tournament;
 class TournamentController extends Controller
 {
     public function index(){
-        return view('tournament');
+
+
+         $tournaments = Tournament::getTournaments();
+        return view('tournament',[
+             'tournaments'=>$tournaments,
+        ]);
     }
 }

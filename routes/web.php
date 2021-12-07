@@ -55,12 +55,14 @@ Route::name('user.')->group(function (){
 
  Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
    Route::get('/',[\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin');
-   Route::get('/users',[\App\Http\Controllers\Admin\HomeController::class, 'usersView']);
+ //  Route::get('/users',[\App\Http\Controllers\Admin\HomeController::class, 'usersView']);
    Route::get('/users',[\App\Http\Controllers\Admin\HomeController::class, 'usersView'])->name('users'); 
    Route::get('/teams',[\App\Http\Controllers\Admin\HomeController::class, 'teamsView'])->name('teams'); 
    
    Route::get('/users_card/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'userCard',]);
    Route::get('/verified/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'verified',])->name('verified');
+   Route::get('/tournament',[\App\Http\Controllers\Admin\TournamentController::class, 'index',])->name('admin_tournament');
+   Route::any('/tournament/create_tournament',[\App\Http\Controllers\Admin\TournamentController::class, 'createTournament',])->name('create_tournament');
 });
  //Route::get('/admin',[\App\Http\Controllers\AdminPanelController::class, 'index'])->name('admin');
 //  Route::post('/admin/login',[\App\Http\Controllers\AdminPanelController::class, 'login']);

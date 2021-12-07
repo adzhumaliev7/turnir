@@ -81,38 +81,39 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        <!---
-    
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+     
+     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          
+          <li class="nav-item">
+            <a href="{{route('users')}}" class="nav-link">
+              <i class="nav-icon far fa-calendar-alt"></i>
               <p>
-                Dashboard
-                <i class="right fas fa-angle-left"></i>
+                Пользователи
+               
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="./index.html" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v1</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v2</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
-                </a>
-              </li>
-            </ul>
-          </li> 
-        </ul>--->
+          </li>
+           <li class="nav-item">
+            <a href="{{route('teams')}}" class="nav-link">
+              <i class="nav-icon far fa-calendar-alt"></i>
+              <p>
+                Команды
+               
+              </p>
+            </a>
+          </li>
+           <li class="nav-item">
+            <a href="{{route('admin_tournament')}}" class="nav-link">
+              <i class="nav-icon far fa-calendar-alt"></i>
+              <p>
+                Турниры
+               
+              </p>
+            </a>
+          </li>
+        </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>

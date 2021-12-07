@@ -28,4 +28,11 @@ class Admin extends Model
    public function verified($id){
         return DB::table('users_profile2')->where('id', $id)->update(['verification' => 'verified']);
    }
+
+   public function getTournaments(){
+       return DB::table('tournaments')->select('id','name','country','tournament_start','games_time')->get();
+   }
+   public function createTournament($data){
+     return DB::table('tournaments')->insert($data);
+   }
 }

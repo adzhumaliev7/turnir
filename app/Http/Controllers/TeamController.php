@@ -16,7 +16,6 @@ class TeamController extends Controller
         }
 
         $members=Team::getTeamMembers($team_id);
-        var_dump($members);
     
          return view('team',[
             'data'=>$data,
@@ -33,7 +32,7 @@ class TeamController extends Controller
               'role'=>'member'
           );  
      Team::addMembers($data);
-return view('profile'); 
+    return view('profile'); 
     }
 
   
