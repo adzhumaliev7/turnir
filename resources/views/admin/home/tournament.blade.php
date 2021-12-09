@@ -9,6 +9,7 @@
       <th scope="col">Название турнира</th>
       <th scope="col">Страна</th>
       <th scope="col">Дата турнира</th>
+      <th scope="col">Действие</th>
   
     </tr>
   </thead>
@@ -20,6 +21,7 @@
       <td>{{$tournament->name}}</td>
       <td>{{$tournament->country}}</td>
       <td>{{$tournament->tournament_start}} {{$tournament->games_time}}</td>
+     <td><a type="button" href="{{route('tournament_view',$tournament->id)}}" class="btn btn-primary">Редктирвоать</a>  <a href="{{route('delete_tournament', $tournament->id)}}" type="button" class="btn btn-danger">Удалить</a></td>
    
     </tr>
   @endforeach

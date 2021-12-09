@@ -51,6 +51,8 @@ Route::name('user.')->group(function (){
  Route::get('/team/{id}',[\App\Http\Controllers\TeamController::class, 'index'])->name('team');
  Route::get('/addmembers/{id}',[\App\Http\Controllers\TeamController::class, 'addMembers'])->name('addmember'); 
  Route::get('/tournament',[\App\Http\Controllers\TournamentController::class, 'index'])->name('tournament');
+ Route::any('tournament/create_order',[\App\Http\Controllers\TournamentController::class, 'createTournament'])->name('create_order');
+ Route::post('tournament/create_order/save',[\App\Http\Controllers\TournamentController::class, 'saveTournament'])->name('save_order');
 
 
  Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
@@ -63,6 +65,9 @@ Route::name('user.')->group(function (){
    Route::get('/verified/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'verified',])->name('verified');
    Route::get('/tournament',[\App\Http\Controllers\Admin\TournamentController::class, 'index',])->name('admin_tournament');
    Route::any('/tournament/create_tournament',[\App\Http\Controllers\Admin\TournamentController::class, 'createTournament',])->name('create_tournament');
+   Route::get('/tournament/tournament_view/{id}',[\App\Http\Controllers\Admin\TournamentController::class, 'tournamentView',])->name('tournament_view');
+   Route::post('/tournament/edit/{id}',[\App\Http\Controllers\Admin\TournamentController::class, 'tournamentEdit',])->name('edit_tournament');
+   Route::any('/tournament/delete/{id}',[\App\Http\Controllers\Admin\TournamentController::class, 'tournamentDelete',])->name('delete_tournament');
 });
  //Route::get('/admin',[\App\Http\Controllers\AdminPanelController::class, 'index'])->name('admin');
 //  Route::post('/admin/login',[\App\Http\Controllers\AdminPanelController::class, 'login']);

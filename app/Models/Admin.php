@@ -35,4 +35,15 @@ class Admin extends Model
    public function createTournament($data){
      return DB::table('tournaments')->insert($data);
    }
+
+     public function getTournamentByID($id){
+     return DB::table('tournaments')->where('id', $id)->get();
+   }
+     public function editTournament($id, $data){
+     return DB::table('tournaments')->where('id', $id)->update($data);
+   }
+    public function tournamentDelete($id){
+     return DB::table('tournaments')->where('id', $id)->delete();
+   }
+
 }

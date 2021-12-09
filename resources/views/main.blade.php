@@ -34,6 +34,9 @@
                         <li class="nav-item">
                         <a class="nav-link nav-white" aria-current="page" href="{{ route('tournament') }}">Турниры</a>
                         </li>
+                         <li class="nav-item">
+                        <a class="nav-link nav-white" aria-current="page" href="{{ route('create_order') }}">Подать заявку</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link nav-white" aria-current="page" href="#">Рейтинг</a>
                         </li>

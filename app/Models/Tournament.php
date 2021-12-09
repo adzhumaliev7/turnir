@@ -10,4 +10,7 @@ class Tournament extends Model
   public function getTournaments(){
        return DB::table('tournaments')->select('id','name','country','tournament_start','games_time')->get();
    }
+    public function createTournament($data){
+     return DB::table('tournaments')->insert($data);
+   }
 }

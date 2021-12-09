@@ -14,4 +14,37 @@ class TournamentController extends Controller
              'tournaments'=>$tournaments,
         ]);
     }
+
+    public function createTournament(){
+
+   
+         return view('create_tournament');
+    }
+
+    public function saveTournament(Request $request){
+        
+         if($request->isMethod('post')){
+         $data =$request->validate([
+            'name' => '',
+            'format' => '',
+            'country' => '',
+            'timezone' => '',
+            'countries' => '',
+            'players_col' => '',
+            'description' => '',
+            'start_reg' => '',
+            'end_reg' => '',
+            'slot_kolvo' => '',
+            'ligue' => '',
+            'rule' => '',
+            'header' => '',
+            'tournament_start' => '',
+            'games_time' => '',
+         ]);
+         $data['status']="on_check";
+         Tournament::createTournament($data);
+          \Session::flash('flash_meassage', 'Сохранено');
+        return redirect(route('create_order'));
+        }
+    }
 }

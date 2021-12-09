@@ -20,7 +20,17 @@ class TournamentController extends Controller
     if($request->isMethod('post')){
          $data =$request->validate([
             'name' => 'required',
-            'country' => 'required',
+            'format' => 'required',
+            'country' => '',
+            'timezone' => '',
+            'countries' => '',
+            'description' => '',
+            'start_reg' => '',
+            'end_reg' => '',
+            'slot_kolvo' => '',
+            'ligue' => '',
+            'rule' => '',
+            'header' => '',
             'tournament_start' => '',
             'games_time' => '',
          ]);
@@ -32,5 +42,43 @@ class TournamentController extends Controller
            return redirect(route('admin'));
         }
          return view('admin.home.tournament_create');
+    }
+    public function tournamentView($id){
+     $tournaments = Admin::getTournamentByID($id);
+        
+        return view('admin.home.tournament_view',[
+            'tournaments'=>$tournaments,
+            'id'=>$id,
+        ]);
+    }
+
+     public function tournamentEdit($id, Request $request){
+        
+        if($request->isMethod('post')){
+            $data =$request->validate([
+               'name' => '',
+               'format' => '',
+               'country' => '',
+               'timezone' => '',
+               'countries' => '',
+               'description' => '',
+               'start_reg' => '',
+               'end_reg' => '',
+               'slot_kolvo' => '',
+               'ligue' => '',
+               'rule' => '',
+               'header' => '',
+               'tournament_start' => '',
+               'games_time' => '',
+            ]);
+          
+             Admin::editTournament($id,$data);
+              return redirect(route('admin_tournament'));
+        }
+    }
+
+    public function tournamentDelete($id){
+         Admin::tournamentDelete($id);
+        return redirect(route('admin_tournament'));
     }
 }
