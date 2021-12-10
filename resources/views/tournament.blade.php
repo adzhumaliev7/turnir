@@ -7,146 +7,28 @@
     <main>
         <div class="container">
             <div class="row">
-                <div class="col-lg-8">
-                    <div class="tournaments tournaments-block">
-                        <div class="tournaments__text">
-                            <h4 class="pubg__title pubg__title--margin text-black tournaments--margin-t tournaments--padding-b">Fastcup daily</h4>
-                            <p class="pubg__text text-black subtitle--medium ">24.09.20021 22:00 Nur-Sultan</p>
-                            <span class="pubg__price text-black tournaments__price--margin-t">Призовой фонд: 100$</span>
-                            <p class="pubg__text text-black subtitle--medium tournaments__text--margin">Режим проведения: squad(4)</p>
-                            <button class="submit-btn btn--orange  btn--size tournaments__btn--margin">Принять участие</button>
-                        </div>
+              
+                <div class="row my-3">
+                    @if($tournaments != "")
+                      @foreach($tournaments as $tournament)
+                    <div class="col-lg-4">
+                        <div class="tournaments tournaments-block">
+                            <div class="tournaments__text">
+                                <h4 class="pubg__title pubg__title--margin text-black tournaments--margin-t tournaments--padding-b">{{$tournament->name}}</h4>
+                                <p class="pubg__text text-black subtitle--medium ">{{$tournament->tournament_start}} {{$tournament->games_time}} {{$tournament->country}}</p>
+                                <span class="pubg__price text-black tournaments__price--margin-t">Призовой фонд: {{$tournament->price}}</span>
+                                <p class="pubg__text text-black subtitle--medium tournaments__text--margin">Режим проведения: squad(4)</p>
+                                <a href="{{ route('match', $tournament->id) }}" class="submit-btn btn--orange ">Принять участие</a>
+                            </div>
                         <div class="tournaments__img"></div>
                     </div>
                 </div>
-                 @foreach($tournaments as $tournament)
-                <div class="col-lg-4">
-                    <div class="tournaments tournaments-block">
-                        <div class="tournaments__text">
-                            <h4 class="pubg__title pubg__title--margin text-black tournaments--margin-t tournaments--padding-b">{{$tournament->name}}</h4>
-                            <p class="pubg__text text-black subtitle--medium ">{{$tournament->tournament_start}} {{$tournament->games_time}} {{$tournament->country}}</p>
-                            <span class="pubg__price text-black tournaments__price--margin-t">Призовой фонд: 100$</span>
-                            <p class="pubg__text text-black subtitle--medium tournaments__text--margin">Режим проведения: squad(4)</p>
-                            <button class="submit-btn btn--orange  btn--size tournaments__btn--margin">Принять участие</button>
-                        </div>
-                        <div class="tournaments__img"></div>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-            <div class="row my-3">
-                <div class="col-lg-4">
-                    <div class="tournaments tournaments-block">
-                        <div class="tournaments__text">
-                            <h4 class="pubg__title pubg__title--margin text-black tournaments--margin-t tournaments--padding-b">Fastcup daily</h4>
-                            <p class="pubg__text text-black subtitle--medium ">24.09.20021 22:00 Nur-Sultan</p>
-                            <span class="pubg__price text-black tournaments__price--margin-t">Призовой фонд: 100$</span>
-                            <p class="pubg__text text-black subtitle--medium tournaments__text--margin">Режим проведения: squad(4)</p>
-                            <button class="submit-btn btn--orange  btn--size tournaments__btn--margin">Принять участие</button>
-                        </div>
-                        <div class="tournaments__img"></div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="tournaments tournaments-block">
-                        <div class="tournaments__text">
-                            <h4 class="pubg__title pubg__title--margin text-black tournaments--margin-t tournaments--padding-b">Fastcup daily</h4>
-                            <p class="pubg__text text-black subtitle--medium ">24.09.20021 22:00 Nur-Sultan</p>
-                            <span class="pubg__price text-black tournaments__price--margin-t">Призовой фонд: 100$</span>
-                            <p class="pubg__text text-black subtitle--medium tournaments__text--margin">Режим проведения: squad(4)</p>
-                            <button class="submit-btn btn--orange  btn--size tournaments__btn--margin">Принять участие</button>
-                        </div>
-                        <div class="tournaments__img"></div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="tournaments tournaments-block">
-                        <div class="tournaments__text">
-                            <h4 class="pubg__title pubg__title--margin text-black tournaments--margin-t tournaments--padding-b">Fastcup daily</h4>
-                            <p class="pubg__text text-black subtitle--medium ">24.09.20021 22:00 Nur-Sultan</p>
-                            <span class="pubg__price text-black tournaments__price--margin-t">Призовой фонд: 100$</span>
-                            <p class="pubg__text text-black subtitle--medium tournaments__text--margin">Режим проведения: squad(4)</p>
-                            <button class="submit-btn btn--orange  btn--size tournaments__btn--margin">Принять участие</button>
-                        </div>
-                        <div class="tournaments__img"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row my-3">
-                <div class="col-lg-4">
-                    <div class="tournaments tournaments-block">
-                        <div class="tournaments__text">
-                            <h4 class="pubg__title pubg__title--margin text-black tournaments--margin-t tournaments--padding-b">Fastcup daily</h4>
-                            <p class="pubg__text text-black subtitle--medium ">24.09.20021 22:00 Nur-Sultan</p>
-                            <span class="pubg__price text-black tournaments__price--margin-t">Призовой фонд: 100$</span>
-                            <p class="pubg__text text-black subtitle--medium tournaments__text--margin">Режим проведения: squad(4)</p>
-                            <button class="submit-btn btn--orange  btn--size tournaments__btn--margin">Принять участие</button>
-                        </div>
-                        <div class="tournaments__img"></div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="tournaments tournaments-block">
-                        <div class="tournaments__text">
-                            <h4 class="pubg__title pubg__title--margin text-black tournaments--margin-t tournaments--padding-b">Fastcup daily</h4>
-                            <p class="pubg__text text-black subtitle--medium ">24.09.20021 22:00 Nur-Sultan</p>
-                            <span class="pubg__price text-black tournaments__price--margin-t">Призовой фонд: 100$</span>
-                            <p class="pubg__text text-black subtitle--medium tournaments__text--margin">Режим проведения: squad(4)</p>
-                            <button class="submit-btn btn--orange  btn--size tournaments__btn--margin">Принять участие</button>
-                        </div>
-                        <div class="tournaments__img"></div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="tournaments tournaments-block">
-                        <div class="tournaments__text">
-                            <h4 class="pubg__title pubg__title--margin text-black tournaments--margin-t tournaments--padding-b">Fastcup daily</h4>
-                            <p class="pubg__text text-black subtitle--medium ">24.09.20021 22:00 Nur-Sultan</p>
-                            <span class="pubg__price text-black tournaments__price--margin-t">Призовой фонд: 100$</span>
-                            <p class="pubg__text text-black subtitle--medium tournaments__text--margin">Режим проведения: squad(4)</p>
-                            <button class="submit-btn btn--orange  btn--size tournaments__btn--margin">Принять участие</button>
-                        </div>
-                        <div class="tournaments__img"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row my-3">
-                <div class="col-lg-4">
-                    <div class="tournaments tournaments-block">
-                        <div class="tournaments__text">
-                            <h4 class="pubg__title pubg__title--margin text-black tournaments--margin-t tournaments--padding-b">Fastcup daily</h4>
-                            <p class="pubg__text text-black subtitle--medium ">24.09.20021 22:00 Nur-Sultan</p>
-                            <span class="pubg__price text-black tournaments__price--margin-t">Призовой фонд: 100$</span>
-                            <p class="pubg__text text-black subtitle--medium tournaments__text--margin">Режим проведения: squad(4)</p>
-                            <button class="submit-btn btn--orange  btn--size tournaments__btn--margin">Принять участие</button>
-                        </div>
-                        <div class="tournaments__img"></div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="tournaments tournaments-block">
-                        <div class="tournaments__text">
-                            <h4 class="pubg__title pubg__title--margin text-black tournaments--margin-t tournaments--padding-b">Fastcup daily</h4>
-                            <p class="pubg__text text-black subtitle--medium ">24.09.20021 22:00 Nur-Sultan</p>
-                            <span class="pubg__price text-black tournaments__price--margin-t">Призовой фонд: 100$</span>
-                            <p class="pubg__text text-black subtitle--medium tournaments__text--margin">Режим проведения: squad(4)</p>
-                            <button class="submit-btn btn--orange  btn--size tournaments__btn--margin">Принять участие</button>
-                        </div>
-                        <div class="tournaments__img"></div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="tournaments tournaments-block">
-                        <div class="tournaments__text">
-                            <h4 class="pubg__title pubg__title--margin text-black tournaments--margin-t tournaments--padding-b">Fastcup daily</h4>
-                            <p class="pubg__text text-black subtitle--medium ">24.09.20021 22:00 Nur-Sultan</p>
-                            <span class="pubg__price text-black tournaments__price--margin-t">Призовой фонд: 100$</span>
-                            <p class="pubg__text text-black subtitle--medium tournaments__text--margin">Режим проведения: squad(4)</p>
-                            <button class="submit-btn btn--orange  btn--size tournaments__btn--margin">Принять участие</button>
-                        </div>
-                        <div class="tournaments__img"></div>
-                    </div>
-                </div>
+                 @endforeach
+                 @else
+                 <h4> Турниров нет</h4>
+                 @endif
+             </div>
+            
             </div>
         </div>
     </main>

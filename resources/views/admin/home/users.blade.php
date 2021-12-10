@@ -1,6 +1,7 @@
 @extends('admin.admin_layout')
 
 @section('content')
+@if($users != "")
 <table class="table">
   <thead class="thead-light">
     <tr>
@@ -33,4 +34,7 @@
     @endforeach
   </tbody>
 </table>
+@else 
+<h4>Нет данных</h4>
+@endif  
 @endsection

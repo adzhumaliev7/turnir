@@ -53,6 +53,7 @@ Route::name('user.')->group(function (){
  Route::get('/tournament',[\App\Http\Controllers\TournamentController::class, 'index'])->name('tournament');
  Route::any('tournament/create_order',[\App\Http\Controllers\TournamentController::class, 'createTournament'])->name('create_order');
  Route::post('tournament/create_order/save',[\App\Http\Controllers\TournamentController::class, 'saveTournament'])->name('save_order');
+ Route::get('/match/{id}',[\App\Http\Controllers\TournamentController::class, 'matchView'])->name('match');
 
 
  Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {

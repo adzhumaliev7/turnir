@@ -10,6 +10,10 @@ class TournamentController extends Controller
 
 
          $tournaments = Tournament::getTournaments();
+          if($tournaments == NULL){
+               $tournaments == "";
+          }
+
         return view('tournament',[
              'tournaments'=>$tournaments,
         ]);
@@ -47,4 +51,13 @@ class TournamentController extends Controller
         return redirect(route('create_order'));
         }
     }
+   public function matchView($id){
+        $tournaments = Tournament::getTournamentById($id);
+       
+        return view('match',[
+             'tournaments' => $tournaments,
+        ]);
+   } 
+
+
 }

@@ -2,6 +2,7 @@
 
 @section('content')
 <a  href="{{route('create_tournament')}}" class="btn btn-primary">Создать</a>
+@if($tournaments != "")
 <table class="table">
   <thead class="thead-light">
     <tr>
@@ -25,6 +26,11 @@
    
     </tr>
   @endforeach
+ 
+
   </tbody>
 </table>
+ @else 
+  <h4>Нет данных</h4> 
+  @endif
 @endsection

@@ -18,16 +18,22 @@ class HomeController extends Controller
         ]);
     }
     public function usersView(){
+
            $users=Admin::get();
-        
+          if($users == NULL){
+            $users =="";
+        }
            
          return view('admin.home.users',[
              'users'=>$users
          ]);
     }
       public function teamsView(){
+          
            $teams=Admin::getTeams();
-        
+        if($teams == NULL){
+            $teams =="";
+        }
            
          return view('admin.home.teams',[
              'teams'=>$teams

@@ -57,12 +57,8 @@
   </div>
   </div>
   <div class="form-group col-md-4">
-      <label for="inputPassword4">Добавить обложку</label>
-      <input type="file" class="form-control" name="file_1" id="" placeholder="Обложка">
-         @error('	file_1')
-             <div class="alert alert-danger">{{$message}}</div>
-           @enderror
-             
+      <label for="inputPassword4">Обложка</label>
+      <img src="{{ asset("uploads/storage/adminimg/$tournament->file_label")}}"  width="250" height="200" class="" style="opacity: .8">
     </div>
  <div class="form-group col-md-8">
       <label for="inputPassword4">Описание турнира</label>
@@ -138,6 +134,14 @@
       <label for="inputPassword4">Время турнира</label>
       <input type="time" class="form-control" name="games_time" id="" placeholder="Время турнира" value="{{$tournament->games_time}}">
          @error('games_time')
+             <div class="alert alert-danger">{{$message}}</div>
+           @enderror
+      </div>
+
+       <div class="form-group col-md-4">
+      <label for="inputPassword4">Призовой фонд</label>
+      <input type="text" class="form-control" name="price" id="" placeholder="100$" value={{$tournament->price}}">
+         @error('price')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
       </div>

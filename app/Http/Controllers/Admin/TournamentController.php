@@ -10,6 +10,9 @@ class TournamentController extends Controller
 {
     public function index(){
         $tournaments = Admin::getTournaments();
+        if($tournaments == NULL){
+            $tournaments =="";
+        }
         return view('admin.home.tournament',[
             'tournaments'=>$tournaments,
         ]);
@@ -18,12 +21,22 @@ class TournamentController extends Controller
     public function createTournament(Request $request){
 
     if($request->isMethod('post')){
+
+      
+           $file_name = $request->file('file_label')->getClientOriginalName();
+            $file = $request->file('file_label');
+           $file->move(public_path() . '/uploads/storage/adminimg',$file_name);
+            
+        
+      
          $data =$request->validate([
-            'name' => 'required',
-            'format' => 'required',
+            'name' => '',
+            'format' => '',
             'country' => '',
             'timezone' => '',
             'countries' => '',
+            'price' => '',
+          
             'description' => '',
             'start_reg' => '',
             'end_reg' => '',
@@ -34,11 +47,11 @@ class TournamentController extends Controller
             'tournament_start' => '',
             'games_time' => '',
          ]);
-
-        // var_dump($data);
+        $data['file_label']=$file_name;
+       
          Admin::createTournament($data);
 
-           \Session::flash('flash_meassage', 'Турнир добавлен');
+          \Session::flash('flash_meassage', 'Турнир добавлен');
            return redirect(route('admin'));
         }
          return view('admin.home.tournament_create');
@@ -53,7 +66,11 @@ class TournamentController extends Controller
     }
 
      public function tournamentEdit($id, Request $request){
-        
+         if($request->hasFile('file_1')) {
+           $file_name = $request->file('file_1')->getClientOriginalName();
+            $file = $request->file('file_1');
+            $file->move(public_path() . '/uploads/storage/adminimg',$file_name);
+        }
         if($request->isMethod('post')){
             $data =$request->validate([
                'name' => '',
@@ -63,6 +80,7 @@ class TournamentController extends Controller
                'countries' => '',
                'description' => '',
                'start_reg' => '',
+               'price' => '',
                'end_reg' => '',
                'slot_kolvo' => '',
                'ligue' => '',
@@ -71,7 +89,7 @@ class TournamentController extends Controller
                'tournament_start' => '',
                'games_time' => '',
             ]);
-          
+          $data['file_1']=$file_name;
              Admin::editTournament($id,$data);
               return redirect(route('admin_tournament'));
         }

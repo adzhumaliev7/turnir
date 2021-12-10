@@ -2,7 +2,7 @@
 
 @section('content') 
 <div style="margin-left:100px;"> 
-<form method="POST" action="{{route('create_tournament')}}">
+<form method="POST" action="{{route('create_tournament')}}  " enctype="multipart/form-data">
      @csrf
   <div class="form-row">
     <div class="form-group col-md-4">
@@ -56,8 +56,9 @@
   </div>
   <div class="form-group col-md-4">
       <label for="inputPassword4">Добавить обложку</label>
-      <input type="file" class="form-control" name="file_1" id="" placeholder="Обложка">
-         @error('	file_1')
+       <input class="input-footer " name="file_label" placeholder="Обложка" type="file">
+     
+         @error('	file_label')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
              
@@ -139,7 +140,16 @@
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
       </div>
+   <div class="form-group col-md-4">
+      <label for="inputPassword4">Призовой фонд</label>
+      <input type="text" class="form-control" name="price" id="" placeholder="100$">
+         @error('price')
+             <div class="alert alert-danger">{{$message}}</div>
+           @enderror
+      </div>
+
   </div>
+
 
    <button type="submit" class="btn btn-primary">Сохранить</button>
 </form>
