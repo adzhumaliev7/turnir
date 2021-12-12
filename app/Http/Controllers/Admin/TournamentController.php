@@ -99,4 +99,12 @@ class TournamentController extends Controller
          Admin::tournamentDelete($id);
         return redirect(route('admin_tournament'));
     }
+    public function tournamentTeams($id){
+        $teams = Admin::getTournamentsTeams($id);
+        
+        return view('admin.home.tournaments_teams',[
+            'teams'=>$teams,
+          
+        ]);
+    }
 }

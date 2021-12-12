@@ -7,7 +7,6 @@
     <main>
         <div class="container">
             <div class="row">
-              
                 <div class="row my-3">
                     @if($tournaments != "")
                       @foreach($tournaments as $tournament)

@@ -54,9 +54,10 @@ Route::name('user.')->group(function (){
  Route::any('tournament/create_order',[\App\Http\Controllers\TournamentController::class, 'createTournament'])->name('create_order');
  Route::post('tournament/create_order/save',[\App\Http\Controllers\TournamentController::class, 'saveTournament'])->name('save_order');
  Route::get('/match/{id}',[\App\Http\Controllers\TournamentController::class, 'matchView'])->name('match');
+ Route::get('/match/join/{id}',[\App\Http\Controllers\TournamentController::class, 'joinTournament'])->name('join');
 
 
- Route::middleware(['role:admin'])->prefix('admin_panel')->group(function () {
+ Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(function () {
    Route::get('/',[\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin');
  //  Route::get('/users',[\App\Http\Controllers\Admin\HomeController::class, 'usersView']);
    Route::get('/users',[\App\Http\Controllers\Admin\HomeController::class, 'usersView'])->name('users'); 
@@ -69,6 +70,10 @@ Route::name('user.')->group(function (){
    Route::get('/tournament/tournament_view/{id}',[\App\Http\Controllers\Admin\TournamentController::class, 'tournamentView',])->name('tournament_view');
    Route::post('/tournament/edit/{id}',[\App\Http\Controllers\Admin\TournamentController::class, 'tournamentEdit',])->name('edit_tournament');
    Route::any('/tournament/delete/{id}',[\App\Http\Controllers\Admin\TournamentController::class, 'tournamentDelete',])->name('delete_tournament');
+   Route::any('/tournament/tournaments_teams/{id}',[\App\Http\Controllers\Admin\TournamentController::class, 'tournamentTeams',])->name('tournaments_teams');
+
+   Route::any('/moderators',[\App\Http\Controllers\Admin\HomeController::class, 'moderators',])->name('moderators');
+   Route::any('/moderators/create_moderators/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'createModerators',])->name('create_moderators');
 });
  //Route::get('/admin',[\App\Http\Controllers\AdminPanelController::class, 'index'])->name('admin');
 //  Route::post('/admin/login',[\App\Http\Controllers\AdminPanelController::class, 'login']);

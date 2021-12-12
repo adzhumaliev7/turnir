@@ -28,6 +28,22 @@ class Admin extends Model
        return DB::table('users_profile2')->select('id','phone','fio','email','city', 'verification')->get();
     }else return NULL;
    }
+
+   public function getUsersToModerators(){
+         $is_has = DB::table('users')->exists();
+    if($is_has == true){
+       return DB::table('users')
+       ->join('model_has_roles', 'users.id', '=' ,'model_has_roles.model_id')
+       ->select('users.id','users.email','model_has_roles.role_id')->get();
+    }else return NULL;
+   }
+
+      public function createModerators($id){
+       return DB::table('model_has_roles')
+       ->where('model_id', $id)
+       ->update(['role_id' => '3']);
+   }
+
      public function getTeams(){
         $is_has = DB::table('team')->exists();
     if($is_has == true){
@@ -61,5 +77,18 @@ class Admin extends Model
     public function tournamentDelete($id){
      return DB::table('tournaments')->where('id', $id)->delete();
    }
+
+    public function getTournamentsTeams($tournament_id){
+       $is_has = DB::table('tournamets_team')->where('tournament_id', $tournament_id)->exists();
+    if($is_has == true){
+    return DB::table('tournamets_team')
+     ->join('team', 'tournamets_team.team_id', '=', 'team.id')
+     //->join('team_members', 'tournamets_team.team_id' , '=', 'team_members.team_id')
+      ->select('team.name','team.user_id')
+     ->where('tournamets_team.tournament_id', $tournament_id)->get();
+    }else  return NULL;
+    
+ 
+  }
 
 }

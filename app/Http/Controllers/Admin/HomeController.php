@@ -52,5 +52,23 @@ class HomeController extends Controller
          return redirect()->to(route('users'));
     }
 
+      public function moderators(){
+        $users =Admin::getUsersToModerators();
+       
+        if($users==NULL){
+            $users = "";
+        }
+         return view('admin.home.moderators',[
+             'users'=>$users,
+         ]);
+    }
+      public function createModerators($id){
+
+        Admin::createModerators($id);
+        return redirect(route('moderators')); 
+       
+    }
+
+
 
 }
