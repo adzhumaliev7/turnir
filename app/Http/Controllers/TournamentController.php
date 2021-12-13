@@ -56,24 +56,58 @@ class TournamentController extends Controller
         $tournaments = Tournament::getTournamentById($id);
 
          $user_id = Auth::user()->id;
-      $teams= Tournament::getTeams($id, $user_id);
+      $teams= Tournament::getTeams($id, $user_id);//команды зарегистрированные в турнир 
+
+
       $userdata= Tournament::checkTeam($user_id);
       $userdata = (array) $userdata;
 
+
+     if($teams == NULL){
+          $teams = "";
+     }
+     
+     if($userdata != NULL){
+          if($userdata['role']=='captain' ){
+               if($teams != NULL){
+                 foreach ($teams as $key ) {
+                     $key=(array) $key;
+                }
+                 
+                    if($user_id != $key['user_id']){
+                         $checked = 'captain'; 
+                    }else   $checked = 'has'; 
+               }     
+          }
+          else if($userdata['role']=='member'){
+                 if($teams != NULL){
+                    foreach ($teams as $key ) {
+                         $key=(array) $key;
+                     }
+                         if($userdata['team_id'] != $key['team_id']){
+                              $checked = 'member'; 
+                         }else   $checked = 'has'; 
+               }     
+          }else $checked= 'has';
+     }else $checked= NULL;
+    
+
      //dd($teams['user_data']);
-    foreach ($teams['teams'] as $key ) {
+     /* if($teams != NULL){
+    foreach ($teams as $key ) {
             $key=(array) $key;
        }
-
-     if($userdata != NULL){
+     }
+     else $checked = "show"; */
+   /*   if($userdata != NULL){
          if($userdata['role']=='captain' && $user_id != $key['user_id']){
                $checked = 'captain'; 
          } elseif($userdata['role']=='member' && $user_id != $key['user_id']) { 
               $checked = 'member';
           }else $checked= 'has';
      }
-     else $checked = " ";
-
+     else $checked = " "; */
+     
 
       /*  foreach ($teams['teams'] as $key ) {
             $key=(array) $key;
@@ -84,7 +118,7 @@ class TournamentController extends Controller
         */
         return view('match',[
              'tournaments' => $tournaments,
-             'teams' => $teams['teams'],
+             'teams' => $teams,
              'checked' => $checked,
         ]);
    } 

@@ -35,14 +35,14 @@ class Tournament extends Model
    public function getTeams($tournament_id, $user_id){
        $is_has = DB::table('tournamets_team')->where('tournament_id', $tournament_id)->exists();
     if($is_has == true){
-     $data['teams'] = DB::table('tournamets_team')
+     return  DB::table('tournamets_team')
      ->join('team', 'tournamets_team.team_id', '=', 'team.id')
      //->join('team_members', 'tournamets_team.team_id' , '=', 'team_members.team_id')
-      ->select('team.name','team.user_id')
+      ->select('team.name','team.user_id','tournamets_team.team_id')
      ->where('tournamets_team.tournament_id', $tournament_id)->get();
-    }else   $data['teams'] = NULL;
+    }else return NULL;
     
-    return $data;
+    
   }
 
   public function checkTeam($user_id){
