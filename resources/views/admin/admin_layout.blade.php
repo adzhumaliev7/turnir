@@ -110,7 +110,6 @@
               <i class="nav-icon far fa-alt"></i>
               <p>
                 Команды
-               
               </p>
             </a>
           </li>
@@ -119,7 +118,14 @@
               <i class="nav-icon far fa-alt"></i>
               <p>
                 Турниры
-               
+              </p>
+            </a>
+          </li>
+            <li class="nav-item">
+            <a href="{{route('help')}}" class="nav-link">
+              <i class="nav-icon far fa-alt"></i>
+              <p>
+                Помощь 
               </p>
             </a>
           </li>

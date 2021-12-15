@@ -66,7 +66,7 @@ class TournamentController extends Controller
      if($teams == NULL){
           $teams = "";
      }
-     
+     var_dump($userdata);
      if($userdata != NULL){
           if($userdata['role']=='captain' ){
                if($teams != NULL){
@@ -77,7 +77,7 @@ class TournamentController extends Controller
                     if($user_id != $key['user_id']){
                          $checked = 'captain'; 
                     }else   $checked = 'has'; 
-               }     
+               }else $checked= 'captain';    
           }
           else if($userdata['role']=='member'){
                  if($teams != NULL){
@@ -87,35 +87,10 @@ class TournamentController extends Controller
                          if($userdata['team_id'] != $key['team_id']){
                               $checked = 'member'; 
                          }else   $checked = 'has'; 
-               }     
+               }  else $checked= 'member';       
           }else $checked= 'has';
      }else $checked= NULL;
-    
-
-     //dd($teams['user_data']);
-     /* if($teams != NULL){
-    foreach ($teams as $key ) {
-            $key=(array) $key;
-       }
-     }
-     else $checked = "show"; */
-   /*   if($userdata != NULL){
-         if($userdata['role']=='captain' && $user_id != $key['user_id']){
-               $checked = 'captain'; 
-         } elseif($userdata['role']=='member' && $user_id != $key['user_id']) { 
-              $checked = 'member';
-          }else $checked= 'has';
-     }
-     else $checked = " "; */
-     
-
-      /*  foreach ($teams['teams'] as $key ) {
-            $key=(array) $key;
-       }
-       if($user_id == $key['user_id']){
-          $checked = true; 
-       } else $checked = false;
-        */
+ 
         return view('match',[
              'tournaments' => $tournaments,
              'teams' => $teams,

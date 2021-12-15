@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 class HomeController extends Controller
 {
     public function index(){
@@ -53,22 +55,86 @@ class HomeController extends Controller
     }
 
       public function moderators(){
-        $users =Admin::getUsersToModerators();
+        $moderators = Admin::getModerators();
        
-        if($users==NULL){
-            $users = "";
+        return view('admin.home.moderators',[
+            'moderators' => $moderators,
+        ]); 
+    }
+      public function createModerators(){
+
+       return view('admin.home.create_moderators'); 
+       
+    }
+     public function saveModerator(Request $request){
+
+
+          $data  = $request->validate([
+          
+            'email' => 'required',
+           // 'password' => Hash::make($request->input('password')),
+         ]); 
+           $data['password'] = Hash::make($request->input('password'));
+        $user = User::create($data);
+        $user->assignRole('moderator');
+       // return $user;
+
+        return redirect(route('moderators'));
+    }
+
+     public function delteModeratos($id){
+         Admin::delteModeratos($id);
+        return redirect(route('moderators'));
+    }
+
+    public function help(){
+
+        $help= Admin::getHelp();
+       if($help == NULL){
+            $help =="";
         }
-         return view('admin.home.moderators',[
-             'users'=>$users,
-         ]);
-    }
-      public function createModerators($id){
-
-        Admin::createModerators($id);
-        return redirect(route('moderators')); 
+        return view('admin.home.help',[
+            'help' => $help,
+        ]); 
        
     }
+    public function createHelp(){
+        return view('admin.home.create_help'); 
+    }
 
+    public function saveHelp(Request $request){
+             $data  = $request->validate([
+          
+            'title' => 'required',
+            'description' => 'required',
+           // 'password' => Hash::make($request->input('password')),
+         ]); 
+          
+        Admin::createHelp($data);
+     
+       // return $user;
 
+        return redirect(route('help'));
+    }
+    public function editHelp($id){
+          
+         $help = Admin::getHelpById($id);
+    return view('admin.home.edit_help',[
+        'help'=>$help,
+    ]); 
+    }
+
+    public function editHelpSave($id, Request $request){
+
+         
+            $data =$request->validate([
+               'title' => '',
+               'description' => '',
+            ]);
+         
+             Admin::editHelp($id,$data);
+              return redirect(route('help'));
+        
+    }
 
 }

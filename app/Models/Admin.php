@@ -29,19 +29,22 @@ class Admin extends Model
     }else return NULL;
    }
 
-   public function getUsersToModerators(){
-         $is_has = DB::table('users')->exists();
-    if($is_has == true){
-       return DB::table('users')
-       ->join('model_has_roles', 'users.id', '=' ,'model_has_roles.model_id')
-       ->select('users.id','users.email','model_has_roles.role_id')->get();
-    }else return NULL;
-   }
+public function getModerators(){
 
-      public function createModerators($id){
-       return DB::table('model_has_roles')
-       ->where('model_id', $id)
-       ->update(['role_id' => '3']);
+       $is_has = DB::table('model_has_roles')->where('role_id', 3)->exists();
+    if($is_has == true){
+    return DB::table('users')
+    ->join('model_has_roles', 'users.id', '=' ,'model_has_roles.model_id')
+    ->select('id','email')
+    ->where('role_id', 3)
+    ->get();
+     }
+    else return NULL;
+  }
+
+      public function delteModeratos($id){
+      $data['users'] = DB::table('users')->where('id', $id)->delete();
+      $data['models'] = DB::table('model_has_roles')->where('model_id', $id)->delete();
    }
 
      public function getTeams(){
@@ -90,5 +93,23 @@ class Admin extends Model
     
  
   }
+    public function createHelp($data){
+     return DB::table('help')->insert($data);
+   }
+   public function editHelp($id,$data){
+     return DB::table('help')->where('id',$id)->update($data);
+   }
+     public function getHelp(){
+     $is_has = DB::table('help')->exists();
+    if($is_has == true){
+       return DB::table('help')->select('id','title','description')->get();
+    }else return NULL;
+   }
+
+   public function getHelpById($id){
+   
+       return DB::table('help')->select('id','title','description')->where('id', $id)->get();
+    }
+   
 
 }

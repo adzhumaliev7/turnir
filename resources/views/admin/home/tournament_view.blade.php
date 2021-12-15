@@ -140,7 +140,7 @@
 
        <div class="form-group col-md-4">
       <label for="inputPassword4">Призовой фонд</label>
-      <input type="text" class="form-control" name="price" id="" placeholder="100$" value={{$tournament->price}}">
+      <input type="text" class="form-control" name="price" id="" placeholder="100$" value="{{$tournament->price}}">
          @error('price')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror

@@ -73,7 +73,15 @@ Route::name('user.')->group(function (){
    Route::any('/tournament/tournaments_teams/{id}',[\App\Http\Controllers\Admin\TournamentController::class, 'tournamentTeams',])->name('tournaments_teams');
 
    Route::any('/moderators',[\App\Http\Controllers\Admin\HomeController::class, 'moderators',])->name('moderators');
-   Route::any('/moderators/create_moderators/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'createModerators',])->name('create_moderators');
+   Route::any('/moderators/create_moderators/',[\App\Http\Controllers\Admin\HomeController::class, 'createModerators',])->name('create_moderators');
+   Route::get('/moderators/create_moderator/save_moderator', [App\Http\Controllers\Admin\HomeController::class, 'saveModerator'])->name('save_moderator');
+   Route::get('/moderators/delete_moderators/{id}', [App\Http\Controllers\Admin\HomeController::class, 'delteModeratos'])->name('delete_moderators');
+
+   Route::get('/help',[\App\Http\Controllers\Admin\HomeController::class, 'help',])->name('help');
+   Route::get('/help/create_help',[\App\Http\Controllers\Admin\HomeController::class, 'createHelp',])->name('create_help');
+   Route::any('/help/create_help/save_help',[\App\Http\Controllers\Admin\HomeController::class, 'saveHelp',])->name('save_help');
+   Route::any('/help/edit_help/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'editHelp',])->name('edit_help');
+   Route::post('/help/edit_help_save/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'editHelpSave',])->name('edit_help_save');
 });
  //Route::get('/admin',[\App\Http\Controllers\AdminPanelController::class, 'index'])->name('admin');
 //  Route::post('/admin/login',[\App\Http\Controllers\AdminPanelController::class, 'login']);
