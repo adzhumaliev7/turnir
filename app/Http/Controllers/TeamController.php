@@ -9,21 +9,23 @@ class TeamController extends Controller
 {
     public function index($id){
         $data=Team::getTeamById($id);
-       
         foreach ($data as $key => $value) {
          $a=(array)$value;
          $team_id=$a['team_id'];
         }
-
+        
         $members=Team::getTeamMembers($team_id);
-    
+        $user_id = Auth::user()->id;
+
+      
+     
          return view('team',[
             'data'=>$data,
             'members'=>$members,
             'team_id'=>$team_id,
+            'user_id'=>$user_id,
         ]); 
     }
-
     public function addMembers($id){
           $user_id = Auth::user()->id;
           $data=array(
@@ -35,5 +37,11 @@ class TeamController extends Controller
     return view('profile'); 
     }
 
-  
+     public function deleteMember($id){
+        Team::deleteMember($id);        
+         return redirect(route('profile')); 
+    }
+     public function addAdmin($id,$team_id){
+       Team::addAdmin($id, $team_id);
+    }
 }

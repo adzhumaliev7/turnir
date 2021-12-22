@@ -210,7 +210,7 @@
                         </tr>
                           <tr class="second-table"> 
                             <th class="pubg-title" scope="row">{{$tournament->name}}</th>
-                            <td class="pubg-title">{{$tournament->tournament_start}}  {{$tournament->timezone}} </td>
+                            <td class="pubg-title">{{$tournament->tournament_start}}  {{$tournament->timezone}}</td>
                             <td class="pubg-title">4x4</td>
                             <td class="pubg-title">512/512</td>
                             <td class="pubg-title">{{$tournament->price}} </td>
@@ -221,7 +221,6 @@
                                 </svg>
                             </td>
                           </tr>
-                         
                         </tbody>
                       </table>
                     </div>
@@ -238,9 +237,6 @@
                     </form>    
                 </div>
               </div>
-
-
-
         </div>
     </section>
 
@@ -269,10 +265,6 @@
         </div>
     </footer>
 </div>
-
-
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>

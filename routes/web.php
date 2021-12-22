@@ -50,8 +50,10 @@ Route::name('user.')->group(function (){
  Route::post('/profile/createteam',[\App\Http\Controllers\ProfileController::class, 'createTeam'])->name('createteam');
  Route::post('/profile/tournaments/{id}',[\App\Http\Controllers\ProfileController::class, 'getTournaments'])->name('get_tournaments');
  Route::post('/main',[\App\Http\Controllers\MainController::class, 'index'])->name('main');
- Route::get('/team/{id}',[\App\Http\Controllers\TeamController::class, 'index'])->name('team');
+ Route::get('/team/{id}/',[\App\Http\Controllers\TeamController::class, 'index'])->name('team');
  Route::get('/addmembers/{id}',[\App\Http\Controllers\TeamController::class, 'addMembers'])->name('addmember'); 
+ Route::get('/team/delete/{id}',[\App\Http\Controllers\TeamController::class, 'deleteMember'])->name('delete_member'); 
+ Route::get('/team/add_admin/{id}{team_id}',[\App\Http\Controllers\TeamController::class, 'addAdmin'])->name('add_admin'); 
  Route::get('/tournament',[\App\Http\Controllers\TournamentController::class, 'index'])->name('tournament');
  Route::any('tournament/create_order',[\App\Http\Controllers\TournamentController::class, 'createTournament'])->name('create_order');
  Route::post('tournament/create_order/save',[\App\Http\Controllers\TournamentController::class, 'saveTournament'])->name('save_order');

@@ -56,5 +56,16 @@ class Team extends Model
       public function addMembers($data){
        return DB::table('team_members')->insert($data);
     }
+
+       public function deleteMember($id){
+         return DB::table('team_members')->where('user_id', $id)->delete();
+    }
+
+        public function addAdmin($id, $team_id){
+           DB::table('team')->where('role', 'captain')->where('id', $team_id)->update(['user_id'=> $id]);
+           DB::table('team_members')->where('team_id', $team_id )->where('role', 'captain')->update(['role' => 'member']); 
+           DB::table('team_members')->where('team_id', $team_id )->where('user_id', $id)->update(['role' => 'captain']); 
+         
+    }
    
 }
