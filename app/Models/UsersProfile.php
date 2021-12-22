@@ -21,5 +21,28 @@ class UsersProfile extends Model
        }
      
    }
+   public function delete_profile($id){
+         DB::table('users')->where('id', $id)->delete();
+           $is_has = DB::table('users_profile2')->where('user_id', $id)->exists();
+            if($is_has == true){
+                DB::table('users_profile2')->where('user_id', $id)->delete();
+            }else '';
+   }
+
+    public function getTeamById($id){
+       $is_has = DB::table('team_members')->where('user_id', $id)->exists();
+       if($is_has == true){
+         return DB::table('team_members')
+            ->join('team','team_members.team_id','=','team.id')
+            ->join('tournamets_team','team_members.team_id','=','tournamets_team.team_id')
+            ->join('tournaments','tournamets_team.tournament_id','=','tournaments.id')
+            ->select('team_members.team_id','team_members.user_id', 'team.id', 'team.name','tournaments.name', 'tournaments.tournament_start' , 'tournaments.country' ,'tournaments.timezone'  ,'tournaments.price' )
+            ->where('team_members.user_id', $id)
+            ->get();
+       }
+       else {
+          return NULL;
+       }
+   }
    
 }

@@ -54,19 +54,36 @@ class TournamentController extends Controller
     }
    public function matchView($id){
         $tournaments = Tournament::getTournamentById($id);
+    
+       foreach ($tournaments as $tournament ) {
+          $t = (array) $tournament;
+       }
 
-         $user_id = Auth::user()->id;
-      $teams= Tournament::getTeams($id, $user_id);//команды зарегистрированные в турнир 
-
-
+      $date = date('Y-m-d');
+      
+      if($date > $t['tournament_start']){
+           $turnir  = 'close';
+      }else {
+           $turnir = 'active';
+      }
+       //$start_reg=($t['start_reg']  $date && $t['start_reg'] != $date);
+       if($t['start_reg'] > $date && $t['start_reg'] != $date){
+            $reg= "dont_time";
+       }
+       elseif($t['start_reg'] <=  $date && $t['end_reg'] >= $date){
+             $reg= "time";
+       }else $reg= "loss";
+       //$end_reg=(strtotime(strtotime($date) >= $t['end_reg']));
+       
+      $user_id = Auth::user()->id;
+      $teams = Tournament::getTeams($id, $user_id);//команды зарегистрированные в турнир 
       $userdata= Tournament::checkTeam($user_id);
       $userdata = (array) $userdata;
-
 
      if($teams == NULL){
           $teams = "";
      }
-     var_dump($userdata);
+ 
      if($userdata != NULL){
           if($userdata['role']=='captain' ){
                if($teams != NULL){
@@ -77,7 +94,7 @@ class TournamentController extends Controller
                     if($user_id != $key['user_id']){
                          $checked = 'captain'; 
                     }else   $checked = 'has'; 
-               }else $checked= 'captain';    
+                }else $checked= 'captain';    
           }
           else if($userdata['role']=='member'){
                  if($teams != NULL){
@@ -95,6 +112,8 @@ class TournamentController extends Controller
              'tournaments' => $tournaments,
              'teams' => $teams,
              'checked' => $checked,
+             'reg' => $reg,
+             'turnir' => $turnir,
         ]);
    } 
 
@@ -103,7 +122,7 @@ class TournamentController extends Controller
           $team_id=Tournament::getTeamById($user_id);
         $team_id = (array) $team_id;
        $team_id=implode("",$team_id);
-        
+
           $data=array(
                'tournament_id'=>$id,
                'team_id'=>$team_id,

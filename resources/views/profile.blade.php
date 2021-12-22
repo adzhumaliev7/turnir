@@ -191,7 +191,8 @@
                 </div>
                 <div class="tab-pane fade" id="tournament" role="tabpanel" aria-labelledby="tourname nt-tab">
                     <h1 class="title">Мои турниры</h1>
-
+                   @if($tournaments != NULL)
+                    @foreach($tournaments as $tournament)         
                 <div class="table-block">
                     <table class="table">
                         <thead>
@@ -208,11 +209,11 @@
                             <td class="pubg-title">Приз</td>
                         </tr>
                           <tr class="second-table"> 
-                            <th class="pubg-title" scope="row">Pubg local FastCup</th>
-                            <td class="pubg-title">24.09.20021   22:00 Nur-Sultan(+6 GMT) </td>
+                            <th class="pubg-title" scope="row">{{$tournament->name}}</th>
+                            <td class="pubg-title">{{$tournament->tournament_start}}  {{$tournament->timezone}} </td>
                             <td class="pubg-title">4x4</td>
                             <td class="pubg-title">512/512</td>
-                            <td class="pubg-title">100$</td>
+                            <td class="pubg-title">{{$tournament->price}} </td>
                             <td>
                                 <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12.2708 14.25H11.4792C11.2606 14.25 11.0833 14.4272 11.0833 14.6458V17.4167H1.58335V1.58335H11.0833V4.35419C11.0833 4.5728 11.2606 4.75004 11.4792 4.75004H12.2708C12.4895 4.75004 12.6667 4.5728 12.6667 4.35419V1.58335C12.6667 0.7089 11.9578 0 11.0833 0H1.58335C0.7089 0 0 0.7089 0 1.58335V17.4167C0 18.2911 0.7089 19 1.58335 19H11.0833C11.9578 19 12.6667 18.2911 12.6667 17.4167V14.6458C12.6667 14.4272 12.4895 14.25 12.2708 14.25Z" fill="black"/>
@@ -220,28 +221,22 @@
                                 </svg>
                             </td>
                           </tr>
-                          <tr class="third-table">
-                            <th scope="row" class="pubg-title">Region CUP Stage 1</th>
-                            <td class="pubg-title">29.09.20021   22:00 Nur-Sultan(+6 GMT)</td>
-                            <td class="pubg-title">4x4</td>
-                            <td class="pubg-title">512/512</td>
-                            <td class="pubg-title">100$</td>
-                            <td>
-                                <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12.2708 14.25H11.4792C11.2606 14.25 11.0833 14.4272 11.0833 14.6458V17.4167H1.58335V1.58335H11.0833V4.35419C11.0833 4.5728 11.2606 4.75004 11.4792 4.75004H12.2708C12.4895 4.75004 12.6667 4.5728 12.6667 4.35419V1.58335C12.6667 0.7089 11.9578 0 11.0833 0H1.58335C0.7089 0 0 0.7089 0 1.58335V17.4167C0 18.2911 0.7089 19 1.58335 19H11.0833C11.9578 19 12.6667 18.2911 12.6667 17.4167V14.6458C12.6667 14.4272 12.4895 14.25 12.2708 14.25Z" fill="black"/>
-                                <path d="M18.8717 9.20817L14.1217 4.85402C14.0057 4.74848 13.8376 4.7195 13.6949 4.78366C13.5511 4.84667 13.4583 4.98891 13.4583 5.14585V5.93754C13.4583 6.04965 13.5059 6.15671 13.5894 6.23171L16.3411 8.70839H5.14585C4.92705 8.70839 4.75 8.88543 4.75 9.10423V9.89588C4.75 10.1147 4.92705 10.2917 5.14585 10.2917H16.3411L13.5894 12.7684C13.5059 12.8434 13.4583 12.9505 13.4583 13.0626V13.8542C13.4583 14.0112 13.5511 14.1534 13.6949 14.2164C13.7459 14.2392 13.8005 14.25 13.8542 14.25C13.9512 14.25 14.0471 14.2141 14.1217 14.1461L18.8717 9.7919C18.9536 9.71691 19 9.611 19 9.50004C19 9.38908 18.9536 9.28317 18.8717 9.20817Z" fill="black"/>
-                                </svg>
-                            </td>
-                          </tr>
+                         
                         </tbody>
                       </table>
                     </div>
-
-                      <button class="submit-btn btn-width text-btn">Все турниры</button>
+                        @endforeach
+                       @endif 
+                      <a href="{{route('tournament')}}" class="submit-btn btn-width text-btn">Все турниры</a>
 
 
                 </div>
-                <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">..fadsfdsafdf</div>
+                <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                    <form  method="POST" action="{{route('delete_profile', $user_id)}}">
+                       @csrf
+                        <button class="submit-btn btn--size btn--mr">Удалить профиль</button>
+                    </form>    
+                </div>
               </div>
 
 

@@ -13,9 +13,14 @@ class ProfileController extends Controller
        $id = Auth::user()->id;
       $data = UsersProfile::getById($id);
       $teams=Team::getTeamById($id);
+      
+       $tournaments= UsersProfile::getTeamById($id);
+       
           return view('profile',[
             'data'=>$data,
             'teams'=>$teams,
+            'user_id'=>$id,
+            'tournaments'=>$tournaments,
           ]);
      }
    
@@ -87,4 +92,11 @@ class ProfileController extends Controller
       }
      
   } 
+  public function deleteProfile($id){
+      UsersProfile::delete_profile($id);
+       return redirect('login');  
+  }
+  public function getTournaments($id){
+      
+  }
 }

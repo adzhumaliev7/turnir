@@ -23,7 +23,10 @@
                         <p class="subtitle subtitle--regular">Режим проведения: squad(4)</p>
                         <p class="subtitle">Вид: от третьего лица</p>
                     </div>
-
+                         <div class="profile-block d-flex justify-content-between profile-block--style">
+                        <p class="subtitle">Регистрация с {{$tournament->start_reg}} по {{$tournament->end_reg}}</p>
+                  
+                    </div>
                 </div>
                 <div class="col-lg-5 col--style-2">
                     <img class="" src="{{ asset("uploads/storage/adminimg/$tournament->file_label")}}"  width="475" height="288"" alt="">
@@ -60,7 +63,7 @@
                                 <div class="holding holding-block">
                                     <p class="subtitle holding__title">Дата проведения</p>
                                     <span class="subtitle subtitle--semi-medium">{{$tournament->tournament_start}}</span>
-                                    <span class="subtitle subtitle--semi-medium d-block">{{$tournament->games_time}} {{$tournament->country}}(+6 GMT)</span>
+                                    <span class="subtitle subtitle--semi-medium d-block">{{$tournament->games_time}} {{$tournament->country}} {{$tournament->timezone}}</span>
                                         <hr>
                                     <div class="block">
                                     <svg class="config" width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -71,8 +74,7 @@
                                     <p class="subtitle subtitle--regular subtitle--inline-b">Условия для участия:</p>
                                     <ul>
                                         <li class="subtitle subtitle--regular">вы не получили условие 1</li>
-                                        <li class="subtitle subtitle--regular">вы не получили условие 2</li>
-                                        <li class="subtitle subtitle--regular">вы не получили условие 3</li>
+                                       
                                     </ul>    
                                     </div>
                                     <details open class="holding__accordion">
@@ -106,7 +108,8 @@
                                                 участник 5</li>
                                         </ul> -->
                                     </details>
-                                  
+                        @if($turnir == 'active')         
+                           @if($reg =='time')       
                             @if($checked != NULL)     
                                 @if($checked == 'captain')
                                     <div class="block-btn">
@@ -127,6 +130,20 @@
                                      <h3>У вас нет команды</h3>
                                  </div>
                              @endif  
+                             @elseif($reg== 'dont_time')
+                             <div class="block-btn">
+                                <h3>Регистрация ещё не началась</h3>
+                            </div>
+                            @elseif($reg == 'loss')
+                             <div class="block-btn">
+                                <h3>Регистрация закончилась</h3>
+                            </div>
+                            @endif
+                            @else 
+                             <div class="block-btn">
+                                <h3>Турнир закончился</h3>
+                            </div>
+                            @endif
                                 </div>
                             </form>
                         </div>

@@ -46,7 +46,9 @@ Route::name('user.')->group(function (){
 });
  Route::get('/profile',[\App\Http\Controllers\ProfileController::class, 'index'])->name('profile'); 
  Route::post('/profile',[\App\Http\Controllers\ProfileController::class, 'saveProfile']);
+ Route::post('/profile/delte/{id}',[\App\Http\Controllers\ProfileController::class, 'deleteProfile'])->name('delete_profile');
  Route::post('/profile/createteam',[\App\Http\Controllers\ProfileController::class, 'createTeam'])->name('createteam');
+ Route::post('/profile/tournaments/{id}',[\App\Http\Controllers\ProfileController::class, 'getTournaments'])->name('get_tournaments');
  Route::post('/main',[\App\Http\Controllers\MainController::class, 'index'])->name('main');
  Route::get('/team/{id}',[\App\Http\Controllers\TeamController::class, 'index'])->name('team');
  Route::get('/addmembers/{id}',[\App\Http\Controllers\TeamController::class, 'addMembers'])->name('addmember'); 

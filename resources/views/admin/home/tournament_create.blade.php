@@ -30,7 +30,11 @@
     </div>
     <div class="form-group col-md-4">
       <label for="inputPassword4">Часовой пояс</label>
-      <input type="timezone" class="form-control" name="timezone" id="" placeholder="Часовой пояс">
+     <select name="timezone" id="">
+      @foreach($timezones as $timezone)
+      <option value="{{$timezone}}">{{$timezone}}</option>
+      @endforeach
+     </select>
          @error('timezone')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
