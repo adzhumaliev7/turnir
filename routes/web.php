@@ -65,6 +65,8 @@ Route::name('user.')->group(function (){
    Route::get('/',[\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin');
  //  Route::get('/users',[\App\Http\Controllers\Admin\HomeController::class, 'usersView']);
    Route::get('/users',[\App\Http\Controllers\Admin\HomeController::class, 'usersView'])->name('users'); 
+   Route::get('/users/add_ban/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'addBan'])->name('add_ban'); 
+   Route::get('/users/unblock/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'unblock'])->name('unblock'); 
    Route::get('/teams',[\App\Http\Controllers\Admin\HomeController::class, 'teamsView'])->name('teams'); 
    
    Route::get('/users_card/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'userCard',]);

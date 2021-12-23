@@ -29,7 +29,13 @@
          @else Не верифицирован   
         @endif
       </td>
-      <td><a  href="/admin_panel/users_card/{{$user->id}}" class="btn btn-primary">Просмотр</a></td>
+      <td><a  href="/admin_panel/users_card/{{$user->id}}" class="btn btn-primary">Просмотр</a>
+      @if($user->status !='ban')
+      <a  href="{{route('add_ban', $user->user_id)}}" class="btn btn-danger">Бан</a>
+      @else
+      <a href="{{route('unblock', $user->user_id)}}" class="btn btn-danger">Разблокировать</a>
+      @endif
+      </td>
     </tr>
     @endforeach
   </tbody>

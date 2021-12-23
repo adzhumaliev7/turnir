@@ -25,10 +25,18 @@ class HomeController extends Controller
           if($users == NULL){
             $users =="";
         }
-           
          return view('admin.home.users',[
              'users'=>$users
          ]);
+    }
+
+     public function addBan($id){
+          Admin::addBan($id);
+        return redirect(route('users'));
+    }
+     public function unblock($id){
+          Admin::unblock($id);
+        return redirect(route('users'));
     }
       public function teamsView(){
           

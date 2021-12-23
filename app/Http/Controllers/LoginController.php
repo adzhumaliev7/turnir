@@ -13,12 +13,13 @@ class LoginController extends Controller
             return redirect(route('user.main'));
         }
         $formFields = $request->only(['email','password']);
-        
+        $formFields['status']=NULL;
         if(Auth::attempt($formFields)){
             return redirect()->intended(route('user.main'));
         }
         return redirect(route('user.login'))->withErrors([
-             'email' => 'Не удалось('
+             'email' => 'не верный логин или пароль',
+             
          ]);
 }
 }

@@ -25,7 +25,9 @@ class Admin extends Model
    public function get(){
          $is_has = DB::table('users_profile2')->exists();
     if($is_has == true){
-       return DB::table('users_profile2')->select('id','phone','fio','email','city', 'verification')->get();
+       return DB::table('users_profile2')
+       ->join('users','users_profile2.user_id' ,'=', 'users.id' )
+       ->select('users_profile2.id','users_profile2.phone','users_profile2.fio','users_profile2.email','users_profile2.city', 'users_profile2.verification','users_profile2.user_id', 'users.status')->get();
     }else return NULL;
    }
 
@@ -109,6 +111,13 @@ public function getModerators(){
    public function getHelpById($id){
    
        return DB::table('help')->select('id','title','description')->where('id', $id)->get();
+    }
+
+    public function addBan($id){
+       return DB::table('users')->where('id', $id)->update(['status'=> 'ban']);
+    }
+     public function unblock($id){
+       return DB::table('users')->where('id', $id)->update(['status' => NULL]);
     }
    
 
