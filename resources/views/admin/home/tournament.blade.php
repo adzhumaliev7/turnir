@@ -24,7 +24,7 @@
       <td>{{$tournament->tournament_start}} {{$tournament->games_time}}</td>
      <td><a type="button" href="{{route('tournament_view',$tournament->id)}}" class="btn btn-primary">Редктирвоать</a> 
       <a href="{{route('delete_tournament', $tournament->id)}}" type="button" class="btn btn-danger">Удалить</a>
-      <a href="{{route('tournaments_teams', $tournament->id)}}" type="button" class="btn btn-success">Список команд</a>
+      <a href="{{route('tournaments_teams', $tournament->id)}}" type="button" class="btn btn-success">Заявки</a>
     </td>
    
     </tr>

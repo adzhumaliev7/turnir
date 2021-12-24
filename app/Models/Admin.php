@@ -90,11 +90,23 @@ public function getModerators(){
      ->join('team', 'tournamets_team.team_id', '=', 'team.id')
      //->join('team_members', 'tournamets_team.team_id' , '=', 'team_members.team_id')
       ->select('team.name','team.user_id')
-     ->where('tournamets_team.tournament_id', $tournament_id)->get();
+     ->where('tournamets_team.tournament_id', $tournament_id)->where('tournamets_team.status', 'processed')->get();
     }else  return NULL;
-    
- 
+
   }
+   public function geTeamMembers($tournament_id){
+    
+    return DB::table('team_members')
+     ->join('team', 'team_members.team_id', '=', 'team.id')
+     ->join('users_profile2', 'team_members.user_id', '=', 'users_profile2.user_id')
+     ->join('tournamets_team', 'team.id' , '=', 'tournamets_team.team_id')
+     ->join('tournaments', 'tournamets_team.tournament_id' , '=', 'tournaments.id')
+     ->select('team_members.user_id','users_profile2.login','team.name')
+     ->where('tournamets_team.tournament_id', $tournament_id)->where('tournamets_team.status', 'processed')->get();
+   
+
+  }
+
     public function createHelp($data){
      return DB::table('help')->insert($data);
    }

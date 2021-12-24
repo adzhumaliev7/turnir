@@ -77,7 +77,7 @@
                                        
                                     </ul>    
                                     </div>
-                                    <details open class="holding__accordion">
+                                   <details details open class="holding__accordion">
                                         @if($teams != "")
                                         @foreach($teams as $team)
                                         <summary class="subtitle subtitle--semi-medium">{{$team->name}}</summary>
@@ -120,9 +120,16 @@
                                      <h3>Принять участие может только капитан команды</h3>
                                  </div>
                                   @elseif(($checked == 'has')) 
-                                    <div class="block-btn">
-                                     <h3>Вы зарегистрированы</h3>
-                                 </div>
+                                    
+                                   @if($team->status == 'processed')
+                                        <div class="block-btn">
+                                             <h3>Ваша заявка на расмотреннии</h3>
+                                        </div>
+                                    @else 
+                                        <div class="block-btn">
+                                             <h3>Вы зарегистрированны</h3>
+                                        </div>
+                                    @endif
                                 
                                  @endif
                                  @else 

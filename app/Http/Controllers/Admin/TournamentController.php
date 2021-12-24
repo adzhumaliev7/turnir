@@ -217,9 +217,12 @@ class TournamentController extends Controller
     }
     public function tournamentTeams($id){
         $teams = Admin::getTournamentsTeams($id);
+        $members =Admin::geTeamMembers($id);
+       
         
         return view('admin.home.tournaments_teams',[
             'teams'=>$teams,
+            'members'=>$members,
           
         ]);
     }

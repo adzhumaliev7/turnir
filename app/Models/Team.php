@@ -67,5 +67,8 @@ class Team extends Model
            DB::table('team_members')->where('team_id', $team_id )->where('user_id', $id)->update(['role' => 'captain']); 
          
     }
+      public function exitTeam($id){
+         return DB::table('team_members')->where('user_id', $id)->delete();
+    }
    
 }

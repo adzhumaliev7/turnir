@@ -38,7 +38,7 @@ class Tournament extends Model
      return  DB::table('tournamets_team')
      ->join('team', 'tournamets_team.team_id', '=', 'team.id')
      //->join('team_members', 'tournamets_team.team_id' , '=', 'team_members.team_id')
-      ->select('team.name','team.user_id','tournamets_team.team_id')
+      ->select('team.name','team.user_id','tournamets_team.team_id','tournamets_team.status')
      ->where('tournamets_team.tournament_id', $tournament_id)->get();
     }else return NULL;
     

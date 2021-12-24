@@ -83,7 +83,7 @@ class TournamentController extends Controller
      if($teams == NULL){
           $teams = "";
      }
- 
+
      if($userdata != NULL){
           if($userdata['role']=='captain' ){
                if($teams != NULL){
@@ -126,6 +126,7 @@ class TournamentController extends Controller
           $data=array(
                'tournament_id'=>$id,
                'team_id'=>$team_id,
+               'status'=>'processed'
           );
            Tournament::joiToTournament($data);
   return redirect(route('match', $id));

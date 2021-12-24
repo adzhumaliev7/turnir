@@ -34,14 +34,18 @@ class TeamController extends Controller
               'role'=>'member'
           );  
      Team::addMembers($data);
-    return view('profile'); 
+    return redirect(route('profile')); 
     }
 
-     public function deleteMember($id){
+    public function deleteMember($id){
         Team::deleteMember($id);        
          return redirect(route('profile')); 
     }
      public function addAdmin($id,$team_id){
        Team::addAdmin($id, $team_id);
+    }
+     public function exitTeam($id){
+       Team::exitTeam($id);
+       return redirect(route('profile'));
     }
 }

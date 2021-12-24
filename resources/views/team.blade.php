@@ -32,6 +32,7 @@
                     <button class="nav-link nav-btn " id="lineup-tab" data-bs-toggle="tab" data-bs-target="#lineup" type="button" role="tab" aria-controls="lineup" aria-selected="false">Состав</button>
                 </li>
             </ul>
+             <a href="{{route('exit_team',$user_id)}}" class="">Покинуть команду</a>  
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="view" role="tabpanel" aria-labelledby="view-tab">
                 </div>
