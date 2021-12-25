@@ -125,7 +125,7 @@
                                         <div class="block-btn">
                                              <h3>Ваша заявка на расмотреннии</h3>
                                         </div>
-                                    @else 
+                                    @elseif($team->status == 'accepted') 
                                         <div class="block-btn">
                                              <h3>Вы зарегистрированны</h3>
                                         </div>

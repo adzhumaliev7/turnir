@@ -217,6 +217,7 @@ class TournamentController extends Controller
     }
     public function tournamentTeams($id){
         $teams = Admin::getTournamentsTeams($id);
+       
         $members =Admin::geTeamMembers($id);
        
         
@@ -226,4 +227,14 @@ class TournamentController extends Controller
           
         ]);
     }
+    public function applyTeam($id){
+        Admin::applyTeam($id);
+     return redirect(route('admin_tournament'));
+    }
+    
+    public function refuseTeam($id){
+         Admin::refuseTeam($id);
+     return redirect(route('admin_tournament'));
+    }
+
 }

@@ -89,8 +89,8 @@ public function getModerators(){
     return DB::table('tournamets_team')
      ->join('team', 'tournamets_team.team_id', '=', 'team.id')
      //->join('team_members', 'tournamets_team.team_id' , '=', 'team_members.team_id')
-      ->select('team.name','team.user_id')
-     ->where('tournamets_team.tournament_id', $tournament_id)->where('tournamets_team.status', 'processed')->get();
+      ->select('team.name','team.user_id','tournamets_team.team_id','tournamets_team.status')
+     ->where('tournamets_team.tournament_id', $tournament_id)->get();
     }else  return NULL;
 
   }
@@ -130,6 +130,12 @@ public function getModerators(){
     }
      public function unblock($id){
        return DB::table('users')->where('id', $id)->update(['status' => NULL]);
+    }
+    public function applyTeam($id){
+       return DB::table('tournamets_team')->where('team_id', $id)->update(['status' => 'accepted']);
+    }
+    public function refuseTeam($id){
+       return DB::table('tournamets_team')->where('team_id', $id)->update(['status' => 'not_accepted']);
     }
    
 

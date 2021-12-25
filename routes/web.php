@@ -78,6 +78,8 @@ Route::name('user.')->group(function (){
    Route::post('/tournament/edit/{id}',[\App\Http\Controllers\Admin\TournamentController::class, 'tournamentEdit',])->name('edit_tournament');
    Route::any('/tournament/delete/{id}',[\App\Http\Controllers\Admin\TournamentController::class, 'tournamentDelete',])->name('delete_tournament');
    Route::any('/tournament/tournaments_teams/{id}',[\App\Http\Controllers\Admin\TournamentController::class, 'tournamentTeams',])->name('tournaments_teams');
+   Route::any('/tournament/tournaments_teams/apply_team/{id}',[\App\Http\Controllers\Admin\TournamentController::class, 'applyTeam',])->name('apply_team');
+   Route::any('/tournament/tournaments_teams/refuse_team/{id}',[\App\Http\Controllers\Admin\TournamentController::class, 'refuseTeam',])->name('refuse_team');
 
    Route::any('/moderators',[\App\Http\Controllers\Admin\HomeController::class, 'moderators',])->name('moderators');
    Route::any('/moderators/create_moderators/',[\App\Http\Controllers\Admin\HomeController::class, 'createModerators',])->name('create_moderators');

@@ -8,7 +8,7 @@
       <th scope="col">#</th>
       <th scope="col">Команда</th>
       <th scope="col">Участники</th>
-      <th scope="col"></th>
+      <th scope="col">Статус</th>
       
 
     </tr>
@@ -29,9 +29,19 @@
         </select>  
 
       </td>
+       <td scope="row">
+        @if($team->status=='processed') На расмотреннии
+          @elseif($team->status =='accepted') Принят 
+          @elseif($team->status =='not_accepted') Отклонен 
+        @endif 
+       </td>
       <td scope="row"> 
-        <a href="" type="button" class="btn btn-success">Принять</a>
-        <a href="" type="button" class="btn btn-danger">Отклонить</a>
+          @if($team->status=='processed')
+            <a href="{{route('apply_team', $team->team_id)}}" type="button" class="btn btn-success">Принять</a>
+            <a href="{{route('refuse_team', $team->team_id)}}" type="button" class="btn btn-danger">Отклонить</a>
+
+        @endif
+        
     </td>
    </tr>
     @endforeach
