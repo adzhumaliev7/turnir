@@ -37,9 +37,23 @@
   color: #000;
   text-decoration: none;
   cursor: pointer;
-
-
 }
+
+.message {
+    display: inline-block; /* Строчно-блочный элемент */
+    position: relative; /* Относительное позиционирование */
+   }
+   .message:hover::after {
+    content: attr(data-title); /* Выводим текст */
+    position: absolute; /* Абсолютное позиционирование */
+    left: 20%; top: 30%; /* Положение подсказки */
+    z-index: 1; /* Отображаем подсказку поверх других элементов */
+    background: rgba(255,255,230,0.9); /* Полупрозрачный цвет фона */
+    font-family: Arial, sans-serif; /* Гарнитура шрифта */
+    font-size: 11px; /* Размер текста подсказки */
+    padding: 5px 10px; /* Поля */
+    border: 1px solid #333; /* Параметры рамки */
+   }
 </style>
 
 @extends('admin.admin_layout')
@@ -88,8 +102,8 @@
       <td>{{$user->bdate}}</td>
       <td>{{$user->nickname}}</td>
       <td>{{$user->game_id}}</td>
-      <td><a  href="{{ route('verified', $user->id) }}" class="">&#10004;</a>
-     <a  href="/admin_panel/users_card/{{$user->id}}" class="">&#10006;</a></td>
+      <td><a  href="{{ route('verified', $user->id) }}" class="message" data-title="Подтвердить">&#10004;</a>
+     <a  href="{{ route('rejected', $user->id) }}"  class="message" data-title="Отконить">&#10006;</a></td>
     </tr>
     @endforeach
   </tbody>

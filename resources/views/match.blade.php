@@ -129,6 +129,11 @@
                                         <div class="block-btn">
                                              <h3>Вы зарегистрированны</h3>
                                         </div>
+                                    @elseif($team->status == 'not_accepted') 
+                                    <div class="block-btn">
+                                         <h3>Ваша заявка отклонена</h3>
+                                      
+                                    </div>
                                     @endif
                                 
                                  @endif

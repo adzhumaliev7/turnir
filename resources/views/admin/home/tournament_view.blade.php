@@ -58,12 +58,12 @@
   </div>
   <div class="form-group col-md-4">
       <label for="inputPassword4">Обложка</label>
-      <img src="{{ asset("uploads/storage/adminimg/$tournament->file_label")}}"  width="250" height="200" class="" style="opacity: .8">
+      <img src="{{ asset("uploads/storage/adminimg/$tournament->file_label")}}"  value="{{$tournament->file_label}}" width="250" height="200" class="" style="opacity: .8">
     </div>
  <div class="form-group col-md-8">
       <label for="inputPassword4">Описание турнира</label>
       <textarea  class="form-control" name="description" id="" placeholder="Описание турнира">{{$tournament->description}}</textarea>
-         @error('	description')
+         @error('description')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>

@@ -12,8 +12,9 @@ class ProfileController extends Controller
     public function index(){
        $id = Auth::user()->id;
       $data = UsersProfile::getById($id);
+     
       $teams=Team::getTeamById($id);
-      
+      $verification_status = UsersProfile::checkVerification($id);
        $tournaments= UsersProfile::getTeamById($id);
        
           return view('profile',[
@@ -21,6 +22,7 @@ class ProfileController extends Controller
             'teams'=>$teams,
             'user_id'=>$id,
             'tournaments'=>$tournaments,
+            'verification_status'=>$verification_status,
           ]);
      }
    
@@ -64,7 +66,7 @@ class ProfileController extends Controller
          }
         
        \Session::flash('flash_meassage', 'Сохранено');
-        return view('profile');
+        return redirect(route('profile'));
     }
 
 

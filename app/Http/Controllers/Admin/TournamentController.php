@@ -182,11 +182,9 @@ class TournamentController extends Controller
     }
 
      public function tournamentEdit($id, Request $request){
-         if($request->hasFile('file_1')) {
-           $file_name = $request->file('file_1')->getClientOriginalName();
-            $file = $request->file('file_1');
-            $file->move(public_path() . '/uploads/storage/adminimg',$file_name);
-        }
+
+     
+         
         if($request->isMethod('post')){
             $data =$request->validate([
                'name' => '',
@@ -205,10 +203,11 @@ class TournamentController extends Controller
                'tournament_start' => '',
                'games_time' => '',
             ]);
-          $data['file_1']=$file_name;
+           
+        
              Admin::editTournament($id,$data);
               return redirect(route('admin_tournament'));
-        }
+        } 
     }
 
     public function tournamentDelete($id){
@@ -217,21 +216,18 @@ class TournamentController extends Controller
     }
     public function tournamentTeams($id){
         $teams = Admin::getTournamentsTeams($id);
-       
+
         $members =Admin::geTeamMembers($id);
-       
-        
         return view('admin.home.tournaments_teams',[
             'teams'=>$teams,
             'members'=>$members,
-          
         ]);
     }
     public function applyTeam($id){
         Admin::applyTeam($id);
      return redirect(route('admin_tournament'));
     }
-    
+
     public function refuseTeam($id){
          Admin::refuseTeam($id);
      return redirect(route('admin_tournament'));

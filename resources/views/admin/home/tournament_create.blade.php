@@ -88,7 +88,7 @@
     </div>
    <div class="form-group col-md-4">
       <label for="inputPassword4">Завершение регистрации</label>
-      <input type="date" class="form-control" name="	end_reg" id="" placeholder="Завершение регистрации">
+      <input type="date" class="form-control" name="end_reg" id="" placeholder="Завершение регистрации">
          @error('end_reg')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror

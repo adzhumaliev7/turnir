@@ -26,7 +26,8 @@
       <td>
         @if($user->verification=='verified') 
             Верифицирован
-         @else Не верифицирован   
+         @elseif($user->verification=='rejected')Вернут на доработку  
+         @else Не верефицирован
         @endif
       </td>
       <td><a  href="/admin_panel/users_card/{{$user->id}}" class="btn btn-primary">Просмотр</a>

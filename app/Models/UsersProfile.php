@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class UsersProfile extends Model
 {
     public function saveProfile($data){
-       return DB::table('users_profile2')->insert($data);
+         $is_has = DB::table('users_profile2')->where('user_id', $data['user_id'])->exists();
+         if($is_has==true){
+            return DB::table('users_profile2')->where('user_id', $data['user_id'])->update($data);
+         }else {
+              return DB::table('users_profile2')->insert($data);
+         }
+      
     }
 
      public function getById($id){
@@ -43,6 +49,14 @@ class UsersProfile extends Model
        else {
           return NULL;
        }
+   }
+
+   public function checkVerification($id){
+       $is_has = DB::table('users_profile2')->where('user_id', $id)->where('verification', 'verified')->exists();
+       if($is_has==true){
+          return true;
+       }
+       else return false;
    }
    
 }

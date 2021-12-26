@@ -9,7 +9,6 @@
       <th scope="col">Команда</th>
       <th scope="col">Участники</th>
       <th scope="col">Статус</th>
-      
 
     </tr>
   </thead>

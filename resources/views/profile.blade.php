@@ -12,12 +12,12 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                   @if(!$data==NULL)
-                    @foreach($data as $dat)
+                 @if(!$data==NULL)
+                  @foreach($data as $dat)
                     <h1 class="title text-capitalize font-sz">{{$dat->fio}}</h1>
                     <sub class="subtitle"><?if($dat->verification=='verified'){echo "Верифицирован";}else{echo "Не верифицирован";}?></sub>
-                    @endforeach
-                    @else
+                 @endforeach
+                 @else
                       <h1 class="title text-capitalize font-sz">Имя Пользователя</h1>
                     <sub class="subtitle">Не верифицирован</sub>
                   @endif
@@ -56,7 +56,15 @@
                              <?if($dat->verification=='verified'){
                                  $style='style="display:none;"';
                                  $h4 = 'Аккаунт верифицирован' ;                          
-                             }else {
+                             }elseif($dat->verification=='on_check'){
+                              $style='style="display:none;"';
+                                 $h4 = 'Аккаунт на проверке' ; 
+                               
+                             }elseif($dat->verification=='rejected'){
+                              $style='style="display:show;"';
+                                 $h4 = 'Вернут на доработку' ; 
+                             }       
+                             else {
                                   $style='style="display:show;"';
                                  $h4 = 'Пройти верификацию';    
                              }
@@ -151,8 +159,9 @@
                 <div class="tab-pane fade" id="team" role="tabpanel" aria-labelledby="team-tab">
 
 
-                    <div class="block-team">
+             <div class="block-team">
                         <h1 class="input-title">Мои Команды</h1>
+                        
                       @if($teams)          
                         @foreach($teams as $team)
                         <div class="row">
@@ -181,14 +190,19 @@
                         @if(Session::has('flash_meassage_error'))
                   <div class="alert alert-danger">{{Session::get('flash_meassage_error')}}</div>
                   @endif 
+                         @if($verification_status == 'true')    
                          <form  method="POST" action="{{action('App\Http\Controllers\ProfileController@createTeam') }}">
                            @csrf
                             <input class="input-footer"  name="name" placeholder="Название команды"  type="text" style="margin-top:20px;">
                             <button class="submit-btn btn--size btn--mr">Создать</button>
                         </form>
-                    </div>
+                        @else
+                        <h4>Для создания команды Вы должны быть верефицированы</h4>
+                        @endif     
 
-                </div>
+                    </div>
+              
+            </div>
                 <div class="tab-pane fade" id="tournament" role="tabpanel" aria-labelledby="tourname nt-tab">
                     <h1 class="title">Мои турниры</h1>
                    @if($tournaments != NULL)

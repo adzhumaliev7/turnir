@@ -66,7 +66,7 @@
                                     @else
                                      <div class="">
                                       <a href="{{route('add_admin', [$member->user_id, $team_id])}}" class="orange item__tile item__tile--mr">apply admin</a>
-                                    <a href="{{route('delete_member', $member->id)}}" class="orange item__tile">delete</a>  
+                                    <a href="{{route('delete_member', $member->user_id)}}" class="orange item__tile">delete</a>  
                                     </div>
                                 @endif    
                              </div>  

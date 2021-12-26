@@ -61,6 +61,11 @@ class HomeController extends Controller
       $users=Admin::verified($id);
          return redirect()->to(route('users'));
     }
+    public function rejected($id){
+         $users=Admin::rejected($id);
+         return redirect()->to(route('users'));
+    }
+
 
       public function moderators(){
         $moderators = Admin::getModerators();

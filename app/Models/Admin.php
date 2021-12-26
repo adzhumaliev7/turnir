@@ -62,6 +62,9 @@ public function getModerators(){
    public function verified($id){
         return DB::table('users_profile2')->where('id', $id)->update(['verification' => 'verified']);
    }
+   public function rejected($id){
+        return DB::table('users_profile2')->where('id', $id)->update(['verification' => 'rejected']);
+   }
 
    public function getTournaments(){
      $is_has = DB::table('tournaments')->exists();
@@ -88,7 +91,7 @@ public function getModerators(){
     if($is_has == true){
     return DB::table('tournamets_team')
      ->join('team', 'tournamets_team.team_id', '=', 'team.id')
-     //->join('team_members', 'tournamets_team.team_id' , '=', 'team_members.team_id')
+     //->join('team_members', 'team.id' , '=', 'team_members.team_id')
       ->select('team.name','team.user_id','tournamets_team.team_id','tournamets_team.status')
      ->where('tournamets_team.tournament_id', $tournament_id)->get();
     }else  return NULL;
@@ -100,10 +103,9 @@ public function getModerators(){
      ->join('team', 'team_members.team_id', '=', 'team.id')
      ->join('users_profile2', 'team_members.user_id', '=', 'users_profile2.user_id')
      ->join('tournamets_team', 'team.id' , '=', 'tournamets_team.team_id')
-     ->join('tournaments', 'tournamets_team.tournament_id' , '=', 'tournaments.id')
+     ->join('tournaments', 'tournamets_team.tournament_id','=', 'tournaments.id')
      ->select('team_members.user_id','users_profile2.login','team.name')
      ->where('tournamets_team.tournament_id', $tournament_id)->where('tournamets_team.status', 'processed')->get();
-   
 
   }
 
@@ -121,7 +123,6 @@ public function getModerators(){
    }
 
    public function getHelpById($id){
-   
        return DB::table('help')->select('id','title','description')->where('id', $id)->get();
     }
 
@@ -135,8 +136,7 @@ public function getModerators(){
        return DB::table('tournamets_team')->where('team_id', $id)->update(['status' => 'accepted']);
     }
     public function refuseTeam($id){
-       return DB::table('tournamets_team')->where('team_id', $id)->update(['status' => 'not_accepted']);
+       return DB::table('tournamets_team')->where('team_id', $id)->delete();
     }
-   
 
 }

@@ -72,6 +72,7 @@ Route::name('user.')->group(function (){
    
    Route::get('/users_card/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'userCard',]);
    Route::get('/verified/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'verified',])->name('verified');
+   Route::get('/rejected/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'rejected',])->name('rejected');
    Route::get('/tournament',[\App\Http\Controllers\Admin\TournamentController::class, 'index',])->name('admin_tournament');
    Route::any('/tournament/create_tournament',[\App\Http\Controllers\Admin\TournamentController::class, 'createTournament',])->name('create_tournament');
    Route::get('/tournament/tournament_view/{id}',[\App\Http\Controllers\Admin\TournamentController::class, 'tournamentView',])->name('tournament_view');
