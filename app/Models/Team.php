@@ -50,8 +50,7 @@ class Team extends Model
        else {
           return NULL;
        }
-      
-      
+
     }
       public function addMembers($data){
        return DB::table('team_members')->insert($data);
@@ -60,8 +59,7 @@ class Team extends Model
        public function deleteMember($id){
          return DB::table('team_members')->where('user_id', $id)->delete();
     }
-
-        public function addAdmin($id, $team_id){
+    public function addAdmin($id, $team_id){
            DB::table('team')->where('role', 'captain')->where('id', $team_id)->update(['user_id'=> $id]);
            DB::table('team_members')->where('team_id', $team_id )->where('role', 'captain')->update(['role' => 'member']); 
            DB::table('team_members')->where('team_id', $team_id )->where('user_id', $id)->update(['role' => 'captain']); 
@@ -70,5 +68,14 @@ class Team extends Model
       public function exitTeam($id){
          return DB::table('team_members')->where('user_id', $id)->delete();
     }
-   
+
+    public function deleteTeam($id){
+       DB::table('team_members')->where('team_id', $id)->delete();
+       DB::table('team')->where('id', $id)->delete();
+       DB::table('tournamets_team')->where('team_id', $id)->delete();
+    }
+    public function checkAdmin($id){
+        return  DB::table('team_members')->where('user_id', $id)->where('role', 'captain')->exists();
+    }
+
 }

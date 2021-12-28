@@ -129,7 +129,7 @@ class TournamentController extends Controller
                'status'=>'processed'
           );
            Tournament::joiToTournament($data);
-  return redirect(route('match', $id));
+          return redirect(route('match', $id));
          
    }
 

@@ -1,65 +1,83 @@
  
  
  
+
+
 @extends('layout')
+@section('title', 'Турниры')
 @section('content')
 
-    <main>
+
+  <div class="header-pubg__bg-2">
+    <div class="account-pubg__bg account__bg d-flex justify-content-end px-4">
+
+      <div class="dropdown">
+        <button class="header__line header__txt button--none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+          tima@test.com
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+          <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
+          <li><a class="dropdown-item header__txt text-dark" href="logout">выйти</a></li>
+        </ul>
+      </div>
+    </div>
+  <nav class=" navbar navbar-expand-md navbar p-3 mb-5 bg-body rounded bg--none navbar-z">
+      <div class=" container-fluid header-indent">
+        <a class="navbar-brand title text-uppercase logo-indent-mr text-white pubg-hover px-2" href="{{route('main')}}">showmatch</a>
+        <button class="toggle-menu toggle-click button--none">
+          <span></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav w-100 justify-content-end">
+            <li class="nav-item nav-item--active">
+              <a class="nav__link-active nav-link nav-white pubg-hover" aria-current="page" href="{{route('tournament')}}">Турниры</a>
+            </li>
+           
+            <li class="nav-item nav-item--active">
+              <a class="nav-link nav-white pubg-hover" aria-current="page" href="">Рейтинг</a>
+            </li>
+            <li class="nav-item nav-item--active ">
+              <a class=" nav-link nav-white pubg-hover" aria-current="page" href="#">Помощь</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+  </nav>
+</div>
+
+
+<!-- ! разобраться с фото position absolute что бы фото было взаде текста -->
+    <section>
+
+        <!-- first item - 1 -->
         <div class="container">
-            <div class="row">
-                <div class="row my-3">
+
+           
+
+            <div class="row d-flex justify-content-between">
+                <div class="col-lg-6 my-3">
+                    <div class="pubg pubg-3">
                     @if($tournaments != "")
                       @foreach($tournaments as $tournament)
-                    <div class="col-lg-4">
-                        <div class="tournaments tournaments-block">
-                            <div class="tournaments__text">
-                                <h4 class="pubg__title pubg__title--margin text-black tournaments--margin-t tournaments--padding-b">{{$tournament->name}}</h4>
-                                <p class="pubg__text text-black subtitle--medium ">{{$tournament->tournament_start}} {{$tournament->games_time}} {{$tournament->country}}</p>
-                                <span class="pubg__price text-black tournaments__price--margin-t">Призовой фонд: {{$tournament->price}}</span>
-                                <p class="pubg__text text-black subtitle--medium tournaments__text--margin">Режим проведения: squad(4)</p>
-                                <a href="{{ route('match', $tournament->id) }}" class="submit-btn btn--orange ">Принять участие</a>
+                        <div class="pubg-img pubg-wrapper pubg-img-3">
+                            <div class="pubg-block">
+                                <h4 class="pubg__title pubg__title--margin">{{$tournament->name}}</h4>
+                                <p class="pubg__text">{{$tournament->tournament_start}} {{$tournament->games_time}} {{$tournament->country}}</p>
+                                <span class="pubg__price">Призовой фонд: {{$tournament->price}}</span>
+                                <p class="pubg__text">Режим проведения: squad(4)</p>
+                              
+                                <a href="{{ route('match', $tournament->id) }}" class="pubg__btn pubg__btn--margin">Принять участие</a>
                             </div>
-                        <div class="tournaments__img"></div>
-                    </div>
-                </div>
-                 @endforeach
+                        </div>
+                          @endforeach
                  @else
                  <h4> Турниров нет</h4>
                  @endif
-             </div>
-            
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <div class="footer">
-            <div class="footer__inner">
-                <div class="container">
-                    <div class="row">
-                        <div class="col"><a class="footer__link" href="#">О проекте</a></div>
-                        <div class="col"><a class="footer__link" href="#">Сотрудничество</a></div>
-                        <div class="col"><a class="footer__link" href="#">Помощь</a></div>
-                        <div class="col"><a class="footer__link" href="#">Пользовательское соглашение</a></div>
-                        <div class="col"><a class="footer__link" href="#">Правила и ограничения</a></div>
-                        <div class="col">
-                            <a href="#"><i class="fab fa-telegram footer__icons"></i></a>
-                            <a href="#"><i class="fab fa-youtube footer__icons"></i></a>
-                            <a href="#"><i class="fab fa-discord footer__icons"></i></a>
-                            <a href="#"><i class="fab fa-instagram footer__icons"></i></a>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <p class="footer__text">Showmatch.pro - киберспортивная турнирная платформа для мобильного гейминга</p>
                     </div>
                 </div>
             </div>
+            
         </div>
-    </footer>
+    </section>
 
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-</body>
-</html>
 @endsection

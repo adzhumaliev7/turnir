@@ -9,6 +9,7 @@ class TeamController extends Controller
 {
     public function index($id){
         $data=Team::getTeamById($id);
+       
         foreach ($data as $key => $value) {
          $a=(array)$value;
          $team_id=$a['team_id'];
@@ -16,14 +17,14 @@ class TeamController extends Controller
         
         $members=Team::getTeamMembers($team_id);
         $user_id = Auth::user()->id;
-
-      
-     
+        $chek_admin= Team::checkAdmin($user_id);
+       
          return view('team',[
             'data'=>$data,
             'members'=>$members,
             'team_id'=>$team_id,
             'user_id'=>$user_id,
+            'chek_admin'=>$chek_admin,
         ]); 
     }
     public function addMembers($id){
@@ -48,4 +49,8 @@ class TeamController extends Controller
        Team::exitTeam($id);
        return redirect(route('profile'));
     }
+   public function deleteTeam($id){
+          Team::deleteTeam($id);
+          return redirect(route('profile'));
+   } 
 }

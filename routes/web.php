@@ -54,6 +54,7 @@ Route::name('user.')->group(function (){
  Route::get('/addmembers/{id}',[\App\Http\Controllers\TeamController::class, 'addMembers'])->name('addmember'); 
  Route::get('/team/exit/{id}',[\App\Http\Controllers\TeamController::class, 'exitTeam'])->name('exit_team'); 
  Route::get('/team/delete/{id}',[\App\Http\Controllers\TeamController::class, 'deleteMember'])->name('delete_member'); 
+ Route::post('/team/delete_team/{id}',[\App\Http\Controllers\TeamController::class, 'deleteTeam'])->name('delete_team'); 
  Route::get('/team/add_admin/{id}{team_id}',[\App\Http\Controllers\TeamController::class, 'addAdmin'])->name('add_admin'); 
  Route::get('/tournament',[\App\Http\Controllers\TournamentController::class, 'index'])->name('tournament');
  Route::any('tournament/create_order',[\App\Http\Controllers\TournamentController::class, 'createTournament'])->name('create_order');

@@ -31,6 +31,11 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link nav-btn " id="lineup-tab" data-bs-toggle="tab" data-bs-target="#lineup" type="button" role="tab" aria-controls="lineup" aria-selected="false">Состав</button>
                 </li>
+               @if($chek_admin == 'true') 
+                 <li class="nav-item" role="presentation">
+                    <button class="nav-link nav-btn" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Настройки</button>
+                </li>
+                @endif
             </ul>
              <a href="{{route('exit_team',$user_id)}}" class="">Покинуть команду</a>  
               <div class="tab-content" id="myTabContent">
@@ -63,17 +68,29 @@
                                        <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M14.7474 18.6158C14.9556 18.6158 15.1623 18.5509 15.3387 18.4233C15.6673 18.1852 15.8208 17.7758 15.7314 17.3808L14.5091 11.9964L18.6544 8.36107C18.9591 8.09506 19.0755 7.6738 18.9504 7.28835C18.8253 6.90362 18.485 6.63123 18.082 6.59398L12.5972 6.09603L10.4287 1.02134C10.2688 0.648497 9.90464 0.407715 9.50005 0.407715C9.09546 0.407715 8.73132 0.648497 8.57143 1.02047L6.40294 6.09603L0.919016 6.59398C0.51515 6.63036 0.17478 6.90362 0.0496769 7.28835C-0.0754261 7.67308 0.0402546 8.09506 0.344965 8.36107L4.4903 11.9957L3.26798 17.3799C3.1784 17.7758 3.33206 18.1852 3.66054 18.4226C3.9883 18.6601 4.42536 18.6783 4.77052 18.4709L9.50005 15.6446L14.2296 18.4725C14.3895 18.5674 14.5676 18.6158 14.7474 18.6158ZM9.50005 14.427C9.3203 14.427 9.14229 14.4753 8.98225 14.5702L4.51872 17.2399L5.67233 12.1579C5.75466 11.7962 5.63188 11.4186 5.3524 11.1739L1.43827 7.74121L6.61676 7.27095C6.9896 7.23689 7.31025 7.00248 7.45594 6.65892L9.50005 1.86995L11.5466 6.65965C11.6907 7.00089 12.0114 7.23529 12.3834 7.26936L17.5626 7.73961L13.6486 11.1723C13.3682 11.4177 13.2456 11.7946 13.3287 12.1572L14.4814 17.239L10.0179 14.5702C9.85797 14.4753 9.67981 14.427 9.50005 14.427ZM12.6391 6.19417C12.6391 6.19417 12.6391 6.19504 12.6399 6.19577L12.6391 6.19417ZM6.36264 6.19185L6.36177 6.19345C6.36177 6.19258 6.36177 6.19258 6.36264 6.19185Z" fill="black"/>
                                         </svg> 
-                                    @else
+                                    @endif
+                                   @if($chek_admin == 'true')
+                                    @if($member->role=='member')
                                      <div class="">
                                       <a href="{{route('add_admin', [$member->user_id, $team_id])}}" class="orange item__tile item__tile--mr">apply admin</a>
                                     <a href="{{route('delete_member', $member->user_id)}}" class="orange item__tile">delete</a>  
                                     </div>
                                 @endif    
+                                   @endif
                              </div>  
                          @endforeach
                     @endif
                 </div>
               </div>
+
+                <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                      @foreach($data as $team)
+                    <form  method="POST" action="{{route('delete_team', $team->id)}}">
+                       @csrf
+                        <button class="submit-btn btn--size btn--mr">Удалить команду</button>
+                    </form>    
+                    @endforeach
+                </div>
         </div>
     </section>
 
