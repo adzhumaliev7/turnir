@@ -2,19 +2,21 @@
 
 @section('content') 
 <div style="margin-left:100px;"> 
-<form method="POST" action="{{route('create_tournament')}}  " enctype="multipart/form-data">
+<form method="POST" action="{{route('draft_tournament_edit', $id)}}">
      @csrf
+     @foreach($tournaments as $tournament)
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputEmail4">Название турнира</label>
-      <input type="text" name="name" class="form-control" id="" placeholder="Название турнира">
+      <input type="text" name="name" class="form-control" id="" placeholder="Название турнира" value="{{$tournament->name}}">
          @error('name')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
+
       <div class="form-group col-md-4">
       <label for="inputPassword4">Формат</label>
-      <input type="text" class="form-control" name="format" id="" placeholder="Формат">
+      <input type="text" class="form-control" name="format" id="" placeholder="Формат" value="{{$tournament->format}}">
          @error('format')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
@@ -23,18 +25,14 @@
  <div class="form-row">
    <div class="form-group col-md-4">
       <label for="inputPassword4">Страна</label>
-      <input type="text" class="form-control" name="country" id="" placeholder="Страна">
+      <input type="text" class="form-control" name="country" id="" placeholder="Страна" value="{{$tournament->country}}">
          @error('country')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
     <div class="form-group col-md-4">
       <label for="inputPassword4">Часовой пояс</label>
-     <select name="timezone" id="">
-      @foreach($timezones as $timezone)
-      <option value="{{$timezone}}">{{$timezone}}</option>
-      @endforeach
-     </select>
+      <input type="timezone" class="form-control" name="timezone" id="" placeholder="Часовой пояс" value="{{$tournament->timezone}}">
          @error('timezone')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
@@ -44,14 +42,14 @@
    <div class="form-row">
    <div class="form-group col-md-4">
       <label for="inputPassword4">Допустимые страны</label>
-      <input type="text" class="form-control" name="countries" id="" placeholder="Допустимые страны">
+      <input type="text" class="form-control" name="countries" id="" placeholder="Допустимые страны" value="{{$tournament->countries}}">
          @error('countries')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
  <div class="form-group col-md-4">
       <label for="inputPassword4">Допустимый уровень игроков</label>
-      <input type="text" class="form-control" name="	players_col" id="" placeholder="Допустимый уровень игроков">
+      <input type="text" class="form-control" name="	players_col" id="" placeholder="Допустимый уровень игроков" value="{{$tournament->slot_kolvo}}">
          @error('	players_col')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
@@ -59,18 +57,13 @@
   </div>
   </div>
   <div class="form-group col-md-4">
-      <label for="inputPassword4">Добавить обложку</label>
-       <input class="input-footer " name="file_label" placeholder="Обложка" type="file">
-     
-         @error('	file_label')
-             <div class="alert alert-danger">{{$message}}</div>
-           @enderror
-             
+      <label for="inputPassword4">Обложка</label>
+      <img src="{{ asset("uploads/storage/adminimg/$tournament->file_label")}}"  value="{{$tournament->file_label}}" width="250" height="200" class="" style="opacity: .8">
     </div>
  <div class="form-group col-md-8">
       <label for="inputPassword4">Описание турнира</label>
-      <textarea  class="form-control" name="description" id="" placeholder="Описание турнира"></textarea>
-         @error('	description')
+      <textarea  class="form-control" name="description" id="" placeholder="Описание турнира">{{$tournament->description}}</textarea>
+         @error('description')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
@@ -81,14 +74,14 @@
    <div class="form-group col-md-4">
     
       <label for="inputPassword4">Начало регистрации</label>
-      <input type="date" class="form-control" name="start_reg" id="" placeholder="Начало регистрации">
+      <input type="date" class="form-control" name="start_reg" id="" placeholder="Начало регистрации" value="{{$tournament->start_reg}}">
          @error('start_reg')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
    <div class="form-group col-md-4">
       <label for="inputPassword4">Завершение регистрации</label>
-      <input type="date" class="form-control" name="end_reg" id="" placeholder="Завершение регистрации">
+      <input type="date" class="form-control" name="end_reg" id="" placeholder="Завершение регистрации" value="{{$tournament->end_reg}}" >
          @error('end_reg')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
@@ -98,14 +91,14 @@
   <div class="form-row">
    <div class="form-group col-md-4">
       <label for="inputPassword4">Кол-во слотов</label>
-      <input type="text" class="form-control" name="slot_kolvo" id="" placeholder="Кол-во слотов">
+      <input type="text" class="form-control" name="slot_kolvo" id="" placeholder="Кол-во слотов"  value="{{$tournament->slot_kolvo}}">
          @error('slot_kolvo')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
    <div class="form-group col-md-4">
       <label for="inputPassword4">Лига</label>
-      <input type="text" class="form-control" name="ligue" id="" placeholder="Лига">
+      <input type="text" class="form-control" name="ligue" id="" placeholder="Лига"value="{{$tournament->ligue}}" >
          @error('ligue')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
@@ -115,14 +108,14 @@
  <div class="form-row">
    <div class="form-group col-md-4">
       <label for="inputPassword4">Правила</label>
-      <input type="text" class="form-control" name="rule" id="" placeholder="Правила">
+      <input type="text" class="form-control" name="rule" id="" placeholder="Правила" value="{{$tournament->rule}}">
          @error('rule')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
    <div class="form-group col-md-4">
       <label for="inputPassword4">Заголовок</label>
-      <input type="text" class="form-control" name="header" id="" placeholder="Заголовок">
+      <input type="text" class="form-control" name="header" id="" placeholder="Заголовок" value="{{$tournament->header}}">
          @error('header')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
@@ -132,31 +125,29 @@
  <div class="form-row">
    <div class="form-group col-md-4">
       <label for="inputPassword4">Дата начала турнира</label>
-      <input type="date" class="form-control" name="tournament_start" id="" placeholder="Дата начала турнира">
+      <input type="date" class="form-control" name="tournament_start" id="" placeholder="Дата начала турнира" value="{{$tournament->tournament_start}}">
          @error('tournament_start')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
    <div class="form-group col-md-4">
       <label for="inputPassword4">Время турнира</label>
-      <input type="time" class="form-control" name="games_time" id="" placeholder="Время турнира">
+      <input type="time" class="form-control" name="games_time" id="" placeholder="Время турнира" value="{{$tournament->games_time}}">
          @error('games_time')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
       </div>
-   <div class="form-group col-md-4">
+
+       <div class="form-group col-md-4">
       <label for="inputPassword4">Призовой фонд</label>
-      <input type="text" class="form-control" name="price" id="" placeholder="100$">
+      <input type="text" class="form-control" name="price" id="" placeholder="100$" value="{{$tournament->price}}">
          @error('price')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
       </div>
-
   </div>
-
-
-   <input type="submit" class="btn btn-primary" name="submit" value="save"></input>
-   <input type="submit" class="btn btn-danger" name="submit" value="draft"></input>
+    @endforeach
+   <button type="submit" class="btn btn-primary">Сохранить</button>
 </form>
 
 </div>

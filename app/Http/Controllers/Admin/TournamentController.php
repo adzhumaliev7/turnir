@@ -18,6 +18,58 @@ class TournamentController extends Controller
             'tournaments'=>$tournaments,
         ]);
     }
+    public function draftTournament(){
+        $tournaments = Admin::getTournamentsDraft();
+        if($tournaments == NULL){
+            $tournaments =="";
+        }
+        return view('admin.home.draft_tournaments',[
+            'tournaments'=>$tournaments,
+        ]);
+    }
+    public function draftTournamentsActive($id){
+        Admin::draftTournamentsActive($id);
+         return redirect(route('admin'));
+        
+    }
+     public function draftTournamentsView($id){
+          $tournaments = Admin::getTournamentByID($id);
+        
+        return view('admin.home.draft_tournaments_view',[
+            'tournaments'=>$tournaments,
+            'id'=>$id,
+        ]);  
+     }
+
+    public function draftTournamentsEdit($id, Request $request){
+     
+
+        if($request->isMethod('post')){
+            $data =$request->validate([
+               'name' => '',
+               'format' => '',
+               'country' => '',
+               'timezone' => '',
+               'countries' => '',
+               'description' => '',
+               'start_reg' => '',
+               'price' => '',
+               'end_reg' => '',
+               'slot_kolvo' => '',
+               'ligue' => '',
+               'rule' => '',
+               'header' => '',
+               'tournament_start' => '',
+               'games_time' => '',
+            ]);
+           
+        $data['status']= 'draft';
+        
+             Admin::editTournament($id,$data);
+              return redirect(route('admin_tournament'));
+        } 
+       
+    }
 
     public function createTournament(Request $request){
         
@@ -162,7 +214,13 @@ class TournamentController extends Controller
             'games_time' => '',
          ]);
         $data['file_label']=$file_name;
-    
+      if ($request->get('submit') == 'active') {
+         $data['status']= 'save';
+           
+        } elseif ($request->get('submit') == 'draft') {
+
+             $data['status']= 'draft';
+        }
          Admin::createTournament($data);
 
           \Session::flash('flash_meassage', 'Турнир добавлен');
@@ -172,6 +230,10 @@ class TournamentController extends Controller
              'timezones' => $timezones,
          ]);
     }
+
+
+
+    
     public function tournamentView($id){
      $tournaments = Admin::getTournamentByID($id);
         

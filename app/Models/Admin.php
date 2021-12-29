@@ -69,8 +69,19 @@ public function getModerators(){
    public function getTournaments(){
      $is_has = DB::table('tournaments')->exists();
     if($is_has == true){
-       return DB::table('tournaments')->select('id','name','country','tournament_start','games_time')->get();
+       return DB::table('tournaments')->select('id','name','country','tournament_start','games_time')->where('status', 'save')->get();
     }else return NULL;
+   }
+
+   public function getTournamentsDraft(){
+     $is_has = DB::table('tournaments')->exists();
+      if($is_has == true){
+         return DB::table('tournaments')->select('id','name','country','tournament_start','games_time')->where('status', 'draft')->get();
+      }else return NULL;
+   }
+
+   public function draftTournamentsActive($id){
+      return DB::table('tournaments')->where('id', $id)->update(['status' => 'save']);
    }
    public function createTournament($data){
      return DB::table('tournaments')->insert($data);

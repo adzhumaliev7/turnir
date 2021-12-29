@@ -113,14 +113,7 @@
               </p>
             </a>
           </li>
-           <li class="nav-item">
-            <a href="{{route('admin_tournament')}}" class="nav-link">
-              <i class="nav-icon far fa-alt"></i>
-              <p>
-                Турниры
-              </p>
-            </a>
-          </li>
+          
             <li class="nav-item">
             <a href="{{route('help')}}" class="nav-link">
               <i class="nav-icon far fa-alt"></i>
@@ -128,6 +121,29 @@
                 Помощь 
               </p>
             </a>
+          </li>
+          <li class="nav-item menu-is-opening menu-open">
+            <a href="#" class="nav-link">
+           
+              <p>
+                Турниры
+              
+              </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: block;">
+              <li class="nav-item">
+                <a href="{{route('admin_tournament')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Активные турниры</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('draft_tournament')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Черновики</p>
+                </a>
+              </li>
+            </ul>
           </li>
         </ul>
       </nav>
