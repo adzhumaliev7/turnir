@@ -36,7 +36,10 @@
                         <li class="nav-item nav-item--active ">
                           <a class=" nav-link nav-white pubg-hover" aria-current="page" href="">Помощь</a>
                         </li>
-                      </ul>
+                       <li class="nav-item nav-item--active ">
+                          <a class=" nav-link nav-white pubg-hover" aria-current="page" href="{{route('feedback')}}">Обратная связь</a>
+                        </li> 
+                       </ul>
                     </div>
                   </div>
               </nav>

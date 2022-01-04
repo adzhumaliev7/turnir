@@ -150,4 +150,14 @@ class HomeController extends Controller
         
     }
 
+      public function feedback(){
+       $feedback = Admin::getFeedback();
+
+       
+       return view('admin.home.feedback',[   
+           'feedbacks' => $feedback,
+        ]); 
+
+    }
+
 }

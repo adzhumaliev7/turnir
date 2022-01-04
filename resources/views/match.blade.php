@@ -38,8 +38,12 @@
                   <li class="nav-item nav-item--active">
                     <a class="nav-link nav-white pubg-hover" aria-current="page" href="rating.html">Рейтинг</a>
                   </li>
+                  
                   <li class="nav-item nav-item--active ">
                     <a class=" nav-link nav-white pubg-hover" aria-current="page" href="#">Помощь</a>
+                  </li>
+                  <li class="nav-item nav-item--active ">
+                          <a class=" nav-link nav-white pubg-hover" aria-current="page" href="{{route('feedback')}}">Обратная связь</a>
                   </li>
                 </ul>
               </div>

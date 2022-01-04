@@ -10,7 +10,7 @@ class Tournament extends Model
   public function getTournaments(){
      $is_has = DB::table('tournaments')->exists();
     if($is_has == true){
-       return DB::table('tournaments')->select()->get();
+       return DB::table('tournaments')->select()->where('status', 'save')->get();
     }else return NULL;
     
    }

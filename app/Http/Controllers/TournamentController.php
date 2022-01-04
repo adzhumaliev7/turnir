@@ -58,6 +58,7 @@ class TournamentController extends Controller
        foreach ($tournaments as $tournament ) {
           $t = (array) $tournament;
        }
+     
 
       $date = date('Y-m-d');
       

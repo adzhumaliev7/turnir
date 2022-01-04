@@ -122,6 +122,14 @@
               </p>
             </a>
           </li>
+            <li class="nav-item">
+            <a href="{{route('admin_feedback')}}" class="nav-link">
+              <i class="nav-icon far fa-alt"></i>
+              <p>
+                Обратная связь 
+              </p>
+            </a>
+          </li>
           <li class="nav-item menu-is-opening menu-open">
             <a href="#" class="nav-link">
            

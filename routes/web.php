@@ -61,6 +61,8 @@ Route::name('user.')->group(function (){
  Route::post('tournament/create_order/save',[\App\Http\Controllers\TournamentController::class, 'saveTournament'])->name('save_order');
  Route::get('/match/{id}',[\App\Http\Controllers\TournamentController::class, 'matchView'])->name('match');
  Route::get('/match/join/{id}',[\App\Http\Controllers\TournamentController::class, 'joinTournament'])->name('join');
+ Route::get('/feedback',[\App\Http\Controllers\MainController::class, 'feedback'])->name('feedback');
+ Route::post('/feedback/save',[\App\Http\Controllers\MainController::class, 'saveFeedback'])->name('save_feedback');
 
 
  Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(function () {
@@ -100,6 +102,8 @@ Route::name('user.')->group(function (){
    Route::any('/help/create_help/save_help',[\App\Http\Controllers\Admin\HomeController::class, 'saveHelp',])->name('save_help');
    Route::any('/help/edit_help/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'editHelp',])->name('edit_help');
    Route::post('/help/edit_help_save/{id}',[\App\Http\Controllers\Admin\HomeController::class, 'editHelpSave',])->name('edit_help_save');
+
+   Route::get('/admin_feedback/',[\App\Http\Controllers\Admin\HomeController::class, 'feedback',])->name('admin_feedback');
 });
  //Route::get('/admin',[\App\Http\Controllers\AdminPanelController::class, 'index'])->name('admin');
 //  Route::post('/admin/login',[\App\Http\Controllers\AdminPanelController::class, 'login']);

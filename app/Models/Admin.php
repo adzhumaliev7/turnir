@@ -20,6 +20,13 @@ class Admin extends Model
        return DB::table('team')->count();
     }else return NULL;
    }
+   public function getEmail($team_id){
+       return DB::table('team')
+       ->join('users_profile2','team.user_id', '=', 'users_profile2.user_id')
+       ->select('users_profile2.email')
+       ->where('team.id', 1)
+       ->get();
+   }
 
 
    public function get(){
@@ -149,5 +156,12 @@ public function getModerators(){
     public function refuseTeam($id){
        return DB::table('tournamets_team')->where('team_id', $id)->delete();
     }
+
+     public function getFeedback(){
+        $is_has = DB::table('feedback')->exists();
+    if($is_has == true){
+       return DB::table('feedback')->select('fio', 'phone', 'email', 'description')->get();
+    }else return NULL;
+   }
 
 }

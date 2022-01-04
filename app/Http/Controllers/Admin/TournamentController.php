@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
-
+use Mail;
 class TournamentController extends Controller
 {
   
@@ -286,11 +286,27 @@ class TournamentController extends Controller
         ]);
     }
     public function applyTeam($id){
-        Admin::applyTeam($id);
+     
+     
+          Admin::applyTeam($id);
      return redirect(route('admin_tournament'));
     }
 
     public function refuseTeam($id){
+
+           $email = Admin::getEmail($id);
+        foreach ($email as $key => $value) {
+             $email = (array) $value;
+             foreach ($email as $key => $value) {
+                 $em= $value;
+             }
+        }
+        
+       Mail::send(['text' => 'mail'], ['name', 'wwww'], function ($message) use ($em){
+        $message->to($em, 'www')->subject('SHOWMATCH');
+        $message->from('tournamentpubgtest@gmail.com', 'www');
+      }); 
+
          Admin::refuseTeam($id);
      return redirect(route('admin_tournament'));
     }
