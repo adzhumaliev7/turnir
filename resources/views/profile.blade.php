@@ -309,7 +309,7 @@
               </div>
               <div class="col-lg-6">
 
-                <input  name="timezone" placeholder="Часовой пояс" type="time" class="form-control input__profile subtitle fw-normal" id="" >
+                <input  name="timezone" placeholder="Часовой пояс" type="text" class="form-control input__profile subtitle fw-normal" id="" >
              
               </div>
 
@@ -326,7 +326,7 @@
               </div>
               <div class="col-lg-6">
 
-                <input  name="bdate" placeholder="Дата рождения" type="month" class="form-control input__profile subtitle fw-normal" id="" >
+                <input  name="bdate" placeholder="Дата рождения" type="date" class="form-control input__profile subtitle fw-normal" id="" >
              
               </div>
 

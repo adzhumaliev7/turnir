@@ -286,8 +286,18 @@ class TournamentController extends Controller
         ]);
     }
     public function applyTeam($id){
-     
-     
+         $email = Admin::getEmail($id);
+        foreach ($email as $key => $value) {
+             $email = (array) $value;
+             foreach ($email as $key => $value) {
+                 $em= $value;
+             }
+        }
+    //   Mail::send(['text' => 'messages.apply'], ['name', 'wwww'], function ($message) use ($em){
+    //     $message->to($em, 'www')->subject('SHOWMATCH');
+    //     $message->from('tournamentpubgtest@gmail.com', 'www');
+    //   }); 
+ 
           Admin::applyTeam($id);
      return redirect(route('admin_tournament'));
     }
@@ -302,7 +312,7 @@ class TournamentController extends Controller
              }
         }
         
-       Mail::send(['text' => 'mail'], ['name', 'wwww'], function ($message) use ($em){
+       Mail::send(['text' => 'messages.refuse'], ['name', 'wwww'], function ($message) use ($em){
         $message->to($em, 'www')->subject('SHOWMATCH');
         $message->from('tournamentpubgtest@gmail.com', 'www');
       }); 

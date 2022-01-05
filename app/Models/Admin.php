@@ -143,6 +143,10 @@ public function getModerators(){
    public function getHelpById($id){
        return DB::table('help')->select('id','title','description')->where('id', $id)->get();
     }
+    
+     public function getUsersEmail($id){
+       return DB::table('users')->select('email')->where('id', $id)-get();
+    }
 
     public function addBan($id){
        return DB::table('users')->where('id', $id)->update(['status'=> 'ban']);

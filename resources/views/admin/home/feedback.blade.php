@@ -9,8 +9,7 @@
       <th scope="col">Email</th>
       <th scope="col">phone</th>
       <th scope="col">Описание</th>
-  
-      
+
     </tr>
   </thead>
   <tbody>

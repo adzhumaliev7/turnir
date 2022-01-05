@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\UsersProfile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 class HomeController extends Controller
@@ -21,20 +22,50 @@ class HomeController extends Controller
     }
     public function usersView(){
 
+
+
+
+
+
            $users=Admin::get();
           if($users == NULL){
             $users =="";
         }
+        // dd($users, User::all());
          return view('admin.home.users',[
              'users'=>$users
          ]);
     }
 
      public function addBan($id){
-          Admin::addBan($id);
-        return redirect(route('users'));
+        
+        $email = Admin::getUsersEmail($id);
+        foreach ($email as $key => $value) {
+             $email = (array) $value;
+             foreach ($email as $key => $value) {
+                 $em= $value;
+             }
+        }
+      Mail::send(['text' => 'messages.ban'], ['name', 'wwww'], function ($message) use ($em){
+        $message->to($em, 'www')->subject('SHOWMATCH');
+        $message->from('tournamentpubgtest@gmail.com', 'www');
+      }); 
+         Admin::addBan($id);
+        return redirect(route('users')); 
     }
      public function unblock($id){
+
+ $email = Admin::getUsersEmail($id);
+        foreach ($email as $key => $value) {
+             $email = (array) $value;
+             foreach ($email as $key => $value) {
+                 $em= $value;
+             }
+        }
+      Mail::send(['text' => 'messages.unblock'], ['name', 'wwww'], function ($message) use ($em){
+        $message->to($em, 'www')->subject('SHOWMATCH');
+        $message->from('tournamentpubgtest@gmail.com', 'www');
+      }); 
           Admin::unblock($id);
         return redirect(route('users'));
     }
@@ -62,6 +93,17 @@ class HomeController extends Controller
          return redirect()->to(route('users'));
     }
     public function rejected($id){
+         foreach ($email as $key => $value) {
+             $email = (array) $value;
+             foreach ($email as $key => $value) {
+                 $em= $value;
+             }
+        }
+      Mail::send(['text' => 'messages.rejected'], ['name', 'wwww'], function ($message) use ($em){
+        $message->to($em, 'www')->subject('SHOWMATCH');
+        $message->from('tournamentpubgtest@gmail.com', 'www');
+      }); 
+
          $users=Admin::rejected($id);
          return redirect()->to(route('users'));
     }
