@@ -6,319 +6,275 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use Mail;
+
 class TournamentController extends Controller
 {
-  
-    public function index(){
+
+    public function index()
+    {
         $tournaments = Admin::getTournaments();
-        if($tournaments == NULL){
-            $tournaments =="";
+        if ($tournaments == NULL) {
+            $tournaments == "";
         }
-        return view('admin.home.tournament',[
-            'tournaments'=>$tournaments,
+        return view('admin.home.tournament', [
+            'tournaments' => $tournaments,
         ]);
     }
-    public function draftTournament(){
+    public function draftTournament()
+    {
         $tournaments = Admin::getTournamentsDraft();
-        if($tournaments == NULL){
-            $tournaments =="";
+        if ($tournaments == NULL) {
+            $tournaments == "";
         }
-        return view('admin.home.draft_tournaments',[
-            'tournaments'=>$tournaments,
+        return view('admin.home.draft_tournaments', [
+            'tournaments' => $tournaments,
         ]);
     }
-    public function draftTournamentsActive($id){
+    public function draftTournamentsActive($id)
+    {
         Admin::draftTournamentsActive($id);
-         return redirect(route('admin'));
-        
+        return redirect(route('admin'));
     }
-     public function draftTournamentsView($id){
-          $tournaments = Admin::getTournamentByID($id);
-        
-        return view('admin.home.draft_tournaments_view',[
-            'tournaments'=>$tournaments,
-            'id'=>$id,
-        ]);  
-     }
+    public function draftTournamentsView($id)
+    {
+        $tournaments = Admin::getTournamentByID($id);
 
-    public function draftTournamentsEdit($id, Request $request){
-     
-
-        if($request->isMethod('post')){
-            $data =$request->validate([
-               'name' => '',
-               'format' => '',
-               'country' => '',
-               'timezone' => '',
-               'countries' => '',
-               'description' => '',
-               'start_reg' => '',
-               'price' => '',
-               'end_reg' => '',
-               'slot_kolvo' => '',
-               'ligue' => '',
-               'rule' => '',
-               'header' => '',
-               'tournament_start' => '',
-               'games_time' => '',
-            ]);
-           
-        $data['status']= 'draft';
-        
-             Admin::editTournament($id,$data);
-              return redirect(route('admin_tournament'));
-        } 
-       
-    }
-
-    public function createTournament(Request $request){
-        
-  $timezones = array(
-    'Pacific/Midway'       => "(GMT-11:00) Midway Island",
-    'US/Samoa'             => "(GMT-11:00) Samoa",
-    'US/Hawaii'            => "(GMT-10:00) Hawaii",
-    'US/Alaska'            => "(GMT-09:00) Alaska",
-    'US/Pacific'           => "(GMT-08:00) Pacific Time (US &amp; Canada)",
-    'America/Tijuana'      => "(GMT-08:00) Tijuana",
-    'US/Arizona'           => "(GMT-07:00) Arizona",
-    'US/Mountain'          => "(GMT-07:00) Mountain Time (US &amp; Canada)",
-    'America/Chihuahua'    => "(GMT-07:00) Chihuahua",
-    'America/Mazatlan'     => "(GMT-07:00) Mazatlan",
-    'America/Mexico_City'  => "(GMT-06:00) Mexico City",
-    'America/Monterrey'    => "(GMT-06:00) Monterrey",
-    'Canada/Saskatchewan'  => "(GMT-06:00) Saskatchewan",
-    'US/Central'           => "(GMT-06:00) Central Time (US &amp; Canada)",
-    'US/Eastern'           => "(GMT-05:00) Eastern Time (US &amp; Canada)",
-    'US/East-Indiana'      => "(GMT-05:00) Indiana (East)",
-    'America/Bogota'       => "(GMT-05:00) Bogota",
-    'America/Lima'         => "(GMT-05:00) Lima",
-    'America/Caracas'      => "(GMT-04:30) Caracas",
-    'Canada/Atlantic'      => "(GMT-04:00) Atlantic Time (Canada)",
-    'America/La_Paz'       => "(GMT-04:00) La Paz",
-    'America/Santiago'     => "(GMT-04:00) Santiago",
-    'Canada/Newfoundland'  => "(GMT-03:30) Newfoundland",
-    'America/Buenos_Aires' => "(GMT-03:00) Buenos Aires",
-    'Greenland'            => "(GMT-03:00) Greenland",
-    'Atlantic/Stanley'     => "(GMT-02:00) Stanley",
-    'Atlantic/Azores'      => "(GMT-01:00) Azores",
-    'Atlantic/Cape_Verde'  => "(GMT-01:00) Cape Verde Is.",
-    'Africa/Casablanca'    => "(GMT) Casablanca",
-    'Europe/Dublin'        => "(GMT) Dublin",
-    'Europe/Lisbon'        => "(GMT) Lisbon",
-    'Europe/London'        => "(GMT) London",
-    'Africa/Monrovia'      => "(GMT) Monrovia",
-    'Europe/Amsterdam'     => "(GMT+01:00) Amsterdam",
-    'Europe/Belgrade'      => "(GMT+01:00) Belgrade",
-    'Europe/Berlin'        => "(GMT+01:00) Berlin",
-    'Europe/Bratislava'    => "(GMT+01:00) Bratislava",
-    'Europe/Brussels'      => "(GMT+01:00) Brussels",
-    'Europe/Budapest'      => "(GMT+01:00) Budapest",
-    'Europe/Copenhagen'    => "(GMT+01:00) Copenhagen",
-    'Europe/Ljubljana'     => "(GMT+01:00) Ljubljana",
-    'Europe/Madrid'        => "(GMT+01:00) Madrid",
-    'Europe/Paris'         => "(GMT+01:00) Paris",
-    'Europe/Prague'        => "(GMT+01:00) Prague",
-    'Europe/Rome'          => "(GMT+01:00) Rome",
-    'Europe/Sarajevo'      => "(GMT+01:00) Sarajevo",
-    'Europe/Skopje'        => "(GMT+01:00) Skopje",
-    'Europe/Stockholm'     => "(GMT+01:00) Stockholm",
-    'Europe/Vienna'        => "(GMT+01:00) Vienna",
-    'Europe/Warsaw'        => "(GMT+01:00) Warsaw",
-    'Europe/Zagreb'        => "(GMT+01:00) Zagreb",
-    'Europe/Athens'        => "(GMT+02:00) Athens",
-    'Europe/Bucharest'     => "(GMT+02:00) Bucharest",
-    'Africa/Cairo'         => "(GMT+02:00) Cairo",
-    'Africa/Harare'        => "(GMT+02:00) Harare",
-    'Europe/Helsinki'      => "(GMT+02:00) Helsinki",
-    'Europe/Istanbul'      => "(GMT+02:00) Istanbul",
-    'Asia/Jerusalem'       => "(GMT+02:00) Jerusalem",
-    'Europe/Kiev'          => "(GMT+02:00) Kyiv",
-    'Europe/Minsk'         => "(GMT+02:00) Minsk",
-    'Europe/Riga'          => "(GMT+02:00) Riga",
-    'Europe/Sofia'         => "(GMT+02:00) Sofia",
-    'Europe/Tallinn'       => "(GMT+02:00) Tallinn",
-    'Europe/Vilnius'       => "(GMT+02:00) Vilnius",
-    'Asia/Baghdad'         => "(GMT+03:00) Baghdad",
-    'Asia/Kuwait'          => "(GMT+03:00) Kuwait",
-    'Africa/Nairobi'       => "(GMT+03:00) Nairobi",
-    'Asia/Riyadh'          => "(GMT+03:00) Riyadh",
-    'Europe/Moscow'        => "(GMT+03:00) Moscow",
-    'Asia/Tehran'          => "(GMT+03:30) Tehran",
-    'Asia/Baku'            => "(GMT+04:00) Baku",
-    'Europe/Volgograd'     => "(GMT+04:00) Volgograd",
-    'Asia/Muscat'          => "(GMT+04:00) Muscat",
-    'Asia/Tbilisi'         => "(GMT+04:00) Tbilisi",
-    'Asia/Yerevan'         => "(GMT+04:00) Yerevan",
-    'Asia/Kabul'           => "(GMT+04:30) Kabul",
-    'Asia/Karachi'         => "(GMT+05:00) Karachi",
-    'Asia/Tashkent'        => "(GMT+05:00) Tashkent",
-    'Asia/Kolkata'         => "(GMT+05:30) Kolkata",
-    'Asia/Kathmandu'       => "(GMT+05:45) Kathmandu",
-    'Asia/Yekaterinburg'   => "(GMT+06:00) Ekaterinburg",
-    'Asia/Almaty'          => "(GMT+06:00) Almaty",
-    'Asia/Bishkek'          => "(GMT+06:00) Bishkek",
-    'Asia/Dhaka'           => "(GMT+06:00) Dhaka",
-    'Asia/Novosibirsk'     => "(GMT+07:00) Novosibirsk",
-    'Asia/Bangkok'         => "(GMT+07:00) Bangkok",
-    'Asia/Jakarta'         => "(GMT+07:00) Jakarta",
-    'Asia/Krasnoyarsk'     => "(GMT+08:00) Krasnoyarsk",
-    'Asia/Chongqing'       => "(GMT+08:00) Chongqing",
-    'Asia/Hong_Kong'       => "(GMT+08:00) Hong Kong",
-    'Asia/Kuala_Lumpur'    => "(GMT+08:00) Kuala Lumpur",
-    'Australia/Perth'      => "(GMT+08:00) Perth",
-    'Asia/Singapore'       => "(GMT+08:00) Singapore",
-    'Asia/Taipei'          => "(GMT+08:00) Taipei",
-    'Asia/Ulaanbaatar'     => "(GMT+08:00) Ulaan Bataar",
-    'Asia/Urumqi'          => "(GMT+08:00) Urumqi",
-    'Asia/Irkutsk'         => "(GMT+09:00) Irkutsk",
-    'Asia/Seoul'           => "(GMT+09:00) Seoul",
-    'Asia/Tokyo'           => "(GMT+09:00) Tokyo",
-    'Australia/Adelaide'   => "(GMT+09:30) Adelaide",
-    'Australia/Darwin'     => "(GMT+09:30) Darwin",
-    'Asia/Yakutsk'         => "(GMT+10:00) Yakutsk",
-    'Australia/Brisbane'   => "(GMT+10:00) Brisbane",
-    'Australia/Canberra'   => "(GMT+10:00) Canberra",
-    'Pacific/Guam'         => "(GMT+10:00) Guam",
-    'Australia/Hobart'     => "(GMT+10:00) Hobart",
-    'Australia/Melbourne'  => "(GMT+10:00) Melbourne",
-    'Pacific/Port_Moresby' => "(GMT+10:00) Port Moresby",
-    'Australia/Sydney'     => "(GMT+10:00) Sydney",
-    'Asia/Vladivostok'     => "(GMT+11:00) Vladivostok",
-    'Asia/Magadan'         => "(GMT+12:00) Magadan",
-    'Pacific/Auckland'     => "(GMT+12:00) Auckland",
-    'Pacific/Fiji'         => "(GMT+12:00) Fiji",
-);
-
-    if($request->isMethod('post')){
-
-      
-           $file_name = $request->file('file_label')->getClientOriginalName();
-            $file = $request->file('file_label');
-           $file->move(public_path() . '/uploads/storage/adminimg',$file_name);
-
-         $data =$request->validate([
-            'name' => '',
-            'format' => '',
-            'country' => '',
-            'timezone' => '',
-            'countries' => '',
-            'price' => '', 
-            'description' => '',
-            'start_reg' => '',
-            'end_reg' => '',
-            'slot_kolvo' => '',
-            'ligue' => '',
-            'rule' => '',
-            'header' => '',
-            'tournament_start' => '',
-            'games_time' => '',
-         ]);
-        $data['file_label']=$file_name;
-      if ($request->get('submit') == 'active') {
-         $data['status']= 'save';
-           
-        } elseif ($request->get('submit') == 'draft') {
-
-             $data['status']= 'draft';
-        }
-         Admin::createTournament($data);
-
-          \Session::flash('flash_meassage', 'Турнир добавлен');
-          return redirect(route('admin'));
-        }
-         return view('admin.home.tournament_create',[
-             'timezones' => $timezones,
-         ]);
-    }
-
-
-
-    
-    public function tournamentView($id){
-     $tournaments = Admin::getTournamentByID($id);
-        
-        return view('admin.home.tournament_view',[
-            'tournaments'=>$tournaments,
-            'id'=>$id,
+        return view('admin.home.draft_tournaments_view', [
+            'tournaments' => $tournaments,
+            'id' => $id,
         ]);
     }
 
-     public function tournamentEdit($id, Request $request){
+    public function draftTournamentsEdit($id, Request $request)
+    {
 
-     
-         
-        if($request->isMethod('post')){
-            $data =$request->validate([
-               'name' => '',
-               'format' => '',
-               'country' => '',
-               'timezone' => '',
-               'countries' => '',
-               'description' => '',
-               'start_reg' => '',
-               'price' => '',
-               'end_reg' => '',
-               'slot_kolvo' => '',
-               'ligue' => '',
-               'rule' => '',
-               'header' => '',
-               'tournament_start' => '',
-               'games_time' => '',
+
+        if ($request->isMethod('post')) {
+            $data = $request->validate([
+                'name' => '',
+                'format' => '',
+                'country' => '',
+                'timezone' => '',
+                'countries' => '',
+                'description' => '',
+                'start_reg' => '',
+                'price' => '',
+                'end_reg' => '',
+                'slot_kolvo' => '',
+                'ligue' => '',
+                'rule' => '',
+                'header' => '',
+                'tournament_start' => '',
+                'games_time' => '',
             ]);
-           
-        
-             Admin::editTournament($id,$data);
-              return redirect(route('admin_tournament'));
-        } 
+
+            $data['status'] = 'draft';
+
+            Admin::editTournament($id, $data);
+            return redirect(route('admin_tournament'));
+        }
     }
 
-    public function tournamentDelete($id){
-         Admin::tournamentDelete($id);
+    public function createTournament(Request $request)
+    {
+
+        $timezones = config('app.timezones');
+
+        if ($request->isMethod('post')) {
+
+
+            $file_name = $request->file('file_label')->getClientOriginalName();
+            $file = $request->file('file_label');
+            $file->move(public_path() . '/uploads/storage/adminimg', $file_name);
+
+            $data = $request->validate([
+                'name' => '',
+                'format' => '',
+                'country' => '',
+                'timezone' => '',
+                'countries' => '',
+                'price' => '',
+                'description' => '',
+                'start_reg' => '',
+                'end_reg' => '',
+                'slot_kolvo' => '',
+                'ligue' => '',
+                'rule' => '',
+                'header' => '',
+                'tournament_start' => '',
+                'games_time' => '',
+            ]);
+            $data['file_label'] = $file_name;
+            if ($request->get('submit') == 'save') {
+                $data['status'] = 'save';
+            } elseif ($request->get('submit') == 'draft') {
+
+                $data['status'] = 'draft';
+            }
+            try {
+                Admin::createTournament($data);
+            } catch (\Illuminate\Database\QueryException  $exception) {
+                return back()->withError('Турнир ' . $request->input('name') . ' уже существует')->withInput();
+            }
+            \Session::flash('flash_meassage', 'Турнир добавлен');
+            return redirect(route('admin'));
+        }
+        return view('admin.home.tournament_create', [
+            'timezones' => $timezones,
+        ]);
+    }
+
+    public function tournamentView($id)
+    {
+        $tournaments = Admin::getTournamentByID($id);
+
+        return view('admin.home.tournament_view', [
+            'tournaments' => $tournaments,
+            'id' => $id,
+        ]);
+    }
+
+    public function tournamentEdit($id, Request $request)
+    {
+
+
+
+        if ($request->isMethod('post')) {
+            $data = $request->validate([
+                'name' => '',
+                'format' => '',
+                'country' => '',
+                'timezone' => '',
+                'countries' => '',
+                'description' => '',
+                'start_reg' => '',
+                'price' => '',
+                'end_reg' => '',
+                'slot_kolvo' => '',
+                'ligue' => '',
+                'rule' => '',
+                'header' => '',
+                'tournament_start' => '',
+                'games_time' => '',
+            ]);
+
+
+            Admin::editTournament($id, $data);
+            return redirect(route('admin_tournament'));
+        }
+    }
+
+    public function tournamentDelete($id)
+    {
+        Admin::tournamentDelete($id);
         return redirect(route('admin_tournament'));
     }
-    public function tournamentTeams($id){
+    public function tournamentTeams($id)
+    {
         $teams = Admin::getTournamentsTeams($id);
 
-        $members =Admin::geTeamMembers($id);
-        return view('admin.home.tournaments_teams',[
-            'teams'=>$teams,
-            'members'=>$members,
+        $members = Admin::geTeamMembers($id);
+        return view('admin.home.tournaments_teams', [
+            'teams' => $teams,
+            'members' => $members,
         ]);
     }
-    public function applyTeam($id){
-         $email = Admin::getEmail($id);
+    public function applyTeam($id, $turnir_id)
+    {
+        $email = Admin::getEmail($id);
         foreach ($email as $key => $value) {
-             $email = (array) $value;
-             foreach ($email as $key => $value) {
-                 $em= $value;
-             }
+            $email = (array) $value;
+            foreach ($email as $key => $value) {
+                $em = $value;
+            }
         }
-    //   Mail::send(['text' => 'messages.apply'], ['name', 'wwww'], function ($message) use ($em){
-    //     $message->to($em, 'www')->subject('SHOWMATCH');
-    //     $message->from('tournamentpubgtest@gmail.com', 'www');
-    //   }); 
- 
-          Admin::applyTeam($id);
-     return redirect(route('admin_tournament'));
+        //   Mail::send(['text' => 'messages.apply'], ['name', 'wwww'], function ($message) use ($em){
+        //     $message->to($em, 'www')->subject('SHOWMATCH');
+        //     $message->from('tournamentpubgtest@gmail.com', 'www');
+        //   }); 
+
+        Admin::applyTeam($id, $turnir_id);
+
+        return redirect(route('tournaments_teams', $turnir_id));
     }
 
-    public function refuseTeam($id){
+    public function refuseTeam($id)
+    {
 
-           $email = Admin::getEmail($id);
+        $email = Admin::getEmail($id);
         foreach ($email as $key => $value) {
-             $email = (array) $value;
-             foreach ($email as $key => $value) {
-                 $em= $value;
-             }
+            $email = (array) $value;
+            foreach ($email as $key => $value) {
+                $em = $value;
+            }
         }
+
+        Mail::send(['text' => 'messages.refuse'], ['name', 'wwww'], function ($message) use ($em) {
+            $message->to($em, 'www')->subject('SHOWMATCH');
+            $message->from('tournamentpubgtest@gmail.com', 'www');
+        });
+
+        Admin::refuseTeam($id);
+        return redirect(route('admin_tournament'));
+    }
+
+    public function startTest($turnir_id)
+    {
+        $teams =  Admin::start($turnir_id);
+        foreach ($teams as $key => $value) {
+            $data[] = (array)$value;
+        }
+        Admin::setStage_1($data);
+        return redirect(route('admin_tournament'));
+    }
+    public function createStage2($turnir_id)
+    {
+         $datas =  Admin::getStage_1($turnir_id);
+
+        // dd($data);
+         foreach ($datas  as $key => $value) {
+            $data[] = (array)$value;
+        } 
+       // var_dump($data);
+        Admin::setStage_2($turnir_id, $data);
+    }
+
+    public function createStage3($turnir_id)
+    {
+        $datas =  Admin::getStage_2($turnir_id);
+
+        // dd($data);
+        foreach ($datas  as $key => $value) {
+            $data[] = (array)$value;
+        }
+        // var_dump($data);
+        Admin::setStage_3($turnir_id, $data);
+    }
+    public function stages($turnir_id)
+    {
+        $stage_1 =  Admin::stage_1($turnir_id);
+        $stage_2 =  Admin::stage_2($turnir_id);
+        $stage_3 =  Admin::stage_3($turnir_id);
+       // dd($datas);
+        return view('admin.home.stages.stages',[
+                    'turnir_id' => $turnir_id,
+                    'stages_1' => $stage_1,
+                    'stages_2' => $stage_2,
+                    'stages_3' => $stage_3,
+        ]);
+    }
+    public function stage_1($turnir_id)
+    {
+        $stage_1 =  Admin::stage_1($turnir_id);
+       
+        return view('admin.home.stages.stage_1', [
+            'turnir_id' => $turnir_id,
+            'stages_1' => $stage_1,
+           
+        ]);
+    }
+
+    public function update_stage(Request $request){
         
-       Mail::send(['text' => 'messages.refuse'], ['name', 'wwww'], function ($message) use ($em){
-        $message->to($em, 'www')->subject('SHOWMATCH');
-        $message->from('tournamentpubgtest@gmail.com', 'www');
-      }); 
-
-         Admin::refuseTeam($id);
-     return redirect(route('admin_tournament'));
     }
-
 }

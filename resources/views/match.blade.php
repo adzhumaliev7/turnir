@@ -210,14 +210,12 @@
                       <p class="subtitle subtitle--semi-medium">до начала:</p>
                       <div class="holding__timer">
                           <div class="holding__wrapper">
-                              <div class="holding__item holding__number">03</div>
-                              <div class="holding__item holding__number">23</div>
-                              <div class="holding__item holding__number">02</div>
+                              <div class="holding__item holding__number" data-countdown="{{$tournament->tournament_start}}"></div>
+                         
+                              <div ></div>
                           </div>
                           <div class="holding__wrapper">
-                              <div class="holding__item holding__text">дней</div>
-                              <div class="holding__item holding__text">часа</div>
-                              <div class="holding__item holding__text">минут</div>
+                            
                           </div>
                       </div>
                       <hr>
@@ -351,4 +349,5 @@
       </div>
     </main>
      @endforeach
+     
  @endsection

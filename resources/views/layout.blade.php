@@ -149,7 +149,23 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="application/javascript"></script>
 
+
+<script src="https://cdn.rawgit.com/hilios/jQuery.countdown/2.2.0/dist/jquery.countdown.min.js" type="application/javascript"></script>
+
+
+
+<script type="application/javascript">
+    $('[data-countdown]').each(function() {
+       var $this = $(this);
+       var finalDate = $(this).data('countdown');
+       $this.countdown(finalDate, function(event) {
+          $this.html(event.strftime('%D дней %H:%M:%S'));
+       });
+     });
+
+</script>
     <script src="assets/js/script.js"></script>
   </body>
 </html>

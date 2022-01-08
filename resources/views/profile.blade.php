@@ -193,6 +193,10 @@
           </nav>
         </div>
         <div class="tab-content tab-panels" id="nav-tabContent">
+
+        @if (session('error'))
+<div class="alert alert-danger">{{ session('error') }}</div>
+@endif
               @if(Session::has('flash_meassage'))
                   <div class="alert alert-success">{{Session::get('flash_meassage')}}</div>
                   @endif 
@@ -295,25 +299,20 @@
                             <div class="alert alert-danger">{{$message}}</div>
                   @enderror       
               </div>
-
-              
-
             </div>
-
             <div class="row mt-4">
-
               <div class="col-lg-6">
-
                 <input  name="country" placeholder="Страна" type="text " class="form-control input__profile subtitle fw-normal" id="" >
-              
               </div>
               <div class="col-lg-6">
-
-                <input  name="timezone" placeholder="Часовой пояс" type="text" class="form-control input__profile subtitle fw-normal" id="" >
+                    <select name="timezone" id="">
+                     @foreach($timezones as $timezone)
+                     <option value="{{$timezone}}">{{$timezone}}</option>
+                     @endforeach
+                    </select>
              
               </div>
 
-              
 
             </div>
 

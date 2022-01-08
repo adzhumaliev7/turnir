@@ -36,7 +36,8 @@
        </td>
       <td scope="row"> 
           @if($team->status=='processed')
-            <a href="{{route('apply_team', $team->team_id)}}" type="button" class="btn btn-success">Принять</a>
+       
+            <a href="{{route('apply_team', [$team->team_id, $team->tournament_id] )}}" type="button" class="btn btn-success">Принять</a>
             <a href="{{route('refuse_team', $team->team_id)}}" type="button" class="btn btn-danger">Отклонить</a>
 
         @endif
