@@ -248,6 +248,7 @@ class Admin extends Model
          $group_id = 4;
       }
       $data['group_id'] = $group_id; */
+      
      return DB::table('stage_2')->insert($data);
    }
 
@@ -281,7 +282,7 @@ class Admin extends Model
          return DB::table('stage_1')
          ->join('team', 'stage_1.team_id', '=' , 'team.id')
          ->join('tournaments', 'stage_1.tournament_id', '=' , 'tournaments.id')
-         ->select('stage_1.group_id', 'stage_1.tournament_id','stage_1.points', 'stage_1.winner',  'team.name as team_name' , 'tournaments.name as tournaments_name')
+         ->select('stage_1.id','stage_1.group_id', 'stage_1.tournament_id','stage_1.team_id','stage_1.points', 'stage_1.winner',  'team.name as team_name' , 'tournaments.name as tournaments_name')
          ->where('tournament_id', $turnir_id)
          ->get();
       }else return null;
@@ -293,10 +294,10 @@ class Admin extends Model
          return DB::table('stage_2')
          ->join('team', 'stage_2.team_id', '=', 'team.id')
          ->join('tournaments', 'stage_2.tournament_id', '=', 'tournaments.id')
-         ->select('stage_2.points', 'stage_2.tournament_id', 'stage_2.winner',  'team.name as team_name', 'tournaments.name as tournaments_name')
+         ->select('stage_2.id', 'stage_2.tournament_id', 'stage_2.team_id', 'stage_2.points', 'stage_2.winner',  'team.name as team_name', 'tournaments.name as tournaments_name')
          ->where('tournament_id', $turnir_id)
-         ->get();
-      }else return null;   
+            ->get();
+      } else return null;
    }
    public static function stage_3($turnir_id)
    {
@@ -305,9 +306,14 @@ class Admin extends Model
          return DB::table('stage_3')
          ->join('team', 'stage_3.team_id', '=', 'team.id')
          ->join('tournaments', 'stage_3.tournament_id', '=', 'tournaments.id')
-         ->select('stage_3.points', 'stage_3.tournament_id', 'stage_3.winner',  'team.name as team_name', 'tournaments.name as tournaments_name')
+         ->select('stage_3.id', 'stage_3.tournament_id', 'stage_3.team_id', 'stage_3.points', 'stage_3.winner',  'team.name as team_name', 'tournaments.name as tournaments_name')
          ->where('tournament_id', $turnir_id)
-         ->get();
-      }else return null;
+            ->get();
+      } else return null;
    }
+   /* public static function setPointsStage_1($turnir_id,$data){
+     
+     
+     return DB::table('stage_1')->where('tournament_id', $turnir_id)->update($data);
+   } */
 }

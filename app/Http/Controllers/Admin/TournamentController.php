@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Admin;
 use Mail;
 
+use Illuminate\Support\Facades\DB;
+
 class TournamentController extends Controller
 {
 
@@ -237,6 +239,7 @@ class TournamentController extends Controller
         } 
        // var_dump($data);
         Admin::setStage_2($turnir_id, $data);
+        return redirect(route('stages', $turnir_id));
     }
 
     public function createStage3($turnir_id)
@@ -249,13 +252,14 @@ class TournamentController extends Controller
         }
         // var_dump($data);
         Admin::setStage_3($turnir_id, $data);
+        return redirect(route('stages', $turnir_id));
     }
     public function stages($turnir_id)
     {
         $stage_1 =  Admin::stage_1($turnir_id);
         $stage_2 =  Admin::stage_2($turnir_id);
         $stage_3 =  Admin::stage_3($turnir_id);
-       // dd($datas);
+      
         return view('admin.home.stages.stages',[
                     'turnir_id' => $turnir_id,
                     'stages_1' => $stage_1,
@@ -274,7 +278,86 @@ class TournamentController extends Controller
         ]);
     }
 
-    public function update_stage(Request $request){
-        
+    public function update_stage($turnir_id,Request $request){
+
+        foreach ($request->input('data') as $id => $row) {
+            \DB::table('stage_1')->where('id', $id)->update($row);
+        }
+        return redirect(route('stages', $turnir_id));
+       /*  //$team_id = $request->input('team_id');
+       // $point = $request->input('points');
+     /*  foreach ($point as $key => $value) {
+          $points[]['points'] = $value;
+      }
+      foreach ($team_id as $key => $value) {
+            $teams_id[]['team_id'] = $value;
+      } */
+        //$data = array_map('array_merge', $teams_id, $points);
+    //  dd($point);
+        //Admin::setPointsStage_1($turnir_id, $data); */
+
+    }
+
+    public function stage_2($turnir_id)
+    {
+        $stage_2 =  Admin::stage_2($turnir_id);
+
+        return view('admin.home.stages.stage_2', [
+            'turnir_id' => $turnir_id,
+            'stages_2' => $stage_2,
+
+        ]);
+    }
+
+    public function update_stage2($turnir_id, Request $request)
+    {
+
+        foreach ($request->input('data') as $id => $row) {
+            \DB::table('stage_2')->where('id', $id)->update($row);
+        }
+        return redirect(route('stages', $turnir_id));
+        /*  //$team_id = $request->input('team_id');
+       // $point = $request->input('points');
+     /*  foreach ($point as $key => $value) {
+          $points[]['points'] = $value;
+      }
+      foreach ($team_id as $key => $value) {
+            $teams_id[]['team_id'] = $value;
+      } */
+        //$data = array_map('array_merge', $teams_id, $points);
+        //  dd($point);
+        //Admin::setPointsStage_1($turnir_id, $data); */
+
+    }
+    public function stage_3($turnir_id)
+    {
+        $stage_3 =  Admin::stage_3($turnir_id);
+
+        return view('admin.home.stages.stage_3', [
+            'turnir_id' => $turnir_id,
+            'stages_3' => $stage_3,
+
+        ]);
+    }
+
+    public function update_stage3($turnir_id, Request $request)
+    {
+
+        foreach ($request->input('data') as $id => $row) {
+            \DB::table('stage_3')->where('id', $id)->update($row);
+        }
+        return redirect(route('stages', $turnir_id));
+        /*  //$team_id = $request->input('team_id');
+       // $point = $request->input('points');
+     /*  foreach ($point as $key => $value) {
+          $points[]['points'] = $value;
+      }
+      foreach ($team_id as $key => $value) {
+            $teams_id[]['team_id'] = $value;
+      } */
+        //$data = array_map('array_merge', $teams_id, $points);
+        //  dd($point);
+        //Admin::setPointsStage_1($turnir_id, $data); */
+
     }
 }

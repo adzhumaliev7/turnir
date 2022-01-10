@@ -24,7 +24,8 @@
                         <th scope="col">Группа</th>
                         <th scope="col">Очки</th>
                         <th scope="col">Победитель</th>
-                        <th scope="col"><a href="{{route('update_stage1', $turnir_id)}}" type="button" class="btn btn-success">Обновить</a></th>
+                        <th scope="col"><a href="{{route('update_stage1', $turnir_id)}}" type="button" class="btn btn-success">Добавить баллы</a></th>
+                        <th scope="col"><a href="{{route('stage2', $turnir_id)}}" type="button" class="btn btn-success">Создать след.этап</a></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,6 +56,8 @@
 
                         <th scope="col">Очки</th>
                         <th scope="col">Победитель</th>
+                        <th scope="col"><a href="{{route('update_stage2', $turnir_id)}}" type="button" class="btn btn-success">Добавить баллы</a></th>
+                        <th scope="col"><a href="{{route('stage3', $turnir_id)}}" type="button" class="btn btn-success">Создать след.этап</a></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,11 +65,11 @@
                     @foreach($stages_2 as $stage_2)
                     <tr>
 
-                        <td>{{$stage_1->tournaments_name}}</td>
-                        <td>{{$stage_1->team_name}}</td>
+                        <td>{{$stage_2->tournaments_name}}</td>
+                        <td>{{$stage_2->team_name}}</td>
 
-                        <td>{{$stage_1->points}}</td>
-                        <td>{{$stage_1->winner}}</td>
+                        <td>{{$stage_2->points}}</td>
+                        <td>{{$stage_2->winner}}</td>
 
 
                     </tr>
@@ -76,7 +79,36 @@
             @endif
         </div>
         <div class="tab-pane fade" id="stage_3">
-            Отзывы...
+            @if($stages_3 != null)
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Турнир</th>
+                        <th scope="col">Команда</th>
+
+                        <th scope="col">Очки</th>
+                        <th scope="col">Победитель</th>
+                        <th scope="col"><a href="{{route('update_stage3', $turnir_id)}}" type="button" class="btn btn-success">Добавить баллы</a></th>
+                        <th scope="col"><a href="" type="button" class="btn btn-success">Создать след.этап</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach($stages_3 as $stage_3)
+                    <tr>
+
+                        <td>{{$stage_3->tournaments_name}}</td>
+                        <td>{{$stage_3->team_name}}</td>
+
+                        <td>{{$stage_3->points}}</td>
+                        <td>{{$stage_3->winner}}</td>
+
+
+                    </tr>
+                    @endforeach
+            </table>
+            @else Данных нет
+            @endif
         </div>
     </div>
 </div>

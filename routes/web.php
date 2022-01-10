@@ -85,6 +85,12 @@ Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(functi
     Route::get('/stages/stage_1/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'stage_1',])->name('update_stage1');
     Route::get('/stages/update/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'update_stage',])->name('update_stage1_save');
 
+    Route::get('/stages/stage_2/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'stage_2',])->name('update_stage2');
+    Route::get('/stages/update_stage2/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'update_stage2',])->name('update_stage2_save');
+
+    Route::get('/stages/stage_3/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'stage_3',])->name('update_stage3');
+    Route::get('/stages/update_stage3/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'update_stage3',])->name('update_stage3_save');
+
     Route::get('/tournaments/draft', [\App\Http\Controllers\Admin\TournamentController::class, 'draftTournament',])->name('draft_tournament');
     Route::get('/tournaments/draft/active/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'draftTournamentsActive',])->name('draft_tournaments_active');
     Route::get('/tournaments/draft/view/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'draftTournamentsView',])->name('draft_tournament_view');
