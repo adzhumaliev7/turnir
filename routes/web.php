@@ -59,7 +59,7 @@ Route::get('/tournament', [\App\Http\Controllers\TournamentController::class, 'i
 Route::any('tournament/create_order', [\App\Http\Controllers\TournamentController::class, 'createTournament'])->name('create_order');
 Route::post('tournament/create_order/save', [\App\Http\Controllers\TournamentController::class, 'saveTournament'])->name('save_order');
 Route::get('/match/{id}', [\App\Http\Controllers\TournamentController::class, 'matchView'])->name('match');
-Route::get('/match/join/{id}', [\App\Http\Controllers\TournamentController::class, 'joinTournament'])->name('join');
+Route::any('/match/join/{id}', [\App\Http\Controllers\TournamentController::class, 'joinTournament'])->name('join');
 Route::get('/feedback', [\App\Http\Controllers\MainController::class, 'feedback'])->middleware('auth')->name('feedback');
 Route::post('/feedback/save', [\App\Http\Controllers\MainController::class, 'saveFeedback'])->name('save_feedback');
 
@@ -102,8 +102,11 @@ Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(functi
     Route::post('/tournament/edit/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'tournamentEdit',])->name('edit_tournament');
     Route::any('/tournament/delete/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'tournamentDelete',])->name('delete_tournament');
     Route::any('/tournament/tournaments_teams/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'tournamentTeams',])->name('tournaments_teams');
+    Route::any('/tournament/tournaments_teams/card/{id}{turnir_id}', [\App\Http\Controllers\Admin\TournamentController::class, 'tournamentTeamsCard',])->name('teams_card');
+
+
     Route::any('/tournament/tournaments_teams/apply_team/{id}{turnir_id}', [\App\Http\Controllers\Admin\TournamentController::class, 'applyTeam',])->name('apply_team');
-    Route::any('/tournament/tournaments_teams/refuse_team/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'refuseTeam',])->name('refuse_team');
+    Route::any('/tournament/tournaments_teams/refuse_team/{id}{turnir_id}', [\App\Http\Controllers\Admin\TournamentController::class, 'refuseTeam',])->name('refuse_team');
 
     Route::any('/moderators', [\App\Http\Controllers\Admin\HomeController::class, 'moderators',])->name('moderators');
     Route::any('/moderators/create_moderators/', [\App\Http\Controllers\Admin\HomeController::class, 'createModerators',])->name('create_moderators');

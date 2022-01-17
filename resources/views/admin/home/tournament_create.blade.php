@@ -53,14 +53,7 @@
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
- <div class="form-group col-md-4">
-      <label for="inputPassword4">Допустимый уровень игроков</label>
-      <input type="text" class="form-control" name="	players_col" id="" placeholder="Допустимый уровень игроков">
-         @error('	players_col')
-             <div class="alert alert-danger">{{$message}}</div>
-           @enderror
-   
-  </div>
+
   </div>
   <div class="form-group col-md-4">
       <label for="inputPassword4">Добавить обложку</label>
@@ -107,13 +100,7 @@
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
-   <div class="form-group col-md-4">
-      <label for="inputPassword4">Лига</label>
-      <input type="text" class="form-control" name="ligue" id="" placeholder="Лига">
-         @error('ligue')
-             <div class="alert alert-danger">{{$message}}</div>
-           @enderror
-      </div>
+ 
   </div>
  <h4>Правила</h4>
  <div class="form-row">
@@ -124,13 +111,6 @@
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
-   <div class="form-group col-md-4">
-      <label for="inputPassword4">Заголовок</label>
-      <input type="text" class="form-control" name="header" id="" placeholder="Заголовок">
-         @error('header')
-             <div class="alert alert-danger">{{$message}}</div>
-           @enderror
-      </div>
   </div>
  <h4>Этапы</h4>
  <div class="form-row">

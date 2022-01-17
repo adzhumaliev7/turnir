@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Tournament;
 use Illuminate\Support\Facades\Auth;
@@ -54,14 +55,12 @@ class TournamentController extends Controller
     }
    public function matchView($id){
         $tournaments = Tournament::getTournamentById($id);
-    
+
        foreach ($tournaments as $tournament ) {
           $t = (array) $tournament;
        }
-     
 
       $date = date('Y-m-d');
-      
       if($date > $t['tournament_start']){
            $turnir  = 'close';
       }else {
@@ -79,8 +78,11 @@ class TournamentController extends Controller
       $user_id = Auth::user()->id;
       $teams = Tournament::getTeams($id, $user_id);//команды зарегистрированные в турнир 
       $userdata= Tournament::checkTeam($user_id);
+       
+      
       $userdata = (array) $userdata;
-
+     $members= Tournament::getMembers($userdata['team_id']);
+  
      if($teams == NULL){
           $teams = "";
      }
@@ -91,7 +93,6 @@ class TournamentController extends Controller
                  foreach ($teams as $key ) {
                      $key=(array) $key;
                 }
-                 
                     if($user_id != $key['user_id']){
                          $checked = 'captain'; 
                     }else   $checked = 'has'; 
@@ -115,11 +116,15 @@ class TournamentController extends Controller
              'checked' => $checked,
              'reg' => $reg,
              'turnir' => $turnir,
+             'members' => $members
         ]);
    } 
 
-   public function joinTournament($id){
-          $user_id = Auth::user()->id;
+   public function joinTournament($id, Request $request){
+
+
+     $members = $request->input('members');     
+         $user_id = Auth::user()->id;
           $team_id=Tournament::getTeamById($user_id);
         $team_id = (array) $team_id;
        $team_id=implode("",$team_id);
@@ -127,10 +132,17 @@ class TournamentController extends Controller
           $data=array(
                'tournament_id'=>$id,
                'team_id'=>$team_id,
-               'status'=>'processed'
+               'status'=>'processed',
+               
           );
-           Tournament::joiToTournament($data);
-          return redirect(route('match', $id));
+         
+           for ($i= 0; $i<count($members);$i++) {
+               DB::table('tournaments_members')->insert(['tournament_id' => $id, 'team_id' => $team_id, 'user_id' => $members[$i] ]);
+               
+          }  
+        
+            Tournament::joiToTournament($data);
+          return redirect(route('match', $id));  
          
    }
 

@@ -131,16 +131,16 @@ class Admin extends Model
             ->where('tournamets_team.tournament_id', $tournament_id)->get();
       } else  return NULL;
    }
-   public static function geTeamMembers($tournament_id)
+   public static function getTeamById($id){
+      return DB::table('team')->select('name')->where('id', $id)->first();
+   }
+   public static function geTeamMembers($team_id, $tournament_id)
    {
-
-      return DB::table('team_members')
-         ->join('team', 'team_members.team_id', '=', 'team.id')
-         ->join('users_profile2', 'team_members.user_id', '=', 'users_profile2.user_id')
-         ->join('tournamets_team', 'team.id', '=', 'tournamets_team.team_id')
-         ->join('tournaments', 'tournamets_team.tournament_id', '=', 'tournaments.id')
-         ->select('team_members.user_id', 'users_profile2.login', 'team.name')
-         ->where('tournamets_team.tournament_id', $tournament_id)->where('tournamets_team.status', 'processed')->get();
+      return DB::table('tournaments_members')
+      ->join('users_profile2', 'tournaments_members.user_id', '=' , 'users_profile2.user_id')
+      ->select('users_profile2.login')
+      ->where('tournament_id', $tournament_id)->where('team_id', $team_id)
+      ->get();
    }
 
    public static function createHelp($data)
@@ -202,9 +202,10 @@ class Admin extends Model
       }
       return DB::table('tournamets_team')->where('team_id', $id)->update(['status' => 'accepted', 'group_id' => $group_id]);
    }
-   public static function refuseTeam($id)
+   public static function refuseTeam($id,$turnir_id)
    {
-      return DB::table('tournamets_team')->where('team_id', $id)->delete();
+       DB::table('tournamets_team')->where('tournament_id', $turnir_id)->where('team_id', $id)->delete();
+       DB::table('tournaments_members')->where('tournament_id', $turnir_id)->where('team_id', $id)->delete();
    }
 
    public function getFeedback()

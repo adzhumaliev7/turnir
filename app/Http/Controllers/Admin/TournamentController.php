@@ -100,9 +100,9 @@ class TournamentController extends Controller
                 'start_reg' => '',
                 'end_reg' => '',
                 'slot_kolvo' => '',
-                'ligue' => '',
+               
                 'rule' => '',
-                'header' => '',
+               
                 'tournament_start' => '',
                 'games_time' => '',
             ]);
@@ -171,16 +171,29 @@ class TournamentController extends Controller
         Admin::tournamentDelete($id);
         return redirect(route('admin_tournament'));
     }
+
     public function tournamentTeams($id)
     {
         $teams = Admin::getTournamentsTeams($id);
-
-        $members = Admin::geTeamMembers($id);
+       
         return view('admin.home.tournaments_teams', [
             'teams' => $teams,
-            'members' => $members,
+           
         ]);
     }
+    public function tournamentTeamsCard($id, $turnir_id)
+    {
+       $team= Admin::getTeamById($id);
+       $members = Admin::geTeamMembers($id, $turnir_id);
+      
+        return view('admin.home.tournaments_team_card', [
+            'team' => $team,
+            'members' => $members,
+            'team_id' => $id,
+            'tournament_id' => $turnir_id,
+        ]);
+    }
+
     public function applyTeam($id, $turnir_id)
     {
         $email = Admin::getEmail($id);
@@ -196,11 +209,10 @@ class TournamentController extends Controller
         //   }); 
 
         Admin::applyTeam($id, $turnir_id);
-
         return redirect(route('tournaments_teams', $turnir_id));
     }
 
-    public function refuseTeam($id)
+    public function refuseTeam($id, $turnir_id)
     {
 
         $email = Admin::getEmail($id);
@@ -216,7 +228,7 @@ class TournamentController extends Controller
             $message->from('tournamentpubgtest@gmail.com', 'www');
         });
 
-        Admin::refuseTeam($id);
+        Admin::refuseTeam($id, $turnir_id);
         return redirect(route('admin_tournament'));
     }
 
