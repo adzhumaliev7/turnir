@@ -130,7 +130,7 @@ return [
     'Pacific/Fiji'         => "(GMT+12:00) Fiji",
     ],
     
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'SHOWMATCH'),
 
     /*
     |--------------------------------------------------------------------------

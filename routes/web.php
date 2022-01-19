@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,20 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('login');
+    return view('auth.login');
 });
 
 
 Route::name('user.')->group(function () {
-    Route::view('/main', 'main')->middleware('auth')->name('main');
+  
+    
     Route::get('/login', function () {
         if (Auth::check()) {
             return redirect(route('user.main'));
         }
-        return view('login');
+        return view('auth.login');
     })->name('login');
 
-    Route::post('/login', [\App\Http\Controllers\LoginController::class, 'login']);
+    Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login']);
 
     Route::get('/logout', function () {
         Auth::logout();
@@ -38,17 +39,19 @@ Route::name('user.')->group(function () {
         if (Auth::check()) {
             return redirect(route('user.main'));
         }
-        return view('registration');
+        return view('auth.registration');
     })->name('registration');
 
-    Route::post('/registration', [\App\Http\Controllers\RegisterController::class, 'save']);
+    Route::post('/registration', [\App\Http\Controllers\Auth\RegisterController::class, 'save']);
 });
+Route::get('/registration/confirm/{token}', [\App\Http\Controllers\Auth\RegisterController::class, 'confirmEmail']);
+
 Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index'])->middleware('auth')->name('profile');
 Route::post('/profile', [\App\Http\Controllers\ProfileController::class, 'saveProfile']);
 Route::post('/profile/delte/{id}', [\App\Http\Controllers\ProfileController::class, 'deleteProfile'])->name('delete_profile');
 Route::post('/profile/createteam', [\App\Http\Controllers\ProfileController::class, 'createTeam'])->name('createteam');
 Route::post('/profile/tournaments/{id}', [\App\Http\Controllers\ProfileController::class, 'getTournaments'])->name('get_tournaments');
-Route::post('/main', [\App\Http\Controllers\MainController::class, 'index'])->name('main');
+Route::get('/main', [\App\Http\Controllers\MainController::class, 'index'])->name('main');
 Route::get('/team/{id}/', [\App\Http\Controllers\TeamController::class, 'index'])->middleware('auth')->name('team');
 Route::get('/addmembers/{id}', [\App\Http\Controllers\TeamController::class, 'addMembers'])->name('addmember');
 Route::get('/team/exit/{id}', [\App\Http\Controllers\TeamController::class, 'exitTeam'])->name('exit_team');
@@ -68,7 +71,7 @@ Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(functi
     Route::get('/', [\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin');
     //  Route::get('/users',[\App\Http\Controllers\Admin\HomeController::class, 'usersView']);
     Route::get('/users', [\App\Http\Controllers\Admin\HomeController::class, 'usersView'])->name('users');
-    Route::get('/users/add_ban/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'addBan'])->name('add_ban');
+    Route::post('/users/add_ban/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'addBan'])->name('add_ban');
     Route::get('/users/unblock/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'unblock'])->name('unblock');
     Route::get('/teams', [\App\Http\Controllers\Admin\HomeController::class, 'teamsView'])->name('teams');
 

@@ -9,7 +9,10 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
-class User extends Authenticatable
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
@@ -22,6 +25,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'two_factor_code',
+        'two_factor_expires_at',
     ];
 
     /**
@@ -43,7 +48,42 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->token = Str::random(30);
+        });
+    }
+    
+    public function confirmEmail()
+    {
+        $this->verified = true;
+        $this->token = null;
+        $this->save();
+    }
+
     public function setPasswordAttribute($password){
         $this->attributes['password'] = Hash::make($password);
     }
+
+    public static function getEmail($id){
+        return DB::table('users')->select('email')->where('id',$id)->first();
+    }
+
+   /*  public function generateTwoFactorCode()
+    {
+        $this->timestamps = false;
+        $this->two_factor_code = rand(100000, 999999);
+        $this->two_factor_expires_at = now()->addMinutes(10);
+        $this->save();
+    }
+    public function resetTwoFactorCode()
+    {
+        $this->timestamps = false;
+        $this->two_factor_code = null;
+        $this->two_factor_expires_at = null;
+        $this->save();
+    } */
 }

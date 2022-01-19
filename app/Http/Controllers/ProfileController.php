@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\UsersProfile;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
@@ -12,13 +13,15 @@ class ProfileController extends Controller
   public function index()
   {
     $id = Auth::user()->id;
+    $mail = User::getEmail($id);
     $data = UsersProfile::getById($id);
     $timezones = config('app.timezones');
     $teams = Team::getTeamById($id);
     $verification_status = UsersProfile::checkVerification($id);
     $tournaments = UsersProfile::getTeamById($id);
 
-    return view('profile', [
+    return view('main.profile', [
+      'mail' => $mail,
       'data' => $data,
       'teams' => $teams,
       'user_id' => $id,

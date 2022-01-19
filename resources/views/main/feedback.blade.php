@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.layout')
 @section('title', 'Обратная связь')
 @section('content')
 
@@ -7,7 +7,7 @@
 
       <div class="dropdown">
         <button class="header__line header__txt button--none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          tima@test.com
+          {{$mail->email}}
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
           <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>

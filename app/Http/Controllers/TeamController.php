@@ -19,7 +19,7 @@ class TeamController extends Controller
         $user_id = Auth::user()->id;
         $chek_admin= Team::checkAdmin($user_id);
        
-         return view('team',[
+         return view('main.team',[
             'data'=>$data,
             'members'=>$members,
             'team_id'=>$team_id,

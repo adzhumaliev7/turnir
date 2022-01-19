@@ -109,6 +109,7 @@ class TournamentController extends Controller
             $data['file_label'] = $file_name;
             if ($request->get('submit') == 'save') {
                 $data['status'] = 'save';
+                $data['active'] = 1;
             } elseif ($request->get('submit') == 'draft') {
 
                 $data['status'] = 'draft';

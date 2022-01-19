@@ -5,18 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Tournament;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 class TournamentController extends Controller
 {
     public function index(){
 
-
+          $id = Auth::user()->id;
+          $mail = User::getEmail($id);
          $tournaments = Tournament::getTournaments();
           if($tournaments == NULL){
                $tournaments == "";
           }
 
-        return view('tournament',[
+        return view('main.tournament',[
+             'mail'=>$mail,
              'tournaments'=>$tournaments,
         ]);
     }
@@ -76,7 +79,10 @@ class TournamentController extends Controller
        //$end_reg=(strtotime(strtotime($date) >= $t['end_reg']));
        
       $user_id = Auth::user()->id;
+    
+      $mail = User::getEmail($user_id);
       $teams = Tournament::getTeams($id, $user_id);//команды зарегистрированные в турнир 
+      
       $userdata= Tournament::checkTeam($user_id);
        
       
@@ -110,7 +116,8 @@ class TournamentController extends Controller
           }else $checked= 'has';
      }else $checked= NULL;
  
-        return view('match',[
+        return view('main.match',[
+             'mail' => $mail,
              'tournaments' => $tournaments,
              'teams' => $teams,
              'checked' => $checked,

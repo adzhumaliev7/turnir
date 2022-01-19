@@ -70,7 +70,10 @@ class Admin extends Model
    }
    public static function getById($id)
    {
-      return DB::table('users_profile2')->where('id', $id)->get();
+      return DB::table('users_profile2')
+      ->join('users', 'users_profile2.user_id' ,'=', 'users.id')
+      ->select('users_profile2.*', 'users.status')
+      ->where('users_profile2.id', $id)->get();
    }
 
    public static function verified($id)

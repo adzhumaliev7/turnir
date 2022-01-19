@@ -4,14 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Feedback;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 class MainController extends Controller
 {
     public function index(){
-         return view('main');
+          $id = Auth::user()->id;
+          $mail = User::getEmail($id);
+        
+         return view('main.main', ['mail' => $mail]);
     }
 
     public function feedback(){
-         return view('feedback');
+        $id = Auth::user()->id;
+        $mail = User::getEmail($id);
+         return view('main.feedback',[
+             'mail' => $mail,
+         ]);
     }
 
      public function saveFeedback(Request $request){
@@ -26,7 +36,7 @@ class MainController extends Controller
          ]);
          Feedback::saveFeedback($data);
          \Session::flash('flash_meassage', 'Отпавлено');
-        return redirect(route('feedback'));
+        return redirect(route('main.feedback'));
     }
    
 }

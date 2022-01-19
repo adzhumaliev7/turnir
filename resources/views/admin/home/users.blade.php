@@ -2,6 +2,8 @@
 
 @section('content')
 @if($users != "")
+
+
 <table class="table">
   <thead class="thead-light">
     <tr>
@@ -15,33 +17,32 @@
     </tr>
   </thead>
   <tbody>
-      @foreach($users as $user)
+    @foreach($users as $user)
 
     <tr>
       <td scope="row">{{$user->id}}</td>
       <td>{{$user->phone}}</td>
       <td>{{$user->fio}}</td>
       <td>{{$user->email}}</td>
-      <td>{{$user->city}}</td>
+      <td>{{$user->city}}
+
+
+      </td>
       <td>
-        @if($user->verification=='verified') 
-            Верифицирован
-         @elseif($user->verification=='rejected')Вернут на доработку  
-         @else Не верефицирован
+        @if($user->verification=='verified')
+        Верифицирован
+        @elseif($user->verification=='rejected')Вернут на доработку
+        @else Не верефицирован
         @endif
       </td>
-      <td><a  href="/admin_panel/users_card/{{$user->id}}" class="btn btn-primary">Просмотр</a>
-      @if($user->status !='ban')
-      <a  href="{{route('add_ban', $user->user_id)}}" class="btn btn-danger">Бан</a>
-      @else
-      <a href="{{route('unblock', $user->user_id)}}" class="btn btn-danger">Разблокировать</a>
-      @endif
+      <td><a href=" /admin_panel/users_card/{{$user->id}}" class="btn btn-primary">Просмотр</a>
+       
       </td>
     </tr>
     @endforeach
   </tbody>
 </table>
-@else 
+@else
 <h4>Нет данных</h4>
-@endif  
+@endif
 @endsection
