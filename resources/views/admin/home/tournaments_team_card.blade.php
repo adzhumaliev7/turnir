@@ -51,9 +51,35 @@
                 @endforeach
             </div>
         </div>
+        <div class="modal fade" id="ModalRefuse" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Сообщение</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
 
+                        <form method="POST" action="{{route('refuse_team', [$team_id, $tournament_id, $user_id] )}}">
+                            @csrf
+                            <textarea name="text" id="" cols="50" rows="10"></textarea>
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="btn" class="btn btn-primary">Сохранить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         <a href="{{route('apply_team', [$team_id, $tournament_id] )}}" type="button" class="btn btn-success">Принять</a>
-        <a href="{{route('refuse_team', [$team_id, $tournament_id] )}}" type="button" class="btn btn-danger">Отклонить</a>
+        <!--  <a href="{{route('refuse_team', [$team_id, $tournament_id, $user_id] )}}" type="button" class="btn btn-danger">Отклонить</a> -->
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalRefuse">
+            Отклонить
+        </button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

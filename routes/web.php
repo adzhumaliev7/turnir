@@ -77,7 +77,7 @@ Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(functi
 
     Route::get('/users_card/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'userCard',]);
     Route::get('/verified/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'verified',])->name('verified');
-    Route::get('/rejected/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'rejected',])->name('rejected');
+    Route::post('/rejected/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'rejected',])->name('rejected');
     Route::get('/tournament', [\App\Http\Controllers\Admin\TournamentController::class, 'index',])->name('admin_tournament');  
 
     Route::get('/start/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'startTest',])->name('start');
@@ -109,7 +109,7 @@ Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(functi
 
 
     Route::any('/tournament/tournaments_teams/apply_team/{id}{turnir_id}', [\App\Http\Controllers\Admin\TournamentController::class, 'applyTeam',])->name('apply_team');
-    Route::any('/tournament/tournaments_teams/refuse_team/{id}{turnir_id}', [\App\Http\Controllers\Admin\TournamentController::class, 'refuseTeam',])->name('refuse_team');
+    Route::any('/tournament/tournaments_teams/refuse_team/{id}/{turnir_id}/{user_id}', [\App\Http\Controllers\Admin\TournamentController::class, 'refuseTeam',])->name('refuse_team');
 
     Route::any('/moderators', [\App\Http\Controllers\Admin\HomeController::class, 'moderators',])->name('moderators');
     Route::any('/moderators/create_moderators/', [\App\Http\Controllers\Admin\HomeController::class, 'createModerators',])->name('create_moderators');

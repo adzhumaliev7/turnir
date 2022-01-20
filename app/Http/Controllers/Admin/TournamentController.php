@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
-use Mail;
+use App\Mail\VerifiedMail;
 
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 
 class TournamentController extends Controller
@@ -140,8 +141,6 @@ class TournamentController extends Controller
     public function tournamentEdit($id, Request $request)
     {
 
-
-
         if ($request->isMethod('post')) {
             $data = $request->validate([
                 'name' => '',
@@ -160,7 +159,6 @@ class TournamentController extends Controller
                 'tournament_start' => '',
                 'games_time' => '',
             ]);
-
 
             Admin::editTournament($id, $data);
             return redirect(route('admin_tournament'));
@@ -185,14 +183,21 @@ class TournamentController extends Controller
     public function tournamentTeamsCard($id, $turnir_id)
     {
        $team= Admin::getTeamById($id);
-       $members = Admin::geTeamMembers($id, $turnir_id);
-      
+       $members = Admin::geTeamMembers($id, $turnir_id); 
+       $user_id  = Admin::geTeamMembersUserid($id, $turnir_id);
+       
+      foreach ($user_id as $user => $value) {
+            $user_id=$value;
+      }
+     
         return view('admin.home.tournaments_team_card', [
             'team' => $team,
             'members' => $members,
             'team_id' => $id,
             'tournament_id' => $turnir_id,
+            'user_id' => $user_id
         ]);
+        
     }
 
     public function applyTeam($id, $turnir_id)
@@ -213,24 +218,23 @@ class TournamentController extends Controller
         return redirect(route('tournaments_teams', $turnir_id));
     }
 
-    public function refuseTeam($id, $turnir_id)
+    public function refuseTeam($id, $turnir_id, $user_id, Request $request)
     {
-
-        $email = Admin::getEmail($id);
+        
+        $email = Admin::getUsersEmail($user_id);
         foreach ($email as $key => $value) {
             $email = (array) $value;
             foreach ($email as $key => $value) {
                 $em = $value;
             }
         }
-
-        Mail::send(['text' => 'messages.refuse'], ['name', 'wwww'], function ($message) use ($em) {
-            $message->to($em, 'www')->subject('SHOWMATCH');
-            $message->from('tournamentpubgtest@gmail.com', 'www');
-        });
+        
+        $text = $request->input('text');
+        Mail::to($em)->send(new VerifiedMail($em, $text));
+     
 
         Admin::refuseTeam($id, $turnir_id);
-        return redirect(route('admin_tournament'));
+       return redirect(route('admin_tournament')); 
     }
 
     public function startTest($turnir_id)

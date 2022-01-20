@@ -82,7 +82,7 @@ class Admin extends Model
    }
    public static function rejected($id)
    {
-      return DB::table('users_profile2')->where('id', $id)->update(['verification' => 'rejected']);
+      return DB::table('users_profile2')->where('user_id', $id)->update(['verification' => 'rejected']);
    }
 
    public static function getTournaments()
@@ -141,10 +141,22 @@ class Admin extends Model
    {
       return DB::table('tournaments_members')
       ->join('users_profile2', 'tournaments_members.user_id', '=' , 'users_profile2.user_id')
-      ->select('users_profile2.login')
-      ->where('tournament_id', $tournament_id)->where('team_id', $team_id)
+      ->join('team_members', 'tournaments_members.user_id', '=' , 'team_members.user_id')
+      ->select('users_profile2.login', 'team_members.user_id', 'team_members.role')
+      ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)
       ->get();
    }
+   public static function geTeamMembersUserid($team_id, $tournament_id)
+   {
+      return DB::table('tournaments_members')
+      ->join('users_profile2', 'tournaments_members.user_id', '=', 'users_profile2.user_id')
+      ->join('team_members', 'tournaments_members.user_id', '=', 'team_members.user_id')
+      ->join('users', 'tournaments_members.user_id', '=', 'team_members.user_id')
+      ->select('team_members.user_id'  )
+      ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)->where('team_members.role', 'captain')
+         ->first();
+   }
+
 
    public static function createHelp($data)
    {

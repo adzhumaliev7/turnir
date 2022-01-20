@@ -10,6 +10,7 @@ use App\Models\UsersProfile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\BanMail;
+use App\Mail\VerifiedMail;
 use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
@@ -96,21 +97,20 @@ class HomeController extends Controller
     $users = Admin::verified($id);
     return redirect()->to(route('users'));
   }
-  public function rejected($id)
+  public function rejected($id, Request $request)
   {
-    foreach ($email as $key => $value) {
+    $email = Admin::getUsersEmail($id);
+     foreach ($email as $key => $value) {
       $email = (array) $value;
       foreach ($email as $key => $value) {
         $em = $value;
       }
     }
-    Mail::send(['text' => 'messages.rejected'], ['name', 'wwww'], function ($message) use ($em) {
-      $message->to($em, 'www')->subject('SHOWMATCH');
-      $message->from('tournamentpubgtest@gmail.com', 'www');
-    });
-
-    $users = Admin::rejected($id);
-    return redirect()->to(route('users'));
+  
+     $text = $request->input('text');
+    Mail::to($em)->send(new BanMail($em, $text));
+    Admin::rejected($id);
+    return redirect()->to(route('users')); 
   }
 
 
@@ -129,10 +129,7 @@ class HomeController extends Controller
   }
   public function saveModerator(Request $request)
   {
-
-
     $data  = $request->validate([
-
       'email' => 'required',
       // 'password' => Hash::make($request->input('password')),
     ]);

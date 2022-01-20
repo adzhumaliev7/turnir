@@ -108,7 +108,7 @@
   <tbody>
 
     @foreach($users as $user)
-
+ 
     <tr>
 
       <td><a id="myBtn" href="#">Просмотр докуметов</a></td>
@@ -123,10 +123,13 @@
       <td>{{$user->nickname}}</td>
       <td>{{$user->game_id}}</td>
       <td><a href="{{ route('verified', $user->id) }}" class="message" data-title="Подтвердить">&#10004;</a>
-        <a href="{{ route('rejected', $user->id) }}" class="message" data-title="Отконить">&#10006;</a>
+        <!--  <a href="{{ route('rejected', $user->id) }}" class="message" data-title="Отконить">&#10006;</a> -->
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalRejected">
+          Отклонить
+        </button>
         @if($user->status !='ban')
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
-         Бан
+          Бан
         </button>
         @else
         <a href="{{route('unblock', $user->user_id)}}" class="btn btn-primary">Разблокировать</a>
@@ -148,7 +151,31 @@
 
               </div>
               <div class="modal-footer">
-               
+
+                <button type="btn" class="btn btn-primary">Сохранить</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="ModalRejected" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Сообщение</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+
+                <form method="POST" action="{{route('rejected', $user->user_id)}}">
+                  @csrf
+                  <textarea name="text" id="" cols="50" rows="10"></textarea>
+
+              </div>
+              <div class="modal-footer">
+
                 <button type="btn" class="btn btn-primary">Сохранить</button>
                 </form>
               </div>
