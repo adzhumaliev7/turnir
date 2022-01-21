@@ -271,17 +271,32 @@ class TournamentController extends Controller
         Admin::setStage_3($turnir_id, $data);
         return redirect(route('stages', $turnir_id));
     }
+    public function createWinners($turnir_id)
+    {
+        $datas =  Admin::getStage_3($turnir_id);
+
+        // dd($data);
+        foreach ($datas  as $key => $value) {
+            $data[] = (array)$value;
+        }
+       
+       /*  Admin::setWinners($turnir_id, $data);
+        Admin::changeTournamentStatus($turnir_id);
+        return redirect(route('stages', $turnir_id)); */
+    }
     public function stages($turnir_id)
     {
         $stage_1 =  Admin::stage_1($turnir_id);
         $stage_2 =  Admin::stage_2($turnir_id);
         $stage_3 =  Admin::stage_3($turnir_id);
+        $winners =  Admin::getWinners($turnir_id);
       
         return view('admin.home.stages.stages',[
                     'turnir_id' => $turnir_id,
                     'stages_1' => $stage_1,
                     'stages_2' => $stage_2,
                     'stages_3' => $stage_3,
+                    'winners' => $winners
         ]);
     }
     public function stage_1($turnir_id)

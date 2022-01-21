@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::get('/', [\App\Http\Controllers\MainController::class, 'index'])->name('main');
 
 
 Route::name('user.')->group(function () {
@@ -23,7 +21,7 @@ Route::name('user.')->group(function () {
     
     Route::get('/login', function () {
         if (Auth::check()) {
-            return redirect(route('user.main'));
+            return redirect(route('main'));
         }
         return view('auth.login');
     })->name('login');
@@ -46,25 +44,26 @@ Route::name('user.')->group(function () {
 });
 Route::get('/registration/confirm/{token}', [\App\Http\Controllers\Auth\RegisterController::class, 'confirmEmail']);
 
-Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index'])->middleware('auth')->name('profile');
+Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
 Route::post('/profile', [\App\Http\Controllers\ProfileController::class, 'saveProfile']);
 Route::post('/profile/delte/{id}', [\App\Http\Controllers\ProfileController::class, 'deleteProfile'])->name('delete_profile');
 Route::post('/profile/createteam', [\App\Http\Controllers\ProfileController::class, 'createTeam'])->name('createteam');
 Route::post('/profile/tournaments/{id}', [\App\Http\Controllers\ProfileController::class, 'getTournaments'])->name('get_tournaments');
 Route::get('/main', [\App\Http\Controllers\MainController::class, 'index'])->name('main');
-Route::get('/team/{id}/', [\App\Http\Controllers\TeamController::class, 'index'])->middleware('auth')->name('team');
+Route::get('/team/{id}/', [\App\Http\Controllers\TeamController::class, 'index'])->name('team');
 Route::get('/addmembers/{id}', [\App\Http\Controllers\TeamController::class, 'addMembers'])->name('addmember');
 Route::get('/team/exit/{id}', [\App\Http\Controllers\TeamController::class, 'exitTeam'])->name('exit_team');
 Route::get('/team/delete/{id}', [\App\Http\Controllers\TeamController::class, 'deleteMember'])->name('delete_member');
 Route::post('/team/delete_team/{id}', [\App\Http\Controllers\TeamController::class, 'deleteTeam'])->name('delete_team');
 Route::get('/team/add_admin/{id}{team_id}', [\App\Http\Controllers\TeamController::class, 'addAdmin'])->name('add_admin');
-Route::get('/tournament', [\App\Http\Controllers\TournamentController::class, 'index'])->middleware('auth')->name('tournament');
+Route::get('/tournament', [\App\Http\Controllers\TournamentController::class, 'index'])->name('tournament');
 Route::any('tournament/create_order', [\App\Http\Controllers\TournamentController::class, 'createTournament'])->name('create_order');
 Route::post('tournament/create_order/save', [\App\Http\Controllers\TournamentController::class, 'saveTournament'])->name('save_order');
 Route::get('/match/{id}', [\App\Http\Controllers\TournamentController::class, 'matchView'])->name('match');
 Route::any('/match/join/{id}', [\App\Http\Controllers\TournamentController::class, 'joinTournament'])->name('join');
-Route::get('/feedback', [\App\Http\Controllers\MainController::class, 'feedback'])->middleware('auth')->name('feedback');
+Route::get('/feedback', [\App\Http\Controllers\MainController::class, 'feedback'])->name('feedback');
 Route::post('/feedback/save', [\App\Http\Controllers\MainController::class, 'saveFeedback'])->name('save_feedback');
+Route::get('/rating', [\App\Http\Controllers\MainController::class, 'rating'])->name('rating');
 
 
 Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(function () {
@@ -83,6 +82,7 @@ Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(functi
     Route::get('/start/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'startTest',])->name('start');
     Route::get('/stage2/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'createStage2',])->name('stage2');
     Route::get('/stage3/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'createStage3',])->name('stage3');
+    Route::get('/winners/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'createWinners',])->name('winners');
     Route::get('/stages/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'stages',])->name('stages');
 
     Route::get('/stages/stage_1/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'stage_1',])->name('update_stage1');

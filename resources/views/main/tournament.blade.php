@@ -7,12 +7,21 @@
   <div class="account-pubg__bg account__bg d-flex justify-content-end px-4">
 
     <div class="dropdown">
+      @if($mail != null)
       <button class="header__line header__txt button--none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
         {{$mail->email}}
       </button>
+      @else
+      <a href="{{'login'}}" class="header__line header__txt " type="button">
+        Войти
+      </a>
+      <a href="{{'registration'}}" class="header__line header__txt " type="button">
+        Регистрация
+      </a>
+      @endif
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
         <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
-        <li><a class="dropdown-item header__txt text-dark" href="logout">выйти</a></li>
+        <li><a class="dropdown-item header__txt text-dark" href="{{route('user.logout')}}">выйти</a></li>
       </ul>
     </div>
   </div>
@@ -29,7 +38,7 @@
           </li>
 
           <li class="nav-item nav-item--active">
-            <a class="nav-link nav-white pubg-hover" aria-current="page" href="">Рейтинг</a>
+            <a class="nav-link nav-white pubg-hover" aria-current="page" href="{{route('rating')}}">Рейтинг</a>
           </li>
 
           <li class="nav-item nav-item--active ">
@@ -81,4 +90,3 @@
 </section>
 
 @endsection
-

@@ -272,24 +272,20 @@ class Admin extends Model
    {
       return DB::table('stage_2')->select('tournament_id', 'team_id')->where('tournament_id', $id)->where('winner', 1)->get();
    }
+   public static function getStage_3($id)
+   {
+      return DB::table('stage_3')->select('tournament_id', 'team_id','points')->where('tournament_id', $id)->where('winner', 1)->get();
+   }
 
    public static function setStage_3($turnir_id, $data)
    {
-      /* $count =  DB::table('stage_1')->where('tournament_id', $turnir_id)->where('winner', 1)->count();
-      if ($count < 2) {
-         $group_id = 1;
-      }
-      if ($count >= 2 && $count <= 4) {
-         $group_id = 2;
-      }
-      if ($count >= 4 && $count <= 6) {
-         $group_id = 3;
-      }
-      if ($count >= 6 && $count <= 8) {
-         $group_id = 4;
-      }
-      $data['group_id'] = $group_id; */
+     
       return DB::table('stage_3')->insert($data);
+   }
+   public static function setWinners($turnir_id, $data)
+   {
+
+      return DB::table('winners')->insert($data);
    }
 
    public static function stage_1($turnir_id){
@@ -327,9 +323,30 @@ class Admin extends Model
             ->get();
       } else return null;
    }
+   public static function getWinners($turnir_id){
+   $is_has = DB::table('winners')->exists();
+   if ($is_has == true) {
+      return DB::table('winners')
+      ->join('team', 'winners.team_id', '=', 'team.id')
+      ->join('tournaments', 'winners.tournament_id', '=', 'tournaments.id')
+      ->select('winners.id', 'winners.tournament_id', 'winners.team_id', 'winners.points', 'winners.winner',  'team.name as team_name', 'tournaments.name as tournaments_name')
+      ->where('tournament_id', $turnir_id)->where('winner' ,1 )
+         ->get();
+   } else return null;
+   }
+   public static function changeTournamentStatus($turnir_id){
+         return DB::table('tournaments')->where('id', $turnir_id)->update(['active' => 0]);
+   }
    /* public static function setPointsStage_1($turnir_id,$data){
      
      
      return DB::table('stage_1')->where('tournament_id', $turnir_id)->update($data);
    } */
+   public static function setResults($turnir_id){
+
+      
+
+   }
+
+ 
 }

@@ -12,6 +12,9 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#stage_3">3 Этап</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#winners">Победители</a>
+        </li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane fade show active" id="stage_1">
@@ -89,7 +92,7 @@
                         <th scope="col">Очки</th>
                         <th scope="col">Победитель</th>
                         <th scope="col"><a href="{{route('update_stage3', $turnir_id)}}" type="button" class="btn btn-success">Добавить баллы</a></th>
-                        <th scope="col"><a href="" type="button" class="btn btn-success">Создать след.этап</a></th>
+                        <th scope="col"><a href="{{route('winners', $turnir_id)}}" type="button" class="btn btn-success">Закончить турнир</a></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -102,6 +105,38 @@
 
                         <td>{{$stage_3->points}}</td>
                         <td>{{$stage_3->winner}}</td>
+
+
+                    </tr>
+                    @endforeach
+            </table>
+            @else Данных нет
+            @endif
+        </div>
+        <div class="tab-pane fade" id="winners">
+            @if($winners != null)
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Турнир</th>
+                        <th scope="col">Команда</th>
+
+                        <th scope="col">Очки</th>
+                        <th scope="col">Победитель</th>
+                      <!--   <th scope="col"><a href="{{route('update_stage3', $turnir_id)}}" type="button" class="btn btn-success">Добавить баллы</a></th>
+                        <th scope="col"><a href="" type="button" class="btn btn-success">Создать след.этап</a></th> -->
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach($winners as $winner)
+                    <tr>
+
+                        <td>{{$winner->tournaments_name}}</td>
+                        <td>{{$winner->team_name}}</td>
+
+                        <td>{{$winner->points}}</td>
+                        <td>{{$winner->winner}}</td>
 
 
                     </tr>

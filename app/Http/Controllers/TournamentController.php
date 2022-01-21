@@ -6,13 +6,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Tournament;
 use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
 class TournamentController extends Controller
 {
     public function index(){
 
-          $id = Auth::user()->id;
-          $mail = User::getEmail($id);
+          if (Auth::user() != null) {
+               $id = Auth::user()->id;
+               $mail = User::getEmail($id);
+          } else $mail = null;
          $tournaments = Tournament::getTournaments();
           if($tournaments == NULL){
                $tournaments == "";
@@ -57,8 +60,14 @@ class TournamentController extends Controller
         }
     }
    public function matchView($id){
+        if(Auth::user() == null){
+             return redirect(route('user.login'));
+        }
         $tournaments = Tournament::getTournamentById($id);
-
+          $stage_1 =  Admin::stage_1($id);
+          $stage_2 =  Admin::stage_2($id);
+          $stage_3 =  Admin::stage_3($id);
+          $winners =  Admin::getWinners($id);
        foreach ($tournaments as $tournament ) {
           $t = (array) $tournament;
        }
@@ -84,7 +93,7 @@ class TournamentController extends Controller
       $teams = Tournament::getTeams($id, $user_id);//команды зарегистрированные в турнир 
       
       $userdata= Tournament::checkTeam($user_id);
-       
+      
       
       $userdata = (array) $userdata;
      $members= Tournament::getMembers($userdata['team_id']);
@@ -123,7 +132,11 @@ class TournamentController extends Controller
              'checked' => $checked,
              'reg' => $reg,
              'turnir' => $turnir,
-             'members' => $members
+             'members' => $members,
+             'stages_1' => $stage_1,
+             'stages_2' => $stage_2,
+             'stages_3' => $stage_3,
+             'winners' => $winners
         ]);
    } 
 

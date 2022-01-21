@@ -5,38 +5,61 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Feedback;
 use App\Models\User;
+use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
-    public function index(){
-          $id = Auth::user()->id;
-          $mail = User::getEmail($id);
-        
-         return view('main.main', ['mail' => $mail]);
+    public function index()
+    {
+        if(Auth::user() != null){
+            $id = Auth::user()->id;
+            $mail = User::getEmail($id);
+        }
+        else $mail = null;
+     
+        return view('main.main', [
+           'mail' =>$mail
+        ]);
     }
 
-    public function feedback(){
-        $id = Auth::user()->id;
-        $mail = User::getEmail($id);
-         return view('main.feedback',[
-             'mail' => $mail,
-         ]);
+    public function feedback()
+    {
+        if (Auth::user() != null) {
+            $id = Auth::user()->id;
+            $mail = User::getEmail($id);
+        } else $mail = null;
+        return view('main.feedback', [
+            'mail' => $mail,
+        ]);
     }
 
-     public function saveFeedback(Request $request){
+    public function saveFeedback(Request $request)
+    {
         
-   $data =$request->validate([
-            
+        $data = $request->validate([
+
             'phone' => '',
             'fio' => '',
             'email' => 'required',
             'description' => '',
-           
-         ]);
-         Feedback::saveFeedback($data);
-         \Session::flash('flash_meassage', 'Отпавлено');
+
+        ]);
+        Feedback::saveFeedback($data);
+        \Session::flash('flash_meassage', 'Отпавлено');
         return redirect(route('main.feedback'));
     }
-   
+
+    public function rating(){
+        if (Auth::user() != null) {
+            $id = Auth::user()->id;
+            $mail = User::getEmail($id);
+        } else $mail = null;
+        $teams=Team::getRating();
+        
+        return view('main.rating', [
+            'mail' => $mail,
+            'teams' => $teams,
+        ]);
+    }
 }

@@ -78,4 +78,18 @@ class Team extends Model
         return  DB::table('team_members')->where('user_id', $id)->where('role', 'captain')->exists();
     }
 
+    public static function getRating(){
+
+      $is_has = DB::table('winners')->exists();
+      if ($is_has == true) {
+         return DB::table('winners')
+            ->join('team', 'winners.team_id', '=', 'team.id')
+            ->join('tournaments', 'winners.tournament_id', '=', 'tournaments.id')
+            ->select('winners.id', 'winners.points', 'team.name', 'tournaments.tournament_start',  'tournaments.name as tournaments_name', 'tournaments.timezone')
+            ->get();
+      } else return null;
+
+     
+    }
+
 }

@@ -12,7 +12,7 @@
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
-            <li><a class="dropdown-item header__txt text-dark" href="logout">выйти</a></li>
+            <li><a class="dropdown-item header__txt text-dark" href="{{route('user.logout')}}">выйти</a></li>
           </ul>
         </div>
       </div>
@@ -29,7 +29,7 @@
               </li>
 
               <li class="nav-item nav-item--active">
-                <a class="nav-link nav-white pubg-hover" aria-current="page" href="rating.html">Рейтинг</a>
+                <a class="nav-link nav-white pubg-hover" aria-current="page" href="{{route('rating')}}">Рейтинг</a>
               </li>
 
               <li class="nav-item nav-item--active ">
@@ -198,9 +198,9 @@
                     <ul class="subtitle subtitle--list">
                       <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                           @if($team->status == 'accepted')
-                            <path d="M7.93126 3.75481C8.09911 3.92266 8.09911 4.19474 7.93126 4.3625L5.04866 7.24519C4.88081 7.41295 4.60882 7.41295 4.44097 7.24519L3.06874 5.87287C2.90089 5.70511 2.90089 5.43303 3.06874 5.26527C3.2365 5.09742 3.50858 5.09742 3.67635 5.26527L4.74477 6.33369L7.32357 3.75481C7.49142 3.58705 7.7635 3.58705 7.93126 3.75481ZM11 5.5C11 8.54012 8.5397 11 5.5 11C2.45988 11 0 8.5397 0 5.5C0 2.45988 2.4603 0 5.5 0C8.54012 0 11 2.4603 11 5.5ZM10.1406 5.5C10.1406 2.93488 8.06478 0.859375 5.5 0.859375C2.93488 0.859375 0.859375 2.93522 0.859375 5.5C0.859375 8.06512 2.93522 10.1406 5.5 10.1406C8.06512 10.1406 10.1406 8.06478 10.1406 5.5Z" fill="black"></path>
+                          <path d="M7.93126 3.75481C8.09911 3.92266 8.09911 4.19474 7.93126 4.3625L5.04866 7.24519C4.88081 7.41295 4.60882 7.41295 4.44097 7.24519L3.06874 5.87287C2.90089 5.70511 2.90089 5.43303 3.06874 5.26527C3.2365 5.09742 3.50858 5.09742 3.67635 5.26527L4.74477 6.33369L7.32357 3.75481C7.49142 3.58705 7.7635 3.58705 7.93126 3.75481ZM11 5.5C11 8.54012 8.5397 11 5.5 11C2.45988 11 0 8.5397 0 5.5C0 2.45988 2.4603 0 5.5 0C8.54012 0 11 2.4603 11 5.5ZM10.1406 5.5C10.1406 2.93488 8.06478 0.859375 5.5 0.859375C2.93488 0.859375 0.859375 2.93522 0.859375 5.5C0.859375 8.06512 2.93522 10.1406 5.5 10.1406C8.06512 10.1406 10.1406 8.06478 10.1406 5.5Z" fill="black"></path>
                           @else
-                            <circle cx="5.5" cy="5.5" r="5" stroke="black"></circle>
+                          <circle cx="5.5" cy="5.5" r="5" stroke="black"></circle>
                           @endif
                         </svg>
                         {{$team->name}}
@@ -285,8 +285,144 @@
         </div>
 
       </div>
-      @component('admin.shared.modal')
+
       <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        <div class="container">
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#stage_1">1 Этап</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#stage_2">2 Этап</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#stage_3">3 Этап</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#winners">Победители</a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="stage_1">
+              @if($stages_1 != null)
+              <table class="table" style="font-size: 16px;">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Турнир</th>
+                    <th scope="col">Команда</th>
+                    <th scope="col">Группа</th>
+                    <th scope="col">Очки</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+
+                  @foreach($stages_1 as $stage_1)
+                  <tr>
+
+                    <td>{{$stage_1->tournaments_name}}</td>
+                    <td>{{$stage_1->team_name}}</td>
+                    <td>{{$stage_1->group_id}}</td>
+                    <td>{{$stage_1->points}}</td>
+
+
+
+                  </tr>
+                  @endforeach
+              </table>
+              @else Данных нет
+              @endif
+            </div>
+            <div class="tab-pane fade" id="stage_2">
+              @if($stages_2 != null)
+              <table class="table" style="font-size: 16px;">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Турнир</th>
+                    <th scope="col">Команда</th>
+
+                    <th scope="col">Очки</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+
+                  @foreach($stages_2 as $stage_2)
+                  <tr>
+
+                    <td>{{$stage_2->tournaments_name}}</td>
+                    <td>{{$stage_2->team_name}}</td>
+
+                    <td>{{$stage_2->points}}</td>
+
+
+
+                  </tr>
+                  @endforeach
+              </table>
+              @else Данных нет
+              @endif
+            </div>
+            <div class="tab-pane fade" id="stage_3">
+              @if($stages_3 != null)
+              <table class="table" style="font-size: 16px;">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Турнир</th>
+                    <th scope="col">Команда</th>
+
+                    <th scope="col">Очки</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+
+                  @foreach($stages_3 as $stage_3)
+                  <tr>
+
+                    <td>{{$stage_3->tournaments_name}}</td>
+                    <td>{{$stage_3->team_name}}</td>
+
+                    <td>{{$stage_3->points}}</td>
+
+
+                  </tr>
+                  @endforeach
+              </table>
+              @else Данных нет
+              @endif
+            </div>
+            <div class="tab-pane fade" id="winners">
+              @if($winners != null)
+              <table class="table" style="font-size: 16px;">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Турнир</th>
+                    <th scope="col">Команда</th>
+
+                    <th scope="col">Очки</th>
+
+
+                </thead>
+                <tbody>
+
+                  @foreach($winners as $winner)
+                  <tr>
+
+                    <td>{{$winner->tournaments_name}}</td>
+                    <td>{{$winner->team_name}}</td>
+
+                    <td>{{$winner->points}}</td>
+
+
+                  </tr>
+                  @endforeach
+              </table>
+              @else Данных нет
+              @endif
+            </div>
+          </div>
+        </div>
 
       </div>
       <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-config-tab">

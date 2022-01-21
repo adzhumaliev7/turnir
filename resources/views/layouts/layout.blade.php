@@ -61,13 +61,13 @@
           </a>
         </li>
         <li>
-          <a class="main__link" href="">
+          <a class="main__link" href="{{route('rating')}}">
             Рейтинг
           </a>
         </li>
 
         <li>
-          <a class="main__link" href="/?">
+          <a class="main__link" href="/{{route('help')}}">
             Помощь
           </a>
         </li>
