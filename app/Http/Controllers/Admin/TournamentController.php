@@ -19,7 +19,7 @@ class TournamentController extends Controller
         if ($tournaments == NULL) {
             $tournaments == "";
         }
-        return view('admin.home.tournament', [
+        return view('admin.home.tournament.tournament', [
             'tournaments' => $tournaments,
         ]);
     }
@@ -29,7 +29,7 @@ class TournamentController extends Controller
         if ($tournaments == NULL) {
             $tournaments == "";
         }
-        return view('admin.home.draft_tournaments', [
+        return view('admin.home.tournament.draft_tournaments', [
             'tournaments' => $tournaments,
         ]);
     }
@@ -42,7 +42,7 @@ class TournamentController extends Controller
     {
         $tournaments = Admin::getTournamentByID($id);
 
-        return view('admin.home.draft_tournaments_view', [
+        return view('admin.home.tournament.draft_tournaments_view', [
             'tournaments' => $tournaments,
             'id' => $id,
         ]);
@@ -101,9 +101,9 @@ class TournamentController extends Controller
                 'start_reg' => '',
                 'end_reg' => '',
                 'slot_kolvo' => '',
-               
+
                 'rule' => '',
-               
+
                 'tournament_start' => '',
                 'games_time' => '',
             ]);
@@ -123,7 +123,7 @@ class TournamentController extends Controller
             \Session::flash('flash_meassage', 'Турнир добавлен');
             return redirect(route('admin'));
         }
-        return view('admin.home.tournament_create', [
+        return view('admin.home.tournament.tournament_create', [
             'timezones' => $timezones,
         ]);
     }
@@ -132,7 +132,7 @@ class TournamentController extends Controller
     {
         $tournaments = Admin::getTournamentByID($id);
 
-        return view('admin.home.tournament_view', [
+        return view('admin.home.tournament.tournament_view', [
             'tournaments' => $tournaments,
             'id' => $id,
         ]);
@@ -174,30 +174,29 @@ class TournamentController extends Controller
     public function tournamentTeams($id)
     {
         $teams = Admin::getTournamentsTeams($id);
-       
-        return view('admin.home.tournaments_teams', [
+
+        return view('admin.home.tournament.tournaments_teams', [
             'teams' => $teams,
-           
+
         ]);
     }
     public function tournamentTeamsCard($id, $turnir_id)
     {
-       $team= Admin::getTeamById($id);
-       $members = Admin::geTeamMembers($id, $turnir_id); 
-       $user_id  = Admin::geTeamMembersUserid($id, $turnir_id);
-       
-      foreach ($user_id as $user => $value) {
-            $user_id=$value;
-      }
+        $team = Admin::getTeamById($id);
+        $members = Admin::geTeamMembers($id, $turnir_id);
+        $user_id  = Admin::geTeamMembersUserid($id, $turnir_id);
      
-        return view('admin.home.tournaments_team_card', [
+        foreach ($user_id as $user => $value) {
+            $user_id = $value;
+        }
+
+        return view('admin.home.tournament.tournaments_team_card', [
             'team' => $team,
             'members' => $members,
             'team_id' => $id,
             'tournament_id' => $turnir_id,
             'user_id' => $user_id
         ]);
-        
     }
 
     public function applyTeam($id, $turnir_id)
@@ -220,7 +219,6 @@ class TournamentController extends Controller
 
     public function refuseTeam($id, $turnir_id, $user_id, Request $request)
     {
-        
         $email = Admin::getUsersEmail($user_id);
         foreach ($email as $key => $value) {
             $email = (array) $value;
@@ -228,13 +226,13 @@ class TournamentController extends Controller
                 $em = $value;
             }
         }
-        
+
         $text = $request->input('text');
         Mail::to($em)->send(new VerifiedMail($em, $text));
-     
+
 
         Admin::refuseTeam($id, $turnir_id);
-       return redirect(route('admin_tournament')); 
+        return redirect(route('admin_tournament'));
     }
 
     public function startTest($turnir_id)
@@ -248,13 +246,13 @@ class TournamentController extends Controller
     }
     public function createStage2($turnir_id)
     {
-         $datas =  Admin::getStage_1($turnir_id);
+        $datas =  Admin::getStage_1($turnir_id);
 
         // dd($data);
-         foreach ($datas  as $key => $value) {
+        foreach ($datas  as $key => $value) {
             $data[] = (array)$value;
-        } 
-       // var_dump($data);
+        }
+        // var_dump($data);
         Admin::setStage_2($turnir_id, $data);
         return redirect(route('stages', $turnir_id));
     }
@@ -279,8 +277,8 @@ class TournamentController extends Controller
         foreach ($datas  as $key => $value) {
             $data[] = (array)$value;
         }
-       
-       /*  Admin::setWinners($turnir_id, $data);
+
+        /*  Admin::setWinners($turnir_id, $data);
         Admin::changeTournamentStatus($turnir_id);
         return redirect(route('stages', $turnir_id)); */
     }
@@ -290,33 +288,34 @@ class TournamentController extends Controller
         $stage_2 =  Admin::stage_2($turnir_id);
         $stage_3 =  Admin::stage_3($turnir_id);
         $winners =  Admin::getWinners($turnir_id);
-      
-        return view('admin.home.stages.stages',[
-                    'turnir_id' => $turnir_id,
-                    'stages_1' => $stage_1,
-                    'stages_2' => $stage_2,
-                    'stages_3' => $stage_3,
-                    'winners' => $winners
+
+        return view('admin.home.stages.stages', [
+            'turnir_id' => $turnir_id,
+            'stages_1' => $stage_1,
+            'stages_2' => $stage_2,
+            'stages_3' => $stage_3,
+            'winners' => $winners
         ]);
     }
     public function stage_1($turnir_id)
     {
         $stage_1 =  Admin::stage_1($turnir_id);
-       
+
         return view('admin.home.stages.stage_1', [
             'turnir_id' => $turnir_id,
             'stages_1' => $stage_1,
-           
+
         ]);
     }
 
-    public function update_stage($turnir_id,Request $request){
+    public function update_stage($turnir_id, Request $request)
+    {
 
         foreach ($request->input('data') as $id => $row) {
             \DB::table('stage_1')->where('id', $id)->update($row);
         }
         return redirect(route('stages', $turnir_id));
-       /*  //$team_id = $request->input('team_id');
+        /*  //$team_id = $request->input('team_id');
        // $point = $request->input('points');
      /*  foreach ($point as $key => $value) {
           $points[]['points'] = $value;
@@ -325,7 +324,7 @@ class TournamentController extends Controller
             $teams_id[]['team_id'] = $value;
       } */
         //$data = array_map('array_merge', $teams_id, $points);
-    //  dd($point);
+        //  dd($point);
         //Admin::setPointsStage_1($turnir_id, $data); */
 
     }

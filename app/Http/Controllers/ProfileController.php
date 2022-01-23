@@ -13,13 +13,22 @@ class ProfileController extends Controller
   public function index()
   {
     $id = Auth::user()->id;
+    $active = Auth::user()->verified;
+    $user_name = Auth::user()->name;
+   
+   
     $mail = User::getEmail($id);
     $data = UsersProfile::getById($id);
     $timezones = config('app.timezones');
     $teams = Team::getTeamById($id);
     $verification_status = UsersProfile::checkVerification($id);
     $tournaments = UsersProfile::getTeamById($id);
-
+  
+   foreach ($tournaments as $tournament) {
+      $tournament_id = (array) $tournament;
+   }
+ 
+    $teams_count = UsersProfile::getTeamsCount($tournament_id['tournaments_id']);
     return view('main.profile', [
       'mail' => $mail,
       'data' => $data,
@@ -27,7 +36,10 @@ class ProfileController extends Controller
       'user_id' => $id,
       'tournaments' => $tournaments,
       'verification_status' => $verification_status,
-      'timezones' => $timezones
+      'timezones' => $timezones,
+      'active' => $active,
+      'user_name' => $user_name,
+      'teams_count' => $teams_count
     ]);
   }
 

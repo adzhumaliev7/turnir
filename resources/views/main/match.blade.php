@@ -7,9 +7,18 @@
       <div class="account-pubg__bg account__bg d-flex justify-content-end px-4">
 
         <div class="dropdown">
+          @if($mail != null)
           <button class="header__line header__txt button--none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
             {{$mail->email}}
           </button>
+          @else
+          <a href="{{route('user.login')}}" class="header__line header__txt " type="button">
+            Войти
+          </a>
+          <a href="{{route('user.registration')}}" class="header__line header__txt " type="button">
+            Регистрация
+          </a>
+          @endif
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
             <li><a class="dropdown-item header__txt text-dark" href="{{route('user.logout')}}">выйти</a></li>
@@ -127,9 +136,13 @@
             <form method="POST" action="{{route('join', $tournament->id)}}">
               @csrf
               <select name="members[]" id="" multiple>
+                @if($members != null)
                 @foreach($members as $member)
-                <option value="{{$member->user_id}}">{{$member->login}}</option>
+                <option value="{{$member->user_id}}">{{$member->name}}</option>
                 @endforeach
+                @else
+                <h3>Нет данных</h3>
+                @endif
               </select>
               <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
             </form>
@@ -288,6 +301,56 @@
 
       <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
         <div class="container">
+
+
+
+          @if($teams != "")
+          @foreach($teams as $team)
+
+
+          <ul class="subtitle subtitle--list">
+            <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                @if($team->status == 'accepted')
+                <path d="M7.93126 3.75481C8.09911 3.92266 8.09911 4.19474 7.93126 4.3625L5.04866 7.24519C4.88081 7.41295 4.60882 7.41295 4.44097 7.24519L3.06874 5.87287C2.90089 5.70511 2.90089 5.43303 3.06874 5.26527C3.2365 5.09742 3.50858 5.09742 3.67635 5.26527L4.74477 6.33369L7.32357 3.75481C7.49142 3.58705 7.7635 3.58705 7.93126 3.75481ZM11 5.5C11 8.54012 8.5397 11 5.5 11C2.45988 11 0 8.5397 0 5.5C0 2.45988 2.4603 0 5.5 0C8.54012 0 11 2.4603 11 5.5ZM10.1406 5.5C10.1406 2.93488 8.06478 0.859375 5.5 0.859375C2.93488 0.859375 0.859375 2.93522 0.859375 5.5C0.859375 8.06512 2.93522 10.1406 5.5 10.1406C8.06512 10.1406 10.1406 8.06478 10.1406 5.5Z" fill="black"></path>
+                @else
+                <circle cx="5.5" cy="5.5" r="5" stroke="black"></circle>
+                @endif
+              </svg>
+              {{$team->name}}
+            </li>
+            <!-- <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M7.93126 3.75481C8.09911 3.92266 8.09911 4.19474 7.93126 4.3625L5.04866 7.24519C4.88081 7.41295 4.60882 7.41295 4.44097 7.24519L3.06874 5.87287C2.90089 5.70511 2.90089 5.43303 3.06874 5.26527C3.2365 5.09742 3.50858 5.09742 3.67635 5.26527L4.74477 6.33369L7.32357 3.75481C7.49142 3.58705 7.7635 3.58705 7.93126 3.75481ZM11 5.5C11 8.54012 8.5397 11 5.5 11C2.45988 11 0 8.5397 0 5.5C0 2.45988 2.4603 0 5.5 0C8.54012 0 11 2.4603 11 5.5ZM10.1406 5.5C10.1406 2.93488 8.06478 0.859375 5.5 0.859375C2.93488 0.859375 0.859375 2.93522 0.859375 5.5C0.859375 8.06512 2.93522 10.1406 5.5 10.1406C8.06512 10.1406 10.1406 8.06478 10.1406 5.5Z" fill="black"></path>
+                                  </svg>
+                                  участник 2</li>
+                              <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="5.5" cy="5.5" r="5" stroke="black"></circle>
+                                  </svg>
+                                  участник 3</li>
+                              <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="5.5" cy="5.5" r="5" stroke="black"></circle>
+                                  </svg>
+                                  участник 4</li>
+                              <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M7.93126 3.75481C8.09911 3.92266 8.09911 4.19474 7.93126 4.3625L5.04866 7.24519C4.88081 7.41295 4.60882 7.41295 4.44097 7.24519L3.06874 5.87287C2.90089 5.70511 2.90089 5.43303 3.06874 5.26527C3.2365 5.09742 3.50858 5.09742 3.67635 5.26527L4.74477 6.33369L7.32357 3.75481C7.49142 3.58705 7.7635 3.58705 7.93126 3.75481ZM11 5.5C11 8.54012 8.5397 11 5.5 11C2.45988 11 0 8.5397 0 5.5C0 2.45988 2.4603 0 5.5 0C8.54012 0 11 2.4603 11 5.5ZM10.1406 5.5C10.1406 2.93488 8.06478 0.859375 5.5 0.859375C2.93488 0.859375 0.859375 2.93522 0.859375 5.5C0.859375 8.06512 2.93522 10.1406 5.5 10.1406C8.06512 10.1406 10.1406 8.06478 10.1406 5.5Z" fill="black"></path>
+                                  </svg>
+                                  участник 5</li> -->
+          </ul>
+          @endforeach
+          @else
+          <span class="subtitle subtitle--semi-medium">Нет команд</span>
+          @endif
+
+        </div>
+      </div>
+      <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-config-tab">
+        <div style="font-size: 16px;" class="container">
+          @foreach($tournaments as $tournament)
+          <span>{{$tournament->rule}}</span>
+          @endforeach
+        </div>
+      </div>
+      <div class="tab-pane fade" id="nav-config" role="tabpanel" aria-labelledby="nav-config-tab">
+        <div class="container">
           <ul class="nav nav-tabs">
             <li class="nav-item">
               <a class="nav-link active" data-toggle="tab" href="#stage_1">1 Этап</a>
@@ -330,7 +393,7 @@
                   </tr>
                   @endforeach
               </table>
-              @else Данных нет
+              @else <span style="font-size: 16px;">Данных нет</span>
               @endif
             </div>
             <div class="tab-pane fade" id="stage_2">
@@ -360,7 +423,7 @@
                   </tr>
                   @endforeach
               </table>
-              @else Данных нет
+              @else <span style="font-size: 16px;">Данных нет</span>
               @endif
             </div>
             <div class="tab-pane fade" id="stage_3">
@@ -389,7 +452,7 @@
                   </tr>
                   @endforeach
               </table>
-              @else Данных нет
+              @else <span style="font-size: 16px;">Данных нет</span>
               @endif
             </div>
             <div class="tab-pane fade" id="winners">
@@ -422,15 +485,6 @@
               @endif
             </div>
           </div>
-        </div>
-
-      </div>
-      <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-config-tab">
-
-      </div>
-      <div class="tab-pane fade" id="nav-config" role="tabpanel" aria-labelledby="nav-config-tab">
-        <div class="container">
-          <span>Настройки успешно установленны!</span>
         </div>
       </div>
     </div>

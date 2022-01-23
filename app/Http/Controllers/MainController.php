@@ -47,7 +47,7 @@ class MainController extends Controller
         ]);
         Feedback::saveFeedback($data);
         \Session::flash('flash_meassage', 'Отпавлено');
-        return redirect(route('main.feedback'));
+        return redirect(route('feedback'));
     }
 
     public function rating(){

@@ -42,13 +42,17 @@ class UsersProfile extends Model
             ->join('team','team_members.team_id','=','team.id')
             ->join('tournamets_team','team_members.team_id','=','tournamets_team.team_id')
             ->join('tournaments','tournamets_team.tournament_id','=','tournaments.id')
-            ->select('team_members.team_id','team_members.user_id', 'team.id', 'team.name','tournaments.name', 'tournaments.tournament_start' , 'tournaments.country' ,'tournaments.timezone'  ,'tournaments.price' )
+            ->select('team_members.team_id','team_members.user_id', 'team.id', 'team.name','tournaments.name', 'tournaments.format', 'tournaments.id as tournaments_id', 'tournaments.tournament_start', 'tournaments.slot_kolvo','tournaments.country' ,'tournaments.timezone'  ,'tournaments.price', 'tournaments.active' )
             ->where('team_members.user_id', $id)
             ->get();
        }
        else {
           return NULL;
        }
+   }
+   
+   public static function getTeamsCount($id){
+      return DB::table('tournamets_team')->where('tournament_id', $id)->where('status', 'accepted')->count();
    }
 
    public function checkVerification($id){

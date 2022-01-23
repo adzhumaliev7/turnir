@@ -32,19 +32,30 @@ class HomeController extends Controller
       $users == "";
     }
     // dd($users, User::all());
-    return view('admin.home.users', [
+    return view('admin.home.users.users', [
+      'users' => $users
+    ]);
+  }
+  public function allUsers()
+  {
+    $users = Admin::getAllUsers();
+  
+    if ($users == NULL) {
+      $users == "";
+    }
+    // dd($users, User::all());
+    return view('admin.home.users.all_users', [
       'users' => $users
     ]);
   }
 
+
   public function addBan($id, Request $request)
   {
-
-
     //  var_dump($id);
     $email = Admin::getUsersEmail($id);
     foreach ($email as $key => $value) {
-      $email = (array) $value;
+      $email = (array) $value;  
       foreach ($email as $key => $value) {
         $em = $value;
       }
@@ -86,8 +97,8 @@ class HomeController extends Controller
   public function userCard($id)
   {
     $users = Admin::getById($id);
-  
-    return view('admin.home.user_card', [
+
+    return view('admin.home.users.user_card', [
       'users' => $users
     ]);
   }
@@ -100,17 +111,17 @@ class HomeController extends Controller
   public function rejected($id, Request $request)
   {
     $email = Admin::getUsersEmail($id);
-     foreach ($email as $key => $value) {
+    foreach ($email as $key => $value) {
       $email = (array) $value;
       foreach ($email as $key => $value) {
         $em = $value;
       }
     }
-  
-     $text = $request->input('text');
+
+    $text = $request->input('text');
     Mail::to($em)->send(new BanMail($em, $text));
     Admin::rejected($id);
-    return redirect()->to(route('users')); 
+    return redirect()->to(route('users'));
   }
 
 
@@ -118,14 +129,14 @@ class HomeController extends Controller
   {
     $moderators = Admin::getModerators();
 
-    return view('admin.home.moderators', [
+    return view('admin.home.moderators.moderators', [
       'moderators' => $moderators,
     ]);
   }
   public function createModerators()
   {
 
-    return view('admin.home.create_moderators');
+    return view('admin.home.moderators.create_moderators');
   }
   public function saveModerator(Request $request)
   {
@@ -154,13 +165,13 @@ class HomeController extends Controller
     if ($help == NULL) {
       $help == "";
     }
-    return view('admin.home.help', [
+    return view('admin.home.help.help', [
       'help' => $help,
     ]);
   }
   public function createHelp()
   {
-    return view('admin.home.create_help');
+    return view('admin.home.help.create_help');
   }
 
   public function saveHelp(Request $request)
@@ -182,7 +193,7 @@ class HomeController extends Controller
   {
 
     $help = Admin::getHelpById($id);
-    return view('admin.home.edit_help', [
+    return view('admin.home.help.edit_help', [
       'help' => $help,
     ]);
   }

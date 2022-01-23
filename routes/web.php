@@ -55,7 +55,7 @@ Route::get('/addmembers/{id}', [\App\Http\Controllers\TeamController::class, 'ad
 Route::get('/team/exit/{id}', [\App\Http\Controllers\TeamController::class, 'exitTeam'])->name('exit_team');
 Route::get('/team/delete/{id}', [\App\Http\Controllers\TeamController::class, 'deleteMember'])->name('delete_member');
 Route::post('/team/delete_team/{id}', [\App\Http\Controllers\TeamController::class, 'deleteTeam'])->name('delete_team');
-Route::get('/team/add_admin/{id}{team_id}', [\App\Http\Controllers\TeamController::class, 'addAdmin'])->name('add_admin');
+Route::get('/team/add_admin/{id}/{team_id}', [\App\Http\Controllers\TeamController::class, 'addAdmin'])->name('add_admin');
 Route::get('/tournament', [\App\Http\Controllers\TournamentController::class, 'index'])->name('tournament');
 Route::any('tournament/create_order', [\App\Http\Controllers\TournamentController::class, 'createTournament'])->name('create_order');
 Route::post('tournament/create_order/save', [\App\Http\Controllers\TournamentController::class, 'saveTournament'])->name('save_order');
@@ -70,6 +70,7 @@ Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(functi
     Route::get('/', [\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin');
     //  Route::get('/users',[\App\Http\Controllers\Admin\HomeController::class, 'usersView']);
     Route::get('/users', [\App\Http\Controllers\Admin\HomeController::class, 'usersView'])->name('users');
+    Route::get('/allusers', [\App\Http\Controllers\Admin\HomeController::class, 'allUsers'])->name('allusers');
     Route::post('/users/add_ban/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'addBan'])->name('add_ban');
     Route::get('/users/unblock/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'unblock'])->name('unblock');
     Route::get('/teams', [\App\Http\Controllers\Admin\HomeController::class, 'teamsView'])->name('teams');

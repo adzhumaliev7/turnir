@@ -42,6 +42,14 @@ class Admin extends Model
       } else return NULL;
    }
 
+   public static function getAllUsers()
+   {
+      $is_has = DB::table('users')->exists();
+      if ($is_has == true) {
+         return DB::table('users')->select()->get();
+      } else return NULL;
+   }
+
    public static function getModerators()
    {
 
@@ -140,18 +148,17 @@ class Admin extends Model
    public static function geTeamMembers($team_id, $tournament_id)
    {
       return DB::table('tournaments_members')
-      ->join('users_profile2', 'tournaments_members.user_id', '=' , 'users_profile2.user_id')
+      ->join('users', 'tournaments_members.user_id', '=' , 'users.id')
       ->join('team_members', 'tournaments_members.user_id', '=' , 'team_members.user_id')
-      ->select('users_profile2.login', 'team_members.user_id', 'team_members.role')
+      ->select('users.name', 'team_members.user_id', 'team_members.role')
       ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)
       ->get();
    }
    public static function geTeamMembersUserid($team_id, $tournament_id)
    {
       return DB::table('tournaments_members')
-      ->join('users_profile2', 'tournaments_members.user_id', '=', 'users_profile2.user_id')
       ->join('team_members', 'tournaments_members.user_id', '=', 'team_members.user_id')
-      ->join('users', 'tournaments_members.user_id', '=', 'team_members.user_id')
+     
       ->select('team_members.user_id'  )
       ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)->where('team_members.role', 'captain')
          ->first();

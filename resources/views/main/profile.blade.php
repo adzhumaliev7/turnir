@@ -52,16 +52,26 @@
           <div class="header__nick">
             @if(!$data==NULL)
             @foreach($data as $dat)
-            <h1 class="title text-capitalize font-sz">{{$dat->fio}}</h1>
-            <sub class="subtitle"><? if ($dat->verification == 'verified') {
-                                    echo "Верифицирован";
-                                  } else {
-                                    echo "Не верифицирован";
-                                  } ?></sub>
+            <h1 class="title  text-capitalize font-sz text--responsive">{{$user_name}}</h1>
+            <sub class="subtitle subtitle--gray text--responsive"><? if ($dat->verification == 'verified') {
+                                                                    echo "Верифицирован";
+                                                                  } else {
+                                                                    echo "Не верифицирован";
+                                                                  } ?></sub>
+            <sub class="subtitle subtitle--gray text--responsive"><? if ($active == 1) {
+                                                                    echo "Активирован";
+                                                                  } else {
+                                                                    echo "Не Активирован";
+                                                                  } ?></sub>
             @endforeach
             @else
-            <h1 class="title text-capitalize font-sz">Имя Пользователя</h1>
-            <sub class="subtitle">Не верифицирован</sub>
+            <h1 class="title text-capitalize font-sz">{{$user_name}}</h1>
+            <sub class="subtitle subtitle--gray text--responsive">Не верифицирован</sub>
+            <sub class="subtitle subtitle--gray text--responsive"><? if ($active == 1) {
+                                                                    echo "Активирован";
+                                                                  } else {
+                                                                    echo "Не Активирован";
+                                                                  } ?></sub>
             @endif
             <p class="subtitle text--responsive text-light">
 
@@ -240,9 +250,6 @@
                 <input name="bdate" placeholder="Дата рождения" type="date" class="form-control input__profile subtitle fw-normal" id="">
 
               </div>
-
-
-
             </div>
 
 
@@ -298,14 +305,14 @@
           @if(Session::has('flash_meassage_error'))
           <div class="alert alert-danger">{{Session::get('flash_meassage_error')}}</div>
           @endif
-          @if($verification_status == 'true')
+          @if($active == 1)
           <form method="POST" action="{{action('App\Http\Controllers\ProfileController@createTeam') }}">
             @csrf
             <input class="input-footer" name="name" placeholder="Название команды" type="text" style="margin-top:20px;">
             <button class="submit-btn btn--size btn--mr">Создать</button>
           </form>
           @else
-          <h4>Для создания команды Вы должны быть верефицированы</h4>
+          <h4>Для создания команды Вы должны пройти активацию</h4>
           @endif
 
         </div>
@@ -327,6 +334,7 @@
               <td class="subtitle pubg-bg--orange">Формат</td>
               <td class="subtitle pubg-bg--orange">Участники</td>
               <td class="subtitle pubg-bg--orange">Приз</td>
+              <td class="subtitle pubg-bg--orange">Статус</td>
               <td class="subtitle"></td>
             </tr>
             <tr class="bg-orange">
@@ -336,17 +344,23 @@
               <td class="subtitle fw-normal">
                 {{$tournament->tournament_start}} {{$tournament->timezone}}
               </td>
-              <td class="subtitle fw-normal"></td>
-              <td class="subtitle fw-norma l"></td>
+              <td class="subtitle fw-normal">{{$tournament->format}}</td>
+              <td class="subtitle fw-norma l">{{$teams_count}} / {{$tournament->slot_kolvo}}</td>
               <td class="subtitle fw-normal">{{$tournament->price}}</td>
-              <td>
+              <td class="subtitle fw-normal">
+                @if($tournament->active == 1) 
+                  Активен
+                @else Закончен
+                @endif
+              </td>
+            <!--   <td>
                 <button class="button--none">
                   <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12.2708 14.25H11.4792C11.2606 14.25 11.0833 14.4272 11.0833 14.6458V17.4167H1.58335V1.58335H11.0833V4.35419C11.0833 4.5728 11.2606 4.75004 11.4792 4.75004H12.2708C12.4895 4.75004 12.6667 4.5728 12.6667 4.35419V1.58335C12.6667 0.7089 11.9578 0 11.0833 0H1.58335C0.7089 0 0 0.7089 0 1.58335V17.4167C0 18.2911 0.7089 19 1.58335 19H11.0833C11.9578 19 12.6667 18.2911 12.6667 17.4167V14.6458C12.6667 14.4272 12.4895 14.25 12.2708 14.25Z" fill="black"></path>
                     <path d="M18.8717 9.20817L14.1217 4.85402C14.0057 4.74848 13.8376 4.7195 13.6949 4.78366C13.5511 4.84667 13.4583 4.98891 13.4583 5.14585V5.93754C13.4583 6.04965 13.5059 6.15671 13.5894 6.23171L16.3411 8.70839H5.14585C4.92705 8.70839 4.75 8.88543 4.75 9.10423V9.89588C4.75 10.1147 4.92705 10.2917 5.14585 10.2917H16.3411L13.5894 12.7684C13.5059 12.8434 13.4583 12.9505 13.4583 13.0626V13.8542C13.4583 14.0112 13.5511 14.1534 13.6949 14.2164C13.7459 14.2392 13.8005 14.25 13.8542 14.25C13.9512 14.25 14.0471 14.2141 14.1217 14.1461L18.8717 9.7919C18.9536 9.71691 19 9.611 19 9.50004C19 9.38908 18.9536 9.28317 18.8717 9.20817Z" fill="black"></path>
                   </svg>
                 </button>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>

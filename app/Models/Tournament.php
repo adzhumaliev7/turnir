@@ -55,8 +55,8 @@ class Tournament extends Model
   public static function getMembers($team_id)
   {
       return  DB::table('team_members')
-      ->join('users_profile2', 'team_members.user_id' , '=' , 'users_profile2.user_id')
-      ->select('team_members.team_id', 'team_members.user_id', 'users_profile2.login'  )
+      ->join('users', 'team_members.user_id' , '=' , 'users.id')
+      ->select('team_members.team_id', 'team_members.user_id', 'users.name'  )
       ->where('team_id', $team_id)->get();
   }
 }

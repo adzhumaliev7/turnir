@@ -77,9 +77,11 @@
                         <td class="subtitle pubg-bg--orange border--none">Kills</td>
                         <td class="subtitle bg--pubg-orange border--none">Points</td>
                     </tr>
+
                     <tr class="bg-orange">
 
                         <!-- cell 1 -->
+                        @if($teams != NULL)
                         @foreach($teams as $team)
                         <th class="subtitle fw-meduim" scope="row">
                             {{$team->name}}
@@ -102,9 +104,9 @@
 
                         @endforeach
                     </tr>
-
-                    <!-- cell 2 -->
-
+                    @else
+                    <h1 class="title text-capitalize font-sz text--responsive text-light px-4">Нет данных</h1>
+                    @endif
 
 
                 </tbody>
