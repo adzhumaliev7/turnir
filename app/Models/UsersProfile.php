@@ -62,5 +62,8 @@ class UsersProfile extends Model
        }
        else return false;
    }
+   public static function updateProfile($id, $data){
+      return DB::table('users_profile2')->where('user_id',$id)->update($data);
+   }
    
 }

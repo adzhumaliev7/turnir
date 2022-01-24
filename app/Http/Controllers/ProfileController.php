@@ -7,6 +7,7 @@ use App\Models\UsersProfile;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
@@ -23,12 +24,17 @@ class ProfileController extends Controller
     $teams = Team::getTeamById($id);
     $verification_status = UsersProfile::checkVerification($id);
     $tournaments = UsersProfile::getTeamById($id);
-  
+  if($tournaments != null){
    foreach ($tournaments as $tournament) {
       $tournament_id = (array) $tournament;
    }
- 
-    $teams_count = UsersProfile::getTeamsCount($tournament_id['tournaments_id']);
+      $teams_count = UsersProfile::getTeamsCount($tournament_id['tournaments_id']);
+  }else {
+    $tournaments = null;
+    $teams_count = null;
+  }
+  
+    
     return view('main.profile', [
       'mail' => $mail,
       'data' => $data,
@@ -42,48 +48,106 @@ class ProfileController extends Controller
       'teams_count' => $teams_count
     ]);
   }
-
+  protected function validator(array $data)
+  {
+    return Validator::make($data, [
+      'email' => ['unique:users_profile2'],
+      'game_id' => ['unique:users_profile2'],
+    ]);
+  }
   public function saveProfile(Request $request)
   {
-
+    
     if ($request->isMethod('post')) {
 
-      if ($request->hasFile('doc_photo')) {
+      if ($request->hasFile('doc_photo') == true && $request->hasFile('doc_photo2') == true) {
         $file_name = $request->file('doc_photo')->getClientOriginalName();
         $file = $request->file('doc_photo');
         $file->move(public_path() . '/uploads/storage/img', $file_name);
-      }
-      if ($request->hasFile('doc_photo2')) {
+      
+    
         $file_name2 = $request->file('doc_photo2')->getClientOriginalName();
-        $file = $request->file('doc_photo2');
-        $file->move(public_path() . '/uploads/storage/img', $file_name2);
-      }
+        $file2 = $request->file('doc_photo2');
+        $file2->move(public_path() . '/uploads/storage/img', $file_name2);
+        $data['doc_photo'] = $file_name;
+        $data['doc_photo2'] = $file_name2;
+      } //else  return back()->withError('Документ: ' . $request->input('photo_error') . 'Загрузите фото удостоверения личности с двух сторон')->withInput();
+    }
 
+    $this->validator($request->all())->validate();
       $data = $request->validate([
         'doc_photo' => '',
         'doc_photo2' => '',
-        'phone' => 'required',
-        'fio' => 'required',
-        'login' => 'required',
-        'email' => 'required|email',
+        'phone' => '',
+        'fio' => '',
+        'login' => '',
+        'email' => '',
         'country' => '',
         'timezone' => '',
         'city' => '',
         'bdate' => '',
-        'nickname' => 'required',
-        'game_id' => 'required'
+        'nickname' => '',
+        'game_id' => ''
+      
       ]);
       $id = Auth::user()->id;
       $data['verification'] = 'on_check';
       $data['user_id'] = $id;
-      $data['doc_photo'] = $file_name;
-      $data['doc_photo2'] = $file_name2;
-      try {
+      $data['status'] = 1;
+    
+     // try {
         UsersProfile::saveProfile($data);
-      } catch (\Illuminate\Database\QueryException  $exception) {
-        return back()->withError('Email ' . $request->input('email') . ' уже занят')->withInput();
+     /*  } catch (\Illuminate\Database\QueryException  $exception) {
+        return back()->withError('Email ' . $request->input('email') . ' уже занят'. $exception)->withInput();
+      } */
+    
+
+    \Session::flash('flash_meassage', 'Сохранено');
+    return redirect(route('profile')); 
+  }
+
+  public function updateProfile(Request $request)
+  {
+
+    if ($request->isMethod('post')) {
+
+      if ($request->hasFile('doc_photo') == true && $request->hasFile('doc_photo2') == true) {
+        $file_name = $request->file('doc_photo')->getClientOriginalName();
+        $file = $request->file('doc_photo');
+        $file->move(public_path() . '/uploads/storage/img', $file_name);
+
+
+        $file_name2 = $request->file('doc_photo2')->getClientOriginalName();
+        $file2 = $request->file('doc_photo2');
+        $file2->move(public_path() . '/uploads/storage/img', $file_name2);
       }
     }
+
+
+    $data = $request->validate([
+      'doc_photo' => '',
+      'doc_photo2' => '',
+      'phone' => '',
+      'fio' => '',
+      'login' => '',
+      'email' => '',
+      'country' => '',
+      'timezone' => '',
+      'city' => '',
+      'bdate' => '',
+      'nickname' => '',
+      'game_id' => ''
+    ]);
+    $id = Auth::user()->id;
+  
+    $data['user_id'] = $id;
+   
+    try {
+      UsersProfile::updateProfile($id, $data);
+    } catch (\Illuminate\Database\QueryException  $exception) {
+      return back()->withError('Email ' . $request->input('email') . ' уже занят')->withInput();
+    }
+
 
     \Session::flash('flash_meassage', 'Сохранено');
     return redirect(route('profile'));

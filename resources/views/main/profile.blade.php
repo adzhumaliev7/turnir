@@ -158,36 +158,107 @@
           @endif
 
           <h4 class="input-title"><? echo $h4; ?></h4>
-          <form method="POST" action="{{action('App\Http\Controllers\ProfileController@saveProfile') }}" enctype="multipart/form-data" <? echo $style; ?>>
+          @if(!$data==NULL)
+
+          <form method="POST" action="{{route('update_profile')}}" enctype="multipart/form-data">
             @csrf
-
-
+            @foreach($data as $dat)
             <div class="row">
-
               <div class="col-lg">
-
                 <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="doc_photo">
                 <label class="subtitle" for="fileInput">Фото документа(паспорт, права id)</label>
-
               </div>
               <div class="col-lg">
-
                 <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput2" name="doc_photo2">
                 <label class="subtitle" for="fileInput2">фото с документом</label>
               </div>
             </div>
-
-
-            <h2 class="title letter-spacing--none my-2">
-
-              Основная информация
-
-            </h2>
-
+            <div class="row size_16px">
+              <input type="hidden" class="form-control input__profile subtitle fw-normal " name="photo_error">
+            </div>
+            <h2 class="title letter-spacing--none my-2"> Основная информация</h2>
             <div class="row mt-4">
-
               <div class="col-lg-6">
+                <input name="phone" placeholder="Номер телефона" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->phone}}">
+                @error('phone')
+                <div class="alert alert-danger">{{$message}}</div>
+                @enderror
+              </div>
+              <div class="col-lg-6">
+                <input name="fio" placeholder="Имя Фамилия" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->fio}}">
+                @error('fio')
+                <div class="alert alert-danger">{{$message}}</div>
+                @enderror
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-lg-6">
+                <input name="login" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->login}}">
+                @error('login')
+                <div class="alert alert-danger">{{$message}}</div>
+                @enderror
+              </div>
+              <div class="col-lg-6">
+                <input name="email" placeholder="Email" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->email}}">
+                @error('email')
+                <div class="alert alert-danger">{{$message}}</div>
+                @enderror
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-lg-6">
+                <input name="country" placeholder="Страна" type="text " class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->country}}">
+              </div>
+              <div class="col-lg-6">
+                <select name="timezone" id="" class="size_16px">
+                  @foreach($timezones as $timezone1)
+                  <option value="{{$timezone1}}">{{$dat->timezone}}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-lg-6">
+                <input name="city" placeholder="Город" type="text " class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->city}}">
+              </div>
+              <div class="col-lg-6">
+                <input name="bdate" placeholder="Дата рождения" type="date" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->bdate}}">
+              </div>
+            </div>
+            <h2 class="title letter-spacing--none indent--row">
+              Игровой профиль PUBG MOBILE
+            </h2>
+            <div class="row">
+              <div class="col-lg">
+                <input placeholder="Nick name" name="nickname" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->nickname}}">
+              </div>
+              <div class="col-lg">
+                <input placeholder="ID игрока в PUBG Mobile" type="text" name="game_id" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->game_id}}">
+              </div>
+            </div>
+            @endforeach
+            <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Добавить данные </button>
+          </form>
 
+          @else
+          <form method="POST" action="{{route('create_profile')}}" enctype="multipart/form-data">
+            @csrf
+            <div class="row">
+              <div class="col-lg">
+                <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="doc_photo">
+                <label class="subtitle" for="fileInput">Фото документа(паспорт, права id)</label>
+              </div>
+              <div class="col-lg">
+                <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput2" name="doc_photo2">
+                <label class="subtitle" for="fileInput2">фото с документом</label>
+              </div>
+            </div>
+            <div class="row size_16px">
+              <input type="hidden" class="form-control input__profile subtitle fw-normal " name="photo_error">
+            </div>
+            <h2 class="title letter-spacing--none my-2"> Основная информация </h2>
+            <div class="row mt-4">
+              <div class="col-lg-6">
                 <input name="phone" placeholder="Номер телефона" type="tel" class="form-control input__profile subtitle fw-normal" id="">
                 @error('phone')
                 <div class="alert alert-danger">{{$message}}</div>
@@ -200,15 +271,9 @@
                 <div class="alert alert-danger">{{$message}}</div>
                 @enderror
               </div>
-
-
-
             </div>
-
             <div class="row mt-4">
-
               <div class="col-lg-6">
-
                 <input name="login" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="">
                 @error('login')
                 <div class="alert alert-danger">{{$message}}</div>
@@ -227,49 +292,39 @@
                 <input name="country" placeholder="Страна" type="text " class="form-control input__profile subtitle fw-normal" id="">
               </div>
               <div class="col-lg-6">
-                <select name="timezone" id="">
+                <select name="timezone" id="" class="size_16px">
                   @foreach($timezones as $timezone)
                   <option value="{{$timezone}}">{{$timezone}}</option>
                   @endforeach
                 </select>
-
               </div>
-
-
             </div>
-
             <div class="row mt-4">
-
               <div class="col-lg-6">
-
                 <input name="city" placeholder="Город" type="text " class="form-control input__profile subtitle fw-normal" id="">
-
               </div>
               <div class="col-lg-6">
-
                 <input name="bdate" placeholder="Дата рождения" type="date" class="form-control input__profile subtitle fw-normal" id="">
-
               </div>
             </div>
-
-
-
-
             <h2 class="title letter-spacing--none indent--row">
               Игровой профиль PUBG MOBILE
             </h2>
-
             <div class="row">
               <div class="col-lg">
                 <input placeholder="Nick name" name="nickname" type="text" class="form-control input__profile subtitle fw-normal" id="">
               </div>
               <div class="col-lg">
-                <input value="1244351" type="text" name="game_id" class="form-control input__profile subtitle fw-normal" id="">
+                <input placeholder="ID игрока в PUBG Mobile" type="text" name="game_id" class="form-control input__profile subtitle fw-normal" id="">
+                @error('game_id')
+                <div class="alert alert-danger">{{$message}}</div>
+                @enderror
               </div>
             </div>
 
-            <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
+            <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить </button>
           </form>
+          @endif
         </div>
       </div>
       <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
@@ -305,8 +360,9 @@
           @if(Session::has('flash_meassage_error'))
           <div class="alert alert-danger">{{Session::get('flash_meassage_error')}}</div>
           @endif
+          @if($mail->status == NULL)
           @if($active == 1)
-          <form method="POST" action="{{action('App\Http\Controllers\ProfileController@createTeam') }}">
+          <form method="POST" action="{{route('createteam')}}">
             @csrf
             <input class="input-footer" name="name" placeholder="Название команды" type="text" style="margin-top:20px;">
             <button class="submit-btn btn--size btn--mr">Создать</button>
@@ -314,7 +370,9 @@
           @else
           <h4>Для создания команды Вы должны пройти активацию</h4>
           @endif
-
+          @else
+          <h4>Ваш аккаунт был заблокирован</h4>
+          @endif
         </div>
       </div>
       <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-config-tab">
@@ -348,12 +406,12 @@
               <td class="subtitle fw-norma l">{{$teams_count}} / {{$tournament->slot_kolvo}}</td>
               <td class="subtitle fw-normal">{{$tournament->price}}</td>
               <td class="subtitle fw-normal">
-                @if($tournament->active == 1) 
-                  Активен
+                @if($tournament->active == 1)
+                Активен
                 @else Закончен
                 @endif
               </td>
-            <!--   <td>
+              <!--   <td>
                 <button class="button--none">
                   <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12.2708 14.25H11.4792C11.2606 14.25 11.0833 14.4272 11.0833 14.6458V17.4167H1.58335V1.58335H11.0833V4.35419C11.0833 4.5728 11.2606 4.75004 11.4792 4.75004H12.2708C12.4895 4.75004 12.6667 4.5728 12.6667 4.35419V1.58335C12.6667 0.7089 11.9578 0 11.0833 0H1.58335C0.7089 0 0 0.7089 0 1.58335V17.4167C0 18.2911 0.7089 19 1.58335 19H11.0833C11.9578 19 12.6667 18.2911 12.6667 17.4167V14.6458C12.6667 14.4272 12.4895 14.25 12.2708 14.25Z" fill="black"></path>

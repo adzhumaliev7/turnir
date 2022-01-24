@@ -45,7 +45,8 @@ Route::name('user.')->group(function () {
 Route::get('/registration/confirm/{token}', [\App\Http\Controllers\Auth\RegisterController::class, 'confirmEmail']);
 
 Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
-Route::post('/profile', [\App\Http\Controllers\ProfileController::class, 'saveProfile']);
+Route::post('/profile', [\App\Http\Controllers\ProfileController::class, 'saveProfile'])->name('create_profile');
+Route::post('/profile/update/', [\App\Http\Controllers\ProfileController::class, 'updateProfile'])->name('update_profile');
 Route::post('/profile/delte/{id}', [\App\Http\Controllers\ProfileController::class, 'deleteProfile'])->name('delete_profile');
 Route::post('/profile/createteam', [\App\Http\Controllers\ProfileController::class, 'createTeam'])->name('createteam');
 Route::post('/profile/tournaments/{id}', [\App\Http\Controllers\ProfileController::class, 'getTournaments'])->name('get_tournaments');

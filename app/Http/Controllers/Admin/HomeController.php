@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\BanMail;
 use App\Mail\VerifiedMail;
+use App\Mail\ModeratorMail;
 use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
@@ -145,6 +146,7 @@ class HomeController extends Controller
       // 'password' => Hash::make($request->input('password')),
     ]);
     $data['password'] = Hash::make($request->input('password'));
+    Mail::to($request->input('email'))->send(new ModeratorMail($request->input('email')));
     $user = User::create($data);
     $user->assignRole('moderator');
     // return $user;

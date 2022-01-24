@@ -69,7 +69,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public static function getEmail($id){
-        return DB::table('users')->select('email')->where('id',$id)->first();
+        return DB::table('users')->select('email','status')->where('id',$id)->first();
     }
 
    /*  public function generateTwoFactorCode()

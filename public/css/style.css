@@ -2266,4 +2266,7 @@ input[placeholder]::placeholder {
   -webkit-column-gap: 1.5em;
           column-gap: 1.5em;
 }
+.size_16px{
+  font-size: 16px;
+}
 /*# sourceMappingURL=style.css.map */
