@@ -50,13 +50,18 @@ Route::post('/profile/update/', [\App\Http\Controllers\ProfileController::class,
 Route::post('/profile/delte/{id}', [\App\Http\Controllers\ProfileController::class, 'deleteProfile'])->name('delete_profile');
 Route::post('/profile/createteam', [\App\Http\Controllers\ProfileController::class, 'createTeam'])->name('createteam');
 Route::post('/profile/tournaments/{id}', [\App\Http\Controllers\ProfileController::class, 'getTournaments'])->name('get_tournaments');
+Route::post('/profile/query/{id}', [\App\Http\Controllers\ProfileController::class, 'query'])->name('query');
 Route::get('/main', [\App\Http\Controllers\MainController::class, 'index'])->name('main');
 Route::get('/team/{id}/', [\App\Http\Controllers\TeamController::class, 'index'])->name('team');
 Route::get('/addmembers/{id}', [\App\Http\Controllers\TeamController::class, 'addMembers'])->name('addmember');
+Route::get('/addmembers/apply/{id}', [\App\Http\Controllers\TeamController::class, 'addMembersApply'])->name('addmembe_apply');
 Route::get('/team/exit/{id}', [\App\Http\Controllers\TeamController::class, 'exitTeam'])->name('exit_team');
 Route::get('/team/delete/{id}', [\App\Http\Controllers\TeamController::class, 'deleteMember'])->name('delete_member');
 Route::post('/team/delete_team/{id}', [\App\Http\Controllers\TeamController::class, 'deleteTeam'])->name('delete_team');
+Route::any('/team/orders_team/{id}', [\App\Http\Controllers\TeamController::class, 'ordersTeam'])->name('orders_team');
 Route::get('/team/add_admin/{id}/{team_id}', [\App\Http\Controllers\TeamController::class, 'addAdmin'])->name('add_admin');
+Route::post('/team/add_networks/{id}', [\App\Http\Controllers\TeamController::class, 'addNetworks'])->name('add_networks');
+Route::post('/team/add_networks_update/{id}', [\App\Http\Controllers\TeamController::class, 'addNetworksUpdate'])->name('add_networks_update');
 Route::get('/tournament', [\App\Http\Controllers\TournamentController::class, 'index'])->name('tournament');
 Route::any('tournament/create_order', [\App\Http\Controllers\TournamentController::class, 'createTournament'])->name('create_order');
 Route::post('tournament/create_order/save', [\App\Http\Controllers\TournamentController::class, 'saveTournament'])->name('save_order');
@@ -75,6 +80,12 @@ Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(functi
     Route::post('/users/add_ban/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'addBan'])->name('add_ban');
     Route::get('/users/unblock/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'unblock'])->name('unblock');
     Route::get('/teams', [\App\Http\Controllers\Admin\HomeController::class, 'teamsView'])->name('teams');
+    Route::get('/orders', [\App\Http\Controllers\Admin\HomeController::class, 'orders'])->name('orders');
+    Route::get('/orders/apply/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'ordersApply'])->name('orders_apply');
+    Route::post('/orders/rejected/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'ordersRejected'])->name('orders_rejected');
+    Route::get('/orders_team/', [\App\Http\Controllers\Admin\HomeController::class, 'ordersTeam'])->name('orders_team');
+    Route::post('/orders_team/apply/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'ordersTeamApply'])->name('orders_team_apply');
+    Route::get('/orders_team/rejected/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'ordersTeamRejected'])->name('orders_team_rejected');
 
     Route::get('/users_card/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'userCard',]);
     Route::get('/verified/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'verified',])->name('verified');

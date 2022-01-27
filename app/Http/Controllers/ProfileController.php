@@ -20,10 +20,12 @@ class ProfileController extends Controller
    
     $mail = User::getEmail($id);
     $data = UsersProfile::getById($id);
+
     $timezones = config('app.timezones');
     $teams = Team::getTeamById($id);
     $verification_status = UsersProfile::checkVerification($id);
     $tournaments = UsersProfile::getTeamById($id);
+    
   if($tournaments != null){
    foreach ($tournaments as $tournament) {
       $tournament_id = (array) $tournament;
@@ -33,8 +35,6 @@ class ProfileController extends Controller
     $tournaments = null;
     $teams_count = null;
   }
-  
-    
     return view('main.profile', [
       'mail' => $mail,
       'data' => $data,
@@ -93,7 +93,7 @@ class ProfileController extends Controller
       $id = Auth::user()->id;
       $data['verification'] = 'on_check';
       $data['user_id'] = $id;
-      $data['status'] = 1;
+      $data['status'] = 0;
     
      // try {
         UsersProfile::saveProfile($data);
@@ -139,7 +139,7 @@ class ProfileController extends Controller
       'game_id' => ''
     ]);
     $id = Auth::user()->id;
-  
+    $data['status'] = 0;
     $data['user_id'] = $id;
    
     try {
@@ -187,6 +187,18 @@ class ProfileController extends Controller
     UsersProfile::delete_profile($id);
     return redirect('login');
   }
+
+  public function query($id, Request $request){
+    $text = $request->input('text');
+    $data =array(
+      'user_id' =>$id,
+      'text' => $text,
+      'status' => 0
+    );
+    UsersProfile::queryUpdate($data);
+    \Session::flash('flash_meassage_error', 'Ваш запрос отправлен');
+    return redirect('profile');
+  } 
   public function getTournaments($id)
   {
     

@@ -51,7 +51,7 @@
           </div>
           <div class="header__nick">
             @if(!$data==NULL)
-            @foreach($data as $dat)
+            @foreach($data['data'] as $dat)
             <h1 class="title  text-capitalize font-sz text--responsive">{{$user_name}}</h1>
             <sub class="subtitle subtitle--gray text--responsive"><? if ($dat->verification == 'verified') {
                                                                     echo "Верифицирован";
@@ -132,8 +132,8 @@
       <div class="tab-pane overflow-hidden fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
         <div class="container">
 
-          @if(!$data==NULL)
-          @foreach($data as $dat)
+          @if($data != NULL )
+          @foreach($data['data'] as $dat)
           <? if ($dat->verification == 'verified') {
             $style = 'style="display:none;"';
             $h4 = 'Аккаунт верифицирован';
@@ -158,18 +158,22 @@
           @endif
 
           <h4 class="input-title"><? echo $h4; ?></h4>
-          @if(!$data==NULL)
-
+          @if($data != NULL)
+          <? if ($data['status'] == 0)
+            $disabled = 'disabled';
+          else
+            $disabled = '';
+          ?>
           <form method="POST" action="{{route('update_profile')}}" enctype="multipart/form-data">
             @csrf
-            @foreach($data as $dat)
+            @foreach($data['data'] as $dat )
             <div class="row">
               <div class="col-lg">
-                <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="doc_photo">
+                <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="doc_photo" <?= $disabled; ?>>
                 <label class="subtitle" for="fileInput">Фото документа(паспорт, права id)</label>
               </div>
               <div class="col-lg">
-                <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput2" name="doc_photo2">
+                <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput2" name="doc_photo2" <?= $disabled; ?>>
                 <label class="subtitle" for="fileInput2">фото с документом</label>
               </div>
             </div>
@@ -179,13 +183,13 @@
             <h2 class="title letter-spacing--none my-2"> Основная информация</h2>
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="phone" placeholder="Номер телефона" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->phone}}">
+                <input name="phone" placeholder="Номер телефона" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->phone}}" <?= $disabled; ?>>
                 @error('phone')
                 <div class="alert alert-danger">{{$message}}</div>
                 @enderror
               </div>
               <div class="col-lg-6">
-                <input name="fio" placeholder="Имя Фамилия" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->fio}}">
+                <input name="fio" placeholder="Имя Фамилия" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->fio}}" <?= $disabled; ?>>
                 @error('fio')
                 <div class="alert alert-danger">{{$message}}</div>
                 @enderror
@@ -193,13 +197,13 @@
             </div>
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="login" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->login}}">
+                <input name="login" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->login}}" <?= $disabled; ?>>
                 @error('login')
                 <div class="alert alert-danger">{{$message}}</div>
                 @enderror
               </div>
               <div class="col-lg-6">
-                <input name="email" placeholder="Email" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->email}}">
+                <input name="email" placeholder="Email" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->email}}" <?= $disabled; ?>>
                 @error('email')
                 <div class="alert alert-danger">{{$message}}</div>
                 @enderror
@@ -207,10 +211,10 @@
             </div>
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="country" placeholder="Страна" type="text " class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->country}}">
+                <input name="country" placeholder="Страна" type="text " class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->country}}" <?= $disabled; ?>>
               </div>
               <div class="col-lg-6">
-                <select name="timezone" id="" class="size_16px">
+                <select name="timezone" id="" class="size_16px" <?= $disabled; ?>>
                   @foreach($timezones as $timezone1)
                   <option value="{{$timezone1}}">{{$dat->timezone}}</option>
                   @endforeach
@@ -219,10 +223,10 @@
             </div>
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="city" placeholder="Город" type="text " class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->city}}">
+                <input name="city" placeholder="Город" type="text " class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->city}}" <?= $disabled; ?>>
               </div>
               <div class="col-lg-6">
-                <input name="bdate" placeholder="Дата рождения" type="date" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->bdate}}">
+                <input name="bdate" placeholder="Дата рождения" type="date" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->bdate}}" <?= $disabled; ?>>
               </div>
             </div>
             <h2 class="title letter-spacing--none indent--row">
@@ -230,14 +234,17 @@
             </h2>
             <div class="row">
               <div class="col-lg">
-                <input placeholder="Nick name" name="nickname" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->nickname}}">
+                <input placeholder="Nick name" name="nickname" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->nickname}}" <?= $disabled; ?>>
               </div>
               <div class="col-lg">
-                <input placeholder="ID игрока в PUBG Mobile" type="text" name="game_id" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->game_id}}">
+                <input placeholder="ID игрока в PUBG Mobile" type="text" name="game_id" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->game_id}}" <?= $disabled; ?>>
               </div>
             </div>
             @endforeach
-            <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Добавить данные </button>
+            @if($disabled == 'disabled')
+            <a type="btn" class="forms__btn btn nav-link btn--orange mt-4" data-toggle="modal" data-target="#ModalQuery">Отпаравить запрос на редактирвоание данных</a>
+            @else <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
+            @endif
           </form>
 
           @else
@@ -439,4 +446,28 @@
     </div>
   </div>
 </main>
+
+<div class="modal fade" id="ModalQuery" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Сообщение</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form method="POST" action="">
+          @csrf
+          <textarea name="text" id="" cols="50" rows="10"></textarea>
+
+      </div>
+      <div class="modal-footer">
+        <button type="btn" class="btn btn-primary">Сохранить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection

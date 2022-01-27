@@ -798,7 +798,7 @@ details > summary {
 
 /* * absolute title */
 .title {
-  color: #fff;
+  color: #000;
   font-family: Montserrat;
   font-style: normal;
   font-weight: bold;
@@ -2268,5 +2268,19 @@ input[placeholder]::placeholder {
 }
 .size_16px{
   font-size: 16px;
+}
+.main-block{
+ width: 70%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    margin: 0 auto;
+   background-color: #f89147ee;
+    height: 300px;
+    
 }
 /*# sourceMappingURL=style.css.map */

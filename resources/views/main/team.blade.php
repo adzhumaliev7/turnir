@@ -2,7 +2,44 @@
 
 @section('title', 'Команда')
 @section('content')
+<div class="header-pubg__bg-2">
+    <div class="account-pubg__bg account__bg d-flex justify-content-end px-4">
 
+        <div class="dropdown">
+
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
+                <li><a class="dropdown-item header__txt text-dark" href="{{route('user.logout')}}">выйти</a></li>
+            </ul>
+        </div>
+    </div>
+    <nav class=" navbar navbar-expand-md navbar p-3 mb-5 bg-body rounded bg--none navbar-z">
+        <div class=" container-fluid header-indent">
+            <a class="navbar-brand title text-uppercase logo-indent-mr text-white pubg-hover px-2" href="{{route('main')}}">showmatch</a>
+            <button class="toggle-menu toggle-click button--none">
+                <span></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav w-100 justify-content-end">
+                    <li class="nav-item nav-item--active">
+                        <a class="nav__link-active nav-link nav-white pubg-hover" aria-current="page" href="{{route('tournament')}}">Турниры</a>
+                    </li>
+
+                    <li class="nav-item nav-item--active">
+                        <a class="nav-link nav-white pubg-hover" aria-current="page" href="{{route('rating')}}">Рейтинг</a>
+                    </li>
+
+                    <li class="nav-item nav-item--active ">
+                        <a class=" nav-link nav-white pubg-hover" aria-current="page" href="#">Помощь</a>
+                    </li>
+                    <li class="nav-item nav-item--active ">
+                        <a class=" nav-link nav-white pubg-hover" aria-current="page" href="{{route('feedback')}}">Обратная связь</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
 <section>
     <div class="container">
         <div class="row background-gray d-flex align-items-center row-indent-mr">
@@ -37,12 +74,32 @@
             </li>
             @endif
         </ul>
-        <a href="{{route('exit_team',$user_id)}}" class="">Покинуть команду</a>
+
+        <div class="col-lg-3 px-4 d-flex flex-column">
+
+            <div class="block d-flex justify-content-start w-100">
+                @if($networks != null)
+                @foreach($networks as $network)
+                @if($network->insta != null)
+                <a class="footer__social-icons footer__social-icons--indent footer__social-icons--instagram" href="{{$network->insta}}"><i class="fab fa-instagram footer__icons"></i></a>
+                @endif
+                @if($network->discord != null)
+                <a class="footer__social-icons footer__social-icons--indent footer__social-icons--discord" href="{{$network->discord}}"><i class="fab fa-discord footer__icons"></i></a>
+                @endif
+
+                @if($network->youtube != null)
+                <a class="footer__social-icons footer__social-icons--indent footer__social-icons--youtube" href="{{$network->youtube}}"><i class="fab fa-youtube footer__icons"></i></a>
+                @endif
+                @endforeach
+                @endif
+            </div>
+        </div>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="view" role="tabpanel" aria-labelledby="view-tab">
             </div>
             <div class="tab-pane fade" id="lineup" role="tabpanel" aria-labelledby="lineup-tab">
                 <div class="block-view">
+                    <h4><a href="{{route('exit_team',$user_id)}}" class="">Покинуть команду</a></h4>
                     <h4 class="input-title">Пригласить друзей в команду</h4>
                     <span class="subtitle subtitle--regular d-block subtitle--twelve">Скопируйте ссылку и отправьте друзьям которые хотят присоедениться вк вашей команды</span>
                     <input class="subtitle subtitle--regular url-input url-input--margin" type="text" value="http://turnir/addmembers/{{$team_id}}">
@@ -89,7 +146,80 @@
                     @csrf
                     <button class="submit-btn btn--size btn--mr">Удалить команду</button>
                 </form>
+                <a type="btn" class="forms__btn btn nav-link btn--orange mt-4" data-toggle="modal" data-target="#ModalQuery">Отпаравить запрос на изменения названия команды </a>
                 @endforeach
+                <p></p>
+                <a class="submit-btn btn--size btn--mr" data-toggle="modal" data-target="#ModalNetworks">Добавить соц.сети</a>
+
+
+                <div class="modal fade" id="ModalQuery" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+
+                        <div class="modal-content" style="font-size: 16px;">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Выбрать участников</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="font-size: 16px;">
+                                <form method="POST" action="{{route('orders_team', $team_id)}}">
+                                    @csrf
+                                    <input type="text" name="name">
+                                    <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="ModalNetworks" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+
+                        <div class="modal-content" style="font-size: 16px;">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Выбрать участников</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="font-size: 16px;">
+                                @if($networks != null)
+                                @foreach($networks as $network)
+                                <form method="POST" action="{{route('add_networks_update', $team_id)}}">
+                                    @csrf
+
+                                    <input type="text" name="insta" placeholder="insta" value="{{$network->insta}}">
+                                    <input type="text" name="discord" placeholder="discord" value="{{$network->discord}}">
+                                    <input type="text" name="vk" placeholder="vk" value="{{$network->vk}}">
+                                    <input type="text" name="facebook" placeholder="facebook" value="{{$network->facebook}}">
+                                    <input type="text" name="youtube" placeholder="youtube" value="{{$network->youtube}}">
+                                    <input type="text" name="telegram" placeholder="telegram" value="{{$network->telegram}}">
+                                    <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
+                                </form>
+
+                                @endforeach
+                                @else
+                                <form method="POST" action="{{route('add_networks', $team_id)}}">
+                                    @csrf
+
+                                    <input type="text" name="insta" placeholder="insta">
+                                    <input type="text" name="discord" placeholder="discord">
+                                    <input type="text" name="vk" placeholder="vk">
+                                    <input type="text" name="facebook" placeholder="facebook">
+                                    <input type="text" name="youtube" placeholder="youtube">
+                                    <input type="text" name="telegram" placeholder="telegram">
+                                    <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
+                                </form>
+                                @endif
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 </section>

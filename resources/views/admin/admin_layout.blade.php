@@ -119,6 +119,12 @@
                     <p>Верификация</p>
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a href="{{route('orders')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Заявки</p>
+                  </a>
+                </li>
               </ul>
             </li>
 

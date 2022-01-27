@@ -20,7 +20,9 @@ class UsersProfile extends Model
      public function getById($id){
        $is_has = DB::table('users_profile2')->where('user_id', $id)->exists();
        if($is_has == true){
-         return DB::table('users_profile2')->where('user_id', $id)->get();
+          $data['data'] = DB::table('users_profile2')->where('user_id', $id)->get();
+          $data['status'] = DB::table('users_profile2')->where('user_id', $id)->value('status');
+          return $data;
        }
        else {
           return NULL;
@@ -36,14 +38,14 @@ class UsersProfile extends Model
    }
 
     public function getTeamById($id){
-       $is_has = DB::table('team_members')->where('user_id', $id)->exists();
+       $is_has = DB::table('tournaments_members')->where('user_id', $id)->exists();
        if($is_has == true){
-         return DB::table('team_members')
+         return DB::table('tournaments_members')
             ->join('team','team_members.team_id','=','team.id')
             ->join('tournamets_team','team_members.team_id','=','tournamets_team.team_id')
             ->join('tournaments','tournamets_team.tournament_id','=','tournaments.id')
             ->select('team_members.team_id','team_members.user_id', 'team.id', 'team.name','tournaments.name', 'tournaments.format', 'tournaments.id as tournaments_id', 'tournaments.tournament_start', 'tournaments.slot_kolvo','tournaments.country' ,'tournaments.timezone'  ,'tournaments.price', 'tournaments.active' )
-            ->where('team_members.user_id', $id)
+            ->where('tournaments_members.user_id', $id)
             ->get();
        }
        else {
@@ -61,9 +63,15 @@ class UsersProfile extends Model
           return true;
        }
        else return false;
+   
    }
-   public static function updateProfile($id, $data){
-      return DB::table('users_profile2')->where('user_id',$id)->update($data);
+   public static function updateProfile($id, $data)
+   {
+      return DB::table('users_profile2')->where('user_id', $id)->update($data);
    }
+   public static function queryUpdate($data){
+      return DB::table('orders')->insert($data);
+   }
+
    
 }

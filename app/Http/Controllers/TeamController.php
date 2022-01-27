@@ -11,7 +11,7 @@ class TeamController extends Controller
     public function index($id)
     {
         $data = Team::getTeamById($id);
-
+     
         foreach ($data as $key => $value) {
             $a = (array)$value;
             $team_id = $a['team_id'];
@@ -20,16 +20,38 @@ class TeamController extends Controller
         $members = Team::getTeamMembers($team_id);
         $user_id = Auth::user()->id;
         $chek_admin = Team::checkAdmin($user_id);
-
+        $networks = Team::getTeamNetworks($team_id);
+ 
         return view('main.team', [
             'data' => $data,
             'members' => $members,
             'team_id' => $team_id,
             'user_id' => $user_id,
             'chek_admin' => $chek_admin,
+            'networks' => $networks,
         ]);
     }
     public function addMembers($id)
+    {
+      
+         $team = Team::getTeamName($id);
+       
+        $user_id = Auth::user()->id;
+        $data = array(
+            'team_id' => $id,
+            'user_id' => $user_id,
+            'role' => 'member'
+        );
+       
+        return view('main.join_to_team',[
+          'team' => $team,
+          'id' => $id
+        ]);
+        
+     
+     
+    }
+    public function addMembersApply($id)
     {
         $user_id = Auth::user()->id;
         $data = array(
@@ -37,13 +59,12 @@ class TeamController extends Controller
             'user_id' => $user_id,
             'role' => 'member'
         );
-        $status=Auth::user()->status;
-        if($status == null){
+        $status = Auth::user()->status;
+         if($status == null){
             Team::addMembers($data);
             return redirect(route('profile')); 
         } else
-            return redirect(route('profile')); 
-     
+            return redirect(route('profile'));  
     }
 
     public function deleteMember($id)
@@ -67,4 +88,47 @@ class TeamController extends Controller
         Team::deleteTeam($id);
         return redirect(route('profile'));
     }
+
+    public function ordersTeam($id, Request $request)
+    {
+       $data = array(
+           'team_id'=> $id,
+           'name' => $request->input('name'),
+       );
+       
+       Team::ordersTeam($data);
+        return redirect(route('team', $id));
+    }
+
+    public function addNetworks($id, Request $request){
+        
+        $data = array(
+            'team_id' => $id,
+            'insta' => $request->input('insta'),
+            'discord' => $request->input('discord'),
+            'vk' => $request->input('vk'),
+            'facebook' => $request->input('facebook'),
+            'youtube' => $request->input('youtube'),
+            'telegram' => $request->input('telegram')
+        );
+      Team::setTeamNetworks($data);
+        //return redirect(route('team', $id));
+    }
+
+    public function addNetworksUpdate($id, Request $request)
+    {
+
+        $data = array(
+            'team_id' => $id,
+            'insta' => $request->input('insta'),
+            'discord' => $request->input('discord'),
+            'vk' => $request->input('vk'),
+            'facebook' => $request->input('facebook'),
+            'youtube' => $request->input('youtube'),
+            'telegram' => $request->input('telegram')
+        );
+        Team::updateTeamNetworks($id,$data);
+        //return redirect(route('team', $id));
+    }
+   
 }

@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Validator;
 use App\Mail\BanMail;
 use App\Mail\VerifiedMail;
 use App\Mail\ModeratorMail;
+use App\Mail\OredrsMail;
+use App\Mail\ChangeTeamMail;
+use App\Mail\RejectedChangeTeam;
+
 use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
@@ -40,7 +44,7 @@ class HomeController extends Controller
   public function allUsers()
   {
     $users = Admin::getAllUsers();
-  
+
     if ($users == NULL) {
       $users == "";
     }
@@ -56,7 +60,7 @@ class HomeController extends Controller
     //  var_dump($id);
     $email = Admin::getUsersEmail($id);
     foreach ($email as $key => $value) {
-      $email = (array) $value;  
+      $email = (array) $value;
       foreach ($email as $key => $value) {
         $em = $value;
       }
@@ -221,5 +225,67 @@ class HomeController extends Controller
     return view('admin.home.feedback', [
       'feedbacks' => $feedback,
     ]);
+  }
+  public function orders()
+  {
+    $orders = Admin::getOrders();
+    return view('admin.home.users.orders', [
+      'orders' => $orders,
+    ]);
+  }
+  public function ordersApply($id)
+  {
+    Admin::ordersApply($id);
+    return redirect(route('orders'));
+  }
+  public function ordersrejected($id, Request $request)
+  {
+    $email = Admin::getUsersEmail($id);
+    foreach ($email as $key => $value) {
+      $email = (array) $value;
+      foreach ($email as $key => $value) {
+        $em = $value;
+      }
+    }
+
+    $text = $request->input('text');
+    Mail::to($em)->send(new OredrsMail($em, $text));
+    Admin::ordersrejected($id);
+    return redirect(route('orders'));
+  }
+
+  public function ordersTeam()
+  {
+    $orders = Admin::getOrdersTeam();
+
+    return view('admin.home.orders_team', [
+      'orders' => $orders,
+    ]);
+  }
+
+  public function ordersTeamApply($id, Request $request)
+  {
+    $emails = Admin::getTeamMembersEmail($id);
+
+    foreach ($emails as $key => $value) {
+      $emails = (array) $value;
+      foreach ($emails as $key => $value) {
+        $email[] = $value;
+      }
+    }
+    Mail::to($email)->send(new ChangeTeamMail($email));
+
+    $name = $request->input('name');
+    Admin::changeTeamName($id, $name);
+    return redirect(route('orders_team'));
+  }
+  public function ordersTeamRejected($id)
+  {
+    $email = Admin::getTeamMembersEmailCaptain($id);
+
+    Mail::to($email)->send(new RejectedChangeTeam($email));
+    Admin::ordersTeamRejected($id);
+
+    return redirect(route('orders_team'));
   }
 }

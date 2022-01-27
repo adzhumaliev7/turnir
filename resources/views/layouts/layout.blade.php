@@ -75,16 +75,7 @@
     </nav>
 
   </div>
-
-
-
-
   @yield('content')
-
-
-
-
-
   <footer class="footer">
     <div class="footer__inner">
       <div class="container">

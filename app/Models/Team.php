@@ -23,6 +23,12 @@ class Team extends Model
          return NULL;
       }
    }
+   public function getTeamName($id)
+   {
+     
+         return DB::table('team')->where('id', $id)->value('name');
+ 
+   }
    public function getTeamMembers($id)
    {
       $is_has = DB::table('team_members')->where('team_id', $id)->exists();
@@ -96,4 +102,26 @@ class Team extends Model
             ->get();
       } else return null;
    }
+   public static function ordersTeam($data)
+   {
+      return DB::table('orders_team')->insert($data);
+   }
+   public static function setTeamNetworks($data){
+
+      return DB::table('teams_networks')->insert($data);
+
+   }
+   public static function updateTeamNetworks($id, $data)
+   {
+      return DB::table('teams_networks')->where('team_id', $id)->update($data);
+   }
+
+   public static function getTeamNetworks($id){
+      $is_has = DB::table('teams_networks')->where('team_id', $id)->exists();
+      if ($is_has == true) {
+      return DB::table('teams_networks')->where('team_id', $id)->get();
+      } else return null;
+   }
+
+   
 }

@@ -79,9 +79,9 @@ class Admin extends Model
    public static function getById($id)
    {
       return DB::table('users_profile2')
-      ->join('users', 'users_profile2.user_id' ,'=', 'users.id')
-      ->select('users_profile2.*', 'users.status')
-      ->where('users_profile2.id', $id)->get();
+         ->join('users', 'users_profile2.user_id', '=', 'users.id')
+         ->select('users_profile2.*', 'users.status')
+         ->where('users_profile2.id', $id)->get();
    }
 
    public static function verified($id)
@@ -142,25 +142,26 @@ class Admin extends Model
             ->where('tournamets_team.tournament_id', $tournament_id)->get();
       } else  return NULL;
    }
-   public static function getTeamById($id){
+   public static function getTeamById($id)
+   {
       return DB::table('team')->select('name')->where('id', $id)->first();
    }
    public static function geTeamMembers($team_id, $tournament_id)
    {
       return DB::table('tournaments_members')
-      ->join('users', 'tournaments_members.user_id', '=' , 'users.id')
-      ->join('team_members', 'tournaments_members.user_id', '=' , 'team_members.user_id')
-      ->select('users.name', 'team_members.user_id', 'team_members.role')
-      ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)
-      ->get();
+         ->join('users', 'tournaments_members.user_id', '=', 'users.id')
+         ->join('team_members', 'tournaments_members.user_id', '=', 'team_members.user_id')
+         ->select('users.name', 'team_members.user_id', 'team_members.role')
+         ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)
+         ->get();
    }
    public static function geTeamMembersUserid($team_id, $tournament_id)
    {
       return DB::table('tournaments_members')
-      ->join('team_members', 'tournaments_members.user_id', '=', 'team_members.user_id')
-     
-      ->select('team_members.user_id'  )
-      ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)->where('team_members.role', 'captain')
+         ->join('team_members', 'tournaments_members.user_id', '=', 'team_members.user_id')
+
+         ->select('team_members.user_id')
+         ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)->where('team_members.role', 'captain')
          ->first();
    }
 
@@ -224,10 +225,10 @@ class Admin extends Model
       }
       return DB::table('tournamets_team')->where('team_id', $id)->update(['status' => 'accepted', 'group_id' => $group_id]);
    }
-   public static function refuseTeam($id,$turnir_id)
+   public static function refuseTeam($id, $turnir_id)
    {
-       DB::table('tournamets_team')->where('tournament_id', $turnir_id)->where('team_id', $id)->delete();
-       DB::table('tournaments_members')->where('tournament_id', $turnir_id)->where('team_id', $id)->delete();
+      DB::table('tournamets_team')->where('tournament_id', $turnir_id)->where('team_id', $id)->delete();
+      DB::table('tournaments_members')->where('tournament_id', $turnir_id)->where('team_id', $id)->delete();
    }
 
    public function getFeedback()
@@ -271,8 +272,8 @@ class Admin extends Model
          $group_id = 4;
       }
       $data['group_id'] = $group_id; */
-      
-     return DB::table('stage_2')->insert($data);
+
+      return DB::table('stage_2')->insert($data);
    }
 
    public static function getStage_2($id)
@@ -281,12 +282,12 @@ class Admin extends Model
    }
    public static function getStage_3($id)
    {
-      return DB::table('stage_3')->select('tournament_id', 'team_id','points')->where('tournament_id', $id)->where('winner', 1)->get();
+      return DB::table('stage_3')->select('tournament_id', 'team_id', 'points')->where('tournament_id', $id)->where('winner', 1)->get();
    }
 
    public static function setStage_3($turnir_id, $data)
    {
-     
+
       return DB::table('stage_3')->insert($data);
    }
    public static function setWinners($turnir_id, $data)
@@ -295,26 +296,27 @@ class Admin extends Model
       return DB::table('winners')->insert($data);
    }
 
-   public static function stage_1($turnir_id){
+   public static function stage_1($turnir_id)
+   {
       $is_has = DB::table('stage_1')->exists();
       if ($is_has == true) {
          return DB::table('stage_1')
-         ->join('team', 'stage_1.team_id', '=' , 'team.id')
-         ->join('tournaments', 'stage_1.tournament_id', '=' , 'tournaments.id')
-         ->select('stage_1.id','stage_1.group_id', 'stage_1.tournament_id','stage_1.team_id','stage_1.points', 'stage_1.winner',  'team.name as team_name' , 'tournaments.name as tournaments_name')
-         ->where('tournament_id', $turnir_id)
-         ->get();
-      }else return null;
-   }  
+            ->join('team', 'stage_1.team_id', '=', 'team.id')
+            ->join('tournaments', 'stage_1.tournament_id', '=', 'tournaments.id')
+            ->select('stage_1.id', 'stage_1.group_id', 'stage_1.tournament_id', 'stage_1.team_id', 'stage_1.points', 'stage_1.winner',  'team.name as team_name', 'tournaments.name as tournaments_name')
+            ->where('tournament_id', $turnir_id)
+            ->get();
+      } else return null;
+   }
    public static function stage_2($turnir_id)
    {
       $is_has = DB::table('stage_2')->exists();
       if ($is_has == true) {
          return DB::table('stage_2')
-         ->join('team', 'stage_2.team_id', '=', 'team.id')
-         ->join('tournaments', 'stage_2.tournament_id', '=', 'tournaments.id')
-         ->select('stage_2.id', 'stage_2.tournament_id', 'stage_2.team_id', 'stage_2.points', 'stage_2.winner',  'team.name as team_name', 'tournaments.name as tournaments_name')
-         ->where('tournament_id', $turnir_id)
+            ->join('team', 'stage_2.team_id', '=', 'team.id')
+            ->join('tournaments', 'stage_2.tournament_id', '=', 'tournaments.id')
+            ->select('stage_2.id', 'stage_2.tournament_id', 'stage_2.team_id', 'stage_2.points', 'stage_2.winner',  'team.name as team_name', 'tournaments.name as tournaments_name')
+            ->where('tournament_id', $turnir_id)
             ->get();
       } else return null;
    }
@@ -323,37 +325,94 @@ class Admin extends Model
       $is_has = DB::table('stage_3')->exists();
       if ($is_has == true) {
          return DB::table('stage_3')
-         ->join('team', 'stage_3.team_id', '=', 'team.id')
-         ->join('tournaments', 'stage_3.tournament_id', '=', 'tournaments.id')
-         ->select('stage_3.id', 'stage_3.tournament_id', 'stage_3.team_id', 'stage_3.points', 'stage_3.winner',  'team.name as team_name', 'tournaments.name as tournaments_name')
-         ->where('tournament_id', $turnir_id)
+            ->join('team', 'stage_3.team_id', '=', 'team.id')
+            ->join('tournaments', 'stage_3.tournament_id', '=', 'tournaments.id')
+            ->select('stage_3.id', 'stage_3.tournament_id', 'stage_3.team_id', 'stage_3.points', 'stage_3.winner',  'team.name as team_name', 'tournaments.name as tournaments_name')
+            ->where('tournament_id', $turnir_id)
             ->get();
       } else return null;
    }
-   public static function getWinners($turnir_id){
-   $is_has = DB::table('winners')->exists();
-   if ($is_has == true) {
-      return DB::table('winners')
-      ->join('team', 'winners.team_id', '=', 'team.id')
-      ->join('tournaments', 'winners.tournament_id', '=', 'tournaments.id')
-      ->select('winners.id', 'winners.tournament_id', 'winners.team_id', 'winners.points', 'winners.winner',  'team.name as team_name', 'tournaments.name as tournaments_name')
-      ->where('tournament_id', $turnir_id)->where('winner' ,1 )
-         ->get();
-   } else return null;
+   public static function getWinners($turnir_id)
+   {
+      $is_has = DB::table('winners')->exists();
+      if ($is_has == true) {
+         return DB::table('winners')
+            ->join('team', 'winners.team_id', '=', 'team.id')
+            ->join('tournaments', 'winners.tournament_id', '=', 'tournaments.id')
+            ->select('winners.id', 'winners.tournament_id', 'winners.team_id', 'winners.points', 'winners.winner',  'team.name as team_name', 'tournaments.name as tournaments_name')
+            ->where('tournament_id', $turnir_id)->where('winner', 1)
+            ->get();
+      } else return null;
    }
-   public static function changeTournamentStatus($turnir_id){
-         return DB::table('tournaments')->where('id', $turnir_id)->update(['active' => 0]);
+   public static function changeTournamentStatus($turnir_id)
+   {
+      return DB::table('tournaments')->where('id', $turnir_id)->update(['active' => 0]);
    }
    /* public static function setPointsStage_1($turnir_id,$data){
      
      
      return DB::table('stage_1')->where('tournament_id', $turnir_id)->update($data);
    } */
-   public static function setResults($turnir_id){
-
-      
-
+   public static function setResults($turnir_id)
+   {
    }
 
- 
+   public static function getOrders()
+   {
+      $is_has = DB::table('orders')->exists();
+      if ($is_has == true) {
+         return DB::table('orders')
+         ->join('users_profile2', 'orders.user_id' , '=', 'users_profile2.user_id')
+         ->select('orders.text', 'orders.user_id', 'orders.status', 'users_profile2.email')
+         ->get();
+      } else return null;
+   }
+
+   public static function ordersApply($id)
+   {
+       DB::table('users_profile2')->where('user_id', $id)->update(['status' => 1]);
+       DB::table('orders')->where('user_id', $id)->update(['status' => 1]);
+   }
+   public static function ordersRejected($id)
+   {
+    //  DB::table('users_profile2')->where('user_id', $id)->update(['status' => 0]);
+      DB::table('orders')->where('user_id', $id)->update(['status' => 2]);
+   }
+
+     public static function getOrdersTeam()
+   {
+      $is_has = DB::table('orders_team')->exists();
+      if ($is_has == true) {
+         return DB::table('orders_team')
+         ->join('team', 'orders_team.team_id' , '=', 'team.id')
+         ->select('orders_team.name as new_name', 'orders_team.team_id', 'orders_team.status', 'team.name')
+         ->get();
+      } else return null;
+   }
+   public static function changeTeamName($id, $name)
+   {
+      DB::table('team')->where('id', $id)->update(['name' => $name]);
+      DB::table('orders_team')->where('team_id', $id)->update(['status' => 1]);
+   }
+
+   public static function getTeamMembersEmail($id){
+         return DB::table('team_members')
+         ->join('users', 'team_members.user_id', '=' ,'users.id')
+         ->select('users.email')
+         ->where('team_members.team_id', $id)
+         ->get();
+   }
+   public static function getTeamMembersEmailCaptain($id)
+   {
+      return DB::table('team_members')
+      ->join('users', 'team_members.user_id', '=', 'users.id')
+     
+      ->where('team_members.team_id', $id)->where('team_members.role', 'captain')
+         ->value('users.email');
+   }
+   public static function ordersTeamRejected($id)
+   {
+      //  DB::table('users_profile2')->where('user_id', $id)->update(['status' => 0]);
+      DB::table('orders_team')->where('team_id', $id)->update(['status' => 2]);
+   }
 }
