@@ -16,7 +16,7 @@ class Team extends Model
       if ($is_has == true) {
          return DB::table('team_members')
             ->join('team', 'team_members.team_id', '=', 'team.id')
-            ->select('team_members.team_id', 'team_members.user_id', 'team.id', 'team.name')
+            ->select('team_members.team_id', 'team_members.user_id', 'team.id', 'team.name','team.logo')
             ->where('team_members.user_id', $id)
             ->get();
       } else {
@@ -102,9 +102,10 @@ class Team extends Model
             ->get();
       } else return null;
    }
-   public static function ordersTeam($data)
+   public static function ordersTeam($id,$data, $country)
    {
-      return DB::table('orders_team')->insert($data);
+       DB::table('orders_team')->insert($data);
+       DB::table('team')->where('id', $id)->update(['country' => $country]);
    }
    public static function setTeamNetworks($data){
 
@@ -121,6 +122,10 @@ class Team extends Model
       if ($is_has == true) {
       return DB::table('teams_networks')->where('team_id', $id)->get();
       } else return null;
+   }
+
+   public static function setLogo($id, $logo){
+      return DB::table('team')->where('id', $id)->update(['logo'=>$logo]);
    }
 
    

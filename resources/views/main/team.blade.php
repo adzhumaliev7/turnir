@@ -24,11 +24,9 @@
                     <li class="nav-item nav-item--active">
                         <a class="nav__link-active nav-link nav-white pubg-hover" aria-current="page" href="{{route('tournament')}}">Турниры</a>
                     </li>
-
                     <li class="nav-item nav-item--active">
                         <a class="nav-link nav-white pubg-hover" aria-current="page" href="{{route('rating')}}">Рейтинг</a>
                     </li>
-
                     <li class="nav-item nav-item--active ">
                         <a class=" nav-link nav-white pubg-hover" aria-current="page" href="#">Помощь</a>
                     </li>
@@ -45,39 +43,24 @@
         <div class="row background-gray d-flex align-items-center row-indent-mr">
             <div class="col-lg-3">
                 <div class="wrap">
-                    <img class="brd-img" src="http://placehold.it/224" alt="">
+                    @if(!$data==NULL)
+                    @foreach($data as $team)
+                    @if($team->logo!= null)
+                    <img class="brd-img" src="{{ asset("uploads/storage/img/teamlogo/$team->logo")}}" width="224" height="224" alt=""></img>
+                    @else
+                    <img class="brd-img" src="http://placehold.it/224" alt=""></img>
+                    @endif
                 </div>
             </div>
             <div class="col-lg-4">
-                @if(!$data==NULL)
-                @foreach($data as $team)
+
                 <h1 class="title text-capitalize font-sz">{{$team->name}}</h1>
                 @endforeach
                 @endif
                 <sub class="subtitle">pubg mobile</sub>
+
             </div>
-            <div class="col-lg-4">
-                <img class="" src="http://placehold.it/475x288" alt="">
-            </div>
-        </div>
-
-        <ul class="nav nav-tabs nav-tabss" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link nav-btn " id="view-tab" data-bs-toggle="tab" data-bs-target="#view" type="button" role="tab" aria-controls="view" aria-selected="true">Обзор</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link nav-btn " id="lineup-tab" data-bs-toggle="tab" data-bs-target="#lineup" type="button" role="tab" aria-controls="lineup" aria-selected="false">Состав</button>
-            </li>
-            @if($chek_admin == 'true')
-            <li class="nav-item" role="presentation">
-                <button class="nav-link nav-btn" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Настройки</button>
-            </li>
-            @endif
-        </ul>
-
-        <div class="col-lg-3 px-4 d-flex flex-column">
-
-            <div class="block d-flex justify-content-start w-100">
+            <div class="block d-flex justify-content-start" style="flex-direction:row-reverse">
                 @if($networks != null)
                 @foreach($networks as $network)
                 @if($network->insta != null)
@@ -94,10 +77,24 @@
                 @endif
             </div>
         </div>
+
+        <ul class="nav nav-tabs nav-tabss" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link nav-btn " id="view-tab" data-bs-toggle="tab" data-bs-target="#view" type="button" role="tab" aria-controls="view" aria-selected="true">Обзор</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link nav-btn " id="lineup-tab" data-bs-toggle="tab" data-bs-target="#lineup" type="button" role="tab" aria-controls="lineup" aria-selected="false">Турниры</button>
+            </li>
+            @if($chek_admin == 'true')
+            <li class="nav-item" role="presentation">
+                <button class="nav-link nav-btn" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Настройки</button>
+            </li>
+            @endif
+        </ul>
+
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="view" role="tabpanel" aria-labelledby="view-tab">
-            </div>
-            <div class="tab-pane fade" id="lineup" role="tabpanel" aria-labelledby="lineup-tab">
+
                 <div class="block-view">
                     <h4><a href="{{route('exit_team',$user_id)}}" class="">Покинуть команду</a></h4>
                     <h4 class="input-title">Пригласить друзей в команду</h4>
@@ -138,34 +135,91 @@
                     @endforeach
                     @endif
                 </div>
+
+            </div>
+            <div class="tab-pane fade" id="lineup" role="tabpanel" aria-labelledby="lineup-tab">
+
             </div>
 
             <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                @foreach($data as $team)
-                <form method="POST" action="{{route('delete_team', $team->id)}}">
+                <!--      @foreach($data as $team)
+                 <form method="POST" action="{{route('delete_team', $team->id)}}">
                     @csrf
                     <button class="submit-btn btn--size btn--mr">Удалить команду</button>
-                </form>
+                </form> 
                 <a type="btn" class="forms__btn btn nav-link btn--orange mt-4" data-toggle="modal" data-target="#ModalQuery">Отпаравить запрос на изменения названия команды </a>
+                @endforeach -->
+
+                <form method="POST" action="{{route('orders_team_user', $team_id)}}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="col-lg-6">
+                        <input name="name" placeholder="Название команды" type="tel" class="form-control  subtitle fw-normal input_border" id="">
+                        <p></p>
+                        <select name="country" id="" style="font-size: 16px;">
+                            @foreach($countries as $country)
+                            <option value="{{$country}}">{{$country}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
+                </form>
+
+                @if($networks != null)
+                @foreach($networks as $network)
+                <form method="POST" action="{{route('add_networks_update', $team_id)}}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row mt-4">
+                        <p></p>
+                        <p></p>
+                        <p></p>
+                        <h2>Ссылки на социальные сети</h2>
+                        <div class="col-lg-6">
+                            <input name="insta" placeholder="instagram.com/" type="tel" class="form-control  subtitle fw-normal input_border" id="" value="{{$network->insta}}">
+                            <input name="discord" placeholder="discord.com/" type="text" class="form-control  subtitle fw-normal input_border" id="" value="{{$network->discord}}">
+                            <input name="vk" placeholder="vk.com/" type="text" class="form-control  subtitle fw-normal input_border" id="" value="{{$network->vk}}">
+                            <input name="youtube" placeholder="youtube.com/" type="text" class="form-control  subtitle fw-normal input_border" id="" value="{{$network->youtube}}">
+                        </div>
+                    </div>
+
+
+                    <button type="btn" class="btn  submit-btn btn--size btn--orange btn--margin" style="margin-right: 10px;">Сохранить</button>
+                    <a href="{{route('delete_team', $team->id)}}" class="btn  submit-btn btn--size  btn--margin">Удалить команду</a>
+                    <a href="" class="btn  submit-btn btn--size  btn--margin" data-toggle="modal" data-target="#ModalLogo">Установить логотип</a>
+                </form>
                 @endforeach
-                <p></p>
-                <a class="submit-btn btn--size btn--mr" data-toggle="modal" data-target="#ModalNetworks">Добавить соц.сети</a>
+                @else
+                <form method="POST" action="{{route('add_networks', $team_id)}}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row mt-4">
+                        <h2>Ссылки на социальные сети</h2>
+                        <div class="col-lg-6">
+                            <input name="insta" placeholder="instagram.com/" type="tel" class="form-control  subtitle fw-normal input_border" id="">
+                            <input name="discord" placeholder="discord.com/" type="text" class="form-control  subtitle fw-normal input_border" id="">
+                            <input name="vk" placeholder="vk.com/" type="text" class="form-control  subtitle fw-normal input_border" id="">
+                            <input name="youtube" placeholder="youtube.com/" type="text" class="form-control  subtitle fw-normal input_border" id="">
+                        </div>
+                    </div>
 
-
-                <div class="modal fade" id="ModalQuery" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <button type="btn" class="btn  submit-btn btn--size btn--orange btn--margin" style="margin-right: 10px;">Сохранить</button>
+                    <a href="{{route('delete_team', $team->id)}}" class="btn  submit-btn btn--size  btn--margin">Удалить команду</a>
+                    <a href="" class="btn  submit-btn btn--size  btn--margin" data-toggle="modal" data-target="#ModalLogo">Установить логотип</a>
+                </form>
+                @endif
+                <div class="modal fade" id="ModalLogo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                     <div class="modal-dialog" role="document">
 
                         <div class="modal-content" style="font-size: 16px;">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Выбрать участников</h5>
+                                <h5 class="modal-title" id="exampleModalLongTitle">Загрузить логотип</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body" style="font-size: 16px;">
-                                <form method="POST" action="{{route('orders_team', $team_id)}}">
+                                <form method="POST" action="{{route('set_logo', $team_id)}}" enctype="multipart/form-data">
                                     @csrf
-                                    <input type="text" name="name">
+                                    <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="logo">
+
                                     <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
                                 </form>
                             </div>
@@ -175,51 +229,7 @@
                     </div>
                 </div>
 
-                <div class="modal fade" id="ModalNetworks" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
 
-                        <div class="modal-content" style="font-size: 16px;">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Выбрать участников</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body" style="font-size: 16px;">
-                                @if($networks != null)
-                                @foreach($networks as $network)
-                                <form method="POST" action="{{route('add_networks_update', $team_id)}}">
-                                    @csrf
-
-                                    <input type="text" name="insta" placeholder="insta" value="{{$network->insta}}">
-                                    <input type="text" name="discord" placeholder="discord" value="{{$network->discord}}">
-                                    <input type="text" name="vk" placeholder="vk" value="{{$network->vk}}">
-                                    <input type="text" name="facebook" placeholder="facebook" value="{{$network->facebook}}">
-                                    <input type="text" name="youtube" placeholder="youtube" value="{{$network->youtube}}">
-                                    <input type="text" name="telegram" placeholder="telegram" value="{{$network->telegram}}">
-                                    <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
-                                </form>
-
-                                @endforeach
-                                @else
-                                <form method="POST" action="{{route('add_networks', $team_id)}}">
-                                    @csrf
-
-                                    <input type="text" name="insta" placeholder="insta">
-                                    <input type="text" name="discord" placeholder="discord">
-                                    <input type="text" name="vk" placeholder="vk">
-                                    <input type="text" name="facebook" placeholder="facebook">
-                                    <input type="text" name="youtube" placeholder="youtube">
-                                    <input type="text" name="telegram" placeholder="telegram">
-                                    <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
-                                </form>
-                                @endif
-                            </div>
-                            <div class="modal-footer">
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 </section>

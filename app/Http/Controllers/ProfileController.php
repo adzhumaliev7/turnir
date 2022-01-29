@@ -122,8 +122,6 @@ class ProfileController extends Controller
         $file2->move(public_path() . '/uploads/storage/img', $file_name2);
       }
     }
-
-
     $data = $request->validate([
       'doc_photo' => '',
       'doc_photo2' => '',
@@ -155,9 +153,7 @@ class ProfileController extends Controller
 
   public function createTeam(Request $request)
   {
-
     $data = $request->validate([
-
       'name' => 'required',
     ]);
     $id = Auth::user()->id;

@@ -16,7 +16,7 @@ class TeamController extends Controller
             $a = (array)$value;
             $team_id = $a['team_id'];
         }
-
+        $countries = config('app.countries');
         $members = Team::getTeamMembers($team_id);
         $user_id = Auth::user()->id;
         $chek_admin = Team::checkAdmin($user_id);
@@ -29,6 +29,7 @@ class TeamController extends Controller
             'user_id' => $user_id,
             'chek_admin' => $chek_admin,
             'networks' => $networks,
+            'countries' => $countries,
         ]);
     }
     public function addMembers($id)
@@ -95,9 +96,11 @@ class TeamController extends Controller
            'team_id'=> $id,
            'name' => $request->input('name'),
        );
-       
-       Team::ordersTeam($data);
-        return redirect(route('team', $id));
+       $data['status'] =0;
+        $country = $request->input('country');
+        
+       Team::ordersTeam($id,$data, $country);
+        return redirect(route('profile'));
     }
 
     public function addNetworks($id, Request $request){
@@ -129,6 +132,16 @@ class TeamController extends Controller
         );
         Team::updateTeamNetworks($id,$data);
         //return redirect(route('team', $id));
+    }
+
+    public function setLogo($id, Request $request){
+      
+             $file_name = $request->file('logo')->getClientOriginalName();
+             $file_name = md5($file_name) .'.png';
+            $file = $request->file('logo');
+           
+            $file->move(public_path() . '/uploads/storage/img/teamlogo', $file_name);
+       Team::setLogo($id, $file_name);
     }
    
 }

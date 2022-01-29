@@ -57,11 +57,12 @@ Route::get('/addmembers/{id}', [\App\Http\Controllers\TeamController::class, 'ad
 Route::get('/addmembers/apply/{id}', [\App\Http\Controllers\TeamController::class, 'addMembersApply'])->name('addmembe_apply');
 Route::get('/team/exit/{id}', [\App\Http\Controllers\TeamController::class, 'exitTeam'])->name('exit_team');
 Route::get('/team/delete/{id}', [\App\Http\Controllers\TeamController::class, 'deleteMember'])->name('delete_member');
-Route::post('/team/delete_team/{id}', [\App\Http\Controllers\TeamController::class, 'deleteTeam'])->name('delete_team');
-Route::any('/team/orders_team/{id}', [\App\Http\Controllers\TeamController::class, 'ordersTeam'])->name('orders_team');
+Route::get('/team/delete_team/{id}', [\App\Http\Controllers\TeamController::class, 'deleteTeam'])->name('delete_team');
+Route::post('/team/orders_team/{id}', [\App\Http\Controllers\TeamController::class, 'ordersTeam'])->name('orders_team_user');
 Route::get('/team/add_admin/{id}/{team_id}', [\App\Http\Controllers\TeamController::class, 'addAdmin'])->name('add_admin');
 Route::post('/team/add_networks/{id}', [\App\Http\Controllers\TeamController::class, 'addNetworks'])->name('add_networks');
 Route::post('/team/add_networks_update/{id}', [\App\Http\Controllers\TeamController::class, 'addNetworksUpdate'])->name('add_networks_update');
+Route::post('/team/set_logo/{id}', [\App\Http\Controllers\TeamController::class, 'setLogo'])->name('set_logo');
 Route::get('/tournament', [\App\Http\Controllers\TournamentController::class, 'index'])->name('tournament');
 Route::any('tournament/create_order', [\App\Http\Controllers\TournamentController::class, 'createTournament'])->name('create_order');
 Route::post('tournament/create_order/save', [\App\Http\Controllers\TournamentController::class, 'saveTournament'])->name('save_order');
