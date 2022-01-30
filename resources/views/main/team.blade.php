@@ -127,7 +127,7 @@
                         @if($member->role=='member')
                         <div class="">
                             <a href="{{route('add_admin', [$member->user_id, $team_id])}}" class="orange item__tile item__tile--mr">apply admin</a>
-                            <a href="{{route('delete_member', $member->user_id)}}" class="orange item__tile">delete</a>
+                            <a href="{{route('delete_member', [$member->user_id, $team_id])}}" class="orange item__tile">delete</a>
                         </div>
                         @endif
                         @endif
@@ -138,9 +138,70 @@
 
             </div>
             <div class="tab-pane fade" id="lineup" role="tabpanel" aria-labelledby="lineup-tab">
+                <div class="container">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#stage_1">Турниры</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#stage_2">Матчи</a>
+                        </li>
 
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="stage_1">
+                            @if($tournaments != null)
+                            <table class="table" tyle="font-size: 16px;">
+                                <thead class=" thead-light">
+                                    <tr>
+                                        <th scope="col">Турнир</th>
+                                        <th scope="col">Формат</th>
+                                        <th scope="col">Дата</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach($tournaments as $tournament)
+                                    <tr>
+
+                                        <td>{{$tournament->tournaments_name}}</td>
+                                        <td>{{$tournament->format}}</td>
+                                        <td>{{$tournament->tournament_start}}</td>
+
+
+
+                                    </tr>
+                                    @endforeach
+                            </table>
+                            @else <span style="font-size: 16px;">Данных нет</span>
+                            @endif
+                        </div>
+                        <div class="tab-pane fade" id="stage_2">
+                            @if($tournaments != null)
+                            <table class="table" style="font-size: 16px;">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">Турнир</th>
+                                        <th scope="col">Формат</th>
+                                        <th scope="col">Дата</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($tournaments as $tournament)
+                                    <tr>
+                                        <td>{{$tournament->tournaments_name}}</td>
+                                        <td>{{$tournament->format}}</td>
+                                        <td>{{$tournament->tournament_start}}</td>
+                                    </tr>
+                                    @endforeach
+                            </table>
+                            @else <span style="font-size: 16px;">Данных нет</span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
-
             <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                 <!--      @foreach($data as $team)
                  <form method="POST" action="{{route('delete_team', $team->id)}}">

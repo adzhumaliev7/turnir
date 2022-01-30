@@ -341,7 +341,7 @@
           @foreach($teams as $team)
           <div class="row">
             <div class="col d-flex justify-content-between border--block">
-              <a href="{{ route('team', $team->user_id) }}">
+              <a href="{{ route('team', [$team->team_id, $team->user_id] ) }}">
                 <p class="block-team__text">{{$team->name}}</p>
               </a>
               <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">

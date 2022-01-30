@@ -23,6 +23,7 @@ class ProfileController extends Controller
 
     $timezones = config('app.timezones');
     $teams = Team::getTeamById($id);
+    
     $verification_status = UsersProfile::checkVerification($id);
     $tournaments = UsersProfile::getTeamById($id);
     

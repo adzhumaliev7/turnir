@@ -52,11 +52,11 @@ Route::post('/profile/createteam', [\App\Http\Controllers\ProfileController::cla
 Route::post('/profile/tournaments/{id}', [\App\Http\Controllers\ProfileController::class, 'getTournaments'])->name('get_tournaments');
 Route::post('/profile/query/{id}', [\App\Http\Controllers\ProfileController::class, 'query'])->name('query');
 Route::get('/main', [\App\Http\Controllers\MainController::class, 'index'])->name('main');
-Route::get('/team/{id}/', [\App\Http\Controllers\TeamController::class, 'index'])->name('team');
+Route::get('/team/{id}/{user_id}', [\App\Http\Controllers\TeamController::class, 'index'])->name('team');
 Route::get('/addmembers/{id}', [\App\Http\Controllers\TeamController::class, 'addMembers'])->name('addmember');
 Route::get('/addmembers/apply/{id}', [\App\Http\Controllers\TeamController::class, 'addMembersApply'])->name('addmembe_apply');
 Route::get('/team/exit/{id}', [\App\Http\Controllers\TeamController::class, 'exitTeam'])->name('exit_team');
-Route::get('/team/delete/{id}', [\App\Http\Controllers\TeamController::class, 'deleteMember'])->name('delete_member');
+Route::get('/team/delete/{id}/{team_id}', [\App\Http\Controllers\TeamController::class, 'deleteMember'])->name('delete_member');
 Route::get('/team/delete_team/{id}', [\App\Http\Controllers\TeamController::class, 'deleteTeam'])->name('delete_team');
 Route::post('/team/orders_team/{id}', [\App\Http\Controllers\TeamController::class, 'ordersTeam'])->name('orders_team_user');
 Route::get('/team/add_admin/{id}/{team_id}', [\App\Http\Controllers\TeamController::class, 'addAdmin'])->name('add_admin');

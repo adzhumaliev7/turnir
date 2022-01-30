@@ -23,11 +23,18 @@ class Team extends Model
          return NULL;
       }
    }
+   public function getTeamById2($id, $user_id)
+   {
+         return DB::table('team_members')
+         ->join('team', 'team_members.team_id', '=', 'team.id')
+         ->select('team_members.team_id', 'team_members.user_id', 'team.id', 'team.name', 'team.logo')
+         ->where('team_members.team_id', $id)->where('team_members.user_id', $user_id)
+         ->get();
+
+   }
    public function getTeamName($id)
    {
-     
          return DB::table('team')->where('id', $id)->value('name');
- 
    }
    public function getTeamMembers($id)
    {
@@ -36,7 +43,7 @@ class Team extends Model
          return DB::table('team_members')
             ->join('team', 'team_members.team_id', '=', 'team.id')
             ->join('users', 'team_members.user_id', '=', 'users.id')
-            ->select('team_members.user_id', 'team_members.role', 'users.id', 'users.name')
+            ->select('team_members.user_id', 'team_members.role','team_members.team_id', 'users.id', 'users.name')
             ->where('team_members.team_id', $id)
             ->get();
       } else {
@@ -64,9 +71,9 @@ class Team extends Model
       return DB::table('team_members')->insert($data);
    }
 
-   public function deleteMember($id)
+   public function deleteMember($id,$team_id)
    {
-      return DB::table('team_members')->where('user_id', $id)->delete();
+      return DB::table('team_members')->where('user_id', $id)->where('team_id', $team_id)->delete();
    }
    public function addAdmin($id, $team_id)
    {
@@ -126,6 +133,16 @@ class Team extends Model
 
    public static function setLogo($id, $logo){
       return DB::table('team')->where('id', $id)->update(['logo'=>$logo]);
+   }
+
+   public static function getTournaments($team_id){
+      $is_has = DB::table('tournamets_team')->where('team_id', $team_id)->exists();
+      if ($is_has == true) {
+     return  DB::table('tournamets_team')
+      ->join('tournaments', 'tournamets_team.team_id' ,'=', 'tournaments.team_id')
+      ->select('tournaments.name', 'tournaments.format', 'tournaments.tournament_start')
+      ->where('tournamets_team.team_id', $team_id);
+      } else return null;
    }
 
    

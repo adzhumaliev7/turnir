@@ -101,7 +101,6 @@ class TournamentController extends Controller
 
                $userdata = (array) $userdata;
                $members = Tournament::getMembers($userdata['team_id']);
-
                if ($teams == NULL) {
                     $teams = "";
                }
