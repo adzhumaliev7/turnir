@@ -52,41 +52,39 @@
     </div>
   </nav>
 </div>
-
-
-<!-- ! разобраться с фото position absolute что бы фото было взаде текста -->
-<section>
-
-  <!-- first item - 1 -->
-  <div class="container">
+<!-- ! разобратся с фото position absolute что бы фото было взаде текста -->
+  <div class="main">
+    <!-- first item - 1 -->
+    <div class="container">
 
 
 
-    <div class="row d-flex justify-content-between">
-      @if($tournaments != "")
-      @foreach($tournaments as $tournament)
-      <div class="col-lg-6 my-3">
-        <div class="pubg pubg-3">
+      <div class="row d-flex justify-content-between">
+        @if($tournaments != "")
+        @foreach($tournaments as $tournament)
+        <div class="col-lg-6 my-3">
+          <div class="pubg pubg-3">
 
-          <div class="pubg-img pubg-wrapper pubg-img-3">
-            <div class="pubg-block">
-              <h4 class="pubg__title pubg__title--margin">{{$tournament->name}}</h4>
-              <p class="pubg__text">{{$tournament->tournament_start}} {{$tournament->games_time}} {{$tournament->country}}</p>
-              <span class="pubg__price">Призовой фонд: {{$tournament->price}}</span>
-              <p class="pubg__text pubg__text--margin">Режим проведения: squad(4)</p>
-              <a href="{{ route('match', $tournament->id) }}" class="pubg__btn pubg__text--margin">Принять участие</a>
+            <div class="pubg-img pubg-wrapper pubg-img-3">
+              <div class="pubg-block">
+                <h4 class="pubg__title pubg__title--margin">{{$tournament->name}}</h4>
+                <p class="pubg__text">{{$tournament->tournament_start}} {{$tournament->games_time}} {{$tournament->country}}</p>
+                <span class="pubg__price">Призовой фонд: {{$tournament->price}}</span>
+                <p class="pubg__text pubg__text--margin">Режим проведения: squad(4)</p>
+                <a href="{{ route('match', $tournament->id) }}" class="pubg__btn pubg__text--margin">Принять участие</a>
+              </div>
             </div>
+
           </div>
-
         </div>
+        @endforeach
+        @else
+        <h4> Турниров нет</h4>
+        @endif
       </div>
-      @endforeach
-      @else
-      <h4> Турниров нет</h4>
-      @endif
-    </div>
 
+    </div>
   </div>
-</section>
+
 
 @endsection

@@ -137,13 +137,19 @@ class Team extends Model
 
    public static function getTournaments($team_id){
       $is_has = DB::table('tournamets_team')->where('team_id', $team_id)->exists();
+    
       if ($is_has == true) {
      return  DB::table('tournamets_team')
-      ->join('tournaments', 'tournamets_team.team_id' ,'=', 'tournaments.team_id')
+      ->join('tournaments', 'tournamets_team.tournament_id' ,'=', 'tournaments.id')
       ->select('tournaments.name', 'tournaments.format', 'tournaments.tournament_start')
-      ->where('tournamets_team.team_id', $team_id);
-      } else return null;
+      ->where('tournamets_team.team_id', $team_id)
+      ->get();
+      } else return null; 
+   } 
+   public static function getUsersEmail($id)
+   {
+      return DB::table('users')->select('email')->where('id', $id)->get();
    }
 
-   
+
 }

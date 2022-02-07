@@ -46,7 +46,10 @@ class Admin extends Model
    {
       $is_has = DB::table('users')->exists();
       if ($is_has == true) {
-         return DB::table('users')->select()->get();
+         return DB::table('users')
+         ->leftJoin('users_profile2', 'users.id', '=' , 'users_profile2.user_id')
+         ->select('users.*', 'users_profile2.verification','users_profile2.doc_photo', 'users_profile2.doc_photo2', 'users_profile2.nickname',  'users_profile2.game_id')
+         ->get();
       } else return NULL;
    }
 
@@ -81,7 +84,7 @@ class Admin extends Model
       return DB::table('users_profile2')
          ->join('users', 'users_profile2.user_id', '=', 'users.id')
          ->select('users_profile2.*', 'users.status')
-         ->where('users_profile2.id', $id)->get();
+         ->where('users_profile2.user_id', $id)->get();
    }
 
    public static function verified($id)

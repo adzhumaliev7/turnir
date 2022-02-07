@@ -8,10 +8,8 @@
         <thead class="thead-light">
             <tr>
                 <th scope="col">#</th>
-
-
-                <th scope="col">Новое название</th>
-
+                <th scope="col">Старое название команды</th>
+                <th scope="col">Новое название команды</th> 
                 <th scope="col">Статус</th>
                 <th scope="col"></th>
             </tr>
@@ -21,6 +19,7 @@
 
             <tr>
                 <td scope="row">{{$order->team_id}}</td>
+                <td>{{$order->name}}</td>
                 <td>{{$order->new_name}}</td>
 
                 <td>
@@ -36,7 +35,7 @@
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Сообщение</h5>
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Новое название команды</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -45,7 +44,7 @@
 
                                     <form method="POST" action="{{route('orders_team_apply', $order->team_id)}}">
                                         @csrf
-                                        <input name="name" id="" cols="50" rows="10" value="{{$order->name}}"> </input>
+                                        <input name="name" id="" cols="50" rows="10" value="{{$order->new_name}}" disabled> </input>
 
                                 </div>
                                 <div class="modal-footer">
@@ -56,8 +55,31 @@
                             </div>
                         </div>
                     </div>
-                    <a href="{{route('orders_team_rejected', $order->team_id )}}" type="button" class="btn btn-danger"> Отклонить</a>
+                    <a href="" type="button"  data-toggle="modal" data-target="#exampleModalRejected" class="btn btn-danger"> Отклонить</a>
+                    <div class="modal fade" id="exampleModalRejected" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Сообщение об отказе</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
 
+                                    <form method="POST" action="{{route('orders_team_rejected', $order->team_id )}}">
+                                        @csrf
+                                        <textarea name="text" id="" cols="50" rows="10" value="" > </textarea>
+
+                                </div>
+                                <div class="modal-footer">
+
+                                    <button type="btn" class="btn btn-primary">Сохранить</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     @endif
                 </td>
             </tr>

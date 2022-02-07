@@ -32,7 +32,6 @@ class TournamentController extends Controller
      public function createTournament()
      {
 
-
           return view('create_tournament');
      }
 
@@ -92,20 +91,17 @@ class TournamentController extends Controller
           //$end_reg=(strtotime(strtotime($date) >= $t['end_reg']));
           if (Auth::user() != null) {
                $user_id = Auth::user()->id;
-
                $mail = User::getEmail($user_id);
                $teams = Tournament::getTeams($id, $user_id); //команды зарегистрированные в турнир 
-
                $userdata = Tournament::checkTeam($user_id);
-
-
-               $userdata = (array) $userdata;
-               $members = Tournament::getMembers($userdata['team_id']);
+  
                if ($teams == NULL) {
                     $teams = "";
                }
-
                if ($userdata != NULL) {
+                    $userdata = (array) $userdata; 
+                  
+                    $members = Tournament::getMembers($userdata['team_id']);
                     if ($userdata['role'] == 'captain') {
                          if ($teams != NULL) {
                               foreach ($teams as $key) {
@@ -125,14 +121,18 @@ class TournamentController extends Controller
                               } else   $checked = 'has';
                          } else $checked = 'member';
                     } else $checked = 'has';
-               } else $checked = NULL;
+               } else {
+                    $checked = NULL;
+                    $members =null;
+               }
           }else {
                $mail = null;
                $checked = null;
                $members =null;
                $teams ="";
           }
-
+     
+       
           return view('main.match', [
                'mail' => $mail,
                'tournaments' => $tournaments,

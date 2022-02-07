@@ -38,20 +38,34 @@ class UsersProfile extends Model
    }
 
     public function getTeamById($id){
-       $is_has = DB::table('tournaments_members')->where('user_id', $id)->exists();
+       $is_has = DB::table('team_members')->where('user_id', $id)->exists();
        if($is_has == true){
-         return DB::table('tournaments_members')
+         return DB::table('team_members')
             ->join('team','team_members.team_id','=','team.id')
-            ->join('tournamets_team','team_members.team_id','=','tournamets_team.team_id')
-            ->join('tournaments','tournamets_team.tournament_id','=','tournaments.id')
-            ->select('team_members.team_id','team_members.user_id', 'team.id', 'team.name','tournaments.name', 'tournaments.format', 'tournaments.id as tournaments_id', 'tournaments.tournament_start', 'tournaments.slot_kolvo','tournaments.country' ,'tournaments.timezone'  ,'tournaments.price', 'tournaments.active' )
-            ->where('tournaments_members.user_id', $id)
+            ->select('team_members.team_id','team_members.user_id', 'team.id', 'team.name')
+            ->where('team_members.user_id', $id)
             ->get();
        }
        else {
           return NULL;
        }
    }
+   public function getTournamentsById($id){
+       $is_has = DB::table('tournaments_members')->where('user_id', $id)->exists();
+      if($is_has == true){
+        return DB::table('tournaments_members')
+           ->join('team','tournaments_members.team_id','=','team.id')
+           ->join('tournamets_team','tournaments_members.team_id','=','tournamets_team.team_id')
+           ->join('tournaments','tournamets_team.tournament_id','=','tournaments.id')
+           ->select('tournaments_members.team_id','tournaments_members.user_id', 'team.id', 'team.name','tournaments.name', 'tournaments.format', 'tournaments.id as tournaments_id', 'tournaments.tournament_start', 'tournaments.slot_kolvo','tournaments.country' ,'tournaments.timezone'  ,'tournaments.price', 'tournaments.active' )
+           ->where('tournaments_members.user_id', $id)
+           ->get();
+      }
+      else {
+         return NULL;
+      } 
+      return  NULL;
+  }
    
    public static function getTeamsCount($id){
       return DB::table('tournamets_team')->where('tournament_id', $id)->where('status', 'accepted')->count();
@@ -73,5 +87,11 @@ class UsersProfile extends Model
       return DB::table('orders')->insert($data);
    }
 
+   public static function setUserPhoto($data){
+      return DB::table('users_logo')->insert($data);
+   }
+   public static function getUserPhoto($id){
+      return DB::table('users_logo')->select('photo')->where('user_id', $id)->value('photo');
+   }
    
 }

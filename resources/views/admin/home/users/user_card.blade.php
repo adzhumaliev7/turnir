@@ -80,12 +80,14 @@
 
 @section('content')
 @foreach($users as $user)
-<? if ($user->verification == "on_check") {
-  echo '<h3>Не проверен</h3>';
-} else {
-  echo  '<h3>Проверен</h3>';
-}
-?>
+
+@if($user->verification =='verified')
+  <h3>Верифицирован</h3>
+@elseif($user->verification =='on_check')
+  <h3>Ожидает верификации</h3>
+@else
+  <h3>Отклонен</h3>
+@endif
 @endforeach
 
 <table class="table">
@@ -128,37 +130,8 @@
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalRejected">
           Отклонить
         </button>
-        @if($user->status !='ban')
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
-          Бан
-        </button>
-        @else
-        <a href="{{route('unblock', $user->user_id)}}" class="btn btn-primary">Разблокировать</a>
-        @endif
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Сообщение</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-
-                <form method="POST" action="{{route('add_ban', $user->user_id)}}">
-                  @csrf
-                  <textarea name="text" id="" cols="50" rows="10"></textarea>
-
-              </div>
-              <div class="modal-footer">
-
-                <button type="btn" class="btn btn-primary">Сохранить</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+     
+      
         <div class="modal fade" id="ModalRejected" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -200,8 +173,8 @@
         </button>
       </div>
       <div class="modal-body">
-        <img src="{{ asset("uploads/storage/img/$user->doc_photo")}}" width="400" height="350" class="" style="opacity: .8">
-        <img src="{{ asset("uploads/storage/img/$user->doc_photo2")}}" width="400" height="350" class="img2" style="opacity: .8">
+        <img src="{{ asset("uploads/storage/img/verification/$user->doc_photo")}}" width="400" height="350" class="" style="opacity: .8">
+        <img src="{{ asset("uploads/storage/img/verification/$user->doc_photo2")}}" width="400" height="350" class="img2" style="opacity: .8">
 
       </div>
     </div>

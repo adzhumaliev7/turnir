@@ -44,7 +44,6 @@ class HomeController extends Controller
   public function allUsers()
   {
     $users = Admin::getAllUsers();
-
     if ($users == NULL) {
       $users == "";
     }
@@ -68,7 +67,7 @@ class HomeController extends Controller
     $text = $request->input('text');
     Mail::to($em)->send(new BanMail($em, $text));
     Admin::addBan($id);
-    return redirect(route('users'));
+    return redirect(route('allusers'));
   }
   public function unblock($id)
   {
@@ -85,7 +84,7 @@ class HomeController extends Controller
       $message->from('tournamentpubgtest@gmail.com', 'www');
     });
     Admin::unblock($id);
-    return redirect(route('users'));
+    return redirect(route('allusers'));
   }
   public function teamsView()
   {
@@ -111,7 +110,7 @@ class HomeController extends Controller
   public function verified($id)
   {
     $users = Admin::verified($id);
-    return redirect()->to(route('users'));
+    return redirect()->to(route('allusers'));
   }
   public function rejected($id, Request $request)
   {
@@ -126,7 +125,7 @@ class HomeController extends Controller
     $text = $request->input('text');
     Mail::to($em)->send(new BanMail($em, $text));
     Admin::rejected($id);
-    return redirect()->to(route('users'));
+    return redirect()->to(route('allusers'));
   }
 
 
@@ -279,13 +278,14 @@ class HomeController extends Controller
     Admin::changeTeamName($id, $name);
     return redirect(route('orders_team'));
   }
-  public function ordersTeamRejected($id)
+  public function ordersTeamRejected($id, Request $request)
   {
     $email = Admin::getTeamMembersEmailCaptain($id);
-
-    Mail::to($email)->send(new RejectedChangeTeam($email));
+    $text = $request->input('text');
+    var_dump($email, $text);
+     Mail::to($email)->send(new RejectedChangeTeam($email, $text));
     Admin::ordersTeamRejected($id);
 
-    return redirect(route('orders_team'));
+    return redirect(route('orders_team')); 
   }
 }

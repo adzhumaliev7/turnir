@@ -136,7 +136,7 @@ return [
         'Russia'            => "Russia",
         'USA'            => "USA",
         'Ukraine'            => "Ukraine",
-     
+        'Belarus'   => "Belarus",
     ],
     
     'name' => env('APP_NAME', 'SHOWMATCH'),

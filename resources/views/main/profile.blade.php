@@ -47,12 +47,22 @@
       <div class="header-sz">
         <div class="header__panel d-flex justify-content-center align-items-center flex-sm-nowrap flex-wrap">
           <div class="header__profile">
+            @if($user_photo != NULL)
+            <img class="header__img" src="{{ asset("uploads/storage/img/userslogo/$user_photo")}}" width="150" height="150" alt="" alt="profile" />
+            @else
             <img class="header__img" src="http://placehold.it/150" alt="profile" />
+            <form action="{{route('save_photo')}}" method="POST" enctype="multipart/form-data">
+              @csrf
+              <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="logo">
+
+              <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
+            </form>
+            @endif
           </div>
           <div class="header__nick">
             @if(!$data==NULL)
             @foreach($data['data'] as $dat)
-            <h1 class="title  text-capitalize font-sz text--responsive">{{$user_name}}</h1>
+            <h1 class="title  text-capitalize font-sz text--responsive" style=" color: white;">{{$user_name}}</h1>
             <sub class="subtitle subtitle--gray text--responsive"><? if ($dat->verification == 'verified') {
                                                                     echo "Верифицирован";
                                                                   } else {
@@ -65,7 +75,7 @@
                                                                   } ?></sub>
             @endforeach
             @else
-            <h1 class="title text-capitalize font-sz">{{$user_name}}</h1>
+            <h1 class="title text-capitalize font-sz" style="color: white;">{{$user_name}}</h1>
             <sub class="subtitle subtitle--gray text--responsive">Не верифицирован</sub>
             <sub class="subtitle subtitle--gray text--responsive"><? if ($active == 1) {
                                                                     echo "Активирован";
@@ -122,7 +132,9 @@
       </nav>
     </div>
     <div class="tab-content tab-panels" id="nav-tabContent">
-
+    @error('text')
+                <div class="alert alert-danger" style="font-size: 16px;">Введите текст сообщения</div>
+                @enderror
       @if (session('error'))
       <div class="alert alert-danger">{{ session('error') }}</div>
       @endif
@@ -133,38 +145,43 @@
         <div class="container">
 
           @if($data != NULL )
+
           @foreach($data['data'] as $dat)
           <? if ($dat->verification == 'verified') {
-            $style = 'style="display:none;"';
+
             $h4 = 'Аккаунт верифицирован';
           } elseif ($dat->verification == 'on_check') {
-            $style = 'style="display:none;"';
+
             $h4 = 'Аккаунт на проверке';
           } elseif ($dat->verification == 'rejected') {
-            $style = 'style="display:show;"';
+
             $h4 = 'Вернут на доработку';
           } else {
-            $style = 'style="display:show;"';
+
             $h4 = 'Пройти верификацию';
           }
           ?>
           @endforeach
           @else
           <?
-          $style = 'style="display:show;"';
-          $h4 = 'Аккаунт верифицирован';
 
+          $h4 = 'Аккаунт не верифицирован';
           ?>
           @endif
-
+          @if($active ==1)
           <h4 class="input-title"><? echo $h4; ?></h4>
+          <? $display = 'style="display: show;'; ?>
+          @else
+          <h4 class="input-title">Для верефиции активируйте аккаунт</h4>
+          <? $display = 'style="display: none;'; ?>
+          @endif
           @if($data != NULL)
           <? if ($data['status'] == 0)
             $disabled = 'disabled';
           else
             $disabled = '';
           ?>
-          <form method="POST" action="{{route('update_profile')}}" enctype="multipart/form-data">
+          <form method="POST" action="{{route('update_profile')}}" enctype="multipart/form-data" >
             @csrf
             @foreach($data['data'] as $dat )
             <div class="row">
@@ -185,13 +202,13 @@
               <div class="col-lg-6">
                 <input name="phone" placeholder="Номер телефона" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->phone}}" <?= $disabled; ?>>
                 @error('phone')
-                <div class="alert alert-danger">{{$message}}</div>
+                <div class="alert alert-danger">Введите номер телефона</div>
                 @enderror
               </div>
               <div class="col-lg-6">
                 <input name="fio" placeholder="Имя Фамилия" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->fio}}" <?= $disabled; ?>>
                 @error('fio')
-                <div class="alert alert-danger">{{$message}}</div>
+                <div class="alert alert-danger">Введите имя</div>
                 @enderror
               </div>
             </div>
@@ -199,19 +216,23 @@
               <div class="col-lg-6">
                 <input name="login" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->login}}" <?= $disabled; ?>>
                 @error('login')
-                <div class="alert alert-danger">{{$message}}</div>
+                <div class="alert alert-danger">Введите логин</div>
                 @enderror
               </div>
               <div class="col-lg-6">
                 <input name="email" placeholder="Email" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->email}}" <?= $disabled; ?>>
                 @error('email')
-                <div class="alert alert-danger">{{$message}}</div>
+                <div class="alert alert-danger">Такой email уже занят</div>
                 @enderror
               </div>
             </div>
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="country" placeholder="Страна" type="text " class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->country}}" <?= $disabled; ?>>
+                <select name="country" id="" style="font-size: 16px;">
+                  @foreach($countries as $country)
+                  <option value="{{$dat->country}}">{{$country}}</option>
+                  @endforeach
+                </select>
               </div>
               <div class="col-lg-6">
                 <select name="timezone" id="" class="size_16px" <?= $disabled; ?>>
@@ -238,6 +259,9 @@
               </div>
               <div class="col-lg">
                 <input placeholder="ID игрока в PUBG Mobile" type="text" name="game_id" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->game_id}}" <?= $disabled; ?>>
+                @error('login')
+                <div class="alert alert-danger">Игровой id уже занят</div>
+                @enderror
               </div>
             </div>
             @endforeach
@@ -248,8 +272,8 @@
           </form>
 
           @else
-          <form method="POST" action="{{route('create_profile')}}" enctype="multipart/form-data">
-            @csrf
+          <form method="POST" action="{{route('create_profile')}}" enctype="multipart/form-data" >
+           @csrf
             <div class="row">
               <div class="col-lg">
                 <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="doc_photo">
@@ -268,14 +292,14 @@
               <div class="col-lg-6">
                 <input name="phone" placeholder="Номер телефона" type="tel" class="form-control input__profile subtitle fw-normal" id="">
                 @error('phone')
-                <div class="alert alert-danger">{{$message}}</div>
+                <div class="alert alert-danger">Введите номер телефона</div>
                 @enderror
               </div>
               <div class="col-lg-6">
 
                 <input name="fio" placeholder="Имя Фамилия" type="text" class="form-control input__profile subtitle fw-normal" id="">
                 @error('fio')
-                <div class="alert alert-danger">{{$message}}</div>
+                <div class="alert alert-danger">Введите имя</div>
                 @enderror
               </div>
             </div>
@@ -283,23 +307,27 @@
               <div class="col-lg-6">
                 <input name="login" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="">
                 @error('login')
-                <div class="alert alert-danger">{{$message}}</div>
+                <div class="alert alert-danger">Введите логин</div>
                 @enderror
               </div>
               <div class="col-lg-6">
 
                 <input name="email" placeholder="Email" type="text" class="form-control input__profile subtitle fw-normal" id="">
                 @error('email')
-                <div class="alert alert-danger">{{$message}}</div>
+                <div class="alert alert-danger">Такой email уже занят</div>
                 @enderror
               </div>
             </div>
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="country" placeholder="Страна" type="text " class="form-control input__profile subtitle fw-normal" id="">
+                <select name="country" id="" style="font-size: 16px;">
+                  @foreach($countries as $country)
+                  <option value="{{$country}}">{{$country}}</option>
+                  @endforeach
+                </select>
               </div>
               <div class="col-lg-6">
-                <select name="timezone" id="" class="size_16px">
+                <select name="timezone" id="" style="font-size: 16px;">
                   @foreach($timezones as $timezone)
                   <option value="{{$timezone}}">{{$timezone}}</option>
                   @endforeach
@@ -324,7 +352,7 @@
               <div class="col-lg">
                 <input placeholder="ID игрока в PUBG Mobile" type="text" name="game_id" class="form-control input__profile subtitle fw-normal" id="">
                 @error('game_id')
-                <div class="alert alert-danger">{{$message}}</div>
+                <div class="alert alert-danger">Этот id уже занят</div>
                 @enderror
               </div>
             </div>
@@ -372,7 +400,7 @@
           <form method="POST" action="{{route('createteam')}}">
             @csrf
             <input class="input-footer" name="name" placeholder="Название команды" type="text" style="margin-top:20px;">
-            <button class="submit-btn btn--size btn--mr">Создать</button>
+            <button class="submit-btn btn--size btn--orange mt-4">Создать</button>
           </form>
           @else
           <h4>Для создания команды Вы должны пройти активацию</h4>
@@ -451,20 +479,20 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Сообщение</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle" style="font-size:16px;">Сообщеdние</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
 
-        <form method="POST" action="">
+        <form method="POST" action="{{route('query', $user_id)}}">
           @csrf
-          <textarea name="text" id="" cols="50" rows="10"></textarea>
+          <textarea name="text" id="" cols="50" rows="10" style="font-size:16px;"></textarea>
 
       </div>
       <div class="modal-footer">
-        <button type="btn" class="btn btn-primary">Сохранить</button>
+        <button type="btn" class="btn btn-primary" style="font-size:16px;">Сохранить</button>
         </form>
       </div>
     </div>

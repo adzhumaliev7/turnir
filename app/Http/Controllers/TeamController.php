@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use App\Mail\DeleteMemberMail;
+use Illuminate\Support\Facades\Mail;
 class TeamController extends Controller
 {
     public function index($id,$us)
     {
+        $id = Auth::user()->id;
+        $mail = User::getEmail($id);
         $data = Team::getTeamById2($id, $us);
         foreach ($data as $key => $value) {
             $a = (array)$value;
@@ -19,12 +23,15 @@ class TeamController extends Controller
         
         $countries = config('app.countries');
         $members = Team::getTeamMembers($team_id);
-      
+     
         $user_id = Auth::user()->id;
         $chek_admin = Team::checkAdmin($user_id);
+
+     
         $networks = Team::getTeamNetworks($team_id);
+     
         $tournaments = Team::getTournaments($team_id);
-       
+      
         return view('main.team', [
             'data' => $data,
             'members' => $members,
@@ -33,7 +40,8 @@ class TeamController extends Controller
             'chek_admin' => $chek_admin,
             'networks' => $networks,
             'countries' => $countries,
-            'tournaments' => $tournaments
+            'tournaments' => $tournaments,
+            'mail' => $mail,
         ]);
     }
     public function addMembers($id)
@@ -71,8 +79,19 @@ class TeamController extends Controller
 
     public function deleteMember($id,$team_id)
     {
+        $user_id = Auth::user()->id;
+        $email = Team::getUsersEmail($id);
+        foreach ($email as $key => $value) {
+          $email = (array) $value;
+          foreach ($email as $key => $value) {
+            $em = $value;
+      }
+    }
+        Mail::to($em)->send(new DeleteMemberMail($em));
         Team::deleteMember($id, $team_id);
-        return redirect(route('profile'));
+
+        \Session::flash('flash_meassage_delete', 'Участник успешно удален');
+        return redirect(route('team', [$team_id, $user_id]));
     }
     public function addAdmin($id, $team_id)
     {
@@ -87,12 +106,13 @@ class TeamController extends Controller
     }
     public function deleteTeam($id)
     {
-        Team::deleteTeam($id);
-        return redirect(route('profile'));
+         Team::deleteTeam($id);
+        return redirect(route('profile')); 
     }
 
     public function ordersTeam($id, Request $request)
     {
+        $user_id = Auth::user()->id;
         $data = array(
             'team_id' => $id,
             'name' => $request->input('name'),
@@ -101,12 +121,13 @@ class TeamController extends Controller
         $country = $request->input('country');
 
         Team::ordersTeam($id, $data, $country);
-        return redirect(route('profile'));
+        \Session::flash('flash_meassage', 'Ваша заявка успешно отправлена');
+        return redirect(route('team', [$id, $user_id]));
     }
 
     public function addNetworks($id, Request $request)
     {
-
+        $user_id = Auth::user()->id;
         $data = array(
             'team_id' => $id,
             'insta' => $request->input('insta'),
@@ -117,12 +138,12 @@ class TeamController extends Controller
             'telegram' => $request->input('telegram')
         );
         Team::setTeamNetworks($data);
-        //return redirect(route('team', $id));
+        return redirect(route('team', [$id, $user_id]));
     }
 
     public function addNetworksUpdate($id, Request $request)
     {
-
+        $user_id = Auth::user()->id;
         $data = array(
             'team_id' => $id,
             'insta' => $request->input('insta'),
@@ -133,12 +154,12 @@ class TeamController extends Controller
             'telegram' => $request->input('telegram')
         );
         Team::updateTeamNetworks($id, $data);
-        //return redirect(route('team', $id));
+        return redirect(route('team', [$id, $user_id]));
     }
 
     public function setLogo($id, Request $request)
     {
-
+        $user_id = Auth::user()->id;
         $request->validate([
 
             // файл должен быть картинкой (jpeg, png, bmp, gif, svg или webp)
@@ -157,5 +178,6 @@ class TeamController extends Controller
         $file = $request->file('logo');
         $file->move(public_path() . '/uploads/storage/img/teamlogo', $file_name);
         Team::setLogo($id, $file_name);
+        return redirect(route('team', [$id, $user_id]));
     }
 }

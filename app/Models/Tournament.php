@@ -58,7 +58,7 @@ class Tournament extends Model
       ->join('users_profile2', 'team_members.user_id' , '=' , 'users_profile2.user_id')
       ->leftJoin('tournaments_members', 'team_members.user_id' , '=' , 'tournaments_members.user_id')
   
-    ->where('team_members.team_id', $team_id)->where('users_profile2.status', 1)->where('tournaments_members.user_id', null)
+    ->where('team_members.team_id', $team_id)->where('users.verified', 1)->where('tournaments_members.user_id', null)
       ->select('team_members.team_id', 'team_members.user_id', 'users.name', 'tournaments_members.user_id as tour_us_id')
      ->get();
   }

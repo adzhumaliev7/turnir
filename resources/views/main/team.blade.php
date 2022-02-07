@@ -7,10 +7,13 @@
 
         <div class="dropdown">
 
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
-                <li><a class="dropdown-item header__txt text-dark" href="{{route('user.logout')}}">выйти</a></li>
-            </ul>
+        <button class="header__line header__txt button--none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            {{$mail->email}}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
+            <li><a class="dropdown-item header__txt text-dark" href="{{route('user.logout')}}">выйти</a></li>
+          </ul>
         </div>
     </div>
     <nav class=" navbar navbar-expand-md navbar p-3 mb-5 bg-body rounded bg--none navbar-z">
@@ -38,7 +41,7 @@
         </div>
     </nav>
 </div>
-<section>
+<div class="main">
     <div class="container">
         <div class="row background-gray d-flex align-items-center row-indent-mr">
             <div class="col-lg-3">
@@ -94,18 +97,20 @@
 
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="view" role="tabpanel" aria-labelledby="view-tab">
-
+            @if(Session::has('flash_meassage_delete'))
+                        <div class="alert alert-success" style="font-size: 16px;">{{Session::get('flash_meassage_delete')}}</div>
+                 @endif
                 <div class="block-view">
-                    <h4><a href="{{route('exit_team',$user_id)}}" class="">Покинуть команду</a></h4>
+                <h4><a href="{{route('exit_team',$user_id)}}" class="">Покинуть команду</a></h4>
+                @if($chek_admin == 'true')
+                  
                     <h4 class="input-title">Пригласить друзей в команду</h4>
                     <span class="subtitle subtitle--regular d-block subtitle--twelve">Скопируйте ссылку и отправьте друзьям которые хотят присоедениться вк вашей команды</span>
-                    <input class="subtitle subtitle--regular url-input url-input--margin" type="text" value="http://turnir/addmembers/{{$team_id}}">
-                    <button class="submit-btn btn--orange  btn--size btn--mr">Копировать</button>
-
+                    <input class="subtitle subtitle--regular url-input url-input--margin" type="text" id="myInput" value="http://turnir/addmembers/{{$team_id}}">
+                    <button class="submit-btn btn--orange  btn--size btn--mr" onclick="myFunction()">Копировать</button>
                     <div class="orange-line"></div>
-
-                    <h4 class="input-title">Пригласить друзей в команду</h4>
-
+                    <h4 class="input-title">Участники</h4>
+                    @endif
                     @if(!$members==NULL)
                     @foreach($members as $member)
 
@@ -126,8 +131,8 @@
                         @if($chek_admin == 'true')
                         @if($member->role=='member')
                         <div class="">
-                            <a href="{{route('add_admin', [$member->user_id, $team_id])}}" class="orange item__tile item__tile--mr">apply admin</a>
-                            <a href="{{route('delete_member', [$member->user_id, $team_id])}}" class="orange item__tile">delete</a>
+                            <a href="{{route('add_admin', [$member->user_id, $team_id])}}" class="orange item__tile item__tile--mr" onclick="return alert();">apply admin</a>
+                            <a id="delete" href="{{route('delete_member', [$member->user_id, $team_id])}}" class="orange item__tile"  onclick="return alert();">delete</a>
                         </div>
                         @endif
                         @endif
@@ -137,6 +142,7 @@
                 </div>
 
             </div>
+           
             <div class="tab-pane fade" id="lineup" role="tabpanel" aria-labelledby="lineup-tab">
                 <div class="container">
                     <ul class="nav nav-tabs">
@@ -151,7 +157,7 @@
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="stage_1">
                             @if($tournaments != null)
-                            <table class="table" tyle="font-size: 16px;">
+                            <table class="table" style="font-size: 16px;">
                                 <thead class=" thead-light">
                                     <tr>
                                         <th scope="col">Турнир</th>
@@ -165,7 +171,7 @@
                                     @foreach($tournaments as $tournament)
                                     <tr>
 
-                                        <td>{{$tournament->tournaments_name}}</td>
+                                        <td>{{$tournament->name}}</td>
                                         <td>{{$tournament->format}}</td>
                                         <td>{{$tournament->tournament_start}}</td>
 
@@ -190,7 +196,7 @@
                                 <tbody>
                                     @foreach($tournaments as $tournament)
                                     <tr>
-                                        <td>{{$tournament->tournaments_name}}</td>
+                                        <td>{{$tournament->name}}</td>
                                         <td>{{$tournament->format}}</td>
                                         <td>{{$tournament->tournament_start}}</td>
                                     </tr>
@@ -210,7 +216,9 @@
                 </form> 
                 <a type="btn" class="forms__btn btn nav-link btn--orange mt-4" data-toggle="modal" data-target="#ModalQuery">Отпаравить запрос на изменения названия команды </a>
                 @endforeach -->
-
+                @if(Session::has('flash_meassage'))
+                        <div class="alert alert-success" style="font-size: 16px;">{{Session::get('flash_meassage')}}</div>
+                 @endif
                 <form method="POST" action="{{route('orders_team_user', $team_id)}}" enctype="multipart/form-data">
                     @csrf
                     <div class="col-lg-6">
@@ -242,9 +250,10 @@
                         </div>
                     </div>
 
-
+ 
                     <button type="btn" class="btn  submit-btn btn--size btn--orange btn--margin" style="margin-right: 10px;">Сохранить</button>
-                    <a href="{{route('delete_team', $team->id)}}" class="btn  submit-btn btn--size  btn--margin">Удалить команду</a>
+                    <a href="{{route('delete_team', $team_id)}}" class="btn  submit-btn btn--size  btn--margin">Удалить команду</a>
+                    
                     <a href="" class="btn  submit-btn btn--size  btn--margin" data-toggle="modal" data-target="#ModalLogo">Установить логотип</a>
                 </form>
                 @endforeach
@@ -262,7 +271,7 @@
                     </div>
 
                     <button type="btn" class="btn  submit-btn btn--size btn--orange btn--margin" style="margin-right: 10px;">Сохранить</button>
-                    <a href="{{route('delete_team', $team->id)}}" class="btn  submit-btn btn--size  btn--margin">Удалить команду</a>
+                    <a href="{{route('delete_team', $team_id)}}" class="btn  submit-btn btn--size  btn--margin">Удалить команду</a>
                     <a href="" class="btn  submit-btn btn--size  btn--margin" data-toggle="modal" data-target="#ModalLogo">Установить логотип</a>
                 </form>
                 @endif
@@ -293,9 +302,28 @@
 
             </div>
         </div>
-</section>
+    </div>
+    <script>
+                function alert(){
+                    if(confirm("Вы подтверждаете операцию?") ){
+     
+                       return(true);
+                    }else{
+                       return(false);
+                    }
+            }
+            </script>
+<script>
+    
+function myFunction() {
+   copyText = document.getElementById("myInput");
+  copyText.select();
+  document.execCommand("copy");
+  
+}
+</script>
 
 
 
 
-@endsection
+        @endsection

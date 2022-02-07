@@ -26,6 +26,7 @@
                     </ul>
                 </div>
             </div>
+        
             <nav class=" navbar navbar-expand-md navbar p-3 mb-5 bg-body rounded bg--none navbar-z">
                 <div class=" container-fluid header-indent">
                     <a class="navbar-brand title text-uppercase logo-indent-mr text-white pubg-hover px-2" href="{{route('main')}}">showmatch</a>
@@ -53,6 +54,9 @@
             </nav>
         </div>
 
+        @if (session()->has('message'))
+     <div class="container"> <div class="alert alert-info" style="font-size:16px;">{{ session('message') }}</div></div>
+      @endif
         <div class="container header-container">
             <h1 class="header__slogan slogan slogan--line">Регистрируйся и побеждай!</h1>
             <p class="header__txt subtitle header__txt--color header__txt--margin">Ежедневные турниры с денежными призами</p>

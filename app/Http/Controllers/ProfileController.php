@@ -20,13 +20,15 @@ class ProfileController extends Controller
    
     $mail = User::getEmail($id);
     $data = UsersProfile::getById($id);
-
+    $user_photo = UsersProfile::getUserPhoto($id);
+   
     $timezones = config('app.timezones');
+    $countries = config('app.countries');
     $teams = Team::getTeamById($id);
-    
+     
     $verification_status = UsersProfile::checkVerification($id);
-    $tournaments = UsersProfile::getTeamById($id);
-    
+    $tournaments = UsersProfile::getTournamentsById($id);
+   
   if($tournaments != null){
    foreach ($tournaments as $tournament) {
       $tournament_id = (array) $tournament;
@@ -46,9 +48,40 @@ class ProfileController extends Controller
       'timezones' => $timezones,
       'active' => $active,
       'user_name' => $user_name,
-      'teams_count' => $teams_count
+      'teams_count' => $teams_count,
+      'countries'  => $countries,
+      'user_photo' => $user_photo,
     ]);
   }
+
+  public function savePhoto(Request $request){
+     
+    $request->validate([
+
+      // файл должен быть картинкой (jpeg, png, bmp, gif, svg или webp)
+      'photo' => 'image',
+      // поддерживаемые MIME файла (image/jpeg, image/png)
+      'photo' => 'mimetypes:image/jpeg,image/png',
+    ]);
+
+    $file_name = $request->file('logo')->getClientOriginalName();
+    $type = $request->file('logo')->getClientOriginalExtension();
+    if ($type == 'png') $file_type = '.png';
+    else $file_type = '.jpeg';
+    $file_name = md5($file_name) . $file_type;
+    $file = $request->file('logo');
+    $file->move(public_path() . '/uploads/storage/img/userslogo', $file_name);
+
+
+    $data = array(
+        'user_id' =>  Auth::user()->id,
+        'photo' => $file_name,
+      );
+
+    UsersProfile::setUserPhoto($data);
+    return redirect(route('profile')); 
+  }
+
   protected function validator(array $data)
   {
     return Validator::make($data, [
@@ -59,26 +92,47 @@ class ProfileController extends Controller
   public function saveProfile(Request $request)
   {
     
-    if ($request->isMethod('post')) {
+    $request->validate([
 
+      // файл должен быть картинкой (jpeg, png, bmp, gif, svg или webp)
+      'doc_photo' => 'image',
+
+      // поддерживаемые MIME файла (image/jpeg, image/png)
+      'doc_photo' => 'mimetypes:image/jpeg,image/png',
+      'doc_photo2' => 'image',
+
+      // поддерживаемые MIME файла (image/jpeg, image/png)
+      'doc_photo2' => 'mimetypes:image/jpeg,image/png',
+  ]);
+
+    
       if ($request->hasFile('doc_photo') == true && $request->hasFile('doc_photo2') == true) {
         $file_name = $request->file('doc_photo')->getClientOriginalName();
+        $type = $request->file('doc_photo')->getClientOriginalExtension();
+        if ($type == 'png') $file_type = '.png';
+        else $file_type = '.jpeg';
+        $file_name = md5($file_name) . $file_type;
         $file = $request->file('doc_photo');
         $file->move(public_path() . '/uploads/storage/img', $file_name);
-      
-    
+
+
         $file_name2 = $request->file('doc_photo2')->getClientOriginalName();
+        $type2 = $request->file('doc_photo2')->getClientOriginalExtension();
+        if ($type2 == 'png') $file_type2 = '.png';
+        else $file_type2 = '.jpeg';
+        $file_name2 = md5($file_name2) . $file_type2;
         $file2 = $request->file('doc_photo2');
         $file2->move(public_path() . '/uploads/storage/img', $file_name2);
-        $data['doc_photo'] = $file_name;
-        $data['doc_photo2'] = $file_name2;
-      } //else  return back()->withError('Документ: ' . $request->input('photo_error') . 'Загрузите фото удостоверения личности с двух сторон')->withInput();
-    }
+     
 
-    $this->validator($request->all())->validate();
+
+        
+      } //else  return back()->withError('Документ: ' . $request->input('photo_error') . 'Загрузите фото удостоверения личности с двух сторон')->withInput();
+    
+    
+     $this->validator($request->all())->validate();
       $data = $request->validate([
-        'doc_photo' => '',
-        'doc_photo2' => '',
+       
         'phone' => '',
         'fio' => '',
         'login' => '',
@@ -91,11 +145,13 @@ class ProfileController extends Controller
         'game_id' => ''
       
       ]);
+      $data['doc_photo'] = $file_name;
+      $data['doc_photo2'] = $file_name2;
       $id = Auth::user()->id;
       $data['verification'] = 'on_check';
       $data['user_id'] = $id;
       $data['status'] = 0;
-    
+      
      // try {
         UsersProfile::saveProfile($data);
      /*  } catch (\Illuminate\Database\QueryException  $exception) {
@@ -103,29 +159,37 @@ class ProfileController extends Controller
       } */
     
 
-    \Session::flash('flash_meassage', 'Сохранено');
+      \Session::flash('flash_meassage', 'Сохранено');
     return redirect(route('profile')); 
   }
 
   public function updateProfile(Request $request)
   {
 
-    if ($request->isMethod('post')) {
+   
 
       if ($request->hasFile('doc_photo') == true && $request->hasFile('doc_photo2') == true) {
         $file_name = $request->file('doc_photo')->getClientOriginalName();
+        $type = $request->file('doc_photo')->getClientOriginalExtension();
+        if ($type == 'png') $file_type = '.png';
+        else $file_type = '.jpeg';
+        $file_name = md5($file_name) . $file_type;
         $file = $request->file('doc_photo');
-        $file->move(public_path() . '/uploads/storage/img', $file_name);
+        $file->move(public_path() . '/uploads/storage/img/verification', $file_name);
 
-
+        
         $file_name2 = $request->file('doc_photo2')->getClientOriginalName();
+        $type2 = $request->file('doc_photo2')->getClientOriginalExtension();
+        if ($type2 == 'png') $file_type2 = '.png';
+        else $file_type2 = '.jpeg';
+        $file_name2 = md5($file_name2) . $file_type2;
         $file2 = $request->file('doc_photo2');
-        $file2->move(public_path() . '/uploads/storage/img', $file_name2);
+        $file2->move(public_path() . '/uploads/storage/img/verification', $file_name2);
+       
       }
-    }
-    $data = $request->validate([
-      'doc_photo' => '',
-      'doc_photo2' => '',
+    
+      $data = $request->validate([
+     
       'phone' => '',
       'fio' => '',
       'login' => '',
@@ -137,6 +201,8 @@ class ProfileController extends Controller
       'nickname' => '',
       'game_id' => ''
     ]);
+    $data['doc_photo'] = $file_name;
+    $data['doc_photo2'] = $file_name2;
     $id = Auth::user()->id;
     $data['status'] = 0;
     $data['user_id'] = $id;
@@ -149,7 +215,7 @@ class ProfileController extends Controller
 
 
     \Session::flash('flash_meassage', 'Сохранено');
-    return redirect(route('profile'));
+    return redirect(route('profile'));  
   }
 
   public function createTeam(Request $request)
@@ -186,14 +252,17 @@ class ProfileController extends Controller
   }
 
   public function query($id, Request $request){
-    $text = $request->input('text');
-    $data =array(
-      'user_id' =>$id,
-      'text' => $text,
-      'status' => 0
-    );
+
+    $this->validator($request->all())->validate();
+    $data = $request->validate([
+      'text' => 'required',
+    ]);
+ 
+    $data['user_id'] = $id;
+    $data['status'] = 0;
+
     UsersProfile::queryUpdate($data);
-    \Session::flash('flash_meassage_error', 'Ваш запрос отправлен');
+    \Session::flash('flash_meassage', 'Ваш запрос отправлен');
     return redirect('profile');
   } 
   public function getTournaments($id)
