@@ -192,7 +192,7 @@ class Admin extends Model
 
    public static function getUsersEmail($id)
    {
-      return DB::table('users')->select('email')->where('id', $id)->get();
+      return DB::table('users')->where('id', $id)->value('email');
    }
 
    public static function addBan($id)

@@ -65,7 +65,12 @@
         <div class="col-lg-6 my-3">
           <div class="pubg pubg-3">
 
-            <div class="pubg-img pubg-wrapper pubg-img-3">
+            <div class=" pubg-wrapper " style=" width: 100%;
+                                                          background-image: url("../img/background/item-3.png");
+                                                          background-repeat: no-repeat;
+                                                          background-size: cover;
+                                                          background-position: center;
+                                                          border-radius: 2rem;">
               <div class="pubg-block">
                 <h4 class="pubg__title pubg__title--margin">{{$tournament->name}}</h4>
                 <p class="pubg__text">{{$tournament->tournament_start}} {{$tournament->games_time}} {{$tournament->country}}</p>

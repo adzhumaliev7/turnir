@@ -86,14 +86,13 @@ class ProfileController extends Controller
   {
     return Validator::make($data, [
       'email' => ['unique:users_profile2'],
-      'game_id' => ['unique:users_profile2'],
+     // 'game_id' => ['unique:users_profile2'],
     ]);
   }
+
   public function saveProfile(Request $request)
   {
-    
     $request->validate([
-
       // файл должен быть картинкой (jpeg, png, bmp, gif, svg или webp)
       'doc_photo' => 'image',
 
@@ -106,35 +105,41 @@ class ProfileController extends Controller
   ]);
 
     
-      if ($request->hasFile('doc_photo') == true && $request->hasFile('doc_photo2') == true) {
-        $file_name = $request->file('doc_photo')->getClientOriginalName();
-        $type = $request->file('doc_photo')->getClientOriginalExtension();
-        if ($type == 'png') $file_type = '.png';
-        else $file_type = '.jpeg';
-        $file_name = md5($file_name) . $file_type;
-        $file = $request->file('doc_photo');
-        $file->move(public_path() . '/uploads/storage/img', $file_name);
+  if ($request->hasFile('doc_photo') == true && $request->hasFile('doc_photo2') == true) {
+    $file_name = $request->file('doc_photo')->getClientOriginalName();
+    $type = $request->file('doc_photo')->getClientOriginalExtension();
+    if ($type == 'png') $file_type = '.png';
+    else $file_type = '.jpeg';
+    $file_name = md5($file_name) . $file_type;
+    $file = $request->file('doc_photo');
+    $file->move(public_path() . '/uploads/storage/img/verification', $file_name);
 
-
-        $file_name2 = $request->file('doc_photo2')->getClientOriginalName();
-        $type2 = $request->file('doc_photo2')->getClientOriginalExtension();
-        if ($type2 == 'png') $file_type2 = '.png';
-        else $file_type2 = '.jpeg';
-        $file_name2 = md5($file_name2) . $file_type2;
-        $file2 = $request->file('doc_photo2');
-        $file2->move(public_path() . '/uploads/storage/img', $file_name2);
+    
+    $file_name2 = $request->file('doc_photo2')->getClientOriginalName();
+    $type2 = $request->file('doc_photo2')->getClientOriginalExtension();
+    if ($type2 == 'png') $file_type2 = '.png';
+    else $file_type2 = '.jpeg';
+    $file_name2 = md5($file_name2) . $file_type2;
+    $file2 = $request->file('doc_photo2');
+    $file2->move(public_path() . '/uploads/storage/img/verification', $file_name2);
      
 
 
-        
+
       } //else  return back()->withError('Документ: ' . $request->input('photo_error') . 'Загрузите фото удостоверения личности с двух сторон')->withInput();
     
-    
      $this->validator($request->all())->validate();
+     if($request->input('game_id') != null){
+      $request->validate([
+        // файл должен быть картинкой (jpeg, png, bmp, gif, svg или webp)
+        'game_id' => 'unique:users_profile2',
+
+    ]);
+     }
       $data = $request->validate([
        
         'phone' => '',
-        'fio' => '',
+        'fio' => 'required',
         'login' => '',
         'email' => '',
         'country' => '',
@@ -145,22 +150,25 @@ class ProfileController extends Controller
         'game_id' => ''
       
       ]);
-      $data['doc_photo'] = $file_name;
-      $data['doc_photo2'] = $file_name2;
+      if ($request->hasFile('doc_photo') == true && $request->hasFile('doc_photo2') == true){
+        $data['doc_photo'] = $file_name;
+        $data['doc_photo2'] = $file_name2;
+      }
+  
       $id = Auth::user()->id;
       $data['verification'] = 'on_check';
       $data['user_id'] = $id;
       $data['status'] = 0;
-      
+     // dd($data);
      // try {
-        UsersProfile::saveProfile($data);
+       UsersProfile::saveProfile($data);
      /*  } catch (\Illuminate\Database\QueryException  $exception) {
         return back()->withError('Email ' . $request->input('email') . ' уже занят'. $exception)->withInput();
       } */
     
 
-      \Session::flash('flash_meassage', 'Сохранено');
-    return redirect(route('profile')); 
+       \Session::flash('flash_meassage', 'Сохранено');
+    return redirect(route('profile'));  
   }
 
   public function updateProfile(Request $request)
@@ -187,7 +195,13 @@ class ProfileController extends Controller
         $file2->move(public_path() . '/uploads/storage/img/verification', $file_name2);
        
       }
-    
+      $this->validator($request->all())->validate();
+      if($request->input('game_id') != null){
+       $request->validate([
+         // файл должен быть картинкой (jpeg, png, bmp, gif, svg или webp)
+         'game_id' => 'unique:users_profile2',
+     ]);
+    }
       $data = $request->validate([
      
       'phone' => '',
@@ -201,8 +215,10 @@ class ProfileController extends Controller
       'nickname' => '',
       'game_id' => ''
     ]);
-    $data['doc_photo'] = $file_name;
-    $data['doc_photo2'] = $file_name2;
+    if ($request->hasFile('doc_photo') == true && $request->hasFile('doc_photo2') == true){
+      $data['doc_photo'] = $file_name;
+      $data['doc_photo2'] = $file_name2;
+    }
     $id = Auth::user()->id;
     $data['status'] = 0;
     $data['user_id'] = $id;

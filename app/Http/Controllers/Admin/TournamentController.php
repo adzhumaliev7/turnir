@@ -82,13 +82,28 @@ class TournamentController extends Controller
     {
 
         $timezones = config('app.timezones');
-
+        $request->validate([
+            // файл должен быть картинкой (jpeg, png, bmp, gif, svg или webp)
+            'file_label' => 'image',
+            // поддерживаемые MIME файла (image/jpeg, image/png)
+            'file_label' => 'mimetypes:image/jpeg,image/png',
+        ]);
+      
         if ($request->isMethod('post')) {
 
 
-            $file_name = $request->file('file_label')->getClientOriginalName();
+            if ($request->hasFile('file_label') == true ) {
+                $file_name = $request->file('file_label')->getClientOriginalName();
+                $type = $request->file('file_label')->getClientOriginalExtension();
+                if ($type == 'png') $file_type = '.png';
+                else $file_type = '.jpeg';
+                $file_name = md5($file_name) . $file_type;
+                $file = $request->file('file_label');
+                $file->move(public_path() . '/uploads/storage/adminimg/turnir_logo', $file_name);
+            }   
+           /*  $file_name = $request->file('file_label')->getClientOriginalName();
             $file = $request->file('file_label');
-            $file->move(public_path() . '/uploads/storage/adminimg', $file_name);
+            $file->move(public_path() . '/uploads/storage/adminimg', $file_name); */
 
             $data = $request->validate([
                 'name' => '',
@@ -101,13 +116,14 @@ class TournamentController extends Controller
                 'start_reg' => '',
                 'end_reg' => '',
                 'slot_kolvo' => '',
-
                 'rule' => '',
-
                 'tournament_start' => '',
                 'games_time' => '',
             ]);
-            $data['file_label'] = $file_name;
+            if ($request->hasFile('file_label') == true){
+                $data['file_label'] = $file_name;
+              }
+          
             if ($request->get('submit') == 'save') {
                 $data['status'] = 'save';
                 $data['active'] = 1;
@@ -201,13 +217,8 @@ class TournamentController extends Controller
 
     public function applyTeam($id, $turnir_id)
     {
-        $email = Admin::getEmail($id);
-        foreach ($email as $key => $value) {
-            $email = (array) $value;
-            foreach ($email as $key => $value) {
-                $em = $value;
-            }
-        }
+        $email = Admin::getUsersEmail($id);
+      
         //   Mail::send(['text' => 'messages.apply'], ['name', 'wwww'], function ($message) use ($em){
         //     $message->to($em, 'www')->subject('SHOWMATCH');
         //     $message->from('tournamentpubgtest@gmail.com', 'www');
@@ -220,17 +231,9 @@ class TournamentController extends Controller
     public function refuseTeam($id, $turnir_id, $user_id, Request $request)
     {
         $email = Admin::getUsersEmail($user_id);
-        foreach ($email as $key => $value) {
-            $email = (array) $value;
-            foreach ($email as $key => $value) {
-                $em = $value;
-            }
-        }
-
+       
         $text = $request->input('text');
-        Mail::to($em)->send(new VerifiedMail($em, $text));
-
-
+        Mail::to($email)->send(new VerifiedMail($email, $text));
         Admin::refuseTeam($id, $turnir_id);
         return redirect(route('admin_tournament'));
     }
@@ -247,7 +250,6 @@ class TournamentController extends Controller
     public function createStage2($turnir_id)
     {
         $datas =  Admin::getStage_1($turnir_id);
-
         // dd($data);
         foreach ($datas  as $key => $value) {
             $data[] = (array)$value;

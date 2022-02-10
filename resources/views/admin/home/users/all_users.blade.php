@@ -46,40 +46,28 @@
           @endif
         </td>
         <td>
+        @if($user->verification=='verified')
+          Верифицирован 
+          @elseif($user->verification=='on_check')На проверке
+          @elseif($user->verification==null) Нет данных для верификации
+          @else отклонен 
+
+          @endif
+        </td>
+        <td>
+           
           @if($user->doc_photo != null && $user->doc_photo2 != null)
             <a href="{{route('users_card', $user->id)}}" class="btn btn-primary">Просмотр</a>
           @endif
-          @if($user->status !='ban')
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
+          @if($user->status !='ban'  &&  $user->id != 1)
+          <button type="button" class="btn btn-danger js-btn" data-id="Сообщение" data-path="{{route('add_ban', $user->id)}}">
           Бан
         </button>
-        @else
+       
+       @elseif($user->id != 1)
         <a href="{{route('unblock', $user->id)}}" class="btn btn-primary">Разблокировать</a>
         @endif
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Сообщение</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-
-                <form method="POST" action="{{route('add_ban', $user->id)}}">
-                  @csrf
-                  <textarea name="text" id="" cols="50" rows="10"></textarea>
-
-              </div>
-              <div class="modal-footer">
-
-                <button type="btn" class="btn btn-primary">Сохранить</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+        
        
         </td>
       </tr>
@@ -90,4 +78,5 @@
   <h4>Нет данных</h4>
   @endif
 </div>
+
 @endsection

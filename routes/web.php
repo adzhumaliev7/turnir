@@ -15,10 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [\App\Http\Controllers\MainController::class, 'index'])->name('main');
 
-
 Route::name('user.')->group(function () {
-  
-    
     Route::get('/login', function () {
         if (Auth::check()) {
             return redirect(route('main'));

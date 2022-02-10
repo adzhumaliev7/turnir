@@ -188,6 +188,53 @@
       @yield('content')
 
     </div>
+    <div class="modal fade" id="ModalWindow">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalWindowTitle">Cообщение</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="">
+          @csrf
+          <textarea name="text" id="" cols="50" rows="10"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="btn" class="btn btn-primary">Сохранить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ModalApplyTeamName" >
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="">Новое название команды</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <form method="POST" action="">
+                                        @csrf
+                                        <input name="name" id="exampleModalLongTitle" cols="50" rows="10" value="" readonly="readonly"> </input>
+
+                                </div>
+                                <div class="modal-footer">
+
+                                    <button type="btn" class="btn btn-primary">Сохранить</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
     <!-- ./wrapper -->
 
     <!-- jQuery -->
@@ -250,6 +297,46 @@
           modal.style.display = "none";
         }
       }
+    </script>
+         <script>
+      const $modal = $('#ModalWindow');
+      const $titleCont = $modal.find('#ModalWindowTitle');
+     
+      const $form = $modal.find('form');
+      console.log($titleCont);
+// тут ищите все кнопки (можно им какой-нибудь класс придумать уникальный, например js-btn-ban)
+// далее в цикле вешаете события
+      const buttons = document.querySelectorAll('.js-btn');
+      buttons.forEach(currentButton => {
+      currentButton.addEventListener('click', function() {
+        const userId = this.dataset.id;
+        const path = this.dataset.path;
+        
+        $titleCont.text(userId); // выводим id пользователя
+        $form.attr('action', path); // обновляем роут
+        $modal.modal('show'); //показываем модалку
+    });
+});
+    </script>  
+                        <script>
+      const $modal1 = $('#ModalApplyTeamName');
+      //const $titleCont1 =  document.getElementById('#exampleModalLongTitle');
+      const inputType = document.querySelector('input[name="name"]');
+      const $form1 = $modal1.find('form');
+
+// тут ищите все кнопки (можно им какой-нибудь класс придумать уникальный, например js-btn-ban)
+// далее в цикле вешаете события
+      const buttons1 = document.querySelectorAll('.js-btn-apply');
+      buttons1.forEach(currentButton => {
+      currentButton.addEventListener('click', function() {
+        const userId1 = this.dataset.id;
+        const path1 = this.dataset.path;
+        //$titleCont1.value=userId1; // выводим id пользователя
+        inputType.value = userId1;
+        $form1.attr('action', path1); // обновляем роут
+        $modal1.modal('show'); //показываем модалку
+    });
+});
     </script>
 </body>
 

@@ -6,7 +6,7 @@
         @if (session('error'))
 <div class="alert alert-danger">{{ session('error') }}</div>
 @endif
-<form method="POST" action="{{route('create_tournament')}}  " enctype="multipart/form-data">
+<form method="POST" action="{{route('create_tournament')}} " enctype="multipart/form-data">
      @csrf
   <div class="form-row">
     <div class="form-group col-md-4">

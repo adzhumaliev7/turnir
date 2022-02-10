@@ -168,13 +168,7 @@
           $h4 = 'Аккаунт не верифицирован';
           ?>
           @endif
-          @if($active ==1)
-          <h4 class="input-title"><? echo $h4; ?></h4>
-          <? $display = 'style="display: show;'; ?>
-          @else
-          <h4 class="input-title">Для верефиции активируйте аккаунт</h4>
-          <? $display = 'style="display: none;'; ?>
-          @endif
+        
           @if($data != NULL)
           <? if ($data['status'] == 0)
             $disabled = 'disabled';
@@ -194,6 +188,7 @@
                 <label class="subtitle" for="fileInput2">фото с документом</label>
               </div>
             </div>
+            <div class="alert alert-danger" style="font-size: 16px;">Для верификации загрузите две стороны удостоверения личности</div>
             <div class="row size_16px">
               <input type="hidden" class="form-control input__profile subtitle fw-normal " name="photo_error">
             </div>
@@ -284,6 +279,7 @@
                 <label class="subtitle" for="fileInput2">фото с документом</label>
               </div>
             </div>
+            <div class="alert alert-danger" style="font-size: 16px;">Для верификации загрузите две стороны удостоверения личности</div>
             <div class="row size_16px">
               <input type="hidden" class="form-control input__profile subtitle fw-normal " name="photo_error">
             </div>

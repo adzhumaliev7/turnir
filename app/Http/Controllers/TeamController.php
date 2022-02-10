@@ -13,29 +13,26 @@ class TeamController extends Controller
 {
     public function index($id,$us)
     {
-        $id = Auth::user()->id;
-        $mail = User::getEmail($id);
-        $data = Team::getTeamById2($id, $us);
-        foreach ($data as $key => $value) {
-            $a = (array)$value;
-            $team_id = $a['team_id'];
-        }
-        
-        $countries = config('app.countries');
-        $members = Team::getTeamMembers($team_id);
-     
         $user_id = Auth::user()->id;
-        $chek_admin = Team::checkAdmin($user_id);
+        $mail = User::getEmail($user_id);
+        $data = Team::getTeamById2($id, $us);
+       
+        $countries = config('app.countries');
+        $members = Team::getTeamMembers($id);
+     
+       
+        $chek_admin = Team::checkAdmin($id, $user_id);
+       
 
      
-        $networks = Team::getTeamNetworks($team_id);
+        $networks = Team::getTeamNetworks($id);
      
-        $tournaments = Team::getTournaments($team_id);
+        $tournaments = Team::getTournaments($id);
       
         return view('main.team', [
             'data' => $data,
             'members' => $members,
-            'team_id' => $team_id,
+            'team_id' => $id,
             'user_id' => $user_id,
             'chek_admin' => $chek_admin,
             'networks' => $networks,

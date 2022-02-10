@@ -92,9 +92,9 @@ class Team extends Model
       DB::table('team')->where('id', $id)->delete();
       DB::table('tournamets_team')->where('team_id', $id)->delete();
    }
-   public function checkAdmin($id)
+   public static function checkAdmin($id,$user_id)
    {
-      return  DB::table('team_members')->where('user_id', $id)->where('role', 'captain')->exists();
+      return  DB::table('team_members')->where('team_id', $id)->where('user_id', $user_id)->where('role', 'captain')->exists();
    }
 
    public static function getRating()

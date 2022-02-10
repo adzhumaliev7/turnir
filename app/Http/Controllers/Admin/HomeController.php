@@ -15,7 +15,7 @@ use App\Mail\ModeratorMail;
 use App\Mail\OredrsMail;
 use App\Mail\ChangeTeamMail;
 use App\Mail\RejectedChangeTeam;
-
+use App\Mail\UnblockMail;
 use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
@@ -56,33 +56,19 @@ class HomeController extends Controller
 
   public function addBan($id, Request $request)
   {
-    //  var_dump($id);
+   
     $email = Admin::getUsersEmail($id);
-    foreach ($email as $key => $value) {
-      $email = (array) $value;
-      foreach ($email as $key => $value) {
-        $em = $value;
-      }
-    }
     $text = $request->input('text');
-    Mail::to($em)->send(new BanMail($em, $text));
+    Mail::to($email)->send(new BanMail($email, $text));
     Admin::addBan($id);
-    return redirect(route('allusers'));
+    return redirect(route('allusers'));  
   }
   public function unblock($id)
   {
 
     $email = Admin::getUsersEmail($id);
-    foreach ($email as $key => $value) {
-      $email = (array) $value;
-      foreach ($email as $key => $value) {
-        $em = $value;
-      }
-    }
-    Mail::send(['text' => 'messages.unblock'], ['name', 'wwww'], function ($message) use ($em) {
-      $message->to($em, 'www')->subject('SHOWMATCH');
-      $message->from('tournamentpubgtest@gmail.com', 'www');
-    });
+    Mail::to($email)->send(new UnblockMail($email));
+   
     Admin::unblock($id);
     return redirect(route('allusers'));
   }
@@ -115,15 +101,9 @@ class HomeController extends Controller
   public function rejected($id, Request $request)
   {
     $email = Admin::getUsersEmail($id);
-    foreach ($email as $key => $value) {
-      $email = (array) $value;
-      foreach ($email as $key => $value) {
-        $em = $value;
-      }
-    }
-
+    
     $text = $request->input('text');
-    Mail::to($em)->send(new BanMail($em, $text));
+    Mail::to($email)->send(new BanMail($email, $text));
     Admin::rejected($id);
     return redirect()->to(route('allusers'));
   }
@@ -240,15 +220,10 @@ class HomeController extends Controller
   public function ordersrejected($id, Request $request)
   {
     $email = Admin::getUsersEmail($id);
-    foreach ($email as $key => $value) {
-      $email = (array) $value;
-      foreach ($email as $key => $value) {
-        $em = $value;
-      }
-    }
+   
 
     $text = $request->input('text');
-    Mail::to($em)->send(new OredrsMail($em, $text));
+    Mail::to($email)->send(new OredrsMail($email, $text));
     Admin::ordersrejected($id);
     return redirect(route('orders'));
   }
@@ -275,6 +250,7 @@ class HomeController extends Controller
     Mail::to($email)->send(new ChangeTeamMail($email));
 
     $name = $request->input('name');
+  
     Admin::changeTeamName($id, $name);
     return redirect(route('orders_team'));
   }
@@ -282,7 +258,7 @@ class HomeController extends Controller
   {
     $email = Admin::getTeamMembersEmailCaptain($id);
     $text = $request->input('text');
-    var_dump($email, $text);
+ 
      Mail::to($email)->send(new RejectedChangeTeam($email, $text));
     Admin::ordersTeamRejected($id);
 

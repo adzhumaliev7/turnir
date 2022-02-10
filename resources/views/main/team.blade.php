@@ -163,20 +163,14 @@
                                         <th scope="col">Турнир</th>
                                         <th scope="col">Формат</th>
                                         <th scope="col">Дата</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     @foreach($tournaments as $tournament)
                                     <tr>
-
                                         <td>{{$tournament->name}}</td>
                                         <td>{{$tournament->format}}</td>
                                         <td>{{$tournament->tournament_start}}</td>
-
-
-
                                     </tr>
                                     @endforeach
                             </table>
@@ -249,11 +243,8 @@
                             <input name="youtube" placeholder="youtube.com/" type="text" class="form-control  subtitle fw-normal input_border" id="" value="{{$network->youtube}}">
                         </div>
                     </div>
-
- 
                     <button type="btn" class="btn  submit-btn btn--size btn--orange btn--margin" style="margin-right: 10px;">Сохранить</button>
                     <a href="{{route('delete_team', $team_id)}}" class="btn  submit-btn btn--size  btn--margin">Удалить команду</a>
-                    
                     <a href="" class="btn  submit-btn btn--size  btn--margin" data-toggle="modal" data-target="#ModalLogo">Установить логотип</a>
                 </form>
                 @endforeach
@@ -269,7 +260,6 @@
                             <input name="youtube" placeholder="youtube.com/" type="text" class="form-control  subtitle fw-normal input_border" id="">
                         </div>
                     </div>
-
                     <button type="btn" class="btn  submit-btn btn--size btn--orange btn--margin" style="margin-right: 10px;">Сохранить</button>
                     <a href="{{route('delete_team', $team_id)}}" class="btn  submit-btn btn--size  btn--margin">Удалить команду</a>
                     <a href="" class="btn  submit-btn btn--size  btn--margin" data-toggle="modal" data-target="#ModalLogo">Установить логотип</a>
@@ -298,8 +288,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>

@@ -19,6 +19,7 @@ class TournamentController extends Controller
                $mail = User::getEmail($id);
           } else $mail = null;
           $tournaments = Tournament::getTournaments();
+          
           if ($tournaments == NULL) {
                $tournaments == "";
           }

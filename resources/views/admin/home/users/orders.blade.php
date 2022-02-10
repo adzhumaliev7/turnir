@@ -32,38 +32,14 @@
                 <td>
                     @if($order->status == 0)
                     <a href="{{route('orders_apply',$order->user_id )}}" class="btn btn-primary">Принять</a>
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Сообщение</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-
-                                    <form method="POST" action="{{route('orders_rejected' ,$order->user_id )}}">
-                                        @csrf
-                                        <textarea name="text" id="" cols="50" rows="10"></textarea>
-
-                                </div>
-                                <div class="modal-footer">
-
-                                    <button type="btn" class="btn btn-primary">Сохранить</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
+               
+                    <button type="button" class="btn btn-danger js-btn" data-id="Сообщение"  data-path="{{route('orders_rejected' ,$order->user_id )}}">
                         Отклонить
                     </button>
                     <!--  <a href="{{route('orders_rejected',$order->user_id )}}" class="btn btn-danger">Отклонить</a> -->
                     @endif
                 </td>
             </tr>
-
             @endforeach
         </tbody>
     </table>
