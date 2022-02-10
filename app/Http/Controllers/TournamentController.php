@@ -69,6 +69,8 @@ class TournamentController extends Controller
                return redirect(route('user.login'));
           } */
           $tournaments = Tournament::getTournamentById($id);
+          $teams_count = Tournament::teamsCount($id);
+         
           $stage_1 =  Admin::stage_1($id);
           $stage_2 =  Admin::stage_2($id);
           $stage_3 =  Admin::stage_3($id);
@@ -145,7 +147,8 @@ class TournamentController extends Controller
                'stages_1' => $stage_1,
                'stages_2' => $stage_2,
                'stages_3' => $stage_3,
-               'winners' => $winners
+               'winners' => $winners,
+               'teams_count'=> $teams_count,
           ]);
      }
 

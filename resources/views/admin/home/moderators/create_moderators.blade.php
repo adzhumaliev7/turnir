@@ -12,7 +12,7 @@
     <label for="exampleFormControlInput1">email</label>
     <input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="email">
      @error('email')
-             <div class="alert alert-danger">{{$message}}</div>
+             <div class="alert alert-danger">Такой email уже занят</div>
     @enderror
   </div>
   <div class="form-group">

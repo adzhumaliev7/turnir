@@ -122,16 +122,25 @@ class HomeController extends Controller
 
     return view('admin.home.moderators.create_moderators');
   }
+  protected function validator(array $data)
+    {
+        return Validator::make($data, [
+           
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+          
+        ]);
+    }
   public function saveModerator(Request $request)
   {
-    $data  = $request->validate([
-      'email' => 'required',
-      // 'password' => Hash::make($request->input('password')),
-    ]);
-    $data['password'] = Hash::make($request->input('password'));
-    Mail::to($request->input('email'))->send(new ModeratorMail($request->input('email')));
-    $user = User::create($data);
+   
+   
+    
+    $this->validator($request->all())->validate();
+    $user =User::create($request->all());
     $user->assignRole('moderator');
+    Mail::to($request->input('email'))->send(new ModeratorMail($request->input('email')));
+   
+
     // return $user;
 
     return redirect(route('moderators'));

@@ -41,7 +41,10 @@ class Tournament extends Model
       ->select('team.name','team.user_id','tournamets_team.team_id','tournamets_team.status')
      ->where('tournamets_team.tournament_id', $tournament_id)->get();
     }else return NULL;
+  }
+    public static function teamsCount($id){
 
+      return DB::table('tournamets_team')->where('tournament_id', $id)->count();
   }
 
   public static function checkTeam($user_id){

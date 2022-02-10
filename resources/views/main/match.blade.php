@@ -74,6 +74,7 @@
             <p class="subtitle text--responsive text-light">Режим проведения: squad(4)</p>
             <p class="subtitle text--responsive text-light">Вид: от третьего лица</p>
             <p class="subtitle text--responsive text-light">Регистрация с {{$tournament->start_reg}} по {{$tournament->end_reg}}</p>
+            <p class="subtitle text--responsive text-light">Количество слотов {{$tournament->slot_kolvo}}</p>
           </div>
 
         </div>
@@ -202,11 +203,10 @@
                   </div>
                   <details class="holding__accordion">
 
-                    <summary class="subtitle subtitle--semi-medium">Команды</summary>
+                    <summary class="subtitle subtitle--semi-medium">Команды {{$teams_count}} / {{$tournament->slot_kolvo}}</summary>
 
                     @if($teams != "")
                     @foreach($teams as $team)
-
 
                     <ul class="subtitle subtitle--list">
                       <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -245,11 +245,14 @@
                   @if($reg =='time')
                   @if($checked != NULL)
                   @if($checked == 'captain')
-                  <div class="block-btn">
-
+                    @if($teams_count < $tournament->slot_kolvo)
+                      <div class="block-btn">
+                  
                     <a href="" class="submit-btn btn--size btn--orange btn--margin" data-toggle="modal" data-target="#exampleModalLong"> Принять участие</a>
                     <!--   <a href="{{route('join', $tournament->id)}}" class="submit-btn btn--size btn--orange btn--margin">Принять участие</a> -->
                   </div>
+                      @else <h3>Мест нет</h3>
+                      @endif
                   @elseif(($checked == 'member'))
                   <div class="block-btn">
                     <h3>Принять участие может только капитан команды</h3>
@@ -267,10 +270,8 @@
                   @elseif($team->status == 'not_accepted')
                   <div class="block-btn">
                     <h3>Ваша заявка отклонена</h3>
-
                   </div>
                   @endif
-
                   @endif
                   @else
                   <div class="block-btn">
@@ -316,7 +317,7 @@
                 <circle cx="5.5" cy="5.5" r="5" stroke="black"></circle>
                 @endif
               </svg>
-              {{$team->name}}
+              {{$team->name }}
             </li>
             <!-- <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M7.93126 3.75481C8.09911 3.92266 8.09911 4.19474 7.93126 4.3625L5.04866 7.24519C4.88081 7.41295 4.60882 7.41295 4.44097 7.24519L3.06874 5.87287C2.90089 5.70511 2.90089 5.43303 3.06874 5.26527C3.2365 5.09742 3.50858 5.09742 3.67635 5.26527L4.74477 6.33369L7.32357 3.75481C7.49142 3.58705 7.7635 3.58705 7.93126 3.75481ZM11 5.5C11 8.54012 8.5397 11 5.5 11C2.45988 11 0 8.5397 0 5.5C0 2.45988 2.4603 0 5.5 0C8.54012 0 11 2.4603 11 5.5ZM10.1406 5.5C10.1406 2.93488 8.06478 0.859375 5.5 0.859375C2.93488 0.859375 0.859375 2.93522 0.859375 5.5C0.859375 8.06512 2.93522 10.1406 5.5 10.1406C8.06512 10.1406 10.1406 8.06478 10.1406 5.5Z" fill="black"></path>
