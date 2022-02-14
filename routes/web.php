@@ -118,6 +118,9 @@ Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(functi
     Route::any('/tournament/delete/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'tournamentDelete',])->name('delete_tournament');
     Route::any('/tournament/tournaments_teams/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'tournamentTeams',])->name('tournaments_teams');
     Route::any('/tournament/tournaments_teams/card/{id}{turnir_id}', [\App\Http\Controllers\Admin\TournamentController::class, 'tournamentTeamsCard',])->name('teams_card');
+    Route::get('/tournament/tournaments_about/{turnir_id}', [\App\Http\Controllers\Admin\TournamentController::class, 'tournamentsAbout',])->name('tournaments_about');
+    Route::any('/tournament/tournaments_about/create_stage/{turnir_id}', [\App\Http\Controllers\Admin\TournamentController::class, 'createStage',])->name('create_stage');
+    Route::any('/tournament/tournaments_about/create_group/{turnir_id}', [\App\Http\Controllers\Admin\TournamentController::class, 'createGroup',])->name('create_group');
 
 
     Route::any('/tournament/tournaments_teams/apply_team/{id}{turnir_id}', [\App\Http\Controllers\Admin\TournamentController::class, 'applyTeam',])->name('apply_team');

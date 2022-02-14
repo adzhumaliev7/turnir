@@ -100,7 +100,7 @@ class Admin extends Model
    {
       $is_has = DB::table('tournaments')->exists();
       if ($is_has == true) {
-         return DB::table('tournaments')->select('id', 'name', 'country', 'tournament_start', 'games_time')->where('status', 'save')->get();
+         return DB::table('tournaments')->where('status', 'save')->get();
       } else return NULL;
    }
 
@@ -108,7 +108,7 @@ class Admin extends Model
    {
       $is_has = DB::table('tournaments')->exists();
       if ($is_has == true) {
-         return DB::table('tournaments')->select('id', 'name', 'country', 'tournament_start', 'games_time')->where('status', 'draft')->get();
+         return DB::table('tournaments')->where('status', 'draft')->get();
       } else return NULL;
    }
 
@@ -405,11 +405,18 @@ class Admin extends Model
          ->where('team_members.team_id', $id)
          ->get();
    }
+   public static function getTournamentsMembersEmail($id){
+      return DB::table('tournaments_members')
+      ->join('users', 'tournaments_members.user_id', '=' ,'users.id')
+      ->select('users.email')
+      ->where('tournaments_members.team_id', $id)
+      ->get();
+}
    public static function getTeamMembersEmailCaptain($id)
    {
       return DB::table('team_members')
       ->join('users', 'team_members.user_id', '=', 'users.id')
-     
+
       ->where('team_members.team_id', $id)->where('team_members.role', 'captain')
          ->value('users.email');
    }
@@ -417,5 +424,16 @@ class Admin extends Model
    {
       //  DB::table('users_profile2')->where('user_id', $id)->update(['status' => 0]);
       DB::table('orders_team')->where('team_id', $id)->update(['status' => 2]);
+   }
+
+   public static function createStage($data){
+      return DB::table('stages')->insert($data);
+   }
+
+   public static function getStages($turnir_id){
+      $is_has = DB::table('stages')->where('tournament_id', $turnir_id)->exists();
+      if ($is_has == true) {
+            return DB::table('stages')->where('tournament_id', $turnir_id)->get();
+      }else return null;
    }
 }

@@ -25,8 +25,10 @@
         <td><a type="button" href="{{route('tournament_view',$tournament->id)}}" class="btn btn-primary">Редктирвоать</a>
           <a href="{{route('delete_tournament', $tournament->id)}}" type="button" class="btn btn-danger">Удалить</a>
           <a href="{{route('tournaments_teams', $tournament->id)}}" type="button" class="btn btn-success">Заявки</a>
+          <a href="{{route('tournaments_about', $tournament->id)}}" type="button" class="btn btn-dark">Обзор</a>
           <a href="{{route('start', $tournament->id)}}" type="button" class="btn btn-success">Запустить</a>
           <a href="{{route('stages', $tournament->id)}}" type="button" class="btn btn-success">Этапы</a>
+          <a href="{{route('stages', $tournament->id)}}" type="button" class="btn btn-success">Турнрирная таблица</a>
         </td>
 
       </tr>

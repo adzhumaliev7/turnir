@@ -123,7 +123,7 @@
                             <p class="pubg__text">24.09.20021 22:00 Nur-Sultan</p>
                             <span class="pubg__price">Призовой фонд: 100$</span>
                             <p class="pubg__text pubg__text--margin">Режим проведения: squad(4)</p>
-                            <a href="{{route('tournament')}}" class="pubg__btn pubg__btn--margin">Принять участие</a>
+                            <a href="{{route('tournament')}}" class="pubg__btn">Принять участие</a>
                         </div>
                     </div>
                 </div>
@@ -139,7 +139,7 @@
                             <p class="pubg__text">24.09.20021 22:00 Nur-Sultan</p>
                             <span class="pubg__price">Призовой фонд: 100$</span>
                             <p class="pubg__text pubg__text--margin">Режим проведения: squad(4)</p>
-                            <a href="{{route('tournament')}}" class="pubg__btn pubg__btn--margin">Принять участие</a>
+                            <a href="{{route('tournament')}}" class="pubg__btn ">Принять участие</a>
                         </div>
                     </div>
                 </div>
@@ -152,7 +152,7 @@
                             <p class="pubg__text">24.09.20021 22:00 Nur-Sultan</p>
                             <span class="pubg__price">Призовой фонд: 100$</span>
                             <p class="pubg__text pubg__text--margin">Режим проведения: squad(4)</p>
-                            <a href="{{route('tournament')}}" class="pubg__btn pubg__btn--margin">Принять участие</a>
+                            <a href="{{route('tournament')}}" class="pubg__btn">Принять участие</a>
                         </div>
                     </div>
                 </div>

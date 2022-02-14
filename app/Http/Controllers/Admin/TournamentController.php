@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Mail\VerifiedMail;
-
+use App\Mail\ApplyTeamMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 
@@ -217,15 +217,16 @@ class TournamentController extends Controller
 
     public function applyTeam($id, $turnir_id)
     {
-        $email = Admin::getUsersEmail($id);
-      
-        //   Mail::send(['text' => 'messages.apply'], ['name', 'wwww'], function ($message) use ($em){
-        //     $message->to($em, 'www')->subject('SHOWMATCH');
-        //     $message->from('tournamentpubgtest@gmail.com', 'www');
-        //   }); 
-
-        Admin::applyTeam($id, $turnir_id);
-        return redirect(route('tournaments_teams', $turnir_id));
+        $emails = Admin::getTournamentsMembersEmail($id);
+        foreach ($emails as $key => $value) {
+          $emails = (array) $value;
+          foreach ($emails as $key => $value) {
+            $email[] = $value;
+          }
+        }
+        Mail::to($email)->send(new ApplyTeamMail($email));
+         Admin::applyTeam($id, $turnir_id);
+        return redirect(route('tournaments_teams', $turnir_id)); 
     }
 
     public function refuseTeam($id, $turnir_id, $user_id, Request $request)
@@ -393,4 +394,53 @@ class TournamentController extends Controller
         //Admin::setPointsStage_1($turnir_id, $data); */
 
     }
+    public function tournamentsAbout($id){
+        $data = Admin::getTournamentByID($id);
+      /*   $stage_1 =  Admin::stage_1($id);
+        $stage_2 =  Admin::stage_2($id);
+        $stage_3 =  Admin::stage_3($id);
+        $winners =  Admin::getWinners($id); */
+        $stages = Admin::getStages($id);
+       
+        return view('admin.home.tournament.tournaments_about', [
+            'datas' => $data,
+            'turnir_id' => $id,
+            'stages' => $stages,
+        ]);
+    }
+
+   public function createStage($turnir_id, Request $request){
+    if ($request->isMethod('post')) {
+         $data = $request->validate([
+            'stage_number' => 'required',
+            'stage_name' => 'required',
+        ]);
+        $data['tournament_id'] = $turnir_id;
+        Admin::createStage($data);
+        return redirect(route('tournaments_about', $turnir_id));
+         } 
+         $tournament=Admin::getTournamentByID($turnir_id);
+          return view('admin.home.stages.create_stage',[
+              'turnir_id' => $turnir_id,
+              'tournaments' => $tournament,
+          ]);  
+    }
+
+    public function createGroup($turnir_id, Request $request){
+        if ($request->isMethod('post')) {
+            /*  $data = $request->validate([
+                'stage_number' => 'required',
+                'stage_name' => 'required',
+            ]);
+            $data['tournament_id'] = $turnir_id;
+            Admin::createStage($data);
+            return redirect(route('tournaments_about', $turnir_id)); */
+             } 
+             $tournament=Admin::getTournamentByID($turnir_id);
+              return view('admin.home.stages.create_group',[
+                  'turnir_id' => $turnir_id,
+                  'tournaments' => $tournament,
+              ]);  
+        }
 }
+ 

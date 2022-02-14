@@ -128,7 +128,7 @@
 
         <div class="modal-content" style="font-size: 16px;">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Выбрать участников</h5>
+            <h5 class="modal-title" style="font-size: 16px;" id="exampleModalLongTitle">Выбрать участников (Минимум 3 игрока, максимум 4)</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -149,8 +149,6 @@
             </form>
           </div>
           <div class="modal-footer">
-
-
           </div>
         </div>
       </div>
@@ -297,17 +295,12 @@
             </div>
           </div>
         </div>
-
       </div>
-
       <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
         <div class="container">
 
-
-
           @if($teams != "")
           @foreach($teams as $team)
-
 
           <ul class="subtitle subtitle--list">
             <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -475,10 +468,7 @@
 
                     <td>{{$winner->tournaments_name}}</td>
                     <td>{{$winner->team_name}}</td>
-
                     <td>{{$winner->points}}</td>
-
-
                   </tr>
                   @endforeach
               </table>

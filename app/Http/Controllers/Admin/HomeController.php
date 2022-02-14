@@ -133,8 +133,7 @@ class HomeController extends Controller
   public function saveModerator(Request $request)
   {
    
-   
-    
+
     $this->validator($request->all())->validate();
     $user =User::create($request->all());
     $user->assignRole('moderator');
