@@ -401,14 +401,16 @@ class TournamentController extends Controller
         $stage_3 =  Admin::stage_3($id);
         $winners =  Admin::getWinners($id); */
         $stages = Admin::getStages($id);
+        $groups = Admin::getGroups($id);
        
         return view('admin.home.tournament.tournaments_about', [
             'datas' => $data,
             'turnir_id' => $id,
             'stages' => $stages,
+            'groups' => $groups,
         ]);
     }
-
+     
    public function createStage($turnir_id, Request $request){
     if ($request->isMethod('post')) {
          $data = $request->validate([
@@ -426,21 +428,41 @@ class TournamentController extends Controller
           ]);  
     }
 
-    public function createGroup($turnir_id, Request $request){
-        if ($request->isMethod('post')) {
-            /*  $data = $request->validate([
-                'stage_number' => 'required',
-                'stage_name' => 'required',
-            ]);
-            $data['tournament_id'] = $turnir_id;
-            Admin::createStage($data);
-            return redirect(route('tournaments_about', $turnir_id)); */
-             } 
+    public function createGroup($turnir_id, $stage_id, Request $request){
+       
+         if ($request->isMethod('post')) {
+        
+          
+                $data = $request->validate([
+                'group_number' => 'required',
+                'group_name' => 'required',
+                
+                 ]);
+                 $data['tournament_id'] = $turnir_id;
+                 $data['stage_id'] = $stage_id;
+               
+                
+                $id = Admin::createGroup($data);
+                
+                 $t = $request->input('teams');
+                for($i=0;$i< count($t); $i++ ){
+                    $data_teams['group_id'] =$id;
+                    $data_teams['tournament_id'] = $turnir_id;
+                    $data_teams['team_id'] = $t[$i];
+                    Admin::createGroupTeams($data_teams); 
+                }
+            // return redirect(route('tournaments_about', $turnir_id));  
+         
+        } 
              $tournament=Admin::getTournamentByID($turnir_id);
+             $teams=Admin::getTeamsByTurnirId($turnir_id);
+
               return view('admin.home.stages.create_group',[
                   'turnir_id' => $turnir_id,
+                  'stage_id' => $stage_id,
                   'tournaments' => $tournament,
-              ]);  
+                  'teams' => $teams 
+              ]);   
         }
 }
  

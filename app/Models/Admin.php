@@ -430,10 +430,35 @@ class Admin extends Model
       return DB::table('stages')->insert($data);
    }
 
+   public static function createGroup($data){
+      return DB::table('tournament_groups')->insertGetId( $data);
+   }
+
+   public static function createGroupTeams($data){
+      return DB::table('tournament_group_teams')->insert($data);
+   }
+
    public static function getStages($turnir_id){
       $is_has = DB::table('stages')->where('tournament_id', $turnir_id)->exists();
       if ($is_has == true) {
             return DB::table('stages')->where('tournament_id', $turnir_id)->get();
       }else return null;
+   }
+   
+   public static function getGroups($turnir_id){
+      $is_has = DB::table('tournament_groups')->where('tournament_id', $turnir_id)->exists();
+      if ($is_has == true) {
+            return DB::table('tournament_groups')
+        
+     
+            ->where('tournament_id', $turnir_id)->get();
+      }else return null;
+   }
+
+   public static function getTeamsByTurnirId($turnir_id){
+      return DB::table('tournamets_team')
+      ->join('team', 'tournamets_team.team_id', '=' , 'team.id')
+      ->select('team.name', 'team.id')
+      ->where('tournamets_team.tournament_id', $turnir_id)->where('tournamets_team.status' ,'accepted')->get();
    }
 }

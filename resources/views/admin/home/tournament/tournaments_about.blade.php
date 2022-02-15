@@ -52,7 +52,14 @@
             @if($stages != null)
                 @foreach($stages as $stage)
                      <a href="" type="button" class="btn">{{$stage->stage_name}}</a></br>
-                     <a href="{{route('create_group', $turnir_id)}}" type="button" class="btn btn-success">Создать группу</a></br>
+                    
+
+                     <a href="{{route('create_group', [$turnir_id, $stage->stage_number])}}" type="button" class="btn btn-success">Создать группу</a></br>
+                     @if($groups != null)
+                        @foreach($groups as $group)
+                        <a href="" type="button" class="btn ">{{$group->group_name}}</a></br>
+                        @endforeach
+                     @endif  
                 @endforeach
             @else
             <h4>Нет этапов</h4>
