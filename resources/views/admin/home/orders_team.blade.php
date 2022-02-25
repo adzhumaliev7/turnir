@@ -1,7 +1,7 @@
 @extends('admin.admin_layout')
 
 @section('content')
-@if($orders != "")
+@if($orders != null)
 
 <div class="container">
     <table class="table">
@@ -42,7 +42,9 @@
 
             @endforeach
         </tbody>
+        
     </table>
+    {{$orders->links()}}
     @else
     <h4>Нет данных</h4>
     @endif

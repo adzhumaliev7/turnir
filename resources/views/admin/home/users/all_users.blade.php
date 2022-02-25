@@ -1,7 +1,7 @@
 @extends('admin.admin_layout')
 
 @section('content')
-@if($users != "")
+@if($users != null)
 
 <div class="container">
   <table class="table">
@@ -22,7 +22,7 @@
       @foreach($users as $user)
 
       <tr>
-        <td scope="row">{{$user->id}}</td>
+        <td scope="row">{{$loop->index + 1}}</td>
         <td>{{$user->name}}</td>
         <td>{{$user->email}}</td>
         <td>
@@ -37,25 +37,14 @@
           @endif
         </td>
         <td>
-          @if($user->verification=='verified')
+          @if($user->verification == 'verified')
           Верифицирован 
-          @elseif($user->verification=='on_check')На проверке
-          @elseif($user->verification==null) Нет данных для верификации
+          @elseif($user->verification == 'on_check') на проверке
+          @elseif($user->doc_photo == null && $user->doc_photo2 == null)Нет данных для проверки
           @else отклонен 
-
           @endif
         </td>
         <td>
-        @if($user->verification=='verified')
-          Верифицирован 
-          @elseif($user->verification=='on_check')На проверке
-          @elseif($user->verification==null) Нет данных для верификации
-          @else отклонен 
-
-          @endif
-        </td>
-        <td>
-           
           @if($user->doc_photo != null && $user->doc_photo2 != null)
             <a href="{{route('users_card', $user->id)}}" class="btn btn-primary">Просмотр</a>
           @endif
@@ -68,12 +57,12 @@
         <a href="{{route('unblock', $user->id)}}" class="btn btn-primary">Разблокировать</a>
         @endif
         
-       
         </td>
       </tr>
       @endforeach
     </tbody>
   </table>
+  {{$users->links()}}
   @else
   <h4>Нет данных</h4>
   @endif

@@ -28,6 +28,7 @@
       @endforeach
     </tbody>
   </table>
+  {{$feedbacks->links()}}
   @else
   <h4>Нет данных</h4>
   @endif

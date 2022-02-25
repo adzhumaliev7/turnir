@@ -3,20 +3,17 @@
 @section('content')
 <div class="container">
   <a href="{{route('create_tournament')}}" class="btn btn-primary">Создать</a>
-  @if($tournaments != "")
+  @if($tournaments != null)
   <table class="table">
     <thead class="thead-light">
       <tr>
-
         <th scope="col">Название турнира</th>
-
         <th scope="col">Дата турнира</th>
         <th scope="col">Действие</th>
 
       </tr>
     </thead>
     <tbody>
-
       @foreach($tournaments as $tournament)
       <tr>
 
@@ -25,10 +22,7 @@
         <td><a type="button" href="{{route('tournament_view',$tournament->id)}}" class="btn btn-primary">Редктирвоать</a>
           <a href="{{route('delete_tournament', $tournament->id)}}" type="button" class="btn btn-danger">Удалить</a>
           <a href="{{route('tournaments_teams', $tournament->id)}}" type="button" class="btn btn-success">Заявки</a>
-          <a href="{{route('tournaments_about', $tournament->id)}}" type="button" class="btn btn-dark">Обзор</a>
-          <a href="{{route('start', $tournament->id)}}" type="button" class="btn btn-success">Запустить</a>
-          <a href="{{route('stages', $tournament->id)}}" type="button" class="btn btn-success">Этапы</a>
-          <a href="{{route('stages', $tournament->id)}}" type="button" class="btn btn-success">Турнрирная таблица</a>
+          <a href="{{route('standings', $tournament->id)}}" type="button" class="btn btn-dark">Обзор</a>
         </td>
 
       </tr>

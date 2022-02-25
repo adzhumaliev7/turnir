@@ -55,12 +55,12 @@
     <div class="container header-container">
       <div class="header-sz">
         <div class="header__panel d-flex justify-content-center align-items-center flex-sm-nowrap flex-wrap">
-          <div class="header__profile">
-            <img src="http://placehold.it/200" alt="profile" />
-          </div>
+       
           @foreach($tournaments as $tournament)
+          <div class="header__profile">
+            <img src="{{ asset("uploads/storage/adminimg/turnir_logo/$tournament->file_label")}}"  width="250" height="250"  alt="profile" />
+          </div>
           <div class="header__nick">
-
             <h1 class="title text-capitalize font-sz text--responsive text-light">
               {{$tournament->name}}
             </h1>
@@ -69,7 +69,6 @@
             </p>
             <p class="subtitle text--responsive text-light">{{$tournament->tournament_start}} {{$tournament->games_time}}</p>
             <p class="subtitle text--responsive text-light">Призовой фонд: {{$tournament->price}}</p>
-
             <p class="subtitle text--responsive text-light">Карта: </p>
             <p class="subtitle text--responsive text-light">Режим проведения: squad(4)</p>
             <p class="subtitle text--responsive text-light">Вид: от третьего лица</p>
@@ -136,15 +135,15 @@
           <div class="modal-body" style="font-size: 16px;">
             <form method="POST" action="{{route('join', $tournament->id)}}">
               @csrf
-              <select name="members[]" id="" multiple>
-                @if($members != null)
-                @foreach($members as $member)
-                <option value="{{$member->user_id}}">{{$member->name}}</option>
+              @if($members != null)
+              
+              @foreach($members as $member)
+                <input type="checkbox" name="members[]" value="{{$member->user_id}}" > {{$member->name}} </br>
                 @endforeach
-                @else
-                <h3>Нет данных</h3>
+              
+              @else
+                <h3>Нет учасников</h3>
                 @endif
-              </select>
               <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
             </form>
           </div>
@@ -158,7 +157,13 @@
       <div class="tab-pane overflow-hidden fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 
         <div class="container">
-
+        @if (\Session::has('error_msg'))
+    <div class="alert alert-danger"  style="font-size: 16px;">
+        <ul>
+            <li>{!! \Session::get('error_msg') !!}</li>
+        </ul>
+    </div>
+@endif
           <div class="row">
             <div class="col-lg">
               <p class="subtitle">{{$tournament->description}}</p>
@@ -312,22 +317,7 @@
               </svg>
               {{$team->name }}
             </li>
-            <!-- <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M7.93126 3.75481C8.09911 3.92266 8.09911 4.19474 7.93126 4.3625L5.04866 7.24519C4.88081 7.41295 4.60882 7.41295 4.44097 7.24519L3.06874 5.87287C2.90089 5.70511 2.90089 5.43303 3.06874 5.26527C3.2365 5.09742 3.50858 5.09742 3.67635 5.26527L4.74477 6.33369L7.32357 3.75481C7.49142 3.58705 7.7635 3.58705 7.93126 3.75481ZM11 5.5C11 8.54012 8.5397 11 5.5 11C2.45988 11 0 8.5397 0 5.5C0 2.45988 2.4603 0 5.5 0C8.54012 0 11 2.4603 11 5.5ZM10.1406 5.5C10.1406 2.93488 8.06478 0.859375 5.5 0.859375C2.93488 0.859375 0.859375 2.93522 0.859375 5.5C0.859375 8.06512 2.93522 10.1406 5.5 10.1406C8.06512 10.1406 10.1406 8.06478 10.1406 5.5Z" fill="black"></path>
-                                  </svg>
-                                  участник 2</li>
-                              <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <circle cx="5.5" cy="5.5" r="5" stroke="black"></circle>
-                                  </svg>
-                                  участник 3</li>
-                              <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <circle cx="5.5" cy="5.5" r="5" stroke="black"></circle>
-                                  </svg>
-                                  участник 4</li>
-                              <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M7.93126 3.75481C8.09911 3.92266 8.09911 4.19474 7.93126 4.3625L5.04866 7.24519C4.88081 7.41295 4.60882 7.41295 4.44097 7.24519L3.06874 5.87287C2.90089 5.70511 2.90089 5.43303 3.06874 5.26527C3.2365 5.09742 3.50858 5.09742 3.67635 5.26527L4.74477 6.33369L7.32357 3.75481C7.49142 3.58705 7.7635 3.58705 7.93126 3.75481ZM11 5.5C11 8.54012 8.5397 11 5.5 11C2.45988 11 0 8.5397 0 5.5C0 2.45988 2.4603 0 5.5 0C8.54012 0 11 2.4603 11 5.5ZM10.1406 5.5C10.1406 2.93488 8.06478 0.859375 5.5 0.859375C2.93488 0.859375 0.859375 2.93522 0.859375 5.5C0.859375 8.06512 2.93522 10.1406 5.5 10.1406C8.06512 10.1406 10.1406 8.06478 10.1406 5.5Z" fill="black"></path>
-                                  </svg>
-                                  участник 5</li> -->
+        
           </ul>
           @endforeach
           @else
@@ -344,139 +334,7 @@
         </div>
       </div>
       <div class="tab-pane fade" id="nav-config" role="tabpanel" aria-labelledby="nav-config-tab">
-        <div class="container">
-          <ul class="nav nav-tabs">
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#stage_1">1 Этап</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#stage_2">2 Этап</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#stage_3">3 Этап</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#winners">Победители</a>
-            </li>
-          </ul>
-          <div class="tab-content">
-            <div class="tab-pane fade show active" id="stage_1">
-              @if($stages_1 != null)
-              <table class="table" style="font-size: 16px;">
-                <thead class="thead-light">
-                  <tr>
-                    <th scope="col">Турнир</th>
-                    <th scope="col">Команда</th>
-                    <th scope="col">Группа</th>
-                    <th scope="col">Очки</th>
-
-                  </tr>
-                </thead>
-                <tbody>
-
-                  @foreach($stages_1 as $stage_1)
-                  <tr>
-
-                    <td>{{$stage_1->tournaments_name}}</td>
-                    <td>{{$stage_1->team_name}}</td>
-                    <td>{{$stage_1->group_id}}</td>
-                    <td>{{$stage_1->points}}</td>
-
-
-
-                  </tr>
-                  @endforeach
-              </table>
-              @else <span style="font-size: 16px;">Данных нет</span>
-              @endif
-            </div>
-            <div class="tab-pane fade" id="stage_2">
-              @if($stages_2 != null)
-              <table class="table" style="font-size: 16px;">
-                <thead class="thead-light">
-                  <tr>
-                    <th scope="col">Турнир</th>
-                    <th scope="col">Команда</th>
-
-                    <th scope="col">Очки</th>
-
-                  </tr>
-                </thead>
-                <tbody>
-
-                  @foreach($stages_2 as $stage_2)
-                  <tr>
-
-                    <td>{{$stage_2->tournaments_name}}</td>
-                    <td>{{$stage_2->team_name}}</td>
-
-                    <td>{{$stage_2->points}}</td>
-
-
-
-                  </tr>
-                  @endforeach
-              </table>
-              @else <span style="font-size: 16px;">Данных нет</span>
-              @endif
-            </div>
-            <div class="tab-pane fade" id="stage_3">
-              @if($stages_3 != null)
-              <table class="table" style="font-size: 16px;">
-                <thead class="thead-light">
-                  <tr>
-                    <th scope="col">Турнир</th>
-                    <th scope="col">Команда</th>
-
-                    <th scope="col">Очки</th>
-
-                  </tr>
-                </thead>
-                <tbody>
-
-                  @foreach($stages_3 as $stage_3)
-                  <tr>
-
-                    <td>{{$stage_3->tournaments_name}}</td>
-                    <td>{{$stage_3->team_name}}</td>
-
-                    <td>{{$stage_3->points}}</td>
-
-
-                  </tr>
-                  @endforeach
-              </table>
-              @else <span style="font-size: 16px;">Данных нет</span>
-              @endif
-            </div>
-            <div class="tab-pane fade" id="winners">
-              @if($winners != null)
-              <table class="table" style="font-size: 16px;">
-                <thead class="thead-light">
-                  <tr>
-                    <th scope="col">Турнир</th>
-                    <th scope="col">Команда</th>
-
-                    <th scope="col">Очки</th>
-
-
-                </thead>
-                <tbody>
-
-                  @foreach($winners as $winner)
-                  <tr>
-
-                    <td>{{$winner->tournaments_name}}</td>
-                    <td>{{$winner->team_name}}</td>
-                    <td>{{$winner->points}}</td>
-                  </tr>
-                  @endforeach
-              </table>
-              @else Данных нет
-              @endif
-            </div>
-          </div>
-        </div>
+      
       </div>
     </div>
   </div>

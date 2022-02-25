@@ -10,6 +10,17 @@ class Team extends Model
 {
    // use HasFactory;
 
+   protected $table = 'team';
+
+
+   public function сaptain( ) {
+       return $this->hasOne(User::class, 'id', 'user_id');
+   }
+
+   public function teammates(){
+       return $this->hasMany(TournamentMembers::class);
+   }
+
    public function getTeamById($id)
    {
       $is_has = DB::table('team_members')->where('user_id', $id)->exists();
@@ -38,27 +49,21 @@ class Team extends Model
    }
    public function getTeamMembers($id)
    {
-      $is_has = DB::table('team_members')->where('team_id', $id)->exists();
-      if ($is_has == true) {
-         return DB::table('team_members')
+     
+         $members = DB::table('team_members')
             ->join('team', 'team_members.team_id', '=', 'team.id')
             ->join('users', 'team_members.user_id', '=', 'users.id')
             ->select('team_members.user_id', 'team_members.role','team_members.team_id', 'users.id', 'users.name')
             ->where('team_members.team_id', $id)
             ->get();
-      } else {
-         return NULL;
-      }
+            return $members->count() ? $members : null;
    }
-   public function getAllTeams()
-   {
-      return DB::table('team')->select('id', 'user_id')->get();
-   }
+
    public function createTeam($data, $data_m, $user_id)
    {
       $has_team = DB::table('team')->where('user_id', $user_id)->exists();
-      $is_team_members = DB::table('team_members')->where('user_id', $user_id)->exists();
-      if ($has_team == false && $is_team_members == false) {
+      //$is_team_members = DB::table('team_members')->where('user_id', $user_id)->exists();
+      if ($has_team == false) {
          $id = DB::table('team')->insertGetId($data);
          $data_m['team_id'] = $id;
          return DB::table('team_members')->insert($data_m);
@@ -100,14 +105,13 @@ class Team extends Model
    public static function getRating()
    {
 
-      $is_has = DB::table('winners')->exists();
-      if ($is_has == true) {
-         return DB::table('winners')
+    
+         $rating = DB::table('winners')
             ->join('team', 'winners.team_id', '=', 'team.id')
             ->join('tournaments', 'winners.tournament_id', '=', 'tournaments.id')
             ->select('winners.id', 'winners.points', 'team.name', 'tournaments.tournament_start',  'tournaments.name as tournaments_name', 'tournaments.timezone')
             ->get();
-      } else return null;
+          return $rating->count() ? $rating : null;
    }
    public static function ordersTeam($id,$data, $country)
    {
@@ -125,10 +129,10 @@ class Team extends Model
    }
 
    public static function getTeamNetworks($id){
-      $is_has = DB::table('teams_networks')->where('team_id', $id)->exists();
-      if ($is_has == true) {
-      return DB::table('teams_networks')->where('team_id', $id)->get();
-      } else return null;
+     
+      $networkws = DB::table('teams_networks')->where('team_id', $id)->get();
+      return $networkws->count() ? $networkws : null;
+     
    }
 
    public static function setLogo($id, $logo){
@@ -136,20 +140,19 @@ class Team extends Model
    }
 
    public static function getTournaments($team_id){
-      $is_has = DB::table('tournamets_team')->where('team_id', $team_id)->exists();
-    
-      if ($is_has == true) {
-     return  DB::table('tournamets_team')
+     
+     $tournaments =   DB::table('tournamets_team')
       ->join('tournaments', 'tournamets_team.tournament_id' ,'=', 'tournaments.id')
       ->select('tournaments.name', 'tournaments.format', 'tournaments.tournament_start')
       ->where('tournamets_team.team_id', $team_id)
       ->get();
-      } else return null; 
+    return $tournaments->count() ? $tournaments : null;
    } 
    public static function getUsersEmail($id)
    {
-      return DB::table('users')->select('email')->where('id', $id)->get();
+      return DB::table('users')->where('id', $id)->value('email');
    }
+
 
 
 }

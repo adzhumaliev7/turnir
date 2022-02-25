@@ -9,7 +9,7 @@
                 <div class="dropdown">
                     @if($mail != null)
                     <button class="header__line header__txt button--none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{$mail->email}}
+                    {{$mail}}
                     </button>
                     @else
                     <a href="{{'login'}}" class="header__line header__txt " type="button">
@@ -19,7 +19,7 @@
                         Регистрация
                     </a>
                     @endif
-
+                
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
                         <li><a class="dropdown-item header__txt text-dark" href="{{route('user.logout')}}">выйти</a></li>
@@ -27,7 +27,7 @@
                 </div>
             </div>
         
-            <nav class=" navbar navbar-expand-md navbar p-3 mb-5 bg-body rounded bg--none navbar-z">
+            <nav class=" navbar navbar-expand-md navbar p-3 mb-5 bg-body rounded bg--none navbar-z">0
                 <div class=" container-fluid header-indent">
                     <a class="navbar-brand title text-uppercase logo-indent-mr text-white pubg-hover px-2" href="{{route('main')}}">showmatch</a>
                     <button class="toggle-menu toggle-click button--none">

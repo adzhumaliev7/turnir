@@ -40,7 +40,9 @@
         </div>
     </nav>
 </div>
-<section>
+<div class="main">
+  <!-- first item - 1 -->
+
     <div class="container">
 
         <h2 class="title letter-spacing--none my-2"> Вы получили при в команду - {{$team}}</h2>
@@ -51,7 +53,7 @@
 
 
     </div>
-</section>
+</div>
 
 
 

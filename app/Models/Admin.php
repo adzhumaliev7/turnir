@@ -44,26 +44,24 @@ class Admin extends Model
 
    public static function getAllUsers()
    {
-      $is_has = DB::table('users')->exists();
-      if ($is_has == true) {
-         return DB::table('users')
+    
+         $users = DB::table('users')
          ->leftJoin('users_profile2', 'users.id', '=' , 'users_profile2.user_id')
          ->select('users.*', 'users_profile2.verification','users_profile2.doc_photo', 'users_profile2.doc_photo2', 'users_profile2.nickname',  'users_profile2.game_id')
          ->get();
-      } else return NULL;
+         return $users->count() ? $users : null;
    }
 
    public static function getModerators()
    {
 
-      $is_has = DB::table('model_has_roles')->where('role_id', 3)->exists();
-      if ($is_has == true) {
-         return DB::table('users')
+   
+      $moderators = DB::table('users')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->select('id', 'email')
             ->where('role_id', 3)
             ->get();
-      } else return NULL;
+         return $moderators->count() ? $moderators : null;
    }
 
    public static function delteModeratos($id)
@@ -74,10 +72,9 @@ class Admin extends Model
 
    public static function getTeams()
    {
-      $is_has = DB::table('team')->exists();
-      if ($is_has == true) {
-         return DB::table('team')->select('id', 'name')->get();
-      } else return NULL;
+      
+         $teams =  DB::table('team')->select('id', 'name')->get();
+         return $teams->count() ? $teams : null;
    }
    public static function getById($id)
    {
@@ -98,18 +95,17 @@ class Admin extends Model
 
    public static function getTournaments()
    {
-      $is_has = DB::table('tournaments')->exists();
-      if ($is_has == true) {
-         return DB::table('tournaments')->where('status', 'save')->get();
-      } else return NULL;
+     
+         $tournaments =  DB::table('tournaments')->where('status', 'save')->get();
+         return $tournaments->count() ? $tournaments : null;
    }
 
    public static function getTournamentsDraft()
    {
-      $is_has = DB::table('tournaments')->exists();
-      if ($is_has == true) {
-         return DB::table('tournaments')->where('status', 'draft')->get();
-      } else return NULL;
+    
+      $tournaments =   DB::table('tournaments')->where('status', 'draft')->get();
+      return $tournaments->count() ? $tournaments : null;
+   
    }
 
    public static function draftTournamentsActive($id)
@@ -179,10 +175,9 @@ class Admin extends Model
    }
    public static function getHelp()
    {
-      $is_has = DB::table('help')->exists();
-      if ($is_has == true) {
-         return DB::table('help')->select('id', 'title', 'description')->get();
-      } else return NULL;
+     
+         $help = DB::table('help')->select('id', 'title', 'description')->get();
+         return $help->count() ? $help : null;
    }
 
    public static function getHelpById($id)
@@ -206,7 +201,7 @@ class Admin extends Model
 
    public static function getTeamCount($id)
    {
-      //  $team_count = 
+      //  $team_count =
       return DB::table('tournamets_team')->where('tournament_id', $id)->where('status', 'accepted')->count();
    }
 
@@ -234,12 +229,11 @@ class Admin extends Model
       DB::table('tournaments_members')->where('tournament_id', $turnir_id)->where('team_id', $id)->delete();
    }
 
-   public function getFeedback()
+   public static function getFeedback()
    {
-      $is_has = DB::table('feedback')->exists();
-      if ($is_has == true) {
-         return DB::table('feedback')->select('fio', 'phone', 'email', 'description')->get();
-      } else return NULL;
+    
+         $feedback = DB::table('feedback')->select('fio', 'phone', 'email', 'description')->get();
+         return $feedback->count() ? $feedback : null;
    }
 
    public static function start($turnir_id)
@@ -352,8 +346,8 @@ class Admin extends Model
       return DB::table('tournaments')->where('id', $turnir_id)->update(['active' => 0]);
    }
    /* public static function setPointsStage_1($turnir_id,$data){
-     
-     
+
+
      return DB::table('stage_1')->where('tournament_id', $turnir_id)->update($data);
    } */
    public static function setResults($turnir_id)
@@ -384,13 +378,12 @@ class Admin extends Model
 
      public static function getOrdersTeam()
    {
-      $is_has = DB::table('orders_team')->exists();
-      if ($is_has == true) {
-         return DB::table('orders_team')
+   
+         $orders = DB::table('orders_team')
          ->join('team', 'orders_team.team_id' , '=', 'team.id')
          ->select('orders_team.name as new_name', 'orders_team.team_id', 'orders_team.status', 'team.name')
          ->get();
-      } else return null;
+         return $orders->count() ? $orders : null;
    }
    public static function changeTeamName($id, $name)
    {
@@ -435,6 +428,7 @@ class Admin extends Model
    }
 
    public static function createGroupTeams($data){
+       dd($data, 1);
       return DB::table('tournament_group_teams')->insert($data);
    }
 
@@ -444,13 +438,23 @@ class Admin extends Model
             return DB::table('stages')->where('tournament_id', $turnir_id)->get();
       }else return null;
    }
-   
+
    public static function getGroups($turnir_id){
+
       $is_has = DB::table('tournament_groups')->where('tournament_id', $turnir_id)->exists();
       if ($is_has == true) {
             return DB::table('tournament_groups')
-        
-     
+            ->where('tournament_id', $turnir_id)->get();
+      }else return null;
+   }
+
+   public static function getGroupTeams($turnir_id){
+      $is_has = DB::table('tournament_group_teams')->where('tournament_id', $turnir_id)->exists();
+      if ($is_has == true) {
+            return DB::table('tournament_group_teams')
+            ->join('team', 'tournament_group_teams.team_id' , '=', 'team.id')
+
+            ->select('team.name','tournament_group_teams.id', 'tournament_group_teams.kills_pts', 'tournament_group_teams.place_pts' ,  )
             ->where('tournament_id', $turnir_id)->get();
       }else return null;
    }

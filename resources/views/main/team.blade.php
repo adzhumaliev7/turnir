@@ -8,7 +8,7 @@
         <div class="dropdown">
 
         <button class="header__line header__txt button--none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            {{$mail->email}}
+            {{$mail}}
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
@@ -106,7 +106,7 @@
                   
                     <h4 class="input-title">Пригласить друзей в команду</h4>
                     <span class="subtitle subtitle--regular d-block subtitle--twelve">Скопируйте ссылку и отправьте друзьям которые хотят присоедениться вк вашей команды</span>
-                    <input class="subtitle subtitle--regular url-input url-input--margin" type="text" id="myInput" value="http://turnir/addmembers/{{$team_id}}">
+                    <input class="subtitle subtitle--regular url-input url-input--margin" type="text" id="myInput" value="http://showmatch/addmembers/{{$team_id}}">
                     <button class="submit-btn btn--orange  btn--size btn--mr" onclick="myFunction()">Копировать</button>
                     <div class="orange-line"></div>
                     <h4 class="input-title">Участники</h4>

@@ -4,10 +4,12 @@
 @section('content')
 
 <div class="container">
-  <table class="table table-hover">
-    <a href="{{route('create_moderators')}}" type="button" class="btn btn-success create_p">Добавить модератора</a>
-    @if($moderators != NULL)
+<a href="{{route('create_moderators')}}" type="button" class="btn btn-success create_p">Добавить модератора</a>
+@if($moderators != NULL)
     <h4>Модераторы</>
+  <table class="table table-hover">
+   
+    
 
       <thead>
         <tr>
@@ -26,10 +28,14 @@
           @endforeach
         </tr>
 
-        @else
-        <h4>Данных нет</h4>
+      
       </tbody>
-      @endif
+     
   </table>
+  {{$moderators->links()}}
+  @else
+        <h4>Данных нет</h4>
+      @endif
+
 </div>
 @endsection

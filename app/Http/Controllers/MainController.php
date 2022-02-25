@@ -13,11 +13,10 @@ class MainController extends Controller
     public function index()
     {
         if(Auth::user() != null){
-            $id = Auth::user()->id;
-            $mail = User::getEmail($id);
+        
+            $mail = Auth::user()->email;
         }
         else $mail = null;
-     
         return view('main.main', [
            'mail' =>$mail
         ]);
@@ -26,8 +25,8 @@ class MainController extends Controller
     public function feedback()
     {
         if (Auth::user() != null) {
-            $id = Auth::user()->id;
-            $mail = User::getEmail($id);
+          
+            $mail = Auth::user()->email;
         } else $mail = null;
         return view('main.feedback', [
             'mail' => $mail,
@@ -52,8 +51,8 @@ class MainController extends Controller
 
     public function rating(){
         if (Auth::user() != null) {
-            $id = Auth::user()->id;
-            $mail = User::getEmail($id);
+          
+            $mail = Auth::user()->email;
         } else $mail = null;
         $teams=Team::getRating();
         

@@ -15,7 +15,7 @@
         <div class="dropdown">
             @if($mail != null)
             <button class="header__line header__txt button--none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                {{$mail->email}}
+                {{$mail}}
             </button>
             @else
             <a href="{{'login'}}" class="header__line header__txt " type="button">

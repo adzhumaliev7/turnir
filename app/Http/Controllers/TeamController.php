@@ -14,17 +14,13 @@ class TeamController extends Controller
     public function index($id,$us)
     {
         $user_id = Auth::user()->id;
-        $mail = User::getEmail($user_id);
+        $mail = Auth::user()->email;
         $data = Team::getTeamById2($id, $us);
        
         $countries = config('app.countries');
         $members = Team::getTeamMembers($id);
      
-       
         $chek_admin = Team::checkAdmin($id, $user_id);
-       
-
-     
         $networks = Team::getTeamNetworks($id);
      
         $tournaments = Team::getTournaments($id);
@@ -78,13 +74,8 @@ class TeamController extends Controller
     {
         $user_id = Auth::user()->id;
         $email = Team::getUsersEmail($id);
-        foreach ($email as $key => $value) {
-          $email = (array) $value;
-          foreach ($email as $key => $value) {
-            $em = $value;
-      }
-    }
-        Mail::to($em)->send(new DeleteMemberMail($em));
+      
+        Mail::to($email)->send(new DeleteMemberMail($email));
         Team::deleteMember($id, $team_id);
 
         \Session::flash('flash_meassage_delete', 'Участник успешно удален');
@@ -166,15 +157,23 @@ class TeamController extends Controller
             'logo' => 'mimetypes:image/jpeg,image/png',
 
         ]);
+        $name = $request->file('logo');
+        $path = '/uploads/storage/img/teamlogo';
+        $file_name = $this->uploadFiles($name, $path);
 
-        $file_name = $request->file('logo')->getClientOriginalName();
-        $type = $request->file('logo')->getClientOriginalExtension();
-        if ($type == 'png') $file_type = '.png';
-        else $file_type = '.jpeg';
-        $file_name = md5($file_name) . $file_type;
-        $file = $request->file('logo');
-        $file->move(public_path() . '/uploads/storage/img/teamlogo', $file_name);
         Team::setLogo($id, $file_name);
         return redirect(route('team', [$id, $user_id]));
+    }
+
+    protected function uploadFiles($name, $path){
+        $file_name = $name->getClientOriginalName();
+       $type = $name->getClientOriginalExtension();
+       if ($type == 'png') $file_type = '.png';
+       elseif ($type == 'jpg') $file_type = '.jpg';
+       else $file_type = '.jpeg';
+       $file_name = md5($file_name) . $file_type;
+       $file = $name;
+       $file->move(public_path() . $path, $file_name); 
+       return $file_name;
     }
 }

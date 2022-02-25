@@ -1,7 +1,7 @@
 @extends('admin.admin_layout')
 
 @section('content')
-@if($orders != "")
+@if($orders != null)
 
 <div class="container">
     <table class="table">
@@ -20,7 +20,7 @@
             @foreach($orders as $order)
 
             <tr>
-                <td scope="row">{{$order->user_id}}</td>
+                <td scope="row">{{$loop->index +1}}</td>
                 <td>{{$order->email}}</td>
                 <td>{{$order->text}}</td>
                 <td>
@@ -42,7 +42,9 @@
             </tr>
             @endforeach
         </tbody>
+       
     </table>
+    {{$orders->links()}}
     @else
     <h4>Нет данных</h4>
     @endif

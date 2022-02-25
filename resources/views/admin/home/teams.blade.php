@@ -1,7 +1,7 @@
 @extends('admin.admin_layout')
 
 @section('content')
-@if($teams != "")
+@if($teams != null)
 <div class="container">
   <table class="table">
     <thead class="thead-light">
@@ -16,14 +16,13 @@
       @foreach($teams as $team)
 
       <tr>
-        <td scope="row">{{$team->id}}</td>
+        <td scope="row">{{$loop->index+1}}</td>
         <td>{{$team->name}}</td>
-
-
       </tr>
       @endforeach
     </tbody>
   </table>
+  {{$teams->links()}}
   @else
   <h4>Нет данных</h4>
   @endif

@@ -3,10 +3,11 @@
 @section('content')
 <div class="container">
   <a href="{{route('create_help')}}" class="btn btn-primary">Создать категорию помощь</a>
+  @if($help != null)
+    <h4>Раздел помощи</>
   <table class="table table-hover">
 
-    @if($help != " ")
-    <h4>Раздел помощи</>
+    
 
       <thead>
         <tr>
@@ -25,10 +26,13 @@
           @endforeach
         </tr>
 
-        @else
-        <h4>Данных нет</h4>
+      
       </tbody>
-      @endif
+    
   </table>
+  {{$help->links()}}
+  @else
+        <h4>Данных нет</h4>
+        @endif      
 </div>
 @endsection

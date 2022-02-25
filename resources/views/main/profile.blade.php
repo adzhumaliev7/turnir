@@ -9,7 +9,7 @@
 
         <div class="dropdown">
           <button class="header__line header__txt button--none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            {{$mail->email}}
+            {{$mail}}
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
@@ -271,7 +271,7 @@
            @csrf
             <div class="row">
               <div class="col-lg">
-                <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="doc_photo">
+                <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="doc_photo" >
                 <label class="subtitle" for="fileInput">Фото документа(паспорт, права id)</label>
               </div>
               <div class="col-lg">
@@ -286,14 +286,14 @@
             <h2 class="title letter-spacing--none my-2"> Основная информация </h2>
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="phone" placeholder="Номер телефона" type="tel" class="form-control input__profile subtitle fw-normal" id="">
+                <input name="phone" placeholder="Номер телефона" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('phone')}}"> 
                 @error('phone')
                 <div class="alert alert-danger">Введите номер телефона</div>
                 @enderror
               </div>
               <div class="col-lg-6">
 
-                <input name="fio" placeholder="Имя Фамилия" type="text" class="form-control input__profile subtitle fw-normal" id="">
+                <input name="fio" placeholder="Имя Фамилия" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('fio')}}">
                 @error('fio')
                 <div class="alert alert-danger">Введите имя</div>
                 @enderror
@@ -301,14 +301,14 @@
             </div>
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="login" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="">
+                <input name="login" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('login')}}">
                 @error('login')
                 <div class="alert alert-danger">Введите логин</div>
                 @enderror
               </div>
               <div class="col-lg-6">
 
-                <input name="email" placeholder="Email" type="text" class="form-control input__profile subtitle fw-normal" id="">
+                <input name="email" placeholder="Email" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('email')}}">
                 @error('email')
                 <div class="alert alert-danger">Такой email уже занят</div>
                 @enderror
@@ -332,10 +332,10 @@
             </div>
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="city" placeholder="Город" type="text " class="form-control input__profile subtitle fw-normal" id="">
+                <input name="city" placeholder="Город" type="text " class="form-control input__profile subtitle fw-normal" id="" value="{{ old('city')}}">
               </div>
               <div class="col-lg-6">
-                <input name="bdate" placeholder="Дата рождения" type="date" class="form-control input__profile subtitle fw-normal" id="">
+                <input name="bdate" placeholder="Дата рождения" type="date" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('bdate') }}">
               </div>
             </div>
             <h2 class="title letter-spacing--none indent--row">
@@ -343,10 +343,10 @@
             </h2>
             <div class="row">
               <div class="col-lg">
-                <input placeholder="Nick name" name="nickname" type="text" class="form-control input__profile subtitle fw-normal" id="">
+                <input placeholder="Nick name" name="nickname" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('nickname')}}" }}>
               </div>
               <div class="col-lg">
-                <input placeholder="ID игрока в PUBG Mobile" type="text" name="game_id" class="form-control input__profile subtitle fw-normal" id="">
+                <input placeholder="ID игрока в PUBG Mobile" type="text" name="game_id" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('game_id')}}" >
                 @error('game_id')
                 <div class="alert alert-danger">Этот id уже занят</div>
                 @enderror
@@ -364,6 +364,7 @@
           @if($teams)
           @foreach($teams as $team)
           <div class="row">
+        
             <div class="col d-flex justify-content-between border--block">
               <a href="{{ route('team', [$team->team_id, $team->user_id] ) }}">
                 <p class="block-team__text">{{$team->name}}</p>
@@ -372,6 +373,7 @@
                 <path d="M14.7474 18.6157C14.9556 18.6157 15.1623 18.5508 15.3387 18.4232C15.6673 18.185 15.8208 17.7757 15.7314 17.3806L14.5091 11.9963L18.6544 8.36095C18.9591 8.09494 19.0755 7.67368 18.9504 7.28823C18.8253 6.9035 18.485 6.63111 18.082 6.59386L12.5972 6.09591L10.4287 1.02122C10.2688 0.648375 9.90464 0.407593 9.50005 0.407593C9.09546 0.407593 8.73132 0.648375 8.57143 1.02035L6.40294 6.09591L0.919016 6.59386C0.51515 6.63024 0.17478 6.9035 0.0496769 7.28823C-0.0754261 7.67296 0.0402546 8.09494 0.344965 8.36095L4.4903 11.9956L3.26798 17.3798C3.1784 17.7757 3.33206 18.185 3.66054 18.4225C3.9883 18.6599 4.42536 18.6782 4.77052 18.4708L9.50005 15.6444L14.2296 18.4724C14.3895 18.5673 14.5676 18.6157 14.7474 18.6157ZM9.50005 14.4269C9.3203 14.4269 9.14229 14.4752 8.98225 14.5701L4.51872 17.2397L5.67233 12.1578C5.75466 11.7961 5.63188 11.4185 5.3524 11.1738L1.43827 7.74109L6.61676 7.27083C6.9896 7.23676 7.31025 7.00236 7.45594 6.6588L9.50005 1.86983L11.5466 6.65952C11.6907 7.00077 12.0114 7.23517 12.3834 7.26924L17.5626 7.73949L13.6486 11.1722C13.3682 11.4176 13.2456 11.7945 13.3287 12.1571L14.4814 17.2389L10.0179 14.5701C9.85797 14.4752 9.67981 14.4269 9.50005 14.4269ZM12.6391 6.19405C12.6391 6.19405 12.6391 6.19492 12.6399 6.19564L12.6391 6.19405ZM6.36264 6.19173L6.36177 6.19333C6.36177 6.19246 6.36177 6.19246 6.36264 6.19173Z" fill="black" />
               </svg>
             </div>
+          
           </div>
           @endforeach
           @endif
@@ -391,7 +393,7 @@
           @if(Session::has('flash_meassage_error'))
           <div class="alert alert-danger">{{Session::get('flash_meassage_error')}}</div>
           @endif
-          @if($mail->status == NULL)
+          @if($status == NULL)
           @if($active == 1)
           <form method="POST" action="{{route('createteam')}}">
             @csrf

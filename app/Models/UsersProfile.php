@@ -14,20 +14,13 @@ class UsersProfile extends Model
          }else {
               return DB::table('users_profile2')->insert($data);
          }
-      
     }
 
      public function getById($id){
-       $is_has = DB::table('users_profile2')->where('user_id', $id)->exists();
-       if($is_has == true){
+      
           $data['data'] = DB::table('users_profile2')->where('user_id', $id)->get();
           $data['status'] = DB::table('users_profile2')->where('user_id', $id)->value('status');
-          return $data;
-       }
-       else {
-          return NULL;
-       }
-     
+          return $data['data']->count() ? $data : null;
    }
    public function delete_profile($id){
          DB::table('users')->where('id', $id)->delete();
@@ -38,33 +31,26 @@ class UsersProfile extends Model
    }
 
     public function getTeamById($id){
-       $is_has = DB::table('team_members')->where('user_id', $id)->exists();
-       if($is_has == true){
-         return DB::table('team_members')
+      
+         $team =  DB::table('team_members')
             ->join('team','team_members.team_id','=','team.id')
             ->select('team_members.team_id','team_members.user_id', 'team.id', 'team.name')
             ->where('team_members.user_id', $id)
             ->get();
-       }
-       else {
-          return NULL;
-       }
+          return $team->count() ? $team : null;
+       
    }
    public function getTournamentsById($id){
-       $is_has = DB::table('tournaments_members')->where('user_id', $id)->exists();
-      if($is_has == true){
-        return DB::table('tournaments_members')
+     
+        $tournaments = DB::table('tournaments_members')
            ->join('team','tournaments_members.team_id','=','team.id')
            ->join('tournamets_team','tournaments_members.team_id','=','tournamets_team.team_id')
            ->join('tournaments','tournamets_team.tournament_id','=','tournaments.id')
            ->select('tournaments_members.team_id','tournaments_members.user_id', 'team.id', 'team.name','tournaments.name', 'tournaments.format', 'tournaments.id as tournaments_id', 'tournaments.tournament_start', 'tournaments.slot_kolvo','tournaments.country' ,'tournaments.timezone'  ,'tournaments.price', 'tournaments.active' )
            ->where('tournaments_members.user_id', $id)
            ->get();
-      }
-      else {
-         return NULL;
-      } 
-      return  NULL;
+         return $tournaments->count() ? $tournaments : null;
+      
   }
    
    public static function getTeamsCount($id){

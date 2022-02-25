@@ -26,8 +26,15 @@
   <link rel="stylesheet" href="{{ asset("admin/plugins/daterangepicker/daterangepicker.css")}}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset("admin/plugins/summernote/summernote-bs4.min.css")}}">
+    <link rel="stylesheet" href="{{ asset("css/jquery.dropdown.min.css")}}">
+    <link rel="stylesheet" href="{{ asset("css/pinger.css")}}">
 </head>
-
+<style>
+    .table-box {
+        max-width: 1024px;
+        overflow-x: scroll;
+    }
+</style>
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
 
@@ -272,6 +279,8 @@
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{asset("admin/dist/js/pages/dashboard.js")}}"></script>
 
+      <script src="{{asset("js/jquery.dropdown.min.js")}}"></script>
+
     <script>
       var modal = document.getElementById("myModal");
 
@@ -281,7 +290,7 @@
       // Get the <span> element that closes the modal
       var span = document.getElementsByClassName("close")[0];
 
-      // When the user clicks the button, open the modal 
+      // When the user clicks the button, open the modal
       btn.onclick = function() {
         modal.style.display = "block";
       }
@@ -301,7 +310,7 @@
          <script>
       const $modal = $('#ModalWindow');
       const $titleCont = $modal.find('#ModalWindowTitle');
-     
+
       const $form = $modal.find('form');
       console.log($titleCont);
 // тут ищите все кнопки (можно им какой-нибудь класс придумать уникальный, например js-btn-ban)
@@ -311,13 +320,13 @@
       currentButton.addEventListener('click', function() {
         const userId = this.dataset.id;
         const path = this.dataset.path;
-        
+
         $titleCont.text(userId); // выводим id пользователя
         $form.attr('action', path); // обновляем роут
         $modal.modal('show'); //показываем модалку
     });
 });
-    </script>  
+    </script>
                         <script>
       const $modal1 = $('#ModalApplyTeamName');
       //const $titleCont1 =  document.getElementById('#exampleModalLongTitle');
@@ -338,6 +347,79 @@
     });
 });
     </script>
+
+
+
+
+      <script>
+          $('#addMatches').on('click', (ev) => {
+              let matches = $('.matches').last();
+              let count = 1;
+              if(matches.length != 0)  {
+                  count = matches.data().matches + 1
+              }
+
+
+              let html = `
+
+                 <div class="matches" data-matches="${count}">
+                    <h4>Матч ${count}</h4>
+                    <div class="form-row">
+
+                        <div class="form-group col-md-3">
+                            <label for="inputEmail4">Название матча</label>
+                            <input type="text" name="matches[${count}][match_name]" class="form-control" placeholder="Введите название матча" value="Матч ${count}">
+                        </div>
+                        <div class="form-group col-md-3">
+                                <label for="inputEmail4">Login</label>
+                                <input type="text" name="matches[${count}][login]" class="form-control" placeholder="Введите Login матча" value="">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputEmail4">Password</label>
+                                <input type="text" name="matches[${count}][password]" class="form-control" placeholder="Введите пароль матча" value="">
+                            </div>
+                        <div class="form-group col-md-3">
+                            <label for="inputPassword4"></label>
+                            <span class="btn btn-danger form-control deleteMatches2">Удалить матч</span>
+                        </div>
+                    </div>
+                </div>
+
+              `
+              $('#wrapMatches').append(html)
+
+          })
+          let ids = [];
+          $('.deleteMatches').on('click', (ev) => {
+              let id = ev.target.dataset.matchesid;
+              ids.push(id);
+              let elem = $('#deletedIds').val(JSON.stringify(ids));
+              console.log(elem)
+              console.log(id)
+              ev.target.parentNode.parentNode.parentNode.remove()
+          })
+
+          $(document).on('click', '.deleteMatches2',(ev) => {
+              ev.target.parentNode.parentNode.parentNode.remove()
+          })
+
+          $('.demosdsdsd').dropdown({
+              input:'<input type="text" maxLength="20" placeholder="Поиск">',
+              searchNoData: '<li style="color:#ddd">Нет результатов</li>',
+          });
+
+
+
+      </script>
+
+
+
+
+
+
+
+
+
 </body>
 
 </html>

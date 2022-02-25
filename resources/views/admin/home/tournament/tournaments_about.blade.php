@@ -1,6 +1,8 @@
 @extends('admin.admin_layout')
 @section('content')
 <div class="container">
+
+
     <div class="row background-gray d-flex align-items-center row-indent-mr">
         <div class="col-lg-3">
             <div class="wrap">
@@ -11,7 +13,7 @@
          @foreach($datas as $data)
             <h1 class="title text-capitalize font-sz">{{$data->name}}</h1>
 
-          
+
         @endforeach
         </div>
 
@@ -50,16 +52,90 @@
             <div class="block-view">
             <a href="{{route('create_stage', $turnir_id)}}" type="button" class="btn btn-success">Создать этап</a></br>
             @if($stages != null)
-                @foreach($stages as $stage)
-                     <a href="" type="button" class="btn">{{$stage->stage_name}}</a></br>
-                    
+                @foreach($turnir->stages as $stage)
+                     <a href="" type="button" class="btn">{{$stage->stage_name}}__ {{ $stage->id}}</a></br>
 
-                     <a href="{{route('create_group', [$turnir_id, $stage->stage_number])}}" type="button" class="btn btn-success">Создать группу</a></br>
-                     @if($groups != null)
-                        @foreach($groups as $group)
-                        <a href="" type="button" class="btn ">{{$group->group_name}}</a></br>
+                     @if($loop->first)
+                     <a href="{{route('create_group', [$turnir_id, $stage->id])}}" type="button" class="btn btn-success">Создать группу</a></br>
+                     @endif
+                        @foreach($stage->groups as $group)
+{{--                            @dump($stage->groupsMany->count())--}}
+                        <a href="" type="button" class="btn ">{{$group->group_name}}__{{$group->id}}</a>  <span>place_pts {{$group->place_pts}}</span> </br>
+{{--                            @if($group->pivot->current)--}}
+{{--                                <a href="{{route('incrementStage', [$group->id, $stage->id])}}" class="btn-success btn">В следующий этап</a>--}}
+{{--                                <a href="{{route('decrementStage', [$group->id, $stage->id])}}" class="btn-primary btn">В преведущий этап</a>--}}
+{{--                                <a href="{{route('destroy', [$group->id, $turnir->id])}}" class="btn-danger btn">Удалить команду</a>--}}
+{{--                            @endif--}}
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+
+                                    <th scope="col">#</th>
+                                    <th scope="col ">Команда</th>
+
+
+{{--                                    <th scope="col ">Kills PTS</th>--}}
+{{--                                    <th scope="col ">Place PTS</th>--}}
+{{--                                    <th scope="col ">Total PTS</th>--}}
+{{--@dump($stage->matches->count());--}}
+
+
+                                    @foreach($stage->matches->groupBy('team_id')->max() ?? [] as $masdsth)
+                                    <th scope="col ">Kills PTS</th>
+                                    <th scope="col ">Place PTS</th>
+                                    <th scope="col ">Total PTS</th>
+                                    @endforeach
+                                    <th scope="col ">Кнопки</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?$rowNumber = 1;?>
+                                @foreach($group->tournamentGroupTeams as $team)
+                                <tr>
+                                    <td><?=$rowNumber++;?></td>
+                                    <td>{{$team->team->name}}</td>
+{{--                                    @foreach($stage->matches->where('team_id', $team->id) as $math)--}}
+
+{{--                                     @dd($stage->matches->groupBy('team_id')->max())--}}
+{{--                                        @if($math->team_id == $team->id)--}}
+{{--                                        <td>{{$math->kills_pts ?? 0}}</td>--}}
+{{--                                        <td>{{$math->place_pts ?? 0}}</td>--}}
+{{--                                        <td>{{$math->total_pts ?? 0}}</td>--}}
+{{--                                        @else--}}
+{{--                                            <td>0</td>--}}
+{{--                                            <td>0</td>--}}
+{{--                                            <td>0</td>--}}
+{{--                                        @endif--}}
+{{--                                    @endforeach--}}
+
+
+
+
+                                    @if($stage->matches->groupBy('team_id')->max())
+                                        @for ($i = 0; $i < $stage->matches->groupBy('team_id')->max()->count(); ++$i)
+                                            @if($stage->matches->groupBy('team_id')[$team->id][$i] ?? false)
+                                                <td>{{$stage->matches->groupBy('team_id')[$team->id][$i]->kills_pts ?? 0}}</td>
+                                                <td>{{$stage->matches->groupBy('team_id')[$team->id][$i]->place_pts ?? 0}}</td>
+                                                <td>{{$stage->matches->groupBy('team_id')[$team->id][$i]->total_pts ?? 0}}</td>
+                                            @else
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                            @endif
+                                        @endfor
+                                    @endif
+
+                                    <td> <a href="{{ route('matches.edit', [$team->id, $stage->id])}}" class="btn btn-primary">Изменить матчи</a> </td>
+                                </tr>
+                                @endforeach
+                        </table>
+
+
                         @endforeach
-                     @endif  
+
+
+
+
                 @endforeach
             @else
             <h4>Нет этапов</h4>
@@ -70,4 +146,3 @@
 
 
     @endsection
-  

@@ -17,7 +17,7 @@ use App\Mail\ChangeTeamMail;
 use App\Mail\RejectedChangeTeam;
 use App\Mail\UnblockMail;
 use Illuminate\Support\Facades\Mail;
-
+use App\CustomClasses\ColectionPaginate;
 class HomeController extends Controller
 {
   public function index()
@@ -43,11 +43,10 @@ class HomeController extends Controller
   }
   public function allUsers()
   {
+   // 
+   
     $users = Admin::getAllUsers();
-    if ($users == NULL) {
-      $users == "";
-    }
-    // dd($users, User::all());
+    if($users !=null) $users = ColectionPaginate::paginate($users, 15);
     return view('admin.home.users.all_users', [
       'users' => $users
     ]);
@@ -76,10 +75,7 @@ class HomeController extends Controller
   {
 
     $teams = Admin::getTeams();
-    if ($teams == NULL) {
-      $teams == "";
-    }
-
+    if($teams !=null) $teams = ColectionPaginate::paginate($teams, 15);
     return view('admin.home.teams', [
       'teams' => $teams
     ]);
@@ -108,11 +104,10 @@ class HomeController extends Controller
     return redirect()->to(route('allusers'));
   }
 
-
   public function moderators()
   {
     $moderators = Admin::getModerators();
-
+    if($moderators !=null) $moderators = ColectionPaginate::paginate($moderators, 15);
     return view('admin.home.moderators.moderators', [
       'moderators' => $moderators,
     ]);
@@ -155,9 +150,7 @@ class HomeController extends Controller
   {
 
     $help = Admin::getHelp();
-    if ($help == NULL) {
-      $help == "";
-    }
+    if($help !=null) $help = ColectionPaginate::paginate($help, 15);
     return view('admin.home.help.help', [
       'help' => $help,
     ]);
@@ -207,7 +200,7 @@ class HomeController extends Controller
   public function feedback()
   {
     $feedback = Admin::getFeedback();
-
+    if($feedback !=null) $feedback = ColectionPaginate::paginate($feedback, 15);
 
     return view('admin.home.feedback', [
       'feedbacks' => $feedback,
@@ -216,6 +209,7 @@ class HomeController extends Controller
   public function orders()
   {
     $orders = Admin::getOrders();
+    if($orders !=null) $orders = ColectionPaginate::paginate($orders, 15);
     return view('admin.home.users.orders', [
       'orders' => $orders,
     ]);
@@ -239,7 +233,8 @@ class HomeController extends Controller
   public function ordersTeam()
   {
     $orders = Admin::getOrdersTeam();
-
+    if($orders !=null)  $orders = ColectionPaginate::paginate($orders, 15);
+   
     return view('admin.home.orders_team', [
       'orders' => $orders,
     ]);

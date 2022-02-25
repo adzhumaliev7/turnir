@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Tournament;
 use App\Models\User;
-use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
 
 class TournamentController extends Controller
@@ -16,7 +15,7 @@ class TournamentController extends Controller
 
           if (Auth::user() != null) {
                $id = Auth::user()->id;
-               $mail = User::getEmail($id);
+               $mail = Auth::user()->email;
           } else $mail = null;
           $tournaments = Tournament::getTournaments();
           
@@ -30,51 +29,18 @@ class TournamentController extends Controller
           ]);
      }
 
-     public function createTournament()
+     public function createTournament()     
      {
 
           return view('create_tournament');
      }
 
-     public function saveTournament(Request $request)
-     {
-
-          if ($request->isMethod('post')) {
-               $data = $request->validate([
-                    'name' => '',
-                    'format' => '',
-                    'country' => '',
-                    'timezone' => '',
-                    'countries' => '',
-                    'players_col' => '',
-                    'description' => '',
-                    'start_reg' => '',
-                    'end_reg' => '',
-                    'slot_kolvo' => '',
-                    'ligue' => '',
-                    'rule' => '',
-                    'header' => '',
-                    'tournament_start' => '',
-                    'games_time' => '',
-               ]);
-               $data['status'] = "on_check";
-               Tournament::createTournament($data);
-               \Session::flash('flash_meassage', 'Сохранено');
-               return redirect(route('create_order'));
-          }
-     }
      public function matchView($id)
      {
-        /*   if (Auth::user() == null) {
-               return redirect(route('user.login'));
-          } */
+    
           $tournaments = Tournament::getTournamentById($id);
           $teams_count = Tournament::teamsCount($id);
-         
-          $stage_1 =  Admin::stage_1($id);
-          $stage_2 =  Admin::stage_2($id);
-          $stage_3 =  Admin::stage_3($id);
-          $winners =  Admin::getWinners($id);
+ 
           foreach ($tournaments as $tournament) {
                $t = (array) $tournament;
           }
@@ -97,7 +63,7 @@ class TournamentController extends Controller
                $mail = User::getEmail($user_id);
                $teams = Tournament::getTeams($id, $user_id); //команды зарегистрированные в турнир 
                $userdata = Tournament::checkTeam($user_id);
-  
+              
                if ($teams == NULL) {
                     $teams = "";
                }
@@ -105,6 +71,7 @@ class TournamentController extends Controller
                     $userdata = (array) $userdata; 
                   
                     $members = Tournament::getMembers($userdata['team_id']);
+                    
                     if ($userdata['role'] == 'captain') {
                          if ($teams != NULL) {
                               foreach ($teams as $key) {
@@ -144,20 +111,28 @@ class TournamentController extends Controller
                'reg' => $reg,
                'turnir' => $turnir,
                'members' => $members,
-               'stages_1' => $stage_1,
-               'stages_2' => $stage_2,
-               'stages_3' => $stage_3,
-               'winners' => $winners,
+            
                'teams_count'=> $teams_count,
           ]);
      }
 
      public function joinTournament($id, Request $request)
      {
-
-
-          $members = $request->input('members');
           $user_id = Auth::user()->id;
+          $team_id = Tournament::getTeamById($user_id);
+        
+           $members = $request->input('members');
+   
+          if($members == null) {
+               return redirect()->back()->with('error_msg', 'вы не выбрали учасников команды');  
+          }  
+          if(count($members) < 3 ) {
+               return redirect()->back()->with('error_msg', 'маленькое количество участнкиов (минимум 3 участника)');  
+          }   
+          if(count($members) > 4 ) {
+               return redirect()->back()->with('error_msg', 'превышен лимит участников (максимум 4 участника)');  
+          }   
+           $user_id = Auth::user()->id;
           $team_id = Tournament::getTeamById($user_id);
           $team_id = (array) $team_id;
           $team_id = implode("", $team_id);
@@ -169,11 +144,11 @@ class TournamentController extends Controller
 
           );
 
-          for ($i = 0; $i < count($members); $i++) {
+          for ($i = 0; $i < count($members); $i++) { 
                DB::table('tournaments_members')->insert(['tournament_id' => $id, 'team_id' => $team_id, 'user_id' => $members[$i]]);
           }
 
           Tournament::joiToTournament($data);
-          return redirect(route('match', $id));
+          return redirect(route('match', $id));    
      }
 }
