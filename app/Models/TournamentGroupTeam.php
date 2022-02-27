@@ -27,9 +27,13 @@ class TournamentGroupTeam extends Model
         return $this->hasManyThrough(TournamentMembers::class, Team::class, 'id','team_id', 'team_id');
     }
 
+    public function tournamentMatchesResults() {
+        return $this->hasMany(TournamentMatchesResult::class, 'tournament_group_teams_id');
+    }
+
 
     public function qqq() {
-
+//dd(1);
 
 
 

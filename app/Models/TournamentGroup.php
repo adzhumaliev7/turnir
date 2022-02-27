@@ -28,7 +28,7 @@ class TournamentGroup extends Model
 
     public function remove(){
         $tournamentGroupTeams = $this->tournamentGroupTeams->where('tournament_id', $this->tournament_id);
-
+        $this->matches()->delete();
         foreach ($tournamentGroupTeams as $team) {
             $team->remove();
         }

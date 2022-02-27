@@ -27,7 +27,7 @@ class TournamentController extends Controller
     public function index()
     {
         $tournaments = Admin::getTournaments();
-      
+
         return view('admin.home.tournament.tournament', [
             'tournaments' => $tournaments,
         ]);
@@ -35,7 +35,7 @@ class TournamentController extends Controller
     public function draftTournament()
     {
         $tournaments = Admin::getTournamentsDraft();
-       
+
         return view('admin.home.tournament.draft_tournaments', [
             'tournaments' => $tournaments,
         ]);
@@ -57,12 +57,12 @@ class TournamentController extends Controller
 
     public function draftTournamentsEdit($id, EditTournamentRequest $request)
     {
-   
+
         $data = $validated = $request->validated();
         $data['status'] = 'draft';
         Admin::editTournament($id, $data);
         return redirect(route('admin_tournament'));
-        
+
     }
 
     public function createTournament()
@@ -75,20 +75,20 @@ class TournamentController extends Controller
 
     public function storeTournament(SaveTournamentRequest $request){
         $request->validate([
-           
+
             'file_label' => 'image',
-        
+
             'file_label' => 'mimetypes:image/jpg,image/png',
         ]);
 
             if ($request->hasFile('file_label') == true ) {
-    
+
                 $name =  $request->file('file_label');
                 $path = '/uploads/storage/adminimg/turnir_logo';
                 $file_name = $this->uploadFiles($name, $path);
                 $data['file_label'] = $file_name;
             }
-      
+
             $data = $validated = $request->validated();
             if ($request->get('submit') == 'save') {
                 $data['status'] = 'save';
@@ -103,8 +103,8 @@ class TournamentController extends Controller
                 return back()->withError('Турнир ' . $request->input('name') . ' уже существует')->withInput();
             }
             \Session::flash('flash_meassage', 'Турнир добавлен');
-            return redirect(route('admin')); 
-        
+            return redirect(route('admin'));
+
     }
     public function tournamentView($id)
     {
@@ -125,7 +125,16 @@ class TournamentController extends Controller
 
     public function tournamentDelete($id)
     {
-        Admin::tournamentDelete($id);
+        $turnit = Tournament::find($id);
+
+
+        $turnit->order()->delete();
+
+        foreach ($turnit->stages as $stage) {
+            $stage->remove();
+        }
+        $turnit->delete();
+
         return redirect(route('admin_tournament'));
     }
 
@@ -189,7 +198,7 @@ class TournamentController extends Controller
 
 
         $data = Admin::getTournamentByID($id);
-      
+
         $stages = Admin::getStages($id);
         $groups = Admin::getGroups($id);
         $teams = Admin::getGroupTeams($id);
@@ -284,7 +293,7 @@ class TournamentController extends Controller
            else $file_type = '.jpeg';
            $file_name = md5($file_name) . $file_type;
            $file = $name;
-           $file->move(public_path() . $path, $file_name); 
+           $file->move(public_path() . $path, $file_name);
            return $file_name;
         }
 }

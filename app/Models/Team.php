@@ -139,14 +139,28 @@ class Team extends Model
       return DB::table('team')->where('id', $id)->update(['logo'=>$logo]);
    }
 
+   public static function getMatches($team_id){
+     
+      $tournaments = DB::table('tournamets_team')
+      ->join('tournaments', 'tournamets_team.tournament_id' ,'=', 'tournaments.id')
+     ->join('tournament_group_teams' ,'tournamets_team.team_id' ,'=' ,'tournament_group_teams.team_id')
+      ->join('tournament_groups' ,'tournament_group_teams.group_id' ,'=' ,'tournament_groups.id')
+      ->join('tournament_matches', 'tournament_matches.group_id', '=' ,'tournament_group_teams.id')
+      ->join('stages', 'tournament_matches.stage_id', '=' ,'stages.id')
+      ->select( 'tournaments.*','tournament_matches.login', 'tournament_matches.password',  'tournament_matches.match_name', 'tournament_groups.group_name', 'stages.stage_name')
+     //->select( 'tournament_group_teams.team_id')
+      ->where('tournamets_team.team_id', $team_id)
+       ->get(); 
+    return $tournaments->count() ? $tournaments : null; 
+   } 
    public static function getTournaments($team_id){
      
-     $tournaments =   DB::table('tournamets_team')
+      $tournaments = DB::table('tournamets_team')
       ->join('tournaments', 'tournamets_team.tournament_id' ,'=', 'tournaments.id')
-      ->select('tournaments.name', 'tournaments.format', 'tournaments.tournament_start')
-      ->where('tournamets_team.team_id', $team_id)
-      ->get();
-    return $tournaments->count() ? $tournaments : null;
+      ->select( 'tournaments.*')
+      ->where('tournamets_team.team_id', $team_id)->where('tournamets_team.status', 'accepted')
+       ->get(); 
+    return $tournaments->count() ? $tournaments : null; 
    } 
    public static function getUsersEmail($id)
    {

@@ -20,9 +20,9 @@ class Stage extends Model
         return $this->hasMany(TournamentMatchesResult::class, 'stages_id');
     }
 
-    public function teams() {
-
-    }
+//    public function teams() {
+//
+//    }
 
     public function turnir() {
         return $this->hasOne(Tournament::class, 'id', 'tournament_id');

@@ -40,19 +40,22 @@ class UsersProfile extends Model
           return $team->count() ? $team : null;
        
    }
-   public function getTournamentsById($id){
+   public static function getMatchesById($id, $status){
      
-        $tournaments = DB::table('tournaments_members')
-           ->join('team','tournaments_members.team_id','=','team.id')
-           ->join('tournamets_team','tournaments_members.team_id','=','tournamets_team.team_id')
-           ->join('tournaments','tournamets_team.tournament_id','=','tournaments.id')
-           ->select('tournaments_members.team_id','tournaments_members.user_id', 'team.id', 'team.name','tournaments.name', 'tournaments.format', 'tournaments.id as tournaments_id', 'tournaments.tournament_start', 'tournaments.slot_kolvo','tournaments.country' ,'tournaments.timezone'  ,'tournaments.price', 'tournaments.active' )
-           ->where('tournaments_members.user_id', $id)
-           ->get();
-         return $tournaments->count() ? $tournaments : null;
-      
+      $tournaments = DB::table('tournaments_members')
+          ->join('tournaments', 'tournaments_members.tournament_id' ,'=', 'tournaments.id')
+         ->join('tournament_group_teams' ,'tournaments_members.team_id' ,'=' ,'tournament_group_teams.team_id')
+          ->join('tournament_groups' ,'tournament_group_teams.group_id' ,'=' ,'tournament_groups.id')
+          ->join('tournament_matches', 'tournament_matches.group_id', '=' ,'tournament_group_teams.id')
+          ->join('stages', 'tournament_matches.stage_id', '=' ,'stages.id')
+          ->select( 'tournaments.*','tournament_matches.login', 'tournament_matches.password',  'tournament_matches.match_name', 'tournament_groups.group_name', 'stages.stage_name')
+         //->select( 'tournament_group_teams.team_id')
+          ->where('tournaments_members.user_id', $id)->where('tournaments.active', $status)
+           ->get(); 
+        return $tournaments->count() ? $tournaments : null; 
+        
   }
-   
+
    public static function getTeamsCount($id){
       return DB::table('tournamets_team')->where('tournament_id', $id)->where('status', 'accepted')->count();
    }

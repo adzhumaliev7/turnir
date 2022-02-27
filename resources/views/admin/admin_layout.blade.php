@@ -28,6 +28,8 @@
   <link rel="stylesheet" href="{{ asset("admin/plugins/summernote/summernote-bs4.min.css")}}">
     <link rel="stylesheet" href="{{ asset("css/jquery.dropdown.min.css")}}">
     <link rel="stylesheet" href="{{ asset("css/pinger.css")}}">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
 </head>
 <style>
     .table-box {
@@ -281,6 +283,11 @@
 
       <script src="{{asset("js/jquery.dropdown.min.js")}}"></script>
 
+
+      <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+      <script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+
     <script>
       var modal = document.getElementById("myModal");
 
@@ -352,6 +359,21 @@
 
 
       <script>
+
+
+              $('.example').DataTable();
+
+          var table = $('#example').DataTable();
+
+          $('#example tbody').on( 'click', 'tr', function () {
+              $(this).toggleClass('selected');
+          } );
+
+          $('#button').click( function () {
+              console.log( table.rows('.selected').data())
+              alert( table.rows('.selected').data().length +' row(s) selected' );
+          } );
+
           $('#addMatches').on('click', (ev) => {
               let matches = $('.matches').last();
               let count = 1;

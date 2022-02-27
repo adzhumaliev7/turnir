@@ -19,7 +19,7 @@
                     <div id="seclecter" class="demosdsdsd mb-3" style="">
                         <select class="form-control"  multiple="multiple" name="teams[]" placeholder="Выберите доступных играков" >
                             @foreach($teams as $team)
-                                <option value="{{$team->team_id}}">{{$team->team->name}}</option>
+                                <option value="{{$team->team_id}}">{{$team->team->name ?? 'Нету имени' }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -31,4 +31,45 @@
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{{--    <button id="button">Row count</button>--}}
+{{--    <table id="example" class="display" style="width:100%">--}}
+{{--        <thead>--}}
+{{--        <tr>--}}
+{{--            <th>#</th>--}}
+{{--            <th>Имя команды</th>--}}
+{{--            <th>Уже есть в команде</th>--}}
+{{--        </tr>--}}
+{{--        </thead>--}}
+{{--        <tbody>--}}
+{{--        @foreach($all as $a)--}}
+{{--        <tr>--}}
+{{--            <td>{{$a->id}}</td>--}}
+{{--            <td>{{$a->team->name ?? 'Нету имени'}}</td>--}}
+{{--            <td>{{ in_array($a->team_id, $arr) ? $a->team->games()->where('stage_id', $stage->id)->first()->group->group_name: 'НЕТУ'}}</td>--}}
+{{--        </tr>--}}
+
+{{--        @endforeach--}}
+
+{{--        </tfoot>--}}
+{{--    </table>--}}
+
+<script>
+
+</script>
+
+
 @endsection

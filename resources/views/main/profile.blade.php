@@ -116,7 +116,7 @@
               <path d="M3 7C4.10313 7 5 6.10313 5 5C5 3.89687 4.10313 3 3 3C1.89688 3 1 3.89687 1 5C1 6.10313 1.89688 7 3 7ZM17 7C18.1031 7 19 6.10313 19 5C19 3.89687 18.1031 3 17 3C15.8969 3 15 3.89687 15 5C15 6.10313 15.8969 7 17 7ZM18 8H16C15.45 8 14.9531 8.22188 14.5906 8.58125C15.85 9.27188 16.7437 10.5188 16.9375 12H19C19.5531 12 20 11.5531 20 11V10C20 8.89687 19.1031 8 18 8ZM10 8C11.9344 8 13.5 6.43437 13.5 4.5C13.5 2.56562 11.9344 1 10 1C8.06563 1 6.5 2.56562 6.5 4.5C6.5 6.43437 8.06563 8 10 8ZM12.4 9H12.1406C11.4906 9.3125 10.7688 9.5 10 9.5C9.23125 9.5 8.5125 9.3125 7.85938 9H7.6C5.6125 9 4 10.6125 4 12.6V13.5C4 14.3281 4.67188 15 5.5 15H14.5C15.3281 15 16 14.3281 16 13.5V12.6C16 10.6125 14.3875 9 12.4 9ZM5.40938 8.58125C5.04688 8.22188 4.55 8 4 8H2C0.896875 8 0 8.89687 0 10V11C0 11.5531 0.446875 12 1 12H3.05938C3.25625 10.5188 4.15 9.27188 5.40938 8.58125Z" fill="black" />
             </svg>
           </button>
-          <button title="ИСПРАВИТЬ! ТИМА!" class="accordion__btn nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
+          <button title="" class="accordion__btn nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
             Турниры
             <svg width="20" height="20" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="trophy" class="svg-inline--fa fa-trophy fa-w-18" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
               <path fill="" d="M552 64H448V24c0-13.3-10.7-24-24-24H152c-13.3 0-24 10.7-24 24v40H24C10.7 64 0 74.7 0 88v56c0 35.7 22.5 72.4 61.9 100.7 31.5 22.7 69.8 37.1 110 41.7C203.3 338.5 240 360 240 360v72h-48c-35.3 0-64 20.7-64 56v12c0 6.6 5.4 12 12 12h296c6.6 0 12-5.4 12-12v-12c0-35.3-28.7-56-64-56h-48v-72s36.7-21.5 68.1-73.6c40.3-4.6 78.6-19 110-41.7 39.3-28.3 61.9-65 61.9-100.7V88c0-13.3-10.7-24-24-24zM99.3 192.8C74.9 175.2 64 155.6 64 144v-16h64.2c1 32.6 5.8 61.2 12.8 86.2-15.1-5.2-29.2-12.4-41.7-21.4zM512 144c0 16.1-17.7 36.1-35.3 48.8-12.5 9-26.7 16.2-41.8 21.4 7-25 11.8-53.6 12.8-86.2H512v16z"></path>
@@ -175,186 +175,9 @@
           else
             $disabled = '';
           ?>
-          <form method="POST" action="{{route('update_profile')}}" enctype="multipart/form-data" >
-            @csrf
-            @foreach($data['data'] as $dat )
-            <div class="row">
-              <div class="col-lg">
-                <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="doc_photo" <?= $disabled; ?>>
-                <label class="subtitle" for="fileInput">Фото документа(паспорт, права id)</label>
-              </div>
-              <div class="col-lg">
-                <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput2" name="doc_photo2" <?= $disabled; ?>>
-                <label class="subtitle" for="fileInput2">фото с документом</label>
-              </div>
-            </div>
-            <div class="alert alert-danger" style="font-size: 16px;">Для верификации загрузите две стороны удостоверения личности</div>
-            <div class="row size_16px">
-              <input type="hidden" class="form-control input__profile subtitle fw-normal " name="photo_error">
-            </div>
-            <h2 class="title letter-spacing--none my-2"> Основная информация</h2>
-            <div class="row mt-4">
-              <div class="col-lg-6">
-                <input name="phone" placeholder="Номер телефона" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->phone}}" <?= $disabled; ?>>
-                @error('phone')
-                <div class="alert alert-danger">Введите номер телефона</div>
-                @enderror
-              </div>
-              <div class="col-lg-6">
-                <input name="fio" placeholder="Имя Фамилия" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->fio}}" <?= $disabled; ?>>
-                @error('fio')
-                <div class="alert alert-danger">Введите имя</div>
-                @enderror
-              </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col-lg-6">
-                <input name="login" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->login}}" <?= $disabled; ?>>
-                @error('login')
-                <div class="alert alert-danger">Введите логин</div>
-                @enderror
-              </div>
-              <div class="col-lg-6">
-                <input name="email" placeholder="Email" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->email}}" <?= $disabled; ?>>
-                @error('email')
-                <div class="alert alert-danger">Такой email уже занят</div>
-                @enderror
-              </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col-lg-6">
-                <select name="country" id="" style="font-size: 16px;">
-                  @foreach($countries as $country)
-                  <option value="{{$dat->country}}">{{$country}}</option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="col-lg-6">
-                <select name="timezone" id="" class="size_16px" <?= $disabled; ?>>
-                  @foreach($timezones as $timezone1)
-                  <option value="{{$timezone1}}">{{$dat->timezone}}</option>
-                  @endforeach
-                </select>
-              </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col-lg-6">
-                <input name="city" placeholder="Город" type="text " class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->city}}" <?= $disabled; ?>>
-              </div>
-              <div class="col-lg-6">
-                <input name="bdate" placeholder="Дата рождения" type="date" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->bdate}}" <?= $disabled; ?>>
-              </div>
-            </div>
-            <h2 class="title letter-spacing--none indent--row">
-              Игровой профиль PUBG MOBILE
-            </h2>
-            <div class="row">
-              <div class="col-lg">
-                <input placeholder="Nick name" name="nickname" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->nickname}}" <?= $disabled; ?>>
-              </div>
-              <div class="col-lg">
-                <input placeholder="ID игрока в PUBG Mobile" type="text" name="game_id" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->game_id}}" <?= $disabled; ?>>
-                @error('login')
-                <div class="alert alert-danger">Игровой id уже занят</div>
-                @enderror
-              </div>
-            </div>
-            @endforeach
-            @if($disabled == 'disabled')
-            <a type="btn" class="forms__btn btn nav-link btn--orange mt-4" data-toggle="modal" data-target="#ModalQuery">Отпаравить запрос на редактирвоание данных</a>
-            @else <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
-            @endif
-          </form>
-
+           @include('main.profile.update_profile')
           @else
-          <form method="POST" action="{{route('create_profile')}}" enctype="multipart/form-data" >
-           @csrf
-            <div class="row">
-              <div class="col-lg">
-                <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="doc_photo" >
-                <label class="subtitle" for="fileInput">Фото документа(паспорт, права id)</label>
-              </div>
-              <div class="col-lg">
-                <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput2" name="doc_photo2">
-                <label class="subtitle" for="fileInput2">фото с документом</label>
-              </div>
-            </div>
-            <div class="alert alert-danger" style="font-size: 16px;">Для верификации загрузите две стороны удостоверения личности</div>
-            <div class="row size_16px">
-              <input type="hidden" class="form-control input__profile subtitle fw-normal " name="photo_error">
-            </div>
-            <h2 class="title letter-spacing--none my-2"> Основная информация </h2>
-            <div class="row mt-4">
-              <div class="col-lg-6">
-                <input name="phone" placeholder="Номер телефона" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('phone')}}"> 
-                @error('phone')
-                <div class="alert alert-danger">Введите номер телефона</div>
-                @enderror
-              </div>
-              <div class="col-lg-6">
-
-                <input name="fio" placeholder="Имя Фамилия" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('fio')}}">
-                @error('fio')
-                <div class="alert alert-danger">Введите имя</div>
-                @enderror
-              </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col-lg-6">
-                <input name="login" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('login')}}">
-                @error('login')
-                <div class="alert alert-danger">Введите логин</div>
-                @enderror
-              </div>
-              <div class="col-lg-6">
-
-                <input name="email" placeholder="Email" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('email')}}">
-                @error('email')
-                <div class="alert alert-danger">Такой email уже занят</div>
-                @enderror
-              </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col-lg-6">
-                <select name="country" id="" style="font-size: 16px;">
-                  @foreach($countries as $country)
-                  <option value="{{$country}}">{{$country}}</option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="col-lg-6">
-                <select name="timezone" id="" style="font-size: 16px;">
-                  @foreach($timezones as $timezone)
-                  <option value="{{$timezone}}">{{$timezone}}</option>
-                  @endforeach
-                </select>
-              </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col-lg-6">
-                <input name="city" placeholder="Город" type="text " class="form-control input__profile subtitle fw-normal" id="" value="{{ old('city')}}">
-              </div>
-              <div class="col-lg-6">
-                <input name="bdate" placeholder="Дата рождения" type="date" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('bdate') }}">
-              </div>
-            </div>
-            <h2 class="title letter-spacing--none indent--row">
-              Игровой профиль PUBG MOBILE
-            </h2>
-            <div class="row">
-              <div class="col-lg">
-                <input placeholder="Nick name" name="nickname" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('nickname')}}" }}>
-              </div>
-              <div class="col-lg">
-                <input placeholder="ID игрока в PUBG Mobile" type="text" name="game_id" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('game_id')}}" >
-                @error('game_id')
-                <div class="alert alert-danger">Этот id уже занят</div>
-                @enderror
-              </div>
-            </div>
-
-            <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить </button>
-          </form>
+           @include('main.profile.create_profile')
           @endif
         </div>
       </div>
@@ -377,16 +200,7 @@
           </div>
           @endforeach
           @endif
-          <!---  <div class="row">
-                            <div class="col d-flex justify-content-between border--block margin--block">
-                                <p class="block-team__text">Uventus_team</p>
-                                <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12.2708 14.25H11.4792C11.2606 14.25 11.0833 14.4272 11.0833 14.6458V17.4167H1.58335V1.58335H11.0833V4.35419C11.0833 4.5728 11.2606 4.75004 11.4792 4.75004H12.2708C12.4895 4.75004 12.6667 4.5728 12.6667 4.35419V1.58335C12.6667 0.7089 11.9578 0 11.0833 0H1.58335C0.7089 0 0 0.7089 0 1.58335V17.4167C0 18.2911 0.7089 19 1.58335 19H11.0833C11.9578 19 12.6667 18.2911 12.6667 17.4167V14.6458C12.6667 14.4272 12.4895 14.25 12.2708 14.25Z" fill="black"/>
-                                    <path d="M18.8717 9.20813L14.1217 4.85397C14.0057 4.74844 13.8376 4.71945 13.6949 4.78362C13.5511 4.84663 13.4583 4.98887 13.4583 5.1458V5.93749C13.4583 6.0496 13.5059 6.15666 13.5894 6.23166L16.3411 8.70834H5.14585C4.92705 8.70834 4.75 8.88539 4.75 9.10419V9.89584C4.75 10.1146 4.92705 10.2917 5.14585 10.2917H16.3411L13.5894 12.7684C13.5059 12.8434 13.4583 12.9504 13.4583 13.0625V13.8542C13.4583 14.0111 13.5511 14.1534 13.6949 14.2164C13.7459 14.2392 13.8005 14.25 13.8542 14.25C13.9512 14.25 14.0471 14.214 14.1217 14.146L18.8717 9.79186C18.9536 9.71686 19 9.61095 19 9.49999C19 9.38904 18.9536 9.28313 18.8717 9.20813Z" fill="black"/>
-                                    </svg>
-                                    
-                            </div>
-                        </div>--->
+        
           @if(Session::has('flash_meassage2'))
           <div class="alert alert-success">{{Session::get('flash_meassage2')}}</div>
           @endif
@@ -412,55 +226,77 @@
         <span class="title letter-spacing--none title--pl-sm">Мои турниры</span>
 
         <div class="bg-orange d-flex bg--sm-padding">
-          <h4 class="subtitle fw-bold">Текущие</h4>
-          <h4 class="subtitle fw-normal subtitle-sm-ml">Прощедшие</h4>
+          <ul class="nav nav-tabs">
+              <li class="nav-item">
+                  <a class="subtitle fw-boldactive" data-toggle="tab" href="#stage_1">Текущие</a>
+              </li>
+              <li class="nav-item">
+                  <a class="subtitle fw-normal subtitle-sm-ml" data-toggle="tab" href="#stage_2">Прошедшие</a>
+              </li>
+         </ul>
         </div>
-        @if($tournaments != NULL)
-        @foreach($tournaments as $tournament)
-        <table class="table indent--row table-block">
-          <tbody>
-            <tr class="border-b">
-              <td></td>
-              <td class="subtitle pubg-bg--orange">Даты</td>
-              <td class="subtitle pubg-bg--orange">Формат</td>
-              <td class="subtitle pubg-bg--orange">Участники</td>
-              <td class="subtitle pubg-bg--orange">Приз</td>
-              <td class="subtitle pubg-bg--orange">Статус</td>
-              <td class="subtitle"></td>
-            </tr>
-            <tr class="bg-orange">
-              <th class="subtitle fw-normal" scope="row">
-                {{$tournament->name}}
-              </th>
-              <td class="subtitle fw-normal">
-                {{$tournament->tournament_start}} {{$tournament->timezone}}
-              </td>
-              <td class="subtitle fw-normal">{{$tournament->format}}</td>
-              <td class="subtitle fw-norma l">{{$teams_count}} / {{$tournament->slot_kolvo}}</td>
-              <td class="subtitle fw-normal">{{$tournament->price}}</td>
-              <td class="subtitle fw-normal">
-                @if($tournament->active == 1)
-                Активен
-                @else Закончен
-                @endif
-              </td>
-              <!--   <td>
-                <button class="button--none">
-                  <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12.2708 14.25H11.4792C11.2606 14.25 11.0833 14.4272 11.0833 14.6458V17.4167H1.58335V1.58335H11.0833V4.35419C11.0833 4.5728 11.2606 4.75004 11.4792 4.75004H12.2708C12.4895 4.75004 12.6667 4.5728 12.6667 4.35419V1.58335C12.6667 0.7089 11.9578 0 11.0833 0H1.58335C0.7089 0 0 0.7089 0 1.58335V17.4167C0 18.2911 0.7089 19 1.58335 19H11.0833C11.9578 19 12.6667 18.2911 12.6667 17.4167V14.6458C12.6667 14.4272 12.4895 14.25 12.2708 14.25Z" fill="black"></path>
-                    <path d="M18.8717 9.20817L14.1217 4.85402C14.0057 4.74848 13.8376 4.7195 13.6949 4.78366C13.5511 4.84667 13.4583 4.98891 13.4583 5.14585V5.93754C13.4583 6.04965 13.5059 6.15671 13.5894 6.23171L16.3411 8.70839H5.14585C4.92705 8.70839 4.75 8.88543 4.75 9.10423V9.89588C4.75 10.1147 4.92705 10.2917 5.14585 10.2917H16.3411L13.5894 12.7684C13.5059 12.8434 13.4583 12.9505 13.4583 13.0626V13.8542C13.4583 14.0112 13.5511 14.1534 13.6949 14.2164C13.7459 14.2392 13.8005 14.25 13.8542 14.25C13.9512 14.25 14.0471 14.2141 14.1217 14.1461L18.8717 9.7919C18.9536 9.71691 19 9.611 19 9.50004C19 9.38908 18.9536 9.28317 18.8717 9.20817Z" fill="black"></path>
-                  </svg>
-                </button>
-              </td> -->
-            </tr>
-          </tbody>
-        </table>
-        @endforeach
-        @endif
-        <div class="button-blocks button d-flex justify-content-center">
-          <a href="{{route('tournament')}}" class="accordion__btn nav-link mt-5">Все турниры</a>
-        </div>
+        <div class="tab-content">
+       
+            <div class="tab-pane fade show active" id="stage_1">
+            @if($tournaments != null)
+            <table class="table indent--row table-block">
+              <tbody>
+                <tr class="border-b">
+                  <td></td>
+                  <td class="subtitle pubg-bg--orange">Матчи</td>
+                  <td class="subtitle pubg-bg--orange">Формат</td>
+                  <td class="subtitle pubg-bg--orange">Дата</td>
+                  <td class="subtitle pubg-bg--orange">Логин</td>
+                  <td class="subtitle pubg-bg--orange">Пароль</td>
+               
+                  <td class="subtitle"></td>
+                </tr>
+                @foreach($tournaments as $tournament)
+                <tr class="bg-orange">
+                  <th class="subtitle fw-normal" scope="row">
+                  </th>
+                  <td class="subtitle fw-normal"><b>{{$tournament->name}}#{{$loop->index +1}}.{{$tournament->stage_name}}.{{$tournament->match_name}}.Группа {{$tournament->group_name}}</b></td>
+                  <td class="subtitle fw-normal">{{$tournament->format}}</td>
+                  <td class="subtitle fw-normal">{{$tournament->tournament_start}}</td>
+                  <td class="subtitle fw-normal">{{$tournament->login}}</td>
+                  <td class="subtitle fw-normal">{{$tournament->password}}</td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+            @else <h3>Матчей нет</h3>
+          @endif
+          </div>  
+          <div class="tab-pane fade" id="stage_2">
+          @if($tournaments_old != null)
+            <table class="table indent--row table-block">
+              <tbody>
+                <tr class="border-b">
+                  <td></td>
+                  <td class="subtitle pubg-bg--orange">Матчи</td>
+                  <td class="subtitle pubg-bg--orange">Формат</td>
+                  <td class="subtitle pubg-bg--orange">Дата</td>
+                  <td class="subtitle"></td>
+                </tr>
+                @foreach($tournaments_old as $tournament)
+                <tr class="bg-orange">
+                  <th class="subtitle fw-normal" scope="row">
+                  </th>
+                  <td class="subtitle fw-normal"><b>{{$tournament->name}}#{{$loop->index +1}}.{{$tournament->match_name}}.Группа {{$tournament->group_name}}</b></td>
+                  <td class="subtitle fw-normal">{{$tournament->format}}</td>
+                  <td class="subtitle fw-normal">{{$tournament->tournament_start}}</td>
+                  
+                </tr>
+                @endforeach
+              </tbody>
+              </tbody>
+            </table>
+            @else Матчей нет
+          @endif
+          </div>  
+       
       </div>
+    </div>
       <div class="tab-pane fade" id="nav-config" role="tabpanel" aria-labelledby="nav-config-tab">
         <div class="container">
           <form method="POST" action="{{route('delete_profile', $user_id)}}">

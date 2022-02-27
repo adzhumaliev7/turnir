@@ -24,7 +24,7 @@ class MatchesResultStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'place_pts' => 'required|integer',
+//            'place_pts' => 'required|integer',
             'tournamentGroupTeamsId' => 'required|exists:tournament_group_teams,id',
             'matches' => 'required|array',
             'matches.*' => 'array',

@@ -22,32 +22,38 @@ class MatchesController extends Controller
         return view('admin.home.matches.create', compact('tournamentGroupTeam'));
     }
 
-    public function matchesResultStore(MatchesResultStoreRequest $request){
-
-        $data = $request->validated();
+    public function matchesResultStore(Request $request){
+//TODO Сделать валидацию
+        $data = $request->all();
 
         $insert = [];
         $index = 0;
-        foreach ($data['matches'] as $teammate) {
-            foreach ($teammate as $matche) {
+        foreach ($data['matches'] as $key => $matche) {
+
+            foreach ($matche as $teammate) {
                 $index++;
 
-                $insert[$index]['team_id'] = $matche['team_id'];
-                $insert[$index]['match_id'] = $matche['match_id'];
-                $insert[$index]['kills_pts']   = $matche['kills_pts'];
-                $insert[$index]['id'] = $matche['update'] ?? false;
+                $insert[$index]['team_id'] = $teammate['team_id'];
+                $insert[$index]['match_id'] = $teammate['match_id'];
+                $insert[$index]['match_id'] = $teammate['match_id'];
+                $insert[$index]['id'] = $teammate['update'] ?? false;
+                $insert[$index]['kills_pts'] = $teammate['kills_pts'];
+                $insert[$index]['place_pts'] =  $data['place'][$key];
+                $insert[$index]['tournament_group_teams_id'] = $data['tournamentGroupTeamsId'];
             }
+
         }
 
         $collect = collect($insert);
+
         $tournamentGroupTeamsUpdate = [
-            'place_pts' =>  $data['place_pts'],
+            'place_pts' =>   array_sum($data['place']),
             'kills_pts' => $collect->sum('kills_pts'),
         ];
 
         $tournamentGroupTeams = TournamentGroupTeam::find( $data['tournamentGroupTeamsId']);
         $tournamentGroupTeams->update($tournamentGroupTeamsUpdate);
-        $tournamentMatchesResult = TournamentMatchesResult::upsert($insert, 'id', ['team_id', 'match_id', 'kills_pts']);
+        $tournamentMatchesResult = TournamentMatchesResult::upsert($insert, 'id', ['team_id', 'match_id', 'kills_pts', 'place_pts', 'tournament_group_teams_id']);
 
         return redirect()->route('team.show', $tournamentGroupTeams->id);
     }

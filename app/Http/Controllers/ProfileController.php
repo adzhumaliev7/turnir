@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
+
+  
   public function index()
   {
     $id = Auth::user()->id;
@@ -29,13 +31,15 @@ class ProfileController extends Controller
     $teams = Team::getTeamById($id);
      
     $verification_status = UsersProfile::checkVerification($id);
-    $tournaments = UsersProfile::getTournamentsById($id);
+    $tournaments = UsersProfile::getTournamentsById($id, 1);
+    $tournaments_old = UsersProfile::getTournamentsById($id, 0);
+   
    
   if($tournaments != null){
    foreach ($tournaments as $tournament) {
       $tournament_id = (array) $tournament;
    }
-      $teams_count = UsersProfile::getTeamsCount($tournament_id['tournaments_id']);
+      $teams_count = UsersProfile::getTeamsCount($tournament_id['id']);
   }else {
     $tournaments = null;
     $teams_count = null;
@@ -47,6 +51,7 @@ class ProfileController extends Controller
       'teams' => $teams,
       'user_id' => $id,
       'tournaments' => $tournaments,
+      'tournaments_old' => $tournaments_old,
       'verification_status' => $verification_status,
       'timezones' => $timezones,
       'active' => $active,
@@ -151,23 +156,12 @@ class ProfileController extends Controller
       $file_name2 = $this->uploadFiles($name2, $path);
    }
      
-      if($request->input('game_id') != null){
-       $request->validate([
-         'game_id' => 'unique:users_profile2',
-     ]);
-
-    }
-    if($request->input('game_id') != null){
-      $request->validate([
-       
-        'game_id' => 'unique:users_profile2',
-    ]); 
-     }
       $data =  $validated = $request->validated();
       if ($request->hasFile('doc_photo') == true && $request->hasFile('doc_photo2') == true){
       $data['doc_photo'] = $file_name;
       $data['doc_photo2'] = $file_name2;
     }
+
     $id = Auth::user()->id;
     $data['status'] = 0;
     $data['user_id'] = $id;

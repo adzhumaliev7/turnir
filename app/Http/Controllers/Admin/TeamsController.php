@@ -38,10 +38,25 @@ class TeamsController extends Controller
             }
         }
 
+
+
+//        $result =  $this->startConditions()
+//            ->selectRaw(\DB::raw('id, CONCAT (name, " - ", display_name, " ( ", description , " ) " ) AS id_title'))
+//            ->toBase()
+//            ->get()->pluck('id_title','id')->toArray();
+//
+
+
+//        dd(TournametsTeam::select(['tournamets_team.id AS tournamets_team.id', 'tournamets_team.team_id AS tournamets_team.team_id', 'team.*'])->join('team', 'tournamets_team.team_id', 'team.id')->toBase()->get());
+//        ->join('users_profile2', 'team.user_id', '=', 'users_profile2.user_id')
+//            ->select('users_profile2.email')
+//            ->where('team.id', 1)
+//            ->get();
+
         $teams = TournametsTeam::where('status', 'accepted')->where('tournament_id', $turnirId)->whereNotIn('team_id', $arr)->with('team')->get();
-
-
-        return view('admin.home.tournament.create_team_new', compact('turnir', 'teams', 'group', 'stage'));
+        $all = TournametsTeam::where('status', 'accepted')->where('tournament_id', $turnirId)->get();
+//        dump($all[0]->team->games()->where('stage_id', $stage->id)->first()->group, $all[1]->team);
+        return view('admin.home.tournament.create_team_new', compact('turnir', 'teams', 'group', 'stage', 'all', 'arr'));
 
     }
 

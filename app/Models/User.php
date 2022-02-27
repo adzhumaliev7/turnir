@@ -48,6 +48,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+
+    public function teamMembers() {
+        return $this->hasMany(TeamMembers::class);
+    }
+
     public static function boot()
     {
         parent::boot();
@@ -56,7 +61,7 @@ class User extends Authenticatable implements MustVerifyEmail
             $user->token = Str::random(30);
         });
     }
-    
+
     public function confirmEmail()
     {
         $this->verified = true;

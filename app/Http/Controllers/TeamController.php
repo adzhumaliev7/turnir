@@ -23,8 +23,9 @@ class TeamController extends Controller
         $chek_admin = Team::checkAdmin($id, $user_id);
         $networks = Team::getTeamNetworks($id);
      
+        $matches = Team::getMatches($id);
         $tournaments = Team::getTournaments($id);
-      
+   
         return view('main.team', [
             'data' => $data,
             'members' => $members,
@@ -34,6 +35,7 @@ class TeamController extends Controller
             'networks' => $networks,
             'countries' => $countries,
             'tournaments' => $tournaments,
+            'matches' => $matches,
             'mail' => $mail,
         ]);
     }

@@ -26,7 +26,7 @@ class Tournament extends Model
 
 
 public static function getTournaments(){
-   
+
   $tournaments = DB::table('tournaments')->select()->where('status', 'save')->get();
   return $tournaments->count() ? $tournaments : null;
 
@@ -35,7 +35,9 @@ public static function createTournament($data){
 return DB::table('tournaments')->insert($data);
 }
 public static function getTournamentById($id){
-return DB::table('tournaments')->where('id', $id)->get();
+
+  $tournaments = DB::table('tournaments')->where('id', $id)->get();
+  return $tournaments->count() ? $tournaments : null;
 }
 
 public static function getTeamById($id){
@@ -47,7 +49,7 @@ public static function joiToTournament($data){
 return DB::table('tournamets_team')->insert($data);
 }
 
-public static function getTeams($tournament_id, $user_id){
+public static function getTeams($tournament_id){
 
 $teams =  DB::table('tournamets_team')
 ->join('team', 'tournamets_team.team_id', '=', 'team.id')
@@ -63,10 +65,19 @@ public static function teamsCount($id){
 
 public static function checkTeam($user_id){
 
-return  DB::table('team_members')->select('team_id', 'user_id', 'role')->where('user_id', $user_id)->first();
+  return  DB::table('team_members')->where('user_id', $user_id)->where('role', 'captain')->value('team_id');
 
 }
+public static function hasTeam($turnir_id, $team_id){
 
+  return  DB::table('tournamets_team')->where('tournament_id', $turnir_id)->where('team_id', $team_id)->exists();
+
+}
+public static function getTeamStatus($turnir_id, $team_id){
+
+  return  DB::table('tournamets_team')->where('tournament_id', $turnir_id)->where('team_id', $team_id)->value('status');
+
+}
 public static function getMembers($team_id)
 {
  $memberes = DB::table('team_members')

@@ -23,6 +23,7 @@
           <a href="{{route('delete_tournament', $tournament->id)}}" type="button" class="btn btn-danger">Удалить</a>
           <a href="{{route('tournaments_teams', $tournament->id)}}" type="button" class="btn btn-success">Заявки</a>
           <a href="{{route('standings', $tournament->id)}}" type="button" class="btn btn-dark">Обзор</a>
+          <a href="{{route('duplication', $tournament->id)}}" type="button" class="btn btn-dark">Дублирование</a>
         </td>
 
       </tr>

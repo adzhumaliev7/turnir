@@ -8,7 +8,11 @@ use App\Models\Stage;
 use App\Models\StagesGroup;
 use App\Models\Tournament;
 use App\Models\TournamentGroup;
+use App\Models\TournametsTeam;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PattyController extends Controller
 {
@@ -18,7 +22,6 @@ class PattyController extends Controller
         $turnir = Tournament::findOrFail($turnirId)->load('stages');
         if (!$stageId) {
             $stage = $turnir->stages->first();
-//            ->load('groups')
         } else {
             $stage = Stage::findOrFail($stageId)->load('groups');
         }
@@ -32,5 +35,32 @@ class PattyController extends Controller
         return view('admin.home.tournament.tournaments_about_new', compact('turnir', 'stage', 'group'));
     }
 
+    public function duplication($turnirId, Request $request) {
+        $turnir = Tournament::with('stages.groups.matches', 'order')->findOrFail($turnirId);
+
+        $newTurnir = $turnir->replicate()->fill(['name' => $turnir->name . '_копия']);
+        $newTurnir->save();
+
+        foreach ($turnir->order as $order) {
+            $newOrder = $order->replicate()->fill(['tournament_id' => $newTurnir->id]);
+            $newOrder->save();
+        }
+
+        foreach ($turnir->stages as $stage) {
+            $newStage = $stage->replicate()->fill(['tournament_id' => $newTurnir->id]);
+            $newStage->save();
+            foreach ($stage->groups as $group) {
+               $newGroup = $group->replicate()->fill(['tournament_id' => $newTurnir->id, 'stage_id' => $newStage->id]);
+               $newGroup->save();
+
+               foreach ($group->matches as $match){
+                   $newMatch= $match->replicate()->fill(['tournament_id' => $newTurnir->id, 'stage_id' => $newStage->id, 'group_id' => $newGroup->id]);
+                   $newMatch->save();
+               }
+
+            }
+        }
+        return redirect()->back();
+    }
 
 }
