@@ -225,76 +225,75 @@
       <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-config-tab">
         <span class="title letter-spacing--none title--pl-sm">Мои турниры</span>
 
-        <div class="bg-orange d-flex bg--sm-padding">
-          <ul class="nav nav-tabs">
-              <li class="nav-item">
-                  <a class="subtitle fw-boldactive" data-toggle="tab" href="#stage_1">Текущие</a>
-              </li>
-              <li class="nav-item">
-                  <a class="subtitle fw-normal subtitle-sm-ml" data-toggle="tab" href="#stage_2">Прошедшие</a>
-              </li>
-         </ul>
-        </div>
-        <div class="tab-content">
-       
-            <div class="tab-pane fade show active" id="stage_1">
-            @if($tournaments != null)
-            <table class="table indent--row table-block">
-              <tbody>
-                <tr class="border-b">
-                  <td></td>
-                  <td class="subtitle pubg-bg--orange">Матчи</td>
-                  <td class="subtitle pubg-bg--orange">Формат</td>
-                  <td class="subtitle pubg-bg--orange">Дата</td>
-                  <td class="subtitle pubg-bg--orange">Логин</td>
-                  <td class="subtitle pubg-bg--orange">Пароль</td>
+        <div class="container">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#stage_1">Турниры</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#stage_2">Матчи</a>
+                        </li>
+                    </ul>
+   
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="stage_1">
+                        
+                       @if($tournaments != null)
+                            <table class="table" style="font-size: 16px;">
+                                <thead class=" thead-light">
+                               
+                                 <tr>
+                                  <td class="col">Матчи</td>
+                                  <td class="col">Формат</td>
+                                  <td class="col">Дата</td>
+                                  <td class="col">Логин</td>
+                                  <td class="col">Пароль</td>
                
-                  <td class="subtitle"></td>
-                </tr>
+                      
+                                    </tr>
+                                     </thead>
                 @foreach($tournaments as $tournament)
-                <tr class="bg-orange">
-                  <th class="subtitle fw-normal" scope="row">
-                  </th>
-                  <td class="subtitle fw-normal"><b>{{$tournament->name}}#{{$loop->index +1}}.{{$tournament->stage_name}}.{{$tournament->match_name}}.Группа {{$tournament->group_name}}</b></td>
-                  <td class="subtitle fw-normal">{{$tournament->format}}</td>
-                  <td class="subtitle fw-normal">{{$tournament->tournament_start}}</td>
-                  <td class="subtitle fw-normal">{{$tournament->login}}</td>
-                  <td class="subtitle fw-normal">{{$tournament->password}}</td>
+                <tbody>
+                <tr class="">
+                  <td class=""><b>{{$tournament->name}}#{{$loop->index +1}}.{{$tournament->stage_name}}.{{$tournament->match_name}}.Группа {{$tournament->group_name}}</b></td>
+                  <td class="">{{$tournament->format}}</td>
+                  <td class="">{{$tournament->tournament_start}}</td>
+                  <td class="">{{$tournament->login}}</td>
+                  <td class="">{{$tournament->password}}</td>
                 </tr>
+                </tbody>
                 @endforeach
-              </tbody>
+             
             </table>
             @else <h3>Матчей нет</h3>
           @endif
           </div>  
           <div class="tab-pane fade" id="stage_2">
           @if($tournaments_old != null)
-            <table class="table indent--row table-block">
-              <tbody>
-                <tr class="border-b">
-                  <td></td>
-                  <td class="subtitle pubg-bg--orange">Матчи</td>
-                  <td class="subtitle pubg-bg--orange">Формат</td>
-                  <td class="subtitle pubg-bg--orange">Дата</td>
-                  <td class="subtitle"></td>
-                </tr>
+          <table class="table" style="font-size: 16px;">
+                                <thead class=" thead-light">
+                               
+                                 <tr>
+                                  <td class="col">Матчи</td>
+                                  <td class="col">Формат</td>
+                                  <td class="col">Дата</td>
+                                    </tr>
+                                     </thead>
                 @foreach($tournaments_old as $tournament)
-                <tr class="bg-orange">
-                  <th class="subtitle fw-normal" scope="row">
-                  </th>
-                  <td class="subtitle fw-normal"><b>{{$tournament->name}}#{{$loop->index +1}}.{{$tournament->match_name}}.Группа {{$tournament->group_name}}</b></td>
-                  <td class="subtitle fw-normal">{{$tournament->format}}</td>
-                  <td class="subtitle fw-normal">{{$tournament->tournament_start}}</td>
-                  
-                </tr>
+                <tbody>
+                  <tr>
+                     <td class=""><b>{{$tournament->name}}#{{$loop->index +1}}.{{$tournament->match_name}}.Группа {{$tournament->group_name}}</b></td>
+                     <td class="">{{$tournament->format}}</td>
+                     <td class="">{{$tournament->tournament_start}}</td>  
+                   </tr>
+                   </tbody>
                 @endforeach
-              </tbody>
-              </tbody>
+             
             </table>
-            @else Матчей нет
+            @else  <h3>Матчей нет</h3>
           @endif
           </div>  
-       
+        </div>
       </div>
     </div>
       <div class="tab-pane fade" id="nav-config" role="tabpanel" aria-labelledby="nav-config-tab">

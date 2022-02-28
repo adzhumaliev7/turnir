@@ -165,13 +165,15 @@
                                         <th scope="col">Дата</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                               
                                 @foreach($tournaments as $tournament)
+                                <tbody>
                                     <tr>
                                         <td>{{$tournament->name}}</td>
                                         <td>{{$tournament->format}}</td>
                                         <td>{{$tournament->tournament_start}}</td>
                                     </tr>
+                                 </tbody>
                                 @endforeach   
                             </table>
                           @else Турниров нет
@@ -202,6 +204,7 @@
                           @endif
                     </div>
                 </div>
+            </div>
             </div>
             <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                 <!--      @foreach($data as $team)

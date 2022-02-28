@@ -116,7 +116,8 @@ class TournamentController extends Controller
   
           $captainTeamMembers = Auth::check()? Auth::user()->teamMembers->where('role', 'captain')->first(): false;
           if ($captainTeamMembers) { // если есть капитан
-              $members = Tournament::getMembers($captainTeamMembers->team_id); //TODO Тут тадо сделать нормальную логику
+              $members = Tournament::getMembers($captainTeamMembers->team_id, $turnirId); //TODO Тут тадо сделать нормальную логику
+            
               $tournametTeam = $tournament->order()->where('team_id', $captainTeamMembers->team_id)->first();
           }
           if (!$stageId) $stage = $tournament->stages->first();

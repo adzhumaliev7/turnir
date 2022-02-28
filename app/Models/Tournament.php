@@ -78,14 +78,15 @@ public static function getTeamStatus($turnir_id, $team_id){
   return  DB::table('tournamets_team')->where('tournament_id', $turnir_id)->where('team_id', $team_id)->value('status');
 
 }
-public static function getMembers($team_id)
+public static function getMembers($team_id, $tournament_id)
 {
  $memberes = DB::table('team_members')
  ->join('users', 'team_members.user_id' , '=' , 'users.id')
  ->join('users_profile2', 'team_members.user_id' , '=' , 'users_profile2.user_id')
  ->leftJoin('tournaments_members', 'team_members.user_id' , '=' , 'tournaments_members.user_id')
-->where('team_members.team_id', $team_id)->where('users.verified', 1)->where('tournaments_members.user_id', null)->whereNotNull('users_profile2.game_id')->whereNotNull('users_profile2.nickname')
- ->select('team_members.team_id', 'team_members.user_id', 'users.name', 'tournaments_members.user_id as tour_us_id')
+->where('team_members.team_id', $team_id)->where('users.verified', 1)->where('tournaments_members.user_id', null)->where('tournaments_members.tournament_id','=', $tournament_id)
+  ->whereNotNull('users_profile2.game_id')->whereNotNull('users_profile2.nickname')
+ ->select('team_members.team_id', 'team_members.user_id', 'users.name', 'tournaments_members.user_id as tour_us_id', 'tournaments_members.tournament_id as tour_id')
 ->get();
 return $memberes->count() ? $memberes : null;
 }

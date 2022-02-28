@@ -29,10 +29,10 @@ class ProfileController extends Controller
     $timezones = config('app.timezones');
     $countries = config('app.countries');
     $teams = Team::getTeamById($id);
-     
+  
     $verification_status = UsersProfile::checkVerification($id);
-    $tournaments = UsersProfile::getTournamentsById($id, 1);
-    $tournaments_old = UsersProfile::getTournamentsById($id, 0);
+    $tournaments = UsersProfile::getMatchesById($id, 1);
+    $tournaments_old = UsersProfile::getMatchesById($id, 0);
    
    
   if($tournaments != null){
