@@ -84,10 +84,29 @@ public static function getMembers($team_id, $tournament_id)
  ->join('users', 'team_members.user_id' , '=' , 'users.id')
  ->join('users_profile2', 'team_members.user_id' , '=' , 'users_profile2.user_id')
  ->leftJoin('tournaments_members', 'team_members.user_id' , '=' , 'tournaments_members.user_id')
-->where('team_members.team_id', $team_id)->where('users.verified', 1)->where('tournaments_members.user_id', null)->where('tournaments_members.tournament_id','=', $tournament_id)
+ ->leftJoin('tournaments', 'tournaments_members.tournament_id' , '=' , 'tournaments.id')
+  ->where('team_members.team_id', $team_id)->where('users.verified', 1)->where('tournaments.active', 1)
   ->whereNotNull('users_profile2.game_id')->whereNotNull('users_profile2.nickname')
- ->select('team_members.team_id', 'team_members.user_id', 'users.name', 'tournaments_members.user_id as tour_us_id', 'tournaments_members.tournament_id as tour_id')
+ ->select('team_members.team_id', 'team_members.user_id', 'users.name', )
 ->get();
 return $memberes->count() ? $memberes : null;
 }
+
+public static function test($id){
+  return DB::table('table_1')
+    ->whereNotExists(function($query) use ($id) {
+        $query->select('table_2.id')
+            ->from('table_2')
+            ->whereRaw('table_1.name = table_2.name')
+            ->where('table_2.any_id', '!=', $id);
+    })
+    ->select('table_1.name')
+    ->get();
 }
+}
+
+/*  ->leftJoin("tournaments_members", function ($join) use ($tournament_id)
+  {     
+    $join->on('tournaments_members.tournament_id', '=', "tournaments.id");    
+    $join->on('tournaments_members.tournament_id', '!=', $tournament_id); 
+  }) */

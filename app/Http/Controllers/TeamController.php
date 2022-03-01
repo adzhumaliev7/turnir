@@ -49,7 +49,7 @@ class TeamController extends Controller
             'team_id' => $id,
             'user_id' => $user_id,
             'role' => 'member'
-        );
+        );c
 
         return view('main.join_to_team', [
             'team' => $team,

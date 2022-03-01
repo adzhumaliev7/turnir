@@ -228,10 +228,10 @@
         <div class="container">
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#stage_1">Турниры</a>
+                            <a class="nav-link active" data-toggle="tab" href="#stage_1">Текущие</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#stage_2">Матчи</a>
+                            <a class="nav-link" data-toggle="tab" href="#stage_2">Прошедшие</a>
                         </li>
                     </ul>
    
