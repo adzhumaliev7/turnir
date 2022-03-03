@@ -22,8 +22,11 @@ class UsersProfile extends Model
           $data['status'] = DB::table('users_profile2')->where('user_id', $id)->value('status');
           return $data['data']->count() ? $data : null;
    }
-   public function delete_profile($id){
+   public static function delete_profile($id){
          DB::table('users')->where('id', $id)->delete();
+         DB::table('team_members')->where('user_id', $id)->delete();
+         DB::table('tournaments_members')->where('user_id', $id)->delete();
+         DB::table('users_logo')->where('user_id', $id)->delete();
            $is_has = DB::table('users_profile2')->where('user_id', $id)->exists();
             if($is_has == true){
                 DB::table('users_profile2')->where('user_id', $id)->delete();
@@ -50,7 +53,7 @@ class UsersProfile extends Model
           ->join('stages', 'tournament_matches.stage_id', '=' ,'stages.id')
           ->select( 'tournaments.*','tournament_matches.login', 'tournament_matches.password',  'tournament_matches.match_name', 'tournament_groups.group_name', 'stages.stage_name')
          //->select( 'tournament_group_teams.team_id')
-          ->where('tournaments_members.user_id', $id)->where('tournaments.active', $status)
+          ->where('tournaments_members.user_id', $id)->where('tournaments.active', $status)->orderBy('tournament_matches.id', 'DESC')
            ->get(); 
         return $tournaments->count() ? $tournaments : null; 
         

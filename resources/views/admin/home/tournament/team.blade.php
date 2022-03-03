@@ -28,7 +28,7 @@
                             <tr>
                                 <td>{{$loop->iteration}}</td>
                                 <td>
-                                    <span class="table-pubg_team-text">{{$teammate->user->name . '__' . $teammate->id}}</span>
+                                    <span class="table-pubg_team-text">{{$teammate->user->name}}</span>
                                 </td>
                             </tr>
                         @endforeach
@@ -70,9 +70,10 @@
                         @foreach($tournamentGroupTeam->group->matches as $m => $matcheee)
                             @php($temp2 = $t->matches->whereIn('match_id', $tournamentGroupTeam->group->matches->pluck('id', 'id'))->where('match_id', $matcheee->id)->first())
                             @if($temp2)
+{{--                                @dd($tournamentGroupTeam)--}}
                                     <td>{{$temp2->kills_pts}}</td>
-                                    <td>{{$tournamentGroupTeam->place_pts}}</td>
-                                    <td>{{$tournamentGroupTeam->place_pts + $temp2->kills_pts}}</td>
+                                    <td>{{$temp2->place_pts}}</td>
+                                    <td>{{$temp2->place_pts + $temp2->kills_pts}}</td>
                                 @else
                                     <td>0</td>
                                     <td>0</td>

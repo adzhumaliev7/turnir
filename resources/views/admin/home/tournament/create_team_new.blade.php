@@ -4,68 +4,65 @@
 @section('content')
 
     <div class="container">
+        @if (\Session::has('error_msg'))
+            <div class="alert alert-danger"  style="font-size: 16px;">
+                <ul>
+                    <li>{!! \Session::get('error_msg') !!}</li>
+                </ul>
+            </div>
+        @endif
         <h3>Создание команды для - {{$turnir->name}}</h3>
         <h4>В этапе - {{$stage->stage_name}}</h4>
-        <form method="POST" action = "{{route('team.store')}}" >
-            @csrf
+        <input type="hidden" id="group_id" name="group_id" value="{{request('groupId')}}">
 
-            <input type="hidden" name="group_id" value="{{request('groupId')}}">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active">
+                <a href="#tab-table1" class="btn" data-toggle="tab">Из заявок</a>
+            </li>
+            <li>
+                <a href="#tab-table2" class="btn" data-toggle="tab">Кроме заявок</a>
+            </li>
+        </ul>
 
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab-table1">
+                <span class="btn btn-success mt-4 mb-2" id="button">Сохранить</span>
 
-            <div class="row">
+                <table id="example" class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Имя команды</th>
+                        <th>Капитан команды</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($teams as $a)
+                        <tr>
+                            <td>{{$a->team_id}}</td>
+                            <td>{{$a->team->name ?? 'Нету имени'}}</td>
+                            <td>{{$a->team->сaptain->name ?? 'Нету имени'}}</td>
+                        </tr>
+                    @endforeach
 
-                <div class="form-group col-6">
-                    <label>Выбор команд для группы из заявок</label>
-                    <div id="seclecter" class="demosdsdsd mb-3" style="">
-                        <select class="form-control"  multiple="multiple" name="teams[]" placeholder="Выберите доступных играков" >
-                            @foreach($teams as $team)
-                                <option value="{{$team->team_id}}">{{$team->team->name ?? 'Нету имени' }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
+                    </tfoot>
+                </table>
 
             </div>
+            <div class="tab-pane" id="tab-table2">
 
+                <table data-turnirId="{{request('turnirId')}}" class="usersTable table table-striped table-bordered">
+                    <thead>
+                    <th>Плюсик</th>
+                    <th>#</th>
+                    <th>Имя команды</th>
+                    <th>Имя капитана</th>
+                    </thead>
+                </table>
 
-            <button type="submit" class="btn btn-primary">Save</button>
-        </form>
+            </div>
+        </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{{--    <button id="button">Row count</button>--}}
-{{--    <table id="example" class="display" style="width:100%">--}}
-{{--        <thead>--}}
-{{--        <tr>--}}
-{{--            <th>#</th>--}}
-{{--            <th>Имя команды</th>--}}
-{{--            <th>Уже есть в команде</th>--}}
-{{--        </tr>--}}
-{{--        </thead>--}}
-{{--        <tbody>--}}
-{{--        @foreach($all as $a)--}}
-{{--        <tr>--}}
-{{--            <td>{{$a->id}}</td>--}}
-{{--            <td>{{$a->team->name ?? 'Нету имени'}}</td>--}}
-{{--            <td>{{ in_array($a->team_id, $arr) ? $a->team->games()->where('stage_id', $stage->id)->first()->group->group_name: 'НЕТУ'}}</td>--}}
-{{--        </tr>--}}
-
-{{--        @endforeach--}}
-
-{{--        </tfoot>--}}
-{{--    </table>--}}
 
 <script>
 

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\DeleteMemberMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 class TeamController extends Controller
 {
     public function index($id,$us)
@@ -16,7 +17,7 @@ class TeamController extends Controller
         $user_id = Auth::user()->id;
         $mail = Auth::user()->email;
         $data = Team::getTeamById2($id, $us);
-       
+       $link = Team::getLink($id);
         $countries = config('app.countries');
         $members = Team::getTeamMembers($id);
      
@@ -37,27 +38,40 @@ class TeamController extends Controller
             'tournaments' => $tournaments,
             'matches' => $matches,
             'mail' => $mail,
+            'link' => $link
         ]);
     }
-    public function addMembers($id)
+    public function addMembers($link, $team_id)
     {
-
-        $team = Team::getTeamName($id);
-
+       $link_  = Team::getLink($team_id);
+    
+        if($link == $link_){
+         $team = Team::getTeamName($team_id);
         $user_id = Auth::user()->id;
         $data = array(
-            'team_id' => $id,
+            'team_id' => $team_id,
             'user_id' => $user_id,
             'role' => 'member'
-        );c
-
+        );
         return view('main.join_to_team', [
             'team' => $team,
-            'id' => $id
-        ]);
+            'id' => $team_id
+        ]); }
+        else 
+    		abort('404');
+    }
+
+    public function generateLink($id, $user_id){
+
+        $link_ =  base64_encode( Str::random(32));
+        Team::generateLink($id, $link_);
+
+
+        return redirect(route('team', [$id, $user_id]));
     }
     public function addMembersApply($id)
     {
+        
         $user_id = Auth::user()->id;
         $data = array(
             'team_id' => $id,
@@ -69,7 +83,7 @@ class TeamController extends Controller
             Team::addMembers($data);
             return redirect(route('profile'));
         } else
-            return redirect(route('profile'));
+            return redirect(route('profile')); 
     }
 
     public function deleteMember($id,$team_id)
@@ -85,13 +99,12 @@ class TeamController extends Controller
     }
     public function addAdmin($id, $team_id)
     {
-
         Team::addAdmin($id, $team_id);
         return redirect(route('profile'));
     }
-    public function exitTeam($id)
+    public function exitTeam($id, $team_id)
     {
-        Team::exitTeam($id);
+        Team::exitTeam($id, $team_id);
         return redirect(route('profile'));
     }
     public function deleteTeam($id)

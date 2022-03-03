@@ -49,7 +49,7 @@
 
 
         <a href="{{route('addmembe_apply', $id)}}" type="button" class="btn btn-primary" style="font-size:16px">Принять</a>
-        <a type="button" class="btn btn-secondary" style="font-size:16px">Отклонить</a>
+        <a type="button" href="{{route('main')}}"  class="btn btn-secondary" style="font-size:16px">Отклонить</a>
 
 
     </div>

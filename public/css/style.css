@@ -2610,5 +2610,12 @@ body {
 
 .footer {}
 
+.link_styles{
+text-decoration: none;
+font-size: 16px;
+}
+.link_styles:hover {
+  border-bottom: 1px dashed blue; /* Добавляем синее пунктирное подчёркивание */
+ }
 /* style container */
 /*# sourceMappingURL=style.css.map */

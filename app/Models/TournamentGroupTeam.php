@@ -94,12 +94,4 @@ class TournamentGroupTeam extends Model
         return $this->hasOne(Stage::class, 'id', 'stage_id');
     }
 
-    public function remove(){
-        $teammates = $this->teammates->where('tournament_id', $this->tournament_id);
-        TournamentMatchesResult::where('team_id', $teammates->pluck('id')->count() ? $teammates->pluck('id'): [] )->delete();
-        $this->delete();
-
-    }
-
-
 }

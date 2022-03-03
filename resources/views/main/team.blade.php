@@ -100,13 +100,16 @@
                         <div class="alert alert-success" style="font-size: 16px;">{{Session::get('flash_meassage_delete')}}</div>
                  @endif
                 <div class="block-view">
-                <h4><a href="{{route('exit_team',$user_id)}}" class="">Покинуть команду</a></h4>
+                @if($chek_admin != 'true')   
+                <h4><a href="{{route('exit_team',[$user_id, $team_id])}}" class="">Покинуть команду</a></h4>
+                @endif
                 @if($chek_admin == 'true')
                   
                     <h4 class="input-title">Пригласить друзей в команду</h4>
                     <span class="subtitle subtitle--regular d-block subtitle--twelve">Скопируйте ссылку и отправьте друзьям которые хотят присоедениться вк вашей команды</span>
-                    <input class="subtitle subtitle--regular url-input url-input--margin" type="text" id="myInput" value="http://showmatch/addmembers/{{$team_id}}">
+                    <input class="subtitle subtitle--regular url-input url-input--margin" type="text" id="myInput" value="http://showmatch/{{$link}}/{{$team_id}}">
                     <button class="submit-btn btn--orange  btn--size btn--mr" onclick="myFunction()">Копировать</button>
+                    <a href="{{route('generate_link',[$team_id,$user_id])}}" class="link_styles">Сгенерировать новую ссылку</a>
                     <div class="orange-line"></div>
                     <h4 class="input-title">Участники</h4>
                     @endif

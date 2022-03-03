@@ -118,7 +118,8 @@ class TournamentController extends Controller
           if ($captainTeamMembers) { // если есть капитан
             
               $members = Tournament::getMembers($captainTeamMembers->team_id, $turnirId); //TODO Тут тадо сделать нормальную логику
-              dd($members);
+           //  dd(Tournament::test(2));
+            //  dd($members);
            /*    DB::enableQueryLog(); 
            dd(Tournament::test(2));
            dd(DB::getQueryLog()); */

@@ -78,7 +78,7 @@ class TournamentController extends Controller
 
             'file_label' => 'image',
 
-            'file_label' => 'mimetypes:image/jpg,image/png',
+            'file_label' => 'mimetypes:image/jpeg,image/png',
         ]);
 
             if ($request->hasFile('file_label') == true ) {
@@ -86,10 +86,12 @@ class TournamentController extends Controller
                 $name =  $request->file('file_label');
                 $path = '/uploads/storage/adminimg/turnir_logo';
                 $file_name = $this->uploadFiles($name, $path);
-                $data['file_label'] = $file_name;
+               
             }
-
+            
             $data = $validated = $request->validated();
+            $data['file_label'] = $file_name;
+           
             if ($request->get('submit') == 'save') {
                 $data['status'] = 'save';
                 $data['active'] = 1;
@@ -97,13 +99,15 @@ class TournamentController extends Controller
 
                 $data['status'] = 'draft';
             }
+           
+            
             try {
                 Admin::createTournament($data);
             } catch (\Illuminate\Database\QueryException  $exception) {
                 return back()->withError('Турнир ' . $request->input('name') . ' уже существует')->withInput();
             }
             \Session::flash('flash_meassage', 'Турнир добавлен');
-            return redirect(route('admin'));
+            return redirect(route('admin')); 
 
     }
     public function tournamentView($id)
@@ -126,13 +130,7 @@ class TournamentController extends Controller
     public function tournamentDelete($id)
     {
         $turnit = Tournament::find($id);
-
-
-        $turnit->order()->delete();
-
-        foreach ($turnit->stages as $stage) {
-            $stage->remove();
-        }
+        
         $turnit->delete();
 
         return redirect(route('admin_tournament'));
@@ -150,7 +148,9 @@ class TournamentController extends Controller
     {
         $team = Admin::getTeamById($id);
         $members = Admin::geTeamMembers($id, $turnir_id);
+       
         $user_id  = Admin::geTeamMembersUserid($id, $turnir_id);
+       
         foreach ($user_id as $user => $value) {
             $user_id = $value;
         }

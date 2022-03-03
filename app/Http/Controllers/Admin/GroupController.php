@@ -42,7 +42,7 @@ class GroupController extends Controller
 
     public function destroy($groupId, Request $request) {
         $group = TournamentGroup::findOrFail($groupId);
-        $group->remove();
+        $group->delete();
 
         return redirect()->route('standings', $group->tournament_id);
     }

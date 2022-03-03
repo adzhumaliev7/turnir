@@ -28,7 +28,7 @@ class MatchesController extends Controller
 
         $insert = [];
         $index = 0;
-        foreach ($data['matches'] as $key => $matche) {
+        foreach ($data['matches'] ?? [] as $key => $matche) {
 
             foreach ($matche as $teammate) {
                 $index++;
@@ -47,7 +47,7 @@ class MatchesController extends Controller
         $collect = collect($insert);
 
         $tournamentGroupTeamsUpdate = [
-            'place_pts' =>   array_sum($data['place']),
+            'place_pts' =>   array_sum($data['place'] ?? []),
             'kills_pts' => $collect->sum('kills_pts'),
         ];
 

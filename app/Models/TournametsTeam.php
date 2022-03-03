@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TournametsTeam extends Model
 {
-    protected $fillable = ['tournament_id'];
+    protected $fillable = ['tournament_id', 'team_id', 'status'];
     protected $table = 'tournamets_team';
     use HasFactory;
 

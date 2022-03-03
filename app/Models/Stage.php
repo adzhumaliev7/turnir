@@ -28,11 +28,4 @@ class Stage extends Model
         return $this->hasOne(Tournament::class, 'id', 'tournament_id');
     }
 
-    public function remove() {
-        foreach ($this->groups as $group) {
-            $group->remove();
-        }
-        $this->delete();
-    }
-
 }

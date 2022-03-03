@@ -121,7 +121,9 @@
                                 @if($members != null)
 
                                     @foreach($members as $member)
-                                        <input type="checkbox" name="members[]" value="{{$member->user_id}}" > {{$member->name}} </br>
+                                 
+                                        
+                                        <input type="checkbox" name="members[]" value="{{$member->user_id}}"   <?php if($member->nickname == null){ echo "disabled";?>  <?}?>> {{$member->name}} </br>
                                     @endforeach
 
                                 @else

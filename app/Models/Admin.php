@@ -149,8 +149,8 @@ class Admin extends Model
    {
       return DB::table('tournaments_members')
          ->join('users', 'tournaments_members.user_id', '=', 'users.id')
-         ->join('team_members', 'tournaments_members.user_id', '=', 'team_members.user_id')
-         ->select('users.name', 'team_members.user_id', 'team_members.role')
+         ->join('users_profile2', 'tournaments_members.user_id', '=' ,'users_profile2.user_id' )
+         ->select('users.name', 'users.id',  'users_profile2.game_id')
          ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)
          ->get();
    }
@@ -158,7 +158,7 @@ class Admin extends Model
    {
       return DB::table('tournaments_members')
          ->join('team_members', 'tournaments_members.user_id', '=', 'team_members.user_id')
-
+        
          ->select('team_members.user_id')
          ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)->where('team_members.role', 'captain')
          ->first();
@@ -208,20 +208,7 @@ class Admin extends Model
    public static function applyTeam($id, $turnir_id)
    {
 
-      $count =  DB::table('tournamets_team')->where('tournament_id', $turnir_id)->where('status', 'accepted')->count();
-      if ($count < 2) {
-         $group_id = 1;
-      }
-      if ($count >= 2 && $count <= 4) {
-         $group_id = 2;
-      }
-      if ($count >= 4 && $count <= 6) {
-         $group_id = 3;
-      }
-      if ($count >= 6 && $count <= 8) {
-         $group_id = 4;
-      }
-      return DB::table('tournamets_team')->where('team_id', $id)->update(['status' => 'accepted', 'group_id' => $group_id]);
+      return DB::table('tournamets_team')->where('team_id', $id)->update(['status' => 'accepted']);
    }
    public static function refuseTeam($id, $turnir_id)
    {
@@ -231,7 +218,6 @@ class Admin extends Model
 
    public static function getFeedback()
    {
-    
          $feedback = DB::table('feedback')->select('fio', 'phone', 'email', 'description')->get();
          return $feedback->count() ? $feedback : null;
    }
@@ -255,20 +241,7 @@ class Admin extends Model
 
    public static function setStage_2($turnir_id, $data)
    {
-      /* $count =  DB::table('stage_1')->where('tournament_id', $turnir_id)->where('winner', 1)->count();
-      if ($count < 2) {
-         $group_id = 1;
-      }
-      if ($count >= 2 && $count <= 4) {
-         $group_id = 2;
-      }
-      if ($count >= 4 && $count <= 6) {
-         $group_id = 3;
-      }
-      if ($count >= 6 && $count <= 8) {
-         $group_id = 4;
-      }
-      $data['group_id'] = $group_id; */
+     
 
       return DB::table('stage_2')->insert($data);
    }

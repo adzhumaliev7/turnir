@@ -44,7 +44,7 @@ class StageController extends Controller
 
     public function destroy($stageId, Request $request) {
         $stage = Stage::findOrFail($stageId);
-        $stage->remove();
+        $stage->delete();
 
         return redirect()->route('standings', $stage->tournament_id);
     }

@@ -9,7 +9,7 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Str;
 class ProfileController extends Controller
 {
 
@@ -66,10 +66,10 @@ class ProfileController extends Controller
      
     $request->validate([
 
-      // файл должен быть картинкой (jpeg, png, bmp, gif, svg или webp)
       'logo' => 'image',
+
       // поддерживаемые MIME файла (image/jpeg, image/png)
-      'logo' => 'mimetypes:image/jpg,image/png',
+      'logo' => 'mimetypes:image/jpeg,image/png',
     ]);
 
     $logo = $request->file('logo');
@@ -95,11 +95,11 @@ class ProfileController extends Controller
       'doc_photo' => 'image',
 
       // поддерживаемые MIME файла (image/jpeg, image/png)
-      'doc_photo' => 'mimetypes:image/jpg,image/png',
+      'doc_photo' => 'mimetypes:image/jpeg,image/png',
       'doc_photo2' => 'image',
 
       // поддерживаемые MIME файла (image/jpeg, image/png)
-      'doc_photo2' => 'mimetypes:image/jpg,image/png',
+      'doc_photo2' => 'mmimetypes:image/jpeg,image/png',
   ]);
 
     
@@ -183,6 +183,7 @@ class ProfileController extends Controller
     $id = Auth::user()->id;
     $data['user_id'] = $id;
     $data['role'] = 'captain';
+    $data['link'] =  base64_encode( Str::random(32));
     $data_m = array(
       'user_id' => $id,
       'role' => 'captain',

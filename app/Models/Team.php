@@ -21,7 +21,7 @@ class Team extends Model
        return $this->hasMany(TournamentMembers::class);
    }
 
-   public function getTeamById($id)
+   public static function getTeamById($id)
    {
       $is_has = DB::table('team_members')->where('user_id', $id)->exists();
       if ($is_has == true) {
@@ -34,16 +34,20 @@ class Team extends Model
          return NULL;
       }
    }
-   public function getTeamById2($id, $user_id)
+   public static function getLink($id)
+   {
+         return DB::table('team')->where('id', $id)->value('link');
+   }
+   public static function getTeamById2($id, $user_id)
    {
          return DB::table('team_members')
          ->join('team', 'team_members.team_id', '=', 'team.id')
-         ->select('team_members.team_id', 'team_members.user_id', 'team.id', 'team.name', 'team.logo')
+         ->select('team_members.team_id', 'team_members.user_id', 'team.id', 'team.name', 'team.logo',  'team.link')
          ->where('team_members.team_id', $id)->where('team_members.user_id', $user_id)
          ->get();
 
    }
-   public function getTeamName($id)
+   public static function getTeamName($id)
    {
          return DB::table('team')->where('id', $id)->value('name');
    }
@@ -86,16 +90,20 @@ class Team extends Model
       DB::table('team_members')->where('team_id', $team_id)->where('role', 'captain')->update(['role' => 'member']);
       DB::table('team_members')->where('team_id', $team_id)->where('user_id', $id)->update(['role' => 'captain']);
    }
-   public function exitTeam($id)
+   public function exitTeam($id,$team_id)
    {
-      return DB::table('team_members')->where('user_id', $id)->delete();
+      return DB::table('team_members')->where('user_id', $id)->where('team_id', $team_id)->delete();
    }
 
    public function deleteTeam($id)
    {
       DB::table('team_members')->where('team_id', $id)->delete();
       DB::table('team')->where('id', $id)->delete();
-      DB::table('tournamets_team')->where('team_id', $id)->delete();
+       DB::table('tournamets_team')->where('team_id', $id)->delete();
+    /*  DB::table('tournamets_members')->where('team_id', $id)->delete();
+      DB::table('tournament_group_teams')->where('team_id', $id)->delete();
+      DB::table('tournament_matches_results')->where('team_id', $id)->delete();
+      DB::table('tournament_results')->where('team_id', $id)->delete(); */
    }
    public static function checkAdmin($id,$user_id)
    {
@@ -166,7 +174,10 @@ class Team extends Model
    {
       return DB::table('users')->where('id', $id)->value('email');
    }
-
+   public static function generateLink($id, $link)
+   {
+      return DB::table('team')->where('id', $id)->update(['link'=>$link]);
+   }
 
 
 }

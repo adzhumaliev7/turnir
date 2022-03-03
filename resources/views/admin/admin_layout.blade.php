@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="_token" content="{{ csrf_token() }}">
   <title>@yield('title')</title>
 
   <!-- Google Font: Source Sans Pro -->
@@ -360,8 +361,79 @@
 
       <script>
 
+          function format ( d ) {
+            let turnirId = $('.usersTable').data('turnirid')
+            let teamId = d.members[0]['team_id']
+              if( d.members.length) {
+                  let tr = ''
+                  for (index = 0; index < d.members.length ?? []; ++index) {
+                      // console.log(d.members[index])
+                      tr += ` <tr>
+                        <td>${d.members[index].name} </td>
+                        <td><input type="checkbox" name="members[]" value="${d.members[index]['user_id']}"></td>
+                    </tr`
+                  }
+                  // `d` is the original data object for the row
+                  return `<form method="POST" action="/admin_panel/team/join/${turnirId}/${teamId}" >
+                    <input type="hidden" name="_token" value="${$('meta[name="_token"]').attr('content')}">
+                    <table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">
+                        ${tr}
+                    </table>
+                    <button type="btn" class="btn btn-success mt-4">Сохранить</button>
+                </form>`
+              } else {
+                  return 'Нет участников'
+              }
+          }
 
-              $('.example').DataTable();
+          $('.usersTable').on('click', 'tbody td.dt-control', function () {
+              var tr = $(this).closest('tr');
+              var row = usersTable.row( tr );
+
+              if ( row.child.isShown() ) {
+                  // This row is already open - close it
+                  row.child.hide();
+              }
+              else {
+                  // Open this row
+                  row.child( format(row.data()) ).show();
+              }
+          } );
+
+          $('.usersTable').on('requestChild.dt', function(e, row) {
+              row.child(format(row.data())).show();
+          })
+
+          let usersTable = $('.usersTable').DataTable({
+              "responsive": true,
+              "autoWidth": false,
+              "processing": true,
+              "serverSide": true,
+              "rowId": 'id',
+              "ajax":{
+                  "url": "{{route('getDataTeamList')}}",
+                  "data": {"turnirId": $('.usersTable').data('turnirid')},
+              },
+              "columns": [
+                  {
+                      "className":      'dt-control',
+                      "orderable":      false,
+                      "data":           null,
+                      "defaultContent": ''
+                  },
+                  { "data": "id" },
+                  { "data": "name" },
+                  { "data": "nameCapitane" }
+              ],
+              "order": [[1, 'asc']]
+          });
+
+
+
+
+          $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+              $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+          } );
 
           var table = $('#example').DataTable();
 
@@ -370,9 +442,29 @@
           } );
 
           $('#button').click( function () {
+              let group_id = $('#group_id').val()
+
+              let teams = []
+              for (index = 0; index < table.rows('.selected').data().length; ++index) {
+                  teams.push(table.rows('.selected').data()[index][0])
+              }
+
+              $.ajax({
+                  url: "http://showmatch/admin_panel/team",
+                  method: "POST",
+                  headers: {
+                      'X-CSRF-Token': $('meta[name="_token"]').attr('content')
+                  },
+                  data: {"group_id": group_id,"teams": teams},
+                  success: function(data) {
+                      window.location.reload ()
+                  }
+              })
+
               console.log( table.rows('.selected').data())
-              alert( table.rows('.selected').data().length +' row(s) selected' );
           } );
+
+
 
           $('#addMatches').on('click', (ev) => {
               let matches = $('.matches').last();
