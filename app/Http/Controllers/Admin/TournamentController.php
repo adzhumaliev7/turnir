@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Mail\VerifiedMail;
 use App\Mail\ApplyTeamMail;
+use App\Mail\RefuseTeam;
 use App\Models\Tournament;
 use App\Models\TournametsTeam;
 use App\Models\TournamentGroup;
@@ -90,8 +91,9 @@ class TournamentController extends Controller
             }
             
             $data = $validated = $request->validated();
+              if ($request->hasFile('file_label') == true ) {
             $data['file_label'] = $file_name;
-           
+           }
             if ($request->get('submit') == 'save') {
                 $data['status'] = 'save';
                 $data['active'] = 1;
@@ -122,7 +124,25 @@ class TournamentController extends Controller
 
     public function tournamentEdit($id, EditTournamentRequest $request)
     {
-        $data = $validated = $request->validated();
+           $request->validate([
+
+            'file_label' => 'image',
+
+            'file_label' => 'mimetypes:image/jpeg,image/png',
+        ]);
+
+            if ($request->hasFile('file_label') == true ) {
+
+                $name =  $request->file('file_label');
+                $path = '/uploads/storage/adminimg/turnir_logo';
+                $file_name = $this->uploadFiles($name, $path);
+               
+            }
+            
+            $data = $validated = $request->validated();
+              if ($request->hasFile('file_label') == true ) {
+            $data['file_label'] = $file_name;
+           }
         Admin::editTournament($id, $data);
         return redirect(route('admin_tournament'));
     }
@@ -183,7 +203,7 @@ class TournamentController extends Controller
         $email = Admin::getUsersEmail($user_id);
 
         $text = $request->input('text');
-        Mail::to($email)->send(new VerifiedMail($email, $text));
+        Mail::to($email)->send(new RefuseTeam($email, $text));
         Admin::refuseTeam($id, $turnir_id);
         return redirect(route('admin_tournament'));
     }

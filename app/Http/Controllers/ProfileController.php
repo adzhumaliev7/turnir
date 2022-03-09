@@ -114,18 +114,19 @@ class ProfileController extends Controller
       } //else  return back()->withError('Документ: ' . $request->input('photo_error') . 'Загрузите фото удостоверения личности с двух сторон')->withInput();
     
     
-    /*  if($request->input('game_id') != null){
+      if($request->input('email') != null){
       $request->validate([
        
-        'game_id' => 'unique:users_profile2',
-    ]);}
+        'email' => 'unique:users_profile2,email',
+    ]);
+    }
     
      if($request->input('game_id') != null){
       $request->validate([
      
-        'game_id' => 'unique:users_profile2',
+        'game_id' => 'unique:users_profile2,game_id',
     ]); 
-     } */
+     } 
       $data = $validated = $request->validated();
 
       if ($request->hasFile('doc_photo') == true && $request->hasFile('doc_photo2') == true){
@@ -163,6 +164,14 @@ class ProfileController extends Controller
     }
 
     $id = Auth::user()->id;
+    $verification = UsersProfile::getById($id);
+    if($verification['verification'] =='rejected'){
+       $data['verification'] = 'on_check'; 
+    }
+    elseif($verification['verification'] =='verified'){
+       $data['verification'] = 'verified'; 
+    }else $data['verification'] = 'on_check'; 
+
     $data['status'] = 0;
     $data['user_id'] = $id;
    

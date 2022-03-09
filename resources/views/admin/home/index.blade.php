@@ -61,7 +61,7 @@
           <div class="icon">
             <i class="ion ion-person-add"></i>
           </div>
-          <a href="admin_panel/users" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="{{route('allusers')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
 
@@ -137,11 +137,7 @@
 </div>
 <!-- /.content-wrapper -->
 <footer class="main-footer">
-  <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-  All rights reserved.
-  <div class="float-right d-none d-sm-inline-block">
-    <b>Version</b> 3.1.0
-  </div>
+  
 </footer>
 
 <!-- Control Sidebar -->

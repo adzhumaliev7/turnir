@@ -8,7 +8,12 @@
     </style>
 
     <div class="container">
-        <a href="#" type="button" class="btn btn-danger mt-4">Завершить турнир (Ещё не работает)</a>
+        @if($turnir->active)
+        <a href="{{route('finish', $turnir->id)}}" type="button" class="btn btn-danger mt-4">Завершить турнир</a>
+        @else
+            <a href="#" class="btn btn-success mt-4"> Турнир заверщён </a>
+        @endif
+
         <div class="tournament-page_content --full float">
             <div class="top-link-b text-center">
                 <a href="{{route('stoge.create', $turnir->id)}}" type="button" class="btn btn-success mt-4">Создать этап</a>

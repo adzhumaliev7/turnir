@@ -21,7 +21,11 @@
 
             <tr>
                 <td scope="row">{{$loop->index +1}}</td>
-                <td>{{$order->email}}</td>
+                <td>{{$order->email}} 
+                    @if($order->user_status != null) 
+                        <span style="color: red;">(Заблокирован)</span>
+                     @endif   
+                </td>
                 <td>{{$order->text}}</td>
                 <td>
                     @if($order->status == 0) На рассмотрении

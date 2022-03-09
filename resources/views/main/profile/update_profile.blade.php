@@ -54,8 +54,9 @@
               </div>
               <div class="col-lg-6">
                 <select name="timezone" id="" class="size_16px" <?= $disabled; ?>>
-                  @foreach($timezones as $timezone1)
-                  <option value="{{$timezone1}}">{{$dat->timezone}}</option>
+                    <option value="{{$dat->timezone}}">{{$dat->timezone}}</option>
+                   @foreach($timezones as $timezone)
+                  <option value="{{$timezone}}">{{$timezone}}</option>
                   @endforeach
                 </select>
               </div>

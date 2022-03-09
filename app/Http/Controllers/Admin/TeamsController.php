@@ -62,7 +62,9 @@ class TeamsController extends Controller
         }
 
         $teams = TournamentGroupTeam::insert($insert);
-        return redirect()->route('standings',[ $turnir->id, $group->stage_id, $group->id]);
+
+        return response()->json(['url' => route('standings',[ $turnir->id, $group->stage_id, $group->id])]);
+
     }
 
     public function joinTournament($turnirId, $teamId, joinTurnaments $request)
@@ -80,7 +82,8 @@ class TeamsController extends Controller
         TournamentMembers::insert($insert);
         TournametsTeam::create(['tournament_id' => $turnirId, 'team_id' => $teamId, 'status' => 'accepted',]);
 
-        return  redirect()->back();
+
+        return redirect()->route('standings',[ $turnir->id]);
     }
 
 

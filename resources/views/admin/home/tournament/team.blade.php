@@ -1,6 +1,5 @@
 @extends('admin.admin_layout')
 @section('content')
-
     <div class="container mt-4">
         <h3>Этап - {{$tournamentGroupTeam->stage->stage_name}}</h3>
         <h3>Список участиников в команде - {{$tournamentGroupTeam->team->name}}</h3>
@@ -89,5 +88,6 @@
             </div>
 
         </div>
+        <a href="{{route('standings',[ $tournamentGroupTeam->tournament_id, $tournamentGroupTeam->stage_id, $tournamentGroupTeam->group_id])}}" class="btn btn-link">Назад</a>
     </div>
 @endsection

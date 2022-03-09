@@ -74,7 +74,7 @@
             <img src="{{ asset("admin/dist/img/user2-160x160.jpg")}}" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="#" class="d-block">Админ</a>
+            <a href="{{route('admin')}}" class="d-block">Админ</a>
             <a href="{{route('main')}}" class="d-block">На сайт</a>
           </div>
         </div>
@@ -98,17 +98,18 @@
             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
-
+            @if($check == false)   
             <li class="nav-item">
               <a href="{{route('moderators')}}" class="nav-link">
                 <i class="nav-icon far fa-alt"></i>
                 <p>
-                  Модераторы
-
+                  Модераторы  
+            
                 </p>
+             
               </a>
             </li>
-
+            @endif
             <li class="nav-item menu-is-opening menu-open">
               <a href="#" class="nav-link">
 
@@ -132,7 +133,7 @@
                 <li class="nav-item">
                   <a href="{{route('orders')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Заявки</p>
+                    <p>Заявки  @if($orders != null) (<span style="color: #F23434"><bold>{{$orders}}</bold></span>) @endif</p>
                   </a>
                 </li>
               </ul>
@@ -146,7 +147,17 @@
                 </p>
               </a>
             </li>
-
+            <li class="nav-item">
+              <a href="{{route('teams')}}" class="nav-link">
+                <i class="nav-icon far fa-alt"></i>
+                <p>
+                  Редактирование названия команд  @if($orders_team != null) (<span style="color:#F23434"><bold>{{$orders_team}}</bold></span>) @endif
+                </p>
+                <p>
+                   
+                </p>
+              </a>
+            </li>
             <li class="nav-item">
               <a href="{{route('help')}}" class="nav-link">
                 <i class="nav-icon far fa-alt"></i>
@@ -522,7 +533,19 @@
               searchNoData: '<li style="color:#ddd">Нет результатов</li>',
           });
 
-
+          $(document).ready(function(){
+      $('#search').on('keyup', function(){
+        var query = $($this).val();
+        $.ajax({
+          url:"search",
+          type:"GET",
+          data:{'search':query},
+          success:function(data){
+            $('#search_result').html(data);
+          }
+        });
+      });
+  });
 
       </script>
 

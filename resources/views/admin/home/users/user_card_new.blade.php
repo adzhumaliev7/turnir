@@ -79,60 +79,106 @@
 @extends('admin.admin_layout')
 
 @section('content')
+
+@if($users != null)
 @foreach($users as $user)
 
 @if($user->verification =='verified')
   <h3>Верифицирован</h3>
-@elseif($user->verification =='on_check')
-  <h3>Ожидает верификации</h3>
-@else
+@elseif($user->verification =='rejected')
   <h3>Отклонен</h3>
+
 @endif
 @endforeach
 
-<table class="table">
-  <thead class="thead-light">
-    <tr>
 
-      <th scope="col">Документы</th>
+   <div class="container">
+ @foreach($users as $user)
+ <div class="container">
+  <div class="row">
+    <div class="col-md-4">
+       @if($user_photo != NULL)
+            <a href=""  data-toggle="modal" data-target="#ModalLogo">
+              <img class="header__img" src="{{ asset("uploads/storage/img/userslogo/$user_photo")}}" width="250" height="250" alt="" alt="profile" />
+            </a>
+ 
+           
+            @else
+           <a href=""  data-toggle="modal" data-target="#ModalLogo">
+             <img src="{{ asset("uploads/storage/img/default/noimage.png")}}"  width="250" height="200" class="" style="opacity: .8">
+              </a>
+         
+            @endif
+    </div>
+    <div class="col-md-8">
+      <div class="form-group row">
+    <label for="staticEmail" class="col-sm-2 col-form-label">ФИО</label>
+    <div class="col-sm-4">
+      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->fio}}">
+   
+      </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-4">
+       <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->email}}">
+    </div>
 
-      <th scope="col">Телефон</th>
-      <th scope="col">ФИО</th>
-      <th scope="col">login</th>
-      <th scope="col">email</th>
-      <th scope="col">Страна</th>
-      <th scope="col">Город</th>
-      <th scope="col">Дата рождения</th>
-      <th scope="col">НИК</th>
-      <th scope="col">Игровой ID</th>
-      <th scope="col">Действие</th>
-    </tr>
-  </thead>
-  <tbody>
+  </div>
+ <div class="form-group row">
+    <label for="inputPassword" class="col-sm-2 col-form-label">Login</label>
+    <div class="col-sm-4">
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->login}}">
+    </div>
+  </div>
+   <div class="form-group row">
+    <label for="inputPassword" class="col-sm-2 col-form-label">Дата рождения</label>
+    <div class="col-sm-4">
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->bdate}}">
+    </div>
+  </div>
+   <div class="form-group row">
+    <label for="inputPassword" class="col-sm-2 col-form-label">Телефон</label>
+    <div class="col-sm-4">
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->phone}}">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputPassword" class="col-sm-2 col-form-label">Страна / Город</label>
+    <div class="col-sm-4">
+         <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->country}} / {{$user->city}}">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputPassword" class="col-sm-2 col-form-label">Ник</label>
+    <div class="col-sm-4">
+       <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->nickname}}">
+    </div>
+  </div>
 
-    @foreach($users as $user)
-
-    <tr>
-
-      <td><a id="myBtn" href="#" data-toggle="modal" data-target="#ModalPhoto">Просмотр докуметов</a></td>
-
-      <td>{{$user->phone}}</td>
-      <td>{{$user->fio}}</td>
-      <td>{{$user->login}}</td>
-      <td>{{$user->email}}</td>
-      <td>{{$user->country}}</td>
-      <td>{{$user->city}}</td>
-      <td>{{$user->bdate}}</td>
-      <td>{{$user->nickname}}</td>
-      <td>{{$user->game_id}}</td>
-      <td><a href="{{ route('verified', $user->id) }}" class="message" data-title="Подтвердить">&#10004;</a>
-        <!--  <a href="{{ route('rejected', $user->id) }}" class="message" data-title="Отконить">&#10006;</a> -->
+  <div class="form-group row">
+    <label for="inputPassword" class="col-sm-2 col-form-label">Игровой ID</label>
+    <div class="col-sm-4">
+      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->game_id}}">
+    </div>
+  </div>
+  @if($user->doc_photo !=null && $user->doc_photo2  !=null)
+   <a id="myBtn" href="#" data-toggle="modal" data-target="#ModalPhoto">Просмотр докуметов</a></br>
+  @if($user->verification =='on_check')
+   
+    </br>
+    </br>
+     <a type="button" class="btn btn-success" href="{{ route('verified', $user->id) }}" class="message" data-title="Подтвердить">Подтвердить</a>
+      
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalRejected">
           Отклонить
         </button>
-     
-      
-        <div class="modal fade" id="ModalRejected" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  @endif
+@endif
+    </div>
+  </div>
+</div>
+   <div class="modal fade" id="ModalRejected" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -155,13 +201,11 @@
              </div>
             </div>
            </div>  
-      </td>
-    </tr>
+  
     @endforeach
-  </tbody>
-</table>
 
 
+</div>
 <div class="modal fade" id="ModalPhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -179,6 +223,9 @@
     </div>
   </div>
 </div>
+@else
+<h3>Нет данных</h3>
+@endif
 <!-- 
 
 <div id="myModal" class="modal2">

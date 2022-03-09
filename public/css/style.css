@@ -2120,7 +2120,7 @@ input[placeholder]::placeholder {
 .header__txt {
   font-size: 1.6rem;
   font-weight: 500;
-  color: #fff;
+  color: rgb(255, 255, 255);
 }
 
 .pubg-hover:hover {
@@ -2617,5 +2617,12 @@ font-size: 16px;
 .link_styles:hover {
   border-bottom: 1px dashed blue; /* Добавляем синее пунктирное подчёркивание */
  }
+
+ .close_styles{
+  float: right; 
+  text-decoration:none; 
+  font-size:18px;
+ }
+ .highlighted { color: red }
 /* style container */
 /*# sourceMappingURL=style.css.map */

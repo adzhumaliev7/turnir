@@ -2,7 +2,6 @@
 @section('title', 'Создать группу')
 
 @section('content')
-
     <div class="container mt-4">
         <h3>Создание группы для - {{$turnit->name}}</h3>
         <h4>В - {{$stage->stage_name}}</h4>
@@ -20,5 +19,6 @@
 
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
+        <a href="{{route('standings',[ $turnit->id, $stage->id])}}" class="btn btn-link">Назад</a>
     </div>
 @endsection

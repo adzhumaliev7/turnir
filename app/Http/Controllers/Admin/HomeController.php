@@ -15,9 +15,13 @@ use App\Mail\ModeratorMail;
 use App\Mail\OredrsMail;
 use App\Mail\ChangeTeamMail;
 use App\Mail\RejectedChangeTeam;
+use App\Mail\RejectedVerifiedMail;
 use App\Mail\UnblockMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\CustomClasses\ColectionPaginate;
+
 class HomeController extends Controller
 {
   public function index()
@@ -84,8 +88,10 @@ class HomeController extends Controller
   {
     $users = Admin::getById($id);
 
-    return view('admin.home.users.user_card', [
-      'users' => $users
+    $user_photo = UsersProfile::getUserPhoto($id);
+    return view('admin.home.users.user_card_new', [
+      'users' => $users,
+      'user_photo' => $user_photo,
     ]);
   }
 
@@ -99,7 +105,7 @@ class HomeController extends Controller
     $email = Admin::getUsersEmail($id);
     
     $text = $request->input('text');
-    Mail::to($email)->send(new BanMail($email, $text));
+    Mail::to($email)->send(new RejectedVerifiedMail($email, $text));
     Admin::rejected($id);
     return redirect()->to(route('allusers'));
   }
@@ -267,4 +273,18 @@ class HomeController extends Controller
 
     return redirect(route('orders_team')); 
   }
+  public function search(Request $request)
+{
+  $search = $request->input('search');
+  //$users = User::where('email','like' ,"%{$search}%")->get(); // кавычки двойные!
+  $users = DB::table('users')
+  ->leftJoin('users_profile2', 'users.id', '=' , 'users_profile2.user_id')
+  ->select('users.*', 'users_profile2.verification','users_profile2.doc_photo', 'users_profile2.doc_photo2', 'users_profile2.nickname',  'users_profile2.game_id')
+  ->orwhere('users.email', 'like' ,"%{$search}%")->orwhere('users.name', 'like' ,"%{$search}%")
+  ->get();
+  if($users !=null) $users = ColectionPaginate::paginate($users, 15);
+  return view('admin.home.users.all_users', [
+    'users' => $users
+  ]);
+}
 }

@@ -4,7 +4,24 @@
 @if($users != null)
 
 <div class="container">
-  <table class="table">
+  <div class="row">
+   <div class="col-md-12">
+
+ 
+  <form action="{{route('search')}}">
+  <div class="form-row">
+    <div class="form-group col-md-10">
+        <input type="text" class="form-control" id="search" name="search" placeholder="Введите имя или почту">
+    </div>
+    <div class="form-group col-md-2">
+        <button type="submit" class="btn btn-primary btn-block"> 
+          Поиск
+        </button>
+    </div>
+  </div>
+</form>
+</div>
+  <table class="table search_result" >
     <thead class="thead-light">
       <tr>
         <th scope="col">#</th>
@@ -39,24 +56,21 @@
         <td>
           @if($user->verification == 'verified')
           Верифицирован 
-          @elseif($user->verification == 'on_check') на проверке
-          @elseif($user->doc_photo == null && $user->doc_photo2 == null)Нет данных для проверки
-          @else отклонен 
+         @elseif($user->verification == 'rejected') Отклонен
+        
           @endif
         </td>
         <td>
-          @if($user->doc_photo != null && $user->doc_photo2 != null)
+       
             <a href="{{route('users_card', $user->id)}}" class="btn btn-primary">Просмотр</a>
-          @endif
+        
           @if($user->status !='ban'  &&  $user->id != 1)
           <button type="button" class="btn btn-danger js-btn" data-id="Сообщение" data-path="{{route('add_ban', $user->id)}}">
           Бан
         </button>
-       
        @elseif($user->id != 1)
         <a href="{{route('unblock', $user->id)}}" class="btn btn-primary">Разблокировать</a>
         @endif
-        
         </td>
       </tr>
       @endforeach
@@ -66,6 +80,8 @@
   @else
   <h4>Нет данных</h4>
   @endif
+  </div>
 </div>
-
+<script>
+</script>
 @endsection

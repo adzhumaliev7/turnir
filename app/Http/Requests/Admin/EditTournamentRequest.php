@@ -23,21 +23,21 @@ class EditTournamentRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required',
+         return [
+            'name' => '',
             'format' => '',
             'country' => '',
             'timezone' => '',
             'countries' => '',
             'description' => '',
-            'start_reg' => 'required',
+            'start_reg' => '',
             'price' => '',
-            'end_reg' => 'required',
+            'end_reg' => '',
             'slot_kolvo' => '',
             'ligue' => '',
             'rule' => '',
             'header' => '',
-            'tournament_start' => 'required',
+            'tournament_start' => '',
             'games_time' => '',  
         ];
     }

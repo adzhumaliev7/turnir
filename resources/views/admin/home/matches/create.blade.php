@@ -2,7 +2,6 @@
 @section('title', 'изменение матча')
 
 @section('content')
-
     <div class="container">
         @include('errorMessage')
         <form method="POST" action="{{route('matches.matchesResultStore')}}  " enctype="multipart/form-data">
@@ -95,6 +94,7 @@ value="{{$temp->kills_pts}}" placeholder="kills_pts">--}}
             <input type="submit" class="btn btn-primary" name="submit" value="save">
             <input type="submit" class="btn btn-danger" name="submit" value="draft"></input>
         </form>
+        <a href="{{route('team.show', $tournamentGroupTeam->id)}}" class="btn btn-link">Назад</a>
     </div>
 
 @endsection

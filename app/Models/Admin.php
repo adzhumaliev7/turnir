@@ -45,9 +45,9 @@ class Admin extends Model
    public static function getAllUsers()
    {
     
-         $users = DB::table('users')
+        $users = DB::table('users')
          ->leftJoin('users_profile2', 'users.id', '=' , 'users_profile2.user_id')
-         ->select('users.*', 'users_profile2.verification','users_profile2.doc_photo', 'users_profile2.doc_photo2', 'users_profile2.nickname',  'users_profile2.game_id')
+         ->select('users.*', 'users_profile2.verification','users_profile2.doc_photo', 'users_profile2.doc_photo2', 'users_profile2.nickname',  'users_profile2.game_id')->orderBy('users_profile2.id', 'desc')
          ->get();
          return $users->count() ? $users : null;
    }
@@ -78,10 +78,11 @@ class Admin extends Model
    }
    public static function getById($id)
    {
-      return DB::table('users_profile2')
+      $users = DB::table('users_profile2')
          ->join('users', 'users_profile2.user_id', '=', 'users.id')
          ->select('users_profile2.*', 'users.status')
          ->where('users_profile2.user_id', $id)->get();
+          return $users->count() ? $users : null;
    }
 
    public static function verified($id)
@@ -150,7 +151,7 @@ class Admin extends Model
       return DB::table('tournaments_members')
          ->join('users', 'tournaments_members.user_id', '=', 'users.id')
          ->join('users_profile2', 'tournaments_members.user_id', '=' ,'users_profile2.user_id' )
-         ->select('users.name', 'users.id',  'users_profile2.game_id')
+         ->select('users.name', 'users.id',  'users_profile2.game_id',  'users_profile2.nickname')
          ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)
          ->get();
    }
@@ -332,8 +333,9 @@ class Admin extends Model
       $is_has = DB::table('orders')->exists();
       if ($is_has == true) {
          return DB::table('orders')
-         ->join('users_profile2', 'orders.user_id' , '=', 'users_profile2.user_id')
-         ->select('orders.text', 'orders.user_id', 'orders.status', 'users_profile2.email')
+         ->join('users', 'orders.user_id' , '=', 'users.id')
+         ->select('orders.text', 'orders.user_id', 'orders.status', 'users.email', 'users.status as user_status' )
+         ->orderBy('orders.status', 'desc')
          ->get();
       } else return null;
    }
@@ -355,6 +357,7 @@ class Admin extends Model
          $orders = DB::table('orders_team')
          ->join('team', 'orders_team.team_id' , '=', 'team.id')
          ->select('orders_team.name as new_name', 'orders_team.team_id', 'orders_team.status', 'team.name')
+         ->orderBy('orders_team.status', 'desc')
          ->get();
          return $orders->count() ? $orders : null;
    }

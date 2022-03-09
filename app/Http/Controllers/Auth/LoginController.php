@@ -17,7 +17,7 @@ class LoginController extends Controller
             return redirect(route('main'));
         }
         $formFields = $request->only(['email','password'],'verified', true);
-        //$formFields['status']=NULL;
+           // $formFields['status']=NULL;
        // $formFields['verified']=true;
         if(Auth::attempt($formFields)){
             return redirect()->intended(route('main'));

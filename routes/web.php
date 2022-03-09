@@ -77,8 +77,8 @@ Route::any('/match/join/{id}', [\App\Http\Controllers\TournamentController::clas
 Route::get('/feedback', [\App\Http\Controllers\MainController::class, 'feedback'])->name('feedback');
 Route::post('/feedback/save', [\App\Http\Controllers\MainController::class, 'saveFeedback'])->name('save_feedback');
 Route::get('/rating', [\App\Http\Controllers\MainController::class, 'rating'])->name('rating');
-
-Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(function () {
+////////////////////
+Route::middleware(['role:admin|moderator', 'middleware' => 'auth'])->prefix('admin_panel')->group(function () {
     Route::get('/', [\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin');
     //  Route::get('/users',[\App\Http\Controllers\Admin\HomeController::class, 'usersView']);
     Route::get('/users', [\App\Http\Controllers\Admin\HomeController::class, 'usersView'])->name('users');
@@ -136,6 +136,41 @@ Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(functi
     Route::post('/help/edit_help_save/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'editHelpSave',])->name('edit_help_save');
 
     Route::get('/admin_feedback', [\App\Http\Controllers\Admin\HomeController::class, 'feedback',])->name('admin_feedback');
+    Route::get('/search' , [\App\Http\Controllers\Admin\HomeController::class, 'search'])->name('search');
+
+    // Тут начинаются мои машруты
+
+    //отоброжение всей таблицы в турнире сортирует по этапам группам и дублирование турнира
+    Route::get('/tournaments/{turnirId}/standings/{stageId?}/{groupId?}', [\App\Http\Controllers\Admin\PattyController::class, 'standings',] )->name('standings');
+    Route::get('/duplication/{turnirId}', [\App\Http\Controllers\Admin\PattyController::class, 'duplication',] )->name('duplication');
+
+    //Эти трёх машрута отображает форму для создание группы в нужном турнире и этапе а второй машрут сохраняет группу, третий машрут удаляет группу
+    Route::get('/group/{turnirId}/{stageId}/create', [\App\Http\Controllers\Admin\GroupController::class, 'create',] )->name('group.create');
+    Route::post('/group', [\App\Http\Controllers\Admin\GroupController::class, 'store',] )->name('group.store');
+    Route::get('/group/{groupId}', [\App\Http\Controllers\Admin\GroupController::class, 'destroy',] )->name('group.destroy');
+    Route::get('/group/{groupId}/edit', [\App\Http\Controllers\Admin\GroupController::class, 'edit',] )->name('group.edit');
+    Route::put('/group/{groupId}', [\App\Http\Controllers\Admin\GroupController::class, 'update',] )->name('group.update');
+    //Эти три машрута отображает форму для создание этапа в нужном турнире а второй машрут сохраняет этап третий удаляет этап
+    Route::get('/stoge{turnirId}/create', [\App\Http\Controllers\Admin\StageController::class, 'create',] )->name('stoge.create');
+    Route::post('/stoge', [\App\Http\Controllers\Admin\StageController::class, 'store',] )->name('stoge.store');
+    Route::get('/stoge/{stogeId}', [\App\Http\Controllers\Admin\StageController::class, 'destroy',] )->name('stoge.destroy');
+    Route::get('/stoge/{stogeId}/edit', [\App\Http\Controllers\Admin\StageController::class, 'edit',] )->name('stoge.edit');
+    Route::put('/stoge/{stogeId}', [\App\Http\Controllers\Admin\StageController::class, 'update',] )->name('stoge.update');
+    //Просмотр команды, форма показа добавление команд к группе, сохранение команд к группе и удаление команды из группы
+    Route::get('/team/{tournamentGroupTeamsId}', [\App\Http\Controllers\Admin\TeamsController::class, 'show',] )->name('team.show');
+    Route::get('/team/{turnirId}/{groupId}/create', [\App\Http\Controllers\Admin\TeamsController::class, 'create',] )->name('team.create');
+    Route::post('/team', [\App\Http\Controllers\Admin\TeamsController::class, 'store',] )->name('team.store');
+    Route::get('/team/{tournamentGroupTeamsId}/destroy', [\App\Http\Controllers\Admin\TeamsController::class, 'destroy',] )->name('team.destroy');
+    Route::post('/team/join/{turnirId}/{teamId}', [\App\Http\Controllers\Admin\TeamsController::class, 'joinTournament'])->name('team.join');
+    //для таблички при добавление команд к турниру
+    Route::get('/getDataTeamList', [\App\Http\Controllers\Admin\TeamsController::class, 'getDataList',] )->name('getDataTeamList');
+
+    //Машруты для матчей добавление матча к группе, сохранение матча к греппе, добавление результа матча команды, сохранения результата матча команде
+    Route::get('/matches/{teamId}/edit', [\App\Http\Controllers\Admin\MatchesController::class, 'edit',] )->name('matches.edit');
+    Route::post('/matches/matchesResultStore', [\App\Http\Controllers\Admin\MatchesController::class, 'matchesResultStore',] )->name('matches.matchesResultStore');
+    Route::get('/matches/{groupId}/create', [\App\Http\Controllers\Admin\MatchesController::class, 'create',] )->name('matches.create'); //+
+    Route::post('/matches/update', [\App\Http\Controllers\Admin\MatchesController::class, 'update',] )->name('matches.update');
+
 
 
     // Тут начинаются мои машруты
@@ -171,40 +206,7 @@ Route::middleware(['role:admin|moderator'])->prefix('admin_panel')->group(functi
     Route::get('/matches/{groupId}/create', [\App\Http\Controllers\Admin\MatchesController::class, 'create',] )->name('matches.create'); //+
     Route::post('/matches/update', [\App\Http\Controllers\Admin\MatchesController::class, 'update',] )->name('matches.update');
 
-
-
-    // Тут начинаются мои машруты
-
-    //отоброжение всей таблицы в турнире сортирует по этапам группам и дублирование турнира
-    Route::get('/tournaments/{turnirId}/standings/{stageId?}/{groupId?}', [\App\Http\Controllers\Admin\PattyController::class, 'standings',] )->name('standings');
-    Route::get('/duplication/{turnirId}', [\App\Http\Controllers\Admin\PattyController::class, 'duplication',] )->name('duplication');
-
-    //Эти трёх машрута отображает форму для создание группы в нужном турнире и этапе а второй машрут сохраняет группу, третий машрут удаляет группу
-    Route::get('/group/{turnirId}/{stageId}/create', [\App\Http\Controllers\Admin\GroupController::class, 'create',] )->name('group.create');
-    Route::post('/group', [\App\Http\Controllers\Admin\GroupController::class, 'store',] )->name('group.store');
-    Route::get('/group/{groupId}', [\App\Http\Controllers\Admin\GroupController::class, 'destroy',] )->name('group.destroy');
-    Route::get('/group/{groupId}/edit', [\App\Http\Controllers\Admin\GroupController::class, 'edit',] )->name('group.edit');
-    Route::put('/group/{groupId}', [\App\Http\Controllers\Admin\GroupController::class, 'update',] )->name('group.update');
-    //Эти три машрута отображает форму для создание этапа в нужном турнире а второй машрут сохраняет этап третий удаляет этап
-    Route::get('/stoge{turnirId}/create', [\App\Http\Controllers\Admin\StageController::class, 'create',] )->name('stoge.create');
-    Route::post('/stoge', [\App\Http\Controllers\Admin\StageController::class, 'store',] )->name('stoge.store');
-    Route::get('/stoge/{stogeId}', [\App\Http\Controllers\Admin\StageController::class, 'destroy',] )->name('stoge.destroy');
-    Route::get('/stoge/{stogeId}/edit', [\App\Http\Controllers\Admin\StageController::class, 'edit',] )->name('stoge.edit');
-    Route::put('/stoge/{stogeId}', [\App\Http\Controllers\Admin\StageController::class, 'update',] )->name('stoge.update');
-    //Просмотр команды, форма показа добавление команд к группе, сохранение команд к группе и удаление команды из группы
-    Route::get('/team/{tournamentGroupTeamsId}', [\App\Http\Controllers\Admin\TeamsController::class, 'show',] )->name('team.show');
-    Route::get('/team/{turnirId}/{groupId}/create', [\App\Http\Controllers\Admin\TeamsController::class, 'create',] )->name('team.create');
-    Route::post('/team', [\App\Http\Controllers\Admin\TeamsController::class, 'store',] )->name('team.store');
-    Route::get('/team/{tournamentGroupTeamsId}/destroy', [\App\Http\Controllers\Admin\TeamsController::class, 'destroy',] )->name('team.destroy');
-    Route::post('/team/join/{turnirId}/{teamId}', [\App\Http\Controllers\Admin\TeamsController::class, 'joinTournament'])->name('team.join');
-    //для таблички при добавление команд к турниру
-    Route::get('/getDataTeamList', [\App\Http\Controllers\Admin\TeamsController::class, 'getDataList',] )->name('getDataTeamList');
-
-    //Машруты для матчей добавление матча к группе, сохранение матча к греппе, добавление результа матча команды, сохранения результата матча команде
-    Route::get('/matches/{teamId}/edit', [\App\Http\Controllers\Admin\MatchesController::class, 'edit',] )->name('matches.edit');
-    Route::post('/matches/matchesResultStore', [\App\Http\Controllers\Admin\MatchesController::class, 'matchesResultStore',] )->name('matches.matchesResultStore');
-    Route::get('/matches/{groupId}/create', [\App\Http\Controllers\Admin\MatchesController::class, 'create',] )->name('matches.create'); //+
-    Route::post('/matches/update', [\App\Http\Controllers\Admin\MatchesController::class, 'update',] )->name('matches.update');
+    Route::get('/finish/{turnirId}', [\App\Http\Controllers\Admin\PattyController::class, 'finish',] )->name('finish');
 });
 
 

@@ -2,7 +2,6 @@
 @section('title', 'изменение матча')
 
 @section('content')
-
     <div class="container">
 
         <form method="POST" action="{{route('matches.update')}}  " enctype="multipart/form-data">
@@ -43,6 +42,7 @@
 
             <input type="submit" class="btn btn-danger" name="submit" value="draft"></input>
         </form>
+        <a href="{{route('standings',[ $group->tournament_id, $group->stage_id, $group->id])}}" class="btn btn-link">Назад</a>
     </div>
 
 @endsection

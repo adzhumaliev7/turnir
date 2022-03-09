@@ -16,5 +16,6 @@
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
+        <a href="{{route('standings',[ $turnir->id])}}" class="btn btn-link">Назад</a>
     </div>
 @endsection

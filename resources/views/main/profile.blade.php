@@ -48,26 +48,28 @@
         <div class="header__panel d-flex justify-content-center align-items-center flex-sm-nowrap flex-wrap">
           <div class="header__profile">
             @if($user_photo != NULL)
-            <img class="header__img" src="{{ asset("uploads/storage/img/userslogo/$user_photo")}}" width="150" height="150" alt="" alt="profile" />
+            <a href=""  data-toggle="modal" data-target="#ModalLogo">
+              <img class="header__img" src="{{ asset("uploads/storage/img/userslogo/$user_photo")}}" width="150" height="150" alt="" alt="profile" />
+            </a>
+ 
+           
             @else
-            <img class="header__img" src="http://placehold.it/150" alt="profile" />
-            <form action="{{route('save_photo')}}" method="POST" enctype="multipart/form-data">
-              @csrf
-              <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="logo">
-
-              <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
-            </form>
+           <a href=""  data-toggle="modal" data-target="#ModalLogo">
+             <img src="{{ asset("uploads/storage/img/default/noimage.png")}}"  width="250" height="200" class="" style="opacity: .8">
+              </a>
+         
             @endif
           </div>
           <div class="header__nick">
             @if(!$data==NULL)
             @foreach($data['data'] as $dat)
-            <h1 class="title  text-capitalize font-sz text--responsive" style=" color: white;">{{$user_name}}</h1>
+            <h1 class="title  text-capitalize font-sz text--responsive" style=" color: white;">{{$user_name}} <span  class=" subtitle--gray">({{$dat->user_id}})</span></h1>
             <sub class="subtitle subtitle--gray text--responsive"><? if ($dat->verification == 'verified') {
                                                                     echo "Верифицирован";
-                                                                  } else {
-                                                                    echo "Не верифицирован";
-                                                                  } ?></sub>
+                                                                  } elseif ($dat->verification == 'rejected'){
+                                                                    echo "Отклонен";
+                                                                  }else  echo "Не верифицирован";
+                                                                   ?></sub>
             <sub class="subtitle subtitle--gray text--responsive"><? if ($active == 1) {
                                                                     echo "Активирован";
                                                                   } else {
@@ -107,7 +109,7 @@
                 <clipPath id="clip0_107_89">
                   <rect width="20" height="17.7778" fill="white" />
                 </clipPath>
-              </defs>
+              </defs> 
             </svg>
           </button>
           <button class="accordion__btn nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
@@ -132,15 +134,27 @@
       </nav>
     </div>
     <div class="tab-content tab-panels" id="nav-tabContent">
+      <div class="container">
+
     @error('text')
-                <div class="alert alert-danger" style="font-size: 16px;">Введите текст сообщения</div>
+                <div class="alert alert-danger" style="font-size: 16px;">Введите текст сообщения      
+                <a type="button" class="close close_styles" data-dismiss="alert" aria-label="Close" >
+            <span aria-hidden="true">&times;</span>  </a><
+              /div>
+                
                 @enderror
       @if (session('error'))
-      <div class="alert alert-danger">{{ session('error') }}</div>
+      <div class="alert alert-danger" style="font-size: 16px;">{{ session('error') }}     
+      <a type="button" class="close close_styles" data-dismiss="alert" aria-label="Close" >
+            <span aria-hidden="true">&times;</span>  </a></div>
       @endif
       @if(Session::has('flash_meassage'))
-      <div class="alert alert-success">{{Session::get('flash_meassage')}}</div>
+      <div type="button" class="alert alert-success" style="font-size: 16px;">{{Session::get('flash_meassage')}}  
+      <a type="button" class="close close_styles" data-dismiss="alert" aria-label="Close" >
+            <span aria-hidden="true">&times;</span>  </a>
+          </div>
       @endif
+      </div>
       <div class="tab-pane overflow-hidden fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
         <div class="container">
 
@@ -150,7 +164,7 @@
           <? if ($dat->verification == 'verified') {
 
             $h4 = 'Аккаунт верифицирован';
-          } elseif ($dat->verification == 'on_check') {
+          } elseif ($dat->verification == 'on_check'  && $dat->doc_photo != null &&  $dat->doc_photo2 != null ) {
 
             $h4 = 'Аккаунт на проверке';
           } elseif ($dat->verification == 'rejected') {
@@ -170,10 +184,18 @@
           @endif
         
           @if($data != NULL)
-          <? if ($data['status'] == 0)
-            $disabled = 'disabled';
-          else
+          <?  if($data['verification'] == 'rejected'){
+      
             $disabled = '';
+        }
+         else {
+            if( $data['status'] == 0){
+            $disabled = 'disabled';
+            }else{
+               $disabled = '';
+            }
+    }
+          echo '<h4>'.$h4.'</h4>';
           ?>
            @include('main.profile.update_profile')
           @else
@@ -202,10 +224,16 @@
           @endif
         
           @if(Session::has('flash_meassage2'))
-          <div class="alert alert-success">{{Session::get('flash_meassage2')}}</div>
+          <div class="alert alert-success">{{Session::get('flash_meassage2')}}
+          <a type="button" class="close close_styles" data-dismiss="alert" aria-label="Close" >
+            <span aria-hidden="true">&times;</span>  </a>
+          </div>
           @endif
           @if(Session::has('flash_meassage_error'))
-          <div class="alert alert-danger">{{Session::get('flash_meassage_error')}}</div>
+          <div class="alert alert-danger">{{Session::get('flash_meassage_error')}}
+          <a type="button" class="close close_styles" data-dismiss="alert" aria-label="Close" >
+            <span aria-hidden="true">&times;</span>  </a>
+          </div>
           @endif
           @if($status == NULL)
           @if($active == 1)
@@ -302,17 +330,46 @@
             @csrf
             <button class="submit-btn btn--size btn--mr">Удалить профиль</button>
           </form>
+
+
+         
         </div>
       </div>
     </div>
   </div>
 </main>
 
+
+ <div class="modal fade" id="ModalLogo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+
+                        <div class="modal-content" style="font-size: 16px;">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Загрузить аватар</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="font-size: 16px;">
+                                <form action="{{route('save_photo')}}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="logo">
+
+                                    <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
 <div class="modal fade" id="ModalQuery" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle" style="font-size:16px;">Сообщеdние</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle" style="font-size:16px;">Сообщение</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

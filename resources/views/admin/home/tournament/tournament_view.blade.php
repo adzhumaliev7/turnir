@@ -2,7 +2,7 @@
 
 @section('content') 
 <div style="margin-left:100px;"> 
-<form method="POST" action="{{route('edit_tournament', $id)}}">
+<form method="POST" action="{{route('edit_tournament', $id)}}" enctype="multipart/form-data">
      @csrf
      @foreach($tournaments as $tournament)
   <div class="form-row">
@@ -58,7 +58,20 @@
   </div>
   <div class="form-group col-md-4">
       <label for="inputPassword4">Обложка</label>
+      @if($tournament->file_label != null)
+     
       <img src="{{ asset("uploads/storage/adminimg/turnir_logo/$tournament->file_label")}}"  value="{{$tournament->file_label}}" width="250" height="200" class="" style="opacity: .8">
+ 
+     <input class="input-footer " name="file_label" placeholder="Обложка" type="file">
+       @else
+       <label for="inputPassword4">Добавить обложку</label>
+       <input class="input-footer " name="file_label" placeholder="Обложка" type="file">
+
+         @error('file_label')
+             <div class="alert alert-danger">Загрузите фотографию</div>
+           @enderror
+
+          @endif 
     </div>
  <div class="form-group col-md-8">
       <label for="inputPassword4">Описание турнира</label>

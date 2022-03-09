@@ -63,4 +63,11 @@ class PattyController extends Controller
         return redirect()->back();
     }
 
+    public function finish($turnirId, Request $request){
+        $turnir = Tournament::findOrFail($turnirId);
+        $turnir->active = 0;
+        $turnir->save();
+        return redirect()->back();
+    }
+
 }

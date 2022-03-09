@@ -20,6 +20,7 @@ class UsersProfile extends Model
       
           $data['data'] = DB::table('users_profile2')->where('user_id', $id)->get();
           $data['status'] = DB::table('users_profile2')->where('user_id', $id)->value('status');
+          $data['verification'] = DB::table('users_profile2')->where('user_id', $id)->value('verification');
           return $data['data']->count() ? $data : null;
    }
    public static function delete_profile($id){
@@ -80,7 +81,10 @@ class UsersProfile extends Model
    }
 
    public static function setUserPhoto($data){
-      return DB::table('users_logo')->insert($data);
+     $is_has = DB::table('users_logo')->where('user_id', $data['user_id'])->exists();
+         if($is_has==true){
+      return DB::table('users_logo')->where('user_id', $data['user_id'])->update(['photo'=>$data['photo']]);
+    }else  return DB::table('users_logo')->insert($data);
    }
    public static function getUserPhoto($id){
       return DB::table('users_logo')->select('photo')->where('user_id', $id)->value('photo');

@@ -19,5 +19,6 @@
 
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
+        <a href="{{route('standings',[ $group->tournament_id, $group->stage_id, $group->id])}}" class="btn btn-link">Назад</a>
     </div>
 @endsection

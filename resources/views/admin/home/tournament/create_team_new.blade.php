@@ -63,7 +63,7 @@
             </div>
         </div>
     </div>
-
+    <a href="{{route('standings',[ $turnir->id, $stage->id, $group->id])}}" class="btn btn-link">Назад</a>
 <script>
 
 </script>

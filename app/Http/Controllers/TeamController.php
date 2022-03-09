@@ -48,6 +48,7 @@ class TeamController extends Controller
         if($link == $link_){
          $team = Team::getTeamName($team_id);
         $user_id = Auth::user()->id;
+        $status = User::getUsersStatus($user_id);
         $data = array(
             'team_id' => $team_id,
             'user_id' => $user_id,
@@ -55,7 +56,8 @@ class TeamController extends Controller
         );
         return view('main.join_to_team', [
             'team' => $team,
-            'id' => $team_id
+            'id' => $team_id, 
+            'status' =>$status
         ]); }
         else 
     		abort('404');
