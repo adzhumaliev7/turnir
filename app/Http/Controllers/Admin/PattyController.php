@@ -43,6 +43,11 @@ class PattyController extends Controller
 
         foreach ($turnir->order as $order) {
             $newOrder = $order->replicate()->fill(['tournament_id' => $newTurnir->id]);
+
+            foreach ( $turnir->members->where('team_id',$order->team_id ) as $member){
+                $newMember = $member->replicate()->fill(['tournament_id' => $newTurnir->id]);;
+                $newMember->save();
+            }
             $newOrder->save();
         }
 

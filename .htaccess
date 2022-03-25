@@ -1,19 +1,8 @@
-Options -MultiViews -Indexes
- 
-RewriteEngine On
-# Handle Authorization Header
-RewriteCond %{HTTP:Authorization} .
-RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-# Redirect Trailing Slashes If Not A Folder...
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_URI} (.+)/$
-RewriteRule ^ %1 [L,R=301]
-# Handle Front Controller...
-RewriteCond %{REQUEST_URI} !(\.css|\.js|\.png|\.jpg|\.gif|robots\.txt)$ [NC]
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.php [L]
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_URI} !^/public/
-RewriteRule ^(css|js|img|admin|uploads)/(.*)$ public/$1/$2 [L,NC]
+RewriteEngine on 
+RewriteCond %{HTTP_HOST} ^(www.)?showmatch2$ 
+RewriteCond %{REQUEST_URI} !^/public/ 
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteCond %{REQUEST_FILENAME} !-d 
+RewriteRule ^(.*)$ /public/$1 
+RewriteCond %{HTTP_HOST} ^(www.)?showmatch2$ 
+RewriteRule ^(/)?$ public/index.php [L]

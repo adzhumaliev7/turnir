@@ -18,7 +18,7 @@
     </div>
     <nav class=" navbar navbar-expand-md navbar p-3 mb-5 bg-body rounded bg--none navbar-z">
         <div class=" container-fluid header-indent">
-            <a class="navbar-brand title text-uppercase logo-indent-mr text-white pubg-hover px-2" href="{{route('main')}}">showmatch</a>
+            <a class="navbar-brand title text-uppercase logo-indent-mr text-white pubg-hover px-2" href="{{route('main')}}">bigplay</a>
             <button class="toggle-menu toggle-click button--none">
                 <span></span>
             </button>
@@ -51,7 +51,7 @@
                     @if($team->logo!= null)
                     <img class="brd-img" src="{{ asset("uploads/storage/img/teamlogo/$team->logo")}}" width="224" height="224" alt=""></img>
                     @else
-                    <img class="brd-img" src="http://placehold.it/224" alt=""></img>
+                    <img class="brd-img" src="{{ asset("uploads/storage/img/default/noimage.png")}}"  width="224" height="224" class="" style="opacity: .8">
                     @endif
                 </div>
             </div>
@@ -92,6 +92,9 @@
                 <button class="nav-link nav-btn" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Настройки</button>
             </li>
             @endif
+            <li class="nav-item" role="presentation">
+                <a href="{{route('profile')}}" class="nav-link nav-btn" >К профилю</a>
+            </li>
         </ul>
 
         <div class="tab-content" id="myTabContent">
@@ -133,7 +136,7 @@
                         @if($chek_admin == 'true')
                         @if($member->role=='member')
                         <div class="">
-                            <a href="{{route('add_admin', [$member->user_id, $team_id])}}" class="orange item__tile item__tile--mr" onclick="return alert();">apply admin</a>
+                            <a href="{{route('add_admin', [$member->user_id, $team_id, $user_id])}}" class="orange item__tile item__tile--mr" onclick="return alert();">apply admin</a>
                             <a id="delete" href="{{route('delete_member', [$member->user_id, $team_id])}}" class="orange item__tile"  onclick="return alert();">delete</a>
                         </div>
                         @endif
@@ -166,6 +169,8 @@
                     }
             }
             </script>
+            
+          
 <script>
     
 function myFunction() {

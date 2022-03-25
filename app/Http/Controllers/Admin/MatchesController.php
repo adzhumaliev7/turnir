@@ -78,6 +78,7 @@ class MatchesController extends Controller
             $insert[$key]['login']   = $match['login'];
             $insert[$key]['password'] = $match['password'];
             $insert[$key]['id'] = $match['update'] ?? false;
+            $insert[$key]['date'] = $match['date'] ?? '';
         }
 
         $deletedIds = json_decode($data['deletedIds']);

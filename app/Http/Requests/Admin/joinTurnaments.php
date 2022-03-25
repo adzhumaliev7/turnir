@@ -27,4 +27,15 @@ class joinTurnaments extends FormRequest
             'members' => 'array|required|min:3|max:4|exists:users,id'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'members.array' => 'Должен быть в виде массива',
+            'members.*.required' => 'Участники должны быть обязательны',
+            'members.min' => 'Для добавление нужно минимум 3 участника',
+            'members.max' => 'Для добавление нужно максимум 4 участника',
+            'members.*.exists' => 'Ошибка значение id пользователя должно существовать в базе данных',
+        ];
+    }
 }

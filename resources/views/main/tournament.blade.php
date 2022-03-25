@@ -27,7 +27,7 @@
   </div>
   <nav class=" navbar navbar-expand-md navbar p-3 mb-5 bg-body rounded bg--none navbar-z">
     <div class=" container-fluid header-indent">
-      <a class="navbar-brand title text-uppercase logo-indent-mr text-white pubg-hover px-2" href="{{route('main')}}">showmatch</a>
+      <a class="navbar-brand title text-uppercase logo-indent-mr text-white pubg-hover px-2" href="{{route('main')}}">bigplay</a>
       <button class="toggle-menu toggle-click button--none">
         <span></span>
       </button>
@@ -71,10 +71,31 @@
             </div>
             <div class="pubg-block">
               <h4 class="pubg__title pubg__title--margin">{{$tournament->name}}</h4>
+              <span class="pubg__price">
+                @if($date  <= $tournament->end_reg && $tournament->active != 0)
+                  Игра
+                @elseif($date >= $tournament->start_reg && $date < $tournament->end_reg && $tournament->active != 0)
+                Регистрация
+                @else Завершен
+               @endif
+
+
+
+                
+              </span>
               <p class="pubg__text">{{$tournament->tournament_start}} {{$tournament->games_time}} {{$tournament->country}}</p>
               <span class="pubg__price">Призовой фонд: {{$tournament->price}}</span>
               <p class="pubg__text pubg__text--margin">Режим проведения: squad(4)</p>
-              <a href="{{ route('match', $tournament->id) }}" class="pubg__btn pubg__text--margin">Принять участие</a>
+
+              @if($date  <= $tournament->end_reg && $tournament->active != 0)
+              <a href="{{ route('match', $tournament->id) }}" class="pubg__btn pubg__text--margin">Смотреть</a>
+                @elseif($date >= $tournament->start_reg && $date < $tournament->end_reg && $tournament->active != 0)
+                <a href="{{ route('match', $tournament->id) }}" class="pubg__btn pubg__text--margin">Принять участие</a>
+                @else  <a href="{{ route('match', $tournament->id) }}" class="pubg__btn pubg__text--margin">Смотреть</a>
+               @endif
+
+               
+             
             </div>
           </div>
         </div>

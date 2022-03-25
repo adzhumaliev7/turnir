@@ -23,10 +23,15 @@ class RegisterController extends Controller
             'name' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required',  'min:4','confirmed'],
+            'country' => ['required'],
+            'g-recaptcha-response' => 'required|captcha'
         ]);
     }
 
-
+    public function index(){
+        $countries = config('app.countries');
+        return view('auth.registration', compact('countries'));
+    }
     public function create(Request $request){
        /*  if(Auth::check()){
             return redirect(route('user.main'));

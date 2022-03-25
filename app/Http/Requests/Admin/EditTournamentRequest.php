@@ -33,6 +33,8 @@ class EditTournamentRequest extends FormRequest
             'start_reg' => '',
             'price' => '',
             'end_reg' => '',
+            'start_reg_time' => '',
+            'end_reg_time' => '',
             'slot_kolvo' => '',
             'ligue' => '',
             'rule' => '',

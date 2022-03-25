@@ -16,12 +16,10 @@
         </thead>
         <tbody>
             @foreach($orders as $order)
-
             <tr>
                 <td scope="row">{{$order->team_id}}</td>
                 <td>{{$order->name}}</td>
                 <td>{{$order->new_name}}</td>
-
                 <td>
                     @if($order->status == 0) На рассмотрении
                     @elseif($order->status == 1) Принят
@@ -30,26 +28,17 @@
                 </td>
                 <td>
                     @if($order->status == 0)
-                    <button href="" class="btn btn-primary js-btn-apply"  data-id="{{$order->new_name}}" data-path="{{route('orders_team_apply', $order->team_id)}}">Принять</button>
-                   
-                    <button href="" type="button"  class="btn btn-danger js-btn" data-id="Сообщение об отказе" data-path="{{route('orders_team_rejected', $order->team_id )}}"> 
-                        Отклонить</button>
-                  
-                    
+                    <button href="" class="btn btn-primary js-btn-apply"  data-id="{{$order->new_name}} " data-path="{{route('orders_team_apply',[$order->team_id, $order->name])}}">Принять</button>
+                    <button href="" type="button"  class="btn btn-danger js-btn" data-id="Сообщение об отказе" data-path="{{route('orders_team_rejected', $order->team_id )}}">Отклонить</button>
                     @endif
                 </td>
             </tr>
-
             @endforeach
         </tbody>
-        
     </table>
     {{$orders->links()}}
     @else
     <h4>Нет данных</h4>
     @endif
 </div>
-               
-
-
 @endsection

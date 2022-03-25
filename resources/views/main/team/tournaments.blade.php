@@ -10,6 +10,8 @@
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="stage_1">
                        @if($tournaments != null)
+
+                       
                             <table class="table" style="font-size: 16px;">
                                 <thead class=" thead-light">
                                     <tr>

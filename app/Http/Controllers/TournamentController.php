@@ -13,118 +13,35 @@ class TournamentController extends Controller
 {
      public function index()
      {
-
           if (Auth::user() != null) {
                $id = Auth::user()->id;
                $mail = Auth::user()->email;
           } else $mail = null;
           $tournaments = Tournament::getTournaments();
-          
+          $date = date('Y-m-d'); 
           if ($tournaments == NULL) {
                $tournaments == "";
           }
-
           return view('main.tournament', [
                'mail' => $mail,
                'tournaments' => $tournaments,
+               'date' => $date,
           ]);
      }
-
-    
-
-   /*   public function matchView($id)
-     {
-    
-          $tournaments = Tournament::getTournamentById($id);                    // инфа турнира 
-          $teams_count = Tournament::teamsCount($id);                           // колво участников          
-         
-          foreach ($tournaments as $tournament) {
-               $time = (array) $tournament;
-          }
-
-          $date = date('Y-m-d');  /// надо для проверки даты начала турнира
-          if ($date > $time['tournament_start']) {
-               $turnir  = 'close';
-          } else {
-               $turnir = 'active';
-          }
-        //////////////////////////////////////// разные проверки на капитана, на команлды и т.д ковнокод
-          if (Auth::user() != null) {
-               $user_id = Auth::user()->id;
-               $mail = User::getEmail($user_id);
-               $teams = Tournament::getTeams($id, $user_id); //команды зарегистрированные в турнир 
-               $userdata = Tournament::checkTeam($user_id);
-              
-               if ($teams == NULL) {
-                    $teams = "";
-               }
-               if ($userdata != NULL) {
-                    $userdata = (array) $userdata; 
-                  
-                    $members = Tournament::getMembers($userdata['team_id']);
-                    
-                    if ($userdata['role'] == 'captain') {
-                         if ($teams != NULL) {
-                              foreach ($teams as $key) {
-                                   $key = (array) $key;
-                              }
-                              if ($user_id != $key['user_id']) {
-                                   $checked = 'captain';
-                              } else   $checked = 'has';
-                         } else $checked = 'captain';
-                    } else if ($userdata['role'] == 'member') {
-                         if ($teams != NULL) {
-                              foreach ($teams as $key) {
-                                   $key = (array) $key;
-                              }
-                              if ($userdata['team_id'] != $key['team_id']) {
-                                   $checked = 'member';
-                              } else   $checked = 'has';
-                         } else $checked = 'member';
-                    } else $checked = 'has';
-               } else {
-                    $checked = NULL;
-                    $members =null;
-               }
-          }else {
-               $mail = null;
-               $checked = null;
-               $members =null;
-               $teams ="";
-          }
-          return view('main.match', [
-               'mail' => $mail,
-               'tournaments' => $tournaments,
-               'teams' => $teams,
-               'checked' => $checked,
-               'turnir' => $turnir,
-               'members' => $members,
-               'date' => $date ,
-               'teams_count'=> $teams_count,
-          ]);
-     } */
      public function matchViewNew($turnirId, $stageId = null, $groupId = null,  Request $request){
           $tournament = Tournament::withCount('order', 'stages')->findOrFail($turnirId);
           $date = date('Y-m-d');  /// надо для проверки даты начала турнира
+          $teams_count = Tournament::teamsCount($turnirId);
+            //команды зарегистрированные в турнир
   
-          //команды зарегистрированные в турнир
           $teams = Tournament::getTeams($turnirId);
   
-          //Дефолтные значения если будет капитан то их перезапишит
-          $members = null;
-          $tournametTeam = false;
+          $userTeam = Auth::user()->team ?? false;
+        
+          $tournametTeam = $userTeam ? $userTeam->order->where('tournament_id', $tournament->id)->first() : false;
+          $members = $userTeam ? $userTeam->teammatesTeam->load('user') : false;
   
-          $captainTeamMembers = Auth::check()? Auth::user()->teamMembers->where('role', 'captain')->first(): false;
-          if ($captainTeamMembers) { // если есть капитан
-            
-              $members = Tournament::getMembers($captainTeamMembers->team_id, $turnirId); //TODO Тут тадо сделать нормальную логику
-           //  dd(Tournament::test(2));
-            //  dd($members);
-           /*    DB::enableQueryLog(); 
-           dd(Tournament::test(2));
-           dd(DB::getQueryLog()); */
-              $tournametTeam = $tournament->order()->where('team_id', $captainTeamMembers->team_id)->first();
-          }
+  
           if (!$stageId) $stage = $tournament->stages->first();
           else $stage = Stage::findOrFail($stageId)->load('groups');
   
@@ -137,12 +54,11 @@ class TournamentController extends Controller
                   $q->orderBy('kills_pts', 'desc');
               }, 'tournamentGroupTeams.group.matches.res', 'matches', 'tournamentGroupTeams.team.teammates']);
           }
-  
-          return view('main.match_new', compact('tournament', 'teams', 'members', 'date', 'captainTeamMembers', 'tournametTeam', 'stage', 'group'));
+          return view('main.match_new', compact('tournament', 'teams_count','teams', 'members', 'date', 'tournametTeam', 'stage', 'group', 'userTeam'));
       }
   
        public function matchView($turnirId, $stageId = null, $groupId = null,  Request $request){
-            $tournament = Tournament::findOrFail($turnirId);
+        /*     $tournament = Tournament::findOrFail($turnirId);
             $tournament->withCount('order')->get();
             $teams_count = Tournament::teamsCount($turnirId);
   
@@ -193,7 +109,7 @@ class TournamentController extends Controller
                 'is_has_team' => $is_has_team,
                 'status' => $get_team_status,
             ]);
-  
+   */
        }
      public function joinTournament($id, Request $request)
      {

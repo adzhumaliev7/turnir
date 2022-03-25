@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="{{ asset("admin/plugins/summernote/summernote-bs4.min.css")}}">
     <link rel="stylesheet" href="{{ asset("css/jquery.dropdown.min.css")}}">
     <link rel="stylesheet" href="{{ asset("css/pinger.css")}}">
-
+    <link rel="stylesheet" href="{{ asset("css/datepicker.min.css")}}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
 </head>
 <style>
@@ -98,21 +98,18 @@
             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
-            @if($check == false)   
+            @if($check == false)
             <li class="nav-item">
               <a href="{{route('moderators')}}" class="nav-link">
                 <i class="nav-icon far fa-alt"></i>
                 <p>
-                  Модераторы  
-            
+                  Модераторы
                 </p>
-             
               </a>
             </li>
             @endif
             <li class="nav-item menu-is-opening menu-open">
               <a href="#" class="nav-link">
-
                 <p>
                   Пользователи
                 </p>
@@ -124,18 +121,24 @@
                     <p>Все пользователи</p>
                   </a>
                 </li>
-              <!--   <li class="nav-item">
-                  <a href="{{route('users')}}" class="nav-link">
+               <li class="nav-item">
+                  <a href="{{route('verifiedAt')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Верификация</p>
+                    <p>Верифицированные</p>
                   </a>
-                </li> -->
+                </li> 
                 <li class="nav-item">
-                  <a href="{{route('orders')}}" class="nav-link">
+                  <a href="{{route('verification')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Заявки  @if($orders != null) (<span style="color: #F23434"><bold>{{$orders}}</bold></span>) @endif</p>
+                    <p>Ожидающие верификации</p>
                   </a>
-                </li>
+                </li> 
+                <li class="nav-item">
+                  <a href="{{route('blocked')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Заблокированные </p>
+                  </a>
+                </li> 
               </ul>
             </li>
 
@@ -148,13 +151,12 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{route('teams')}}" class="nav-link">
+              <a href="{{route('orders_team')}}" class="nav-link">
                 <i class="nav-icon far fa-alt"></i>
                 <p>
                   Редактирование названия команд  @if($orders_team != null) (<span style="color:#F23434"><bold>{{$orders_team}}</bold></span>) @endif
                 </p>
                 <p>
-                   
                 </p>
               </a>
             </li>
@@ -179,7 +181,6 @@
 
                 <p>
                   Турниры
-
                 </p>
               </a>
               <ul class="nav nav-treeview" style="display: block;">
@@ -195,8 +196,21 @@
                     <p>Черновики</p>
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a href="{{route('log_apply_teams')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Лог принятых команд </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{route('log_rejected_teams')}}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Лог отклоненных команд</p>
+                  </a>
+                </li>
               </ul>
             </li>
+
           </ul>
         </nav>
         <!-- /.sidebar-menu -->
@@ -245,7 +259,7 @@
                                     <form method="POST" action="">
                                         @csrf
                                         <input name="name" id="exampleModalLongTitle" cols="50" rows="10" value="" readonly="readonly"> </input>
-
+                                    
                                 </div>
                                 <div class="modal-footer">
 
@@ -294,13 +308,44 @@
     <script src="{{asset("admin/dist/js/pages/dashboard.js")}}"></script>
 
       <script src="{{asset("js/jquery.dropdown.min.js")}}"></script>
-
+      <script src="{{asset("js/datepicker.min.js")}}"></script>
 
       <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
       <script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 
-
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+      <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.7/summernote.js"></script>
+      <script src="{{asset("js/scriptAdmin.js")}}"></script>
     <script>
+
+        $(document).ready(function() {
+
+            $('.rules').summernote({
+              disableDragAndDrop: true,
+        height: 300,
+        emptyPara: '',
+        lang: 'ru-RU',
+        toolbar: [
+        ['codeview', ['codeview']],
+        ['style', ['style']],
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['font', ['strikethrough', 'superscript', 'subscript']],
+        ['fontname', ['fontname']],
+        ['fontsize', ['fontsize']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['height', ['height']],
+        ['table', ['table']],
+
+        ['view', ['fullscreen', 'codeview', 'help']],
+        ['undo', ['undo']],
+        ['redo', ['redo']],
+        ],
+                });
+        });
+    </script>
+
+   <script>
       var modal = document.getElementById("myModal");
 
       // Get the button that opens the modal
@@ -326,7 +371,8 @@
         }
       }
     </script>
-         <script>
+
+   <script>
       const $modal = $('#ModalWindow');
       const $titleCont = $modal.find('#ModalWindowTitle');
 
@@ -346,7 +392,8 @@
     });
 });
     </script>
-                        <script>
+
+    <script>
       const $modal1 = $('#ModalApplyTeamName');
       //const $titleCont1 =  document.getElementById('#exampleModalLongTitle');
       const inputType = document.querySelector('input[name="name"]');
@@ -367,20 +414,50 @@
 });
     </script>
 
+    <script>
 
+        $(document).on('click', '.datepickerInput', function (event) {
+            var myDatepicker = $(event.target).datepicker({
+                timepicker: true,
+                clearButton: true,
+                minDate: new Date(),
+                dateTimeSeparator: " "
+            }).data('datepicker');
 
+            myDatepicker.show();
+        });
+        // $('.datepickerInput').datepicker({
+        //     timepicker: true,
+        //     clearButton: true,
+        //     minDate: new Date(),
+        //     // altField: $('input[name="date_en"]'),
+        //     dateTimeSeparator: " "
+        // });
+        $('input[name="start_reg"]').datepicker({
+            timepicker: true,
+            clearButton: true,
+            minDate: new Date(),
+            dateTimeSeparator: " "
+        });
 
-      <script>
+        $('input[name="end_reg"]').datepicker({
+            timepicker: true,
+            clearButton: true,
+            minDate: new Date(),
+            dateTimeSeparator: " "
+        });
+
 
           function format ( d ) {
             let turnirId = $('.usersTable').data('turnirid')
-            let teamId = d.members[0]['team_id']
+            let teamId = d.id
+              console.log(d)
               if( d.members.length) {
                   let tr = ''
                   for (index = 0; index < d.members.length ?? []; ++index) {
                       // console.log(d.members[index])
                       tr += ` <tr>
-                        <td>${d.members[index].name} </td>
+                        <td>${d.members[index].user.name} </td>
                         <td><input type="checkbox" name="members[]" value="${d.members[index]['user_id']}"></td>
                     </tr`
                   }
@@ -440,8 +517,6 @@
           });
 
 
-
-
           $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
               $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
           } );
@@ -461,7 +536,7 @@
               }
 
               $.ajax({
-                  url: "http://showmatch/admin_panel/team",
+                  url: "{{route('team.store')}}",
                   method: "POST",
                   headers: {
                       'X-CSRF-Token': $('meta[name="_token"]').attr('content')
@@ -491,18 +566,22 @@
                     <h4>Матч ${count}</h4>
                     <div class="form-row">
 
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-2">
                             <label for="inputEmail4">Название матча</label>
                             <input type="text" name="matches[${count}][match_name]" class="form-control" placeholder="Введите название матча" value="Матч ${count}">
                         </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputEmail4">Login</label>
+                            <input type="text" name="matches[${count}][login]" class="form-control" placeholder="Введите Login матча" value="">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="inputEmail4">Password</label>
+                            <input type="text" name="matches[${count}][password]" class="form-control" placeholder="Введите пароль матча" value="">
+                        </div>
                         <div class="form-group col-md-3">
-                                <label for="inputEmail4">Login</label>
-                                <input type="text" name="matches[${count}][login]" class="form-control" placeholder="Введите Login матча" value="">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="inputEmail4">Password</label>
-                                <input type="text" name="matches[${count}][password]" class="form-control" placeholder="Введите пароль матча" value="">
-                            </div>
+                            <label for="inputEmail4">Дата</label>
+                            <input type="text" name="matches[${count}][date]" class="form-control datepickerInput datepicker-here" placeholder="Дата матча" value="">
+                        </div>
                         <div class="form-group col-md-3">
                             <label for="inputPassword4"></label>
                             <span class="btn btn-danger form-control deleteMatches2">Удалить матч</span>
@@ -534,29 +613,20 @@
           });
 
           $(document).ready(function(){
-      $('#search').on('keyup', function(){
-        var query = $($this).val();
-        $.ajax({
-          url:"search",
-          type:"GET",
-          data:{'search':query},
-          success:function(data){
-            $('#search_result').html(data);
-          }
-        });
-      });
-  });
+              $('#search').on('keyup', function(){
+                var query = $($this).val();
+                $.ajax({
+                  url:"search",
+                  type:"GET",
+                  data:{'search':query},
+                  success:function(data){
+                    $('#search_result').html(data);
+                  }
+                });
+              });
+          });
 
-      </script>
-
-
-
-
-
-
-
-
-
+    </script>
 </body>
 
 </html>

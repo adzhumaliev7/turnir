@@ -11,7 +11,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  
 
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <!-- fontawesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
   <!-- Bootstrap -->
@@ -30,7 +33,7 @@
         <nav class="main-nav">
 
           <div class="logo">
-            <a href="index.html" class="title text-light crs-pointer">showmatch</a>
+            <a href="index.html" class="title text-light crs-pointer">bigplay</a>
           </div>
 
           <div class="blocks-icons">
@@ -117,8 +120,6 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="application/javascript"></script>
-
-
       <script src="https://cdn.rawgit.com/hilios/jQuery.countdown/2.2.0/dist/jquery.countdown.min.js" type="application/javascript"></script>
 
       <script type="application/javascript">
@@ -130,7 +131,112 @@
           });
         });
       </script>
-      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script>
+    function viewdiv(id) {
+        var el = document.getElementById(id);
+        var link = document.getElementById('toggleLink');
+        if (el.style.display == "block") {
+            el.style.display = "none";
+            link.innerText = link.getAttribute('data-text-hide');
+        } else {
+            el.style.display = "block";
+            link.innerText = link.getAttribute('data-text-show');
+        }
+    }
+
+</script>
+<!-- <script>
+         $('#changepassword').submit(function(e){
+            e.preventDefault();
+            $.ajax({
+                type:'POST',
+                url:  e.target.action,
+                data: $(this).serialize(),
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (data){
+                 
+                },
+                error: function (data) {
+ 
+                }
+            });
+        }); 
+    </script> -->
+<!-- <script type="text/javascript">
+       $(document).ready(function() {
+           $(".btn-submit").click(function(e){
+               e.preventDefault();
+               var _token = $("input[name='_token']").val();
+               var old_password = $("input[name='old_password']").val();
+               var password = $("input[name='password']").val();
+               var password_confirmation = $("input[name='password_confirmation']").val();
+               
+          
+               $.ajax({
+                   url: "{{ route('changepassword') }}",
+                   type:'POST',
+                   data: {_token:_token, old_password:old_password, password:password, password_confirmation:password_confirmation},
+                   success: function(data) {
+                       if($.isEmptyObject(data.error)){
+                           alert(data.success);
+                       }else{
+                           printErrorMsg(data.error);
+                       }
+                   }
+               });
+          
+           }); 
+          
+           function printErrorMsg (msg) {
+               $(".print-error-msg").find("ul").html('');
+               $(".print-error-msg").css('display','block');
+               $.each( msg, function( key, value ) {
+                   $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+               });
+           }
+       });
+   
+   
+   </script> -->
+   <script type="text/javascript">
+       
+       $(document).ready(function() {
+           $(".btn-submit").click(function(e){
+               e.preventDefault();
+          
+               var _token = $("input[name='_token']").val();
+               var oldpassword = $("input[name='oldpassword']").val();
+               var password = $("input[name='password']").val();
+               var password_confirmation = $("input[name='password_confirmation']").val();
+            
+               $.ajax({
+                   url: "{{ route('changepassword') }}",
+                   type:'POST',
+                   data: {_token:_token, oldpassword:oldpassword, password:password, password_confirmation:password_confirmation},
+                   success: function(data) {
+                       if($.isEmptyObject(data.error)){
+                           alert(data.success);
+                       }else{
+                           printErrorMsg(data.error);
+                       }
+                   }
+               });
+          
+           }); 
+          
+           function printErrorMsg (msg) {
+               $(".print-error-msg").find("ul").html('');
+               $(".print-error-msg").css('display','block');
+               $.each( msg, function( key, value ) {
+                   $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+               });
+           }
+       });
+   
+   </script>
+
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 

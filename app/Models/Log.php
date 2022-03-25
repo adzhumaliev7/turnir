@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Log extends Model
+{
+    use HasFactory;
+
+
+    protected $fillable = ['log_type', 'old_value', 'new_value', 'description'];
+
+    public function model(){
+        return $this->morphTo();
+    }
+
+    public function type() {
+        return $this->hasOne( LogType::class, 'id', 'log_type');
+    }
+
+    public function newAdminUser(){
+        return $this->hasOne( User::class, 'id', 'new_value');
+    }
+
+    public function oldAdminUser(){
+        return $this->hasOne( User::class, 'id', 'old_value');
+    }
+}

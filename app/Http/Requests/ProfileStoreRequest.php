@@ -26,8 +26,8 @@ class ProfileStoreRequest extends FormRequest
         return [
             'phone' => '',
             'fio' => '',
-            'login' => '',
-            'email' => '',
+            'name' => '',
+           
             'country' => '',
             'timezone' => '',
             'city' => '',

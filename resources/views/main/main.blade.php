@@ -34,7 +34,7 @@
         
             <nav class=" navbar navbar-expand-md navbar p-3 mb-5 bg-body rounded bg--none navbar-z">0
                 <div class=" container-fluid header-indent">
-                    <a class="navbar-brand title text-uppercase logo-indent-mr text-white pubg-hover px-2" href="{{route('main')}}">showmatch</a>
+                    <a class="navbar-brand title text-uppercase logo-indent-mr text-white pubg-hover px-2" href="{{route('main')}}">bigplay</a>
                     <button class="toggle-menu toggle-click button--none">
                         <span></span>
                     </button>

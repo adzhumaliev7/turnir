@@ -121,9 +121,9 @@
                                 @if($members != null)
 
                                     @foreach($members as $member)
-                                 
-                                        
-                                        <input type="checkbox" name="members[]" value="{{$member->user_id}}"   <?php if($member->nickname == null){ echo "disabled";?>  <?}?>> {{$member->name}} </br>
+
+                                    <input type="checkbox" name="members[]" value="{{$member->user_id}}"  <?php if($member->user->nickname == null || $member->user->game_id == null ||$member->user->status != null ){ echo "disabled";?>  <?}?>> {{$member->user->name}} </br>
+
                                     @endforeach
 
                                 @else
@@ -164,7 +164,7 @@
                                         <p class="subtitle subtitle--semi-medium">до начала:</p>
                                         <div class="holding__timer">
                                             <div class="holding__wrapper">
-                                                <div class="holding__item holding__number" data-countdown="{{$tournament->tournament_start}}"></div>
+                                                <div class="holding__item holding__number" data-countdown="{{$tournament->end_reg}} "></div>
 
                                                 <div></div>
                                             </div>
@@ -173,9 +173,6 @@
                                             </div>
                                         </div>
                                         <hr>
-
-
-
                                         <div class="block">
                                             <svg class="config" width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M6.5 0C2.90715 0 0 2.9074 0 6.5C0 10.0928 2.9074 13 6.5 13C10.0928 13 13 10.0926 13 6.5C13 2.90715 10.0926 0 6.5 0ZM6.5
@@ -194,7 +191,7 @@
                                             </ul>
                                         </div>
                                         <details class="holding__accordion">
-                                            <summary class="subtitle subtitle--semi-medium">Команды {{$tournament->order_count}} / {{$tournament->slot_kolvo}}</summary>
+                                            <summary class="subtitle subtitle--semi-medium">Команды {{$teams_count}} / {{$tournament->slot_kolvo}}</summary>
                                             @if($teams != null)
                                                 @foreach($teams as $team)
 
@@ -207,8 +204,7 @@
                                                                     5.5C11 8.54012 8.5397 11 5.5 11C2.45988 11 0 8.5397 0 5.5C0 2.45988 2.4603 0 5.5 0C8.54012 0 11 2.4603 11
                                                                     5.5ZM10.1406 5.5C10.1406 2.93488 8.06478 0.859375 5.5 0.859375C2.93488 0.859375 0.859375 2.93522 0.859375
                                                                     5.5C0.859375 8.06512 2.93522 10.1406 5.5 10.1406C8.06512 10.1406 10.1406 8.06478 10.1406 5.5Z" fill="black"></path>
-                                                                @else
-                                                                    <circle cx="5.5" cy="5.5" r="5" stroke="black"></circle>
+
                                                                 @endif
                                                             </svg>
                                                             {{$team->name}}
@@ -224,7 +220,7 @@
 
                                         @if(($date > $tournament->tournament_start  ? "close" : "active") == 'active')
 
-                                            @if($captainTeamMembers != NULL )
+                                            @if($userTeam)
                                                 @if(!$tournametTeam)
                                                     @if($tournament->order_count < $tournament->slot_kolvo)
                                                         <div class="block-btn">
@@ -232,7 +228,8 @@
                                                             <a href="" class="submit-btn btn--size btn--orange btn--margin" data-toggle="modal" data-target="#exampleModalLong"> Принять участие</a>
                                                         <!--   <a href="{{route('join', $tournament->id)}}" class="submit-btn btn--size btn--orange btn--margin">Принять участие</a> -->
                                                         </div>
-                                                    @else <h3>Мест нет</h3>
+                                                    @else
+                                                        <h3>Мест нет</h3>
                                                     @endif
                                                 @else
                                                     @if($tournametTeam->status == 'processed')
@@ -308,11 +305,12 @@
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-config-tab">
                     <div style="font-size: 16px;" class="container">
-                        <span>{{$tournament->rule}}</span>
+                       <div>{!!$tournament->rule!!}</div>
+
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-config" role="tabpanel" aria-labelledby="nav-config-tab">
-
+                    @if($tournament->tournament_start <= $date)
                     <div class="tournament-page_content --full float">
                         <div class="top-link-b text-center">
                             @foreach($tournament->stages as $stageF)
@@ -332,7 +330,6 @@
                         </div>
 
                         <div class="my-5">
-
                             <div class="table-pubg_wrapper js-sv-parent">
                                 <div class="table-pubg_left">
                                     <table class="table-pubg">
@@ -451,9 +448,13 @@
                                     </table>
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
+                    @else
+                        <h3 class="text-center">Информация появится со стартом турнира</h3>
+                    @endif
 
                 </div>
             </div>

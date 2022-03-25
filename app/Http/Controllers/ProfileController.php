@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ProfileStoreRequest;
+use App\Models\Log_gameid;
 use App\Models\UsersProfile;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 class ProfileController extends Controller
 {
 
@@ -20,26 +23,24 @@ class ProfileController extends Controller
     $active = Auth::user()->verified;
     $user_name = Auth::user()->name;
    
-   
+  
     $mail = Auth::user()->email;
     $status = Auth::user()->status;
     $data = UsersProfile::getById($id);
     $user_photo = UsersProfile::getUserPhoto($id);
-   
+
     $timezones = config('app.timezones');
     $countries = config('app.countries');
     $teams = Team::getTeamById($id);
-  
+    $team_id = Team::getTeamId($id);
+
     $verification_status = UsersProfile::checkVerification($id);
-    $tournaments = UsersProfile::getMatchesById($id, 1);
-    $tournaments_old = UsersProfile::getMatchesById($id, 0);
-   
+    $tournaments = UsersProfile::getMatchesById($team_id,$id, 1);
+    $tournaments_old = UsersProfile::getMatchesById($team_id, $id, 0);
+
    
   if($tournaments != null){
-   foreach ($tournaments as $tournament) {
-      $tournament_id = (array) $tournament;
-   }
-      $teams_count = UsersProfile::getTeamsCount($tournament_id['id']);
+  
   }else {
     $tournaments = null;
     $teams_count = null;
@@ -56,7 +57,7 @@ class ProfileController extends Controller
       'timezones' => $timezones,
       'active' => $active,
       'user_name' => $user_name,
-      'teams_count' => $teams_count,
+     
       'countries'  => $countries,
       'user_photo' => $user_photo,
     ]);
@@ -65,9 +66,7 @@ class ProfileController extends Controller
   public function savePhoto(Request $request){
      
     $request->validate([
-
       'logo' => 'image',
-
       // поддерживаемые MIME файла (image/jpeg, image/png)
       'logo' => 'mimetypes:image/jpeg,image/png',
     ]);
@@ -75,9 +74,6 @@ class ProfileController extends Controller
     $logo = $request->file('logo');
     $path = '/uploads/storage/img/userslogo';
     $file_name = $this->uploadFiles($logo,$path);
-
-    
-    
     $data = array(
         'user_id' =>  Auth::user()->id,
         'photo' => $file_name,
@@ -90,7 +86,7 @@ class ProfileController extends Controller
 
   public function saveProfile(ProfileStoreRequest $request)
   {
-    $request->validate([
+ /*    $request->validate([
       // файл должен быть картинкой (jpeg, png, bmp, gif, svg или webp)
       'doc_photo' => 'image',
 
@@ -100,7 +96,7 @@ class ProfileController extends Controller
 
       // поддерживаемые MIME файла (image/jpeg, image/png)
       'doc_photo2' => 'mmimetypes:image/jpeg,image/png',
-  ]);
+  ]); */
 
     
   if ($request->hasFile('doc_photo') == true && $request->hasFile('doc_photo2') == true) {
@@ -117,14 +113,14 @@ class ProfileController extends Controller
       if($request->input('email') != null){
       $request->validate([
        
-        'email' => 'unique:users_profile2,email',
+        'email' => 'unique:users,email',
     ]);
     }
     
      if($request->input('game_id') != null){
       $request->validate([
      
-        'game_id' => 'unique:users_profile2,game_id',
+        'game_id' => 'unique:users,game_id',
     ]); 
      } 
       $data = $validated = $request->validated();
@@ -137,7 +133,7 @@ class ProfileController extends Controller
       $id = Auth::user()->id;
       $data['verification'] = 'on_check';
       $data['user_id'] = $id;
-      $data['status'] = 0;
+      $data['status'] = 1;
 
     
        UsersProfile::saveProfile($data);
@@ -165,23 +161,27 @@ class ProfileController extends Controller
 
     $id = Auth::user()->id;
     $verification = UsersProfile::getById($id);
-    if($verification['verification'] =='rejected'){
-       $data['verification'] = 'on_check'; 
-    }
-    elseif($verification['verification'] =='verified'){
-       $data['verification'] = 'verified'; 
-    }else $data['verification'] = 'on_check'; 
+    if($verification['verification'] != null){
+      if ($request->hasFile('doc_photo') == true && $request->hasFile('doc_photo2') == true){
+      if($verification['verification'] =='rejected'){
+         $data['verification'] = 'on_check'; 
+      }
+      elseif($verification['verification'] =='verified'){
+         $data['verification'] = 'verified'; 
+      }else $data['verification'] = 'on_check'; 
+  }
+  else  $data['verification'] = 'null';
+}  
+    $data['exist_status'] = 0;
 
-    $data['status'] = 0;
-    $data['user_id'] = $id;
-   
-    try {
       UsersProfile::updateProfile($id, $data);
-    } catch (\Illuminate\Database\QueryException  $exception) {
-      return back()->withError('Email ' . $request->input('email') . ' уже занят')->withInput();
-    }
+      
+      if($request->input('game_id') != null){
+        Log_gameid::create(['oldvalue' => $request->input('old_game_id'), 'newvalue' => $request->input('game_id'), 'user_id' =>  $id, 'date' => Carbon::now()]);
+      }
+   
     \Session::flash('flash_meassage', 'Сохранено');
-    return redirect(route('profile'));  
+    return redirect(route('profile'));   
   }
 
   public function createTeam(Request $request)
@@ -218,7 +218,6 @@ class ProfileController extends Controller
     return redirect('login');
   }
   public function query($id, Request $request){
-
     $data = $request->validate([
       'text' => 'required',
     ]);
@@ -230,6 +229,32 @@ class ProfileController extends Controller
     \Session::flash('flash_meassage', 'Ваш запрос отправлен');
     return redirect('profile');
   } 
+  public function changePassword(Request $request){
+    $validator = Validator::make($request->all(), [
+      'oldpassword' => ['required'],
+     
+      'password' => ['required','confirmed'],
+     
+  ]);
+
+  if ($validator->fails()) {
+    return response()->json(['error'=>$validator->errors()->all()]);
+      
+  }else{ 
+   
+     $password = Hash::make($request->input('password'));
+     User::changePassword(Auth::user()->id, $password);
+     return response()->json(['success'=>'Пароль успешно изменен']);
+    
+  }
+}
+protected function validator(array $data)
+{
+    return Validator::make($data, [
+        'oldpassword' => ['required'],   
+        'newpassword' => ['required','confirmed'],
+    ]);
+}
 
   protected function uploadFiles($name, $path){
     $file_name = $name->getClientOriginalName();

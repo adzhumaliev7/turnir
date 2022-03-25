@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Team;
 use App\Models\User;
+use App\Models\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\DeleteMemberMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 class TeamController extends Controller
 {
     public function index($id,$us)
@@ -17,16 +19,14 @@ class TeamController extends Controller
         $user_id = Auth::user()->id;
         $mail = Auth::user()->email;
         $data = Team::getTeamById2($id, $us);
-       $link = Team::getLink($id);
+        $link = Team::getLink($id);
         $countries = config('app.countries');
         $members = Team::getTeamMembers($id);
-     
         $chek_admin = Team::checkAdmin($id, $user_id);
         $networks = Team::getTeamNetworks($id);
-     
         $matches = Team::getMatches($id);
         $tournaments = Team::getTournaments($id);
-   
+        
         return view('main.team', [
             'data' => $data,
             'members' => $members,
@@ -99,10 +99,13 @@ class TeamController extends Controller
         \Session::flash('flash_meassage_delete', 'Участник успешно удален');
         return redirect(route('team', [$team_id, $user_id]));
     }
-    public function addAdmin($id, $team_id)
+    public function addAdmin($id, $team_id, $oldadmin)
     {
+        $team = Team::findOrFail($team_id);
         Team::addAdmin($id, $team_id);
-        return redirect(route('profile'));
+      
+        $team->logs()->create(['old_value' => $oldadmin, 'new_value' => $id, 'log_type' => 1]);
+        return redirect(route('profile')); 
     }
     public function exitTeam($id, $team_id)
     {

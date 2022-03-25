@@ -15,4 +15,12 @@ class TournametsTeam extends Model
         return $this->hasOne(Team::class, 'id', 'team_id');
     }
 
+    public function turnir() {
+        return $this->hasOne(Tournament::class, 'id', 'tournament_id');
+    }
+
+    public function tournamentsMembers(){
+        return $this->hasMany(TournamentMembers::class, 'team_id', 'team_id');
+    }
+
 }

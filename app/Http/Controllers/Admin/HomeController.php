@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\Team;
+use App\Models\Log;
 use App\Models\UsersProfile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -21,6 +23,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\CustomClasses\ColectionPaginate;
+use Carbon\Carbon;
+use Laravel\Ui\Presets\React;
 
 class HomeController extends Controller
 {
@@ -49,65 +53,54 @@ class HomeController extends Controller
   {
    // 
    
-    $users = Admin::getAllUsers();
+   /*  $users = Admin::getAllUsers();
     if($users !=null) $users = ColectionPaginate::paginate($users, 15);
     return view('admin.home.users.all_users', [
       'users' => $users
-    ]);
+    ]); */
+
+    return view('admin.home.users.all_users');
   }
 
-
-  public function addBan($id, Request $request)
+  public function userVerified()
   {
-   
-    $email = Admin::getUsersEmail($id);
-    $text = $request->input('text');
-    Mail::to($email)->send(new BanMail($email, $text));
-    Admin::addBan($id);
-    return redirect(route('allusers'));  
+    return view('admin.home.users.verified_users');
+   /*  $users = Admin::getVerifiedUsers();
+    if($users !=null) $users = ColectionPaginate::paginate($users, 15);
+    return view('admin.home.users.verified_users', [
+      'users' => $users
+    ]); */
   }
-  public function unblock($id)
+  public function verification()
   {
 
-    $email = Admin::getUsersEmail($id);
-    Mail::to($email)->send(new UnblockMail($email));
-   
-    Admin::unblock($id);
-    return redirect(route('allusers'));
+    
+    return view('admin.home.users.on_check_users');
+  /*   $users = Admin::getVerificationUsers();
+  
+    if($users !=null) $users = ColectionPaginate::paginate($users, 15);
+    return view('admin.home.users.on_check_users', [
+      'users' => $users
+    ]); */
+  }
+  public function blocked()
+  {
+  /*   $users = Admin::blocked();
+  
+    if($users !=null) $users = ColectionPaginate::paginate($users, 15);
+    return view('admin.home.users.blocked', [
+      'users' => $users
+    ]); */
+    return view('admin.home.users.blocked');
   }
   public function teamsView()
   {
-
-    $teams = Admin::getTeams();
-    if($teams !=null) $teams = ColectionPaginate::paginate($teams, 15);
-    return view('admin.home.teams', [
-      'teams' => $teams
-    ]);
+    return view('admin.home.teams.teams');
   }
   public function userCard($id)
   {
-    $users = Admin::getById($id);
-
-    $user_photo = UsersProfile::getUserPhoto($id);
-    return view('admin.home.users.user_card_new', [
-      'users' => $users,
-      'user_photo' => $user_photo,
-    ]);
-  }
-
-  public function verified($id)
-  {
-    $users = Admin::verified($id);
-    return redirect()->to(route('allusers'));
-  }
-  public function rejected($id, Request $request)
-  {
-    $email = Admin::getUsersEmail($id);
-    
-    $text = $request->input('text');
-    Mail::to($email)->send(new RejectedVerifiedMail($email, $text));
-    Admin::rejected($id);
-    return redirect()->to(route('allusers'));
+    $user = User::leftJoin('users_logo', 'users_logo.user_id', '=', 'users.id')->select('users.*', 'users_logo.photo')->findOrFail($id);
+    return view('admin.home.users.user_card_new', compact('user'));
   }
 
   public function moderators()
@@ -134,15 +127,12 @@ class HomeController extends Controller
   public function saveModerator(Request $request)
   {
    
-
     $this->validator($request->all())->validate();
     $user =User::create($request->all());
     $user->assignRole('moderator');
     Mail::to($request->input('email'))->send(new ModeratorMail($request->input('email')));
-   
-
+  
     // return $user;
-
     return redirect(route('moderators'));
   }
 
@@ -150,6 +140,25 @@ class HomeController extends Controller
   {
     Admin::delteModeratos($id);
     return redirect(route('moderators'));
+  }
+  public function changePsswordModeratorView($id)
+  {
+    
+    return view('admin.home.moderators.change_password', [
+    'id' => $id,
+  ]);
+  }
+
+  public function updatePsswordModerator($id,Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'password' => ['required'],
+     
+  ]);
+    $password = Hash::make($request->input('password'));
+    User::changePassword($id, $password);
+    \Session::flash('flash_meassage', 'Новый пароль сохранен');
+    return redirect(route('moderators')); 
   }
 
   public function help()
@@ -192,8 +201,6 @@ class HomeController extends Controller
 
   public function editHelpSave($id, Request $request)
   {
-
-
     $data = $request->validate([
       'title' => '',
       'description' => '',
@@ -240,46 +247,33 @@ class HomeController extends Controller
   {
     $orders = Admin::getOrdersTeam();
     if($orders !=null)  $orders = ColectionPaginate::paginate($orders, 15);
-   
     return view('admin.home.orders_team', [
       'orders' => $orders,
     ]);
   }
 
-  public function ordersTeamApply($id, Request $request)
+  public function ordersTeamApply($id, $oldname, Request $request)
   {
-    $emails = Admin::getTeamMembersEmail($id);
 
-    foreach ($emails as $key => $value) {
-      $emails = (array) $value;
-      foreach ($emails as $key => $value) {
-        $email[] = $value;
-      }
-    }
-    Mail::to($email)->send(new ChangeTeamMail($email));
+    $team = Team::with('teammatesTeam.user')->findOrFail($id);
+    $emails = $team->teammatesTeam->pluck('user.email')->toArray();
 
+    Mail::to($emails)->send(new ChangeTeamMail($emails));
     $name = $request->input('name');
-  
-    Admin::changeTeamName($id, $name);
-    return redirect(route('orders_team'));
-  }
-  public function ordersTeamRejected($id, Request $request)
-  {
-    $email = Admin::getTeamMembersEmailCaptain($id);
-    $text = $request->input('text');
- 
-     Mail::to($email)->send(new RejectedChangeTeam($email, $text));
-    Admin::ordersTeamRejected($id);
 
-    return redirect(route('orders_team')); 
+    Admin::changeTeamName($id, $name);
+    $team->logs()->create(['old_value' => $oldname, 'new_value' => $name, 'log_type' => 2]);
+
+    return redirect()->route('orders_team');
   }
   public function search(Request $request)
 {
   $search = $request->input('search');
   //$users = User::where('email','like' ,"%{$search}%")->get(); // кавычки двойные!
   $users = DB::table('users')
-  ->leftJoin('users_profile2', 'users.id', '=' , 'users_profile2.user_id')
-  ->select('users.*', 'users_profile2.verification','users_profile2.doc_photo', 'users_profile2.doc_photo2', 'users_profile2.nickname',  'users_profile2.game_id')
+   ->join('team_members', 'users.id', '=', 'team_members.user_id')
+  ->join('team', 'team_members.team_id', '=' , 'team.id')
+  ->select('users.*', 'team.name as team_name')
   ->orwhere('users.email', 'like' ,"%{$search}%")->orwhere('users.name', 'like' ,"%{$search}%")
   ->get();
   if($users !=null) $users = ColectionPaginate::paginate($users, 15);

@@ -25,6 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'country',
         'two_factor_code',
         'two_factor_expires_at',
     ];
@@ -53,6 +54,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(TeamMembers::class);
     }
 
+    public function team() {
+        return $this->hasOne(Team::class);
+    }
+
+    public function bans(){
+        return $this->morphMany(Report::class,'ban');
+    }
+
+    public function verifications(){
+        return $this->hasMany(LogVerified::class);
+    }
+
     public static function boot()
     {
         parent::boot();
@@ -71,7 +84,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function setPasswordAttribute($password){
         $this->attributes['password'] = Hash::make($password);
-    }
+    } 
 
     public static function getEmail($id){
         return DB::table('users')->select('email','status')->where('id',$id)->first();
@@ -79,7 +92,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public static function getUsersStatus($id){
         return DB::table('users')->where('id',$id)->value('status');
     }
-
+    public static function changePassword($id, $password){
+        return DB::table('users')->where('id', $id)->update(['password' => $password]);
+    }
    /*  public function generateTwoFactorCode()
     {
         $this->timestamps = false;

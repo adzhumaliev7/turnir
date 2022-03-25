@@ -53,7 +53,7 @@
                 </div>
             @endif
 
-            <div class="my-5">
+            <div class="my-5 table-box">
                 @if($group)
                 <table id="example" class="display" style="width:100%">
                     <thead>

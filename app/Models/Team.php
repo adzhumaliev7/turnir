@@ -12,14 +12,40 @@ class Team extends Model
 
    protected $table = 'team';
 
+   public function logs(){
+      return $this->morphMany(Log::class,'model');
+ }
+
+    public function ban(){
+        return $this->morphOne(Report::class,'ban');
+    }
 
    public function сaptain( ) {
-       return $this->hasOne(User::class, 'id', 'user_id');
-   }
+      return $this->hasOne(User::class, 'id', 'user_id');
+  }
 
-   public function teammates(){
-       return $this->hasMany(TournamentMembers::class);
-   }
+  public function teammatesTeam(){
+   return $this->hasMany(TeamMembers::class);
+}
+public function teammates(){
+  return $this->hasMany(TournamentMembers::class);
+}
+
+public function order(){
+   return $this->hasMany(TournametsTeam::class);
+}
+
+public function groups(){
+   return $this->hasMany(TournamentGroupTeam::class);
+}
+
+public function report(){
+  return $this->hasOne(Report::class);
+}
+
+public function network(){
+   return $this->hasOne(TeamsNetworks::class);
+}
 
    public static function getTeamById($id)
    {
@@ -30,6 +56,19 @@ class Team extends Model
             ->select('team_members.team_id', 'team_members.user_id', 'team.id', 'team.name','team.logo')
             ->where('team_members.user_id', $id)
             ->get();
+      } else {
+         return NULL;
+      }
+   }
+   public static function getTeamId($id)
+   {
+      $is_has = DB::table('team_members')->where('user_id', $id)->exists();
+      if ($is_has == true) {
+         return DB::table('team_members')
+            ->join('team', 'team_members.team_id', '=', 'team.id')
+           
+            ->where('team_members.user_id', $id)
+            ->value('team.id');
       } else {
          return NULL;
       }
@@ -90,6 +129,12 @@ class Team extends Model
       DB::table('team_members')->where('team_id', $team_id)->where('role', 'captain')->update(['role' => 'member']);
       DB::table('team_members')->where('team_id', $team_id)->where('user_id', $id)->update(['role' => 'captain']);
    }
+
+   public static function log_change_admin($data){
+
+      return DB::table('logs')->insert($data);
+   }
+
    public function exitTeam($id,$team_id)
    {
       return DB::table('team_members')->where('user_id', $id)->where('team_id', $team_id)->delete();

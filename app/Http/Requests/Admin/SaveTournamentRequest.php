@@ -33,6 +33,7 @@ class SaveTournamentRequest extends FormRequest
             'start_reg' => 'required',
             'price' => '',
             'end_reg' => 'required',
+           
             'slot_kolvo' => '',
             'ligue' => '',
             'rule' => '',

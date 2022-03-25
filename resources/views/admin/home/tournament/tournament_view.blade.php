@@ -1,7 +1,7 @@
 @extends('admin.admin_layout')
 
-@section('content') 
-<div style="margin-left:100px;"> 
+@section('content')
+<div style="margin-left:100px;">
 <form method="POST" action="{{route('edit_tournament', $id)}}" enctype="multipart/form-data">
      @csrf
      @foreach($tournaments as $tournament)
@@ -38,7 +38,7 @@
            @enderror
     </div>
   </div>
-  
+
    <div class="form-row">
    <div class="form-group col-md-4">
       <label for="inputPassword4">Допустимые страны</label>
@@ -53,15 +53,15 @@
          @error('	players_col')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
-   
+
   </div>
   </div>
   <div class="form-group col-md-4">
       <label for="inputPassword4">Обложка</label>
       @if($tournament->file_label != null)
-     
+
       <img src="{{ asset("uploads/storage/adminimg/turnir_logo/$tournament->file_label")}}"  value="{{$tournament->file_label}}" width="250" height="200" class="" style="opacity: .8">
- 
+
      <input class="input-footer " name="file_label" placeholder="Обложка" type="file">
        @else
        <label for="inputPassword4">Добавить обложку</label>
@@ -71,36 +71,35 @@
              <div class="alert alert-danger">Загрузите фотографию</div>
            @enderror
 
-          @endif 
+          @endif
     </div>
  <div class="form-group col-md-8">
       <label for="inputPassword4">Описание турнира</label>
-      <textarea  class="form-control" name="description" id="" placeholder="Описание турнира">{{$tournament->description}}</textarea>
+      <textarea  class="form-control rules" name="description" id="" placeholder="Описание турнира">{{$tournament->description}}</textarea>
          @error('description')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
 
      <h4>Основная информация</h4>
-     <div class="form-row">
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="inputPassword4">Дата начала регистрации</label>
+            <input type="text" id="start_reg" name="start_reg" class="form-control @error('start_reg') is-invalid @enderror" placeholder="Начало регистрации" value="{{$tournament->start_reg}}">
+            @error('start_reg')
+            <div class="alert alert-danger">Введите дату начала регистрации</div>
+            @enderror
+        </div>
 
-   <div class="form-group col-md-4">
-    
-      <label for="inputPassword4">Начало регистрации</label>
-      <input type="date" class="form-control" name="start_reg" id="" placeholder="Начало регистрации" value="{{$tournament->start_reg}}">
-         @error('start_reg')
-             <div class="alert alert-danger">{{$message}}</div>
-           @enderror
+        <div class="form-group col-md-4">
+            <label for="inputPassword4">Дата завершеня регистрации</label>
+            <input type="text" id="end_reg" name="end_reg" class="form-control @error('end_reg') is-invalid @enderror" placeholder="Завершение регистрации" value="{{$tournament->end_reg}}"">
+            @error('end_reg')
+            <div class="alert alert-danger">Введите дату завершение регистрации</div>
+            @enderror
+        </div>
     </div>
-   <div class="form-group col-md-4">
-      <label for="inputPassword4">Завершение регистрации</label>
-      <input type="date" class="form-control" name="end_reg" id="" placeholder="Завершение регистрации" value="{{$tournament->end_reg}}" >
-         @error('end_reg')
-             <div class="alert alert-danger">{{$message}}</div>
-           @enderror
-      </div>
 
-  </div>
   <div class="form-row">
    <div class="form-group col-md-4">
       <label for="inputPassword4">Кол-во слотов</label>
@@ -111,17 +110,7 @@
     </div>
 
   </div>
- <h4>Правила</h4>
- <div class="form-row">
-   <div class="form-group col-md-4">
-      <label for="inputPassword4">Правила</label>
-      <input type="text" class="form-control" name="rule" id="" placeholder="Правила" value="{{$tournament->rule}}">
-         @error('rule')
-             <div class="alert alert-danger">{{$message}}</div>
-           @enderror
-    </div>
-  </div>
- <h4>Этапы</h4>
+  <h4>Этапы</h4>
  <div class="form-row">
    <div class="form-group col-md-4">
       <label for="inputPassword4">Дата начала турнира</label>
@@ -146,6 +135,17 @@
            @enderror
       </div>
   </div>
+ <h4>Правила</h4>
+ <div class="form-row">
+   <div class="form-group col-md-10">
+      <label for="inputPassword4">Правила</label>
+      <textarea name="rule"  class ="rules" id="rules" placeholder="Правила" >{{$tournament->rule}}</textarea>
+         @error('rule')
+             <div class="alert alert-danger">{{$message}}</div>
+           @enderror
+    </div>
+  </div>
+
     @endforeach
    <button type="submit" class="btn btn-primary">Сохранить</button>
 </form>
@@ -153,5 +153,5 @@
 </div>
     @if(Session::has('flash_meassage'))
                   <div class="alert alert-success">{{Session::get('flash_meassage')}}</div>
-                  @endif 
+                  @endif
 @endsection

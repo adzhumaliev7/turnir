@@ -140,6 +140,10 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'g-recaptcha-response' => [
+            'required' => 'Вы не ввели капчу',
+            'captcha' => 'Ошибка капчи! повторите попытку позже или обратитесь к администратору сайта.',
+        ],
     ],
 
     /*

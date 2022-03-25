@@ -4,7 +4,16 @@
     <div class="row background-gray d-flex align-items-center row-indent-mr">
         <div class="col-lg-3">
             <div class="wrap">
-                <img class="brd-img" src="http://placehold.it/224" alt="">
+            @if($team->logo != NULL)
+          
+            <img class="brd-img" src="{{ asset("uploads/storage/img/teamlogo/$team->logo")}}" width="224" height="224" alt=""></img>
+             
+            @else
+      
+             <img src="{{ asset("uploads/storage/img/default/noimage.png")}}"  width="250" height="200" class="" style="opacity: .8">
+        
+         
+            @endif
             </div>
         </div>
         <div class="col-lg-4">
@@ -16,21 +25,9 @@
 
     </div>
 
-    <ul class="nav nav-tabs nav-tabss" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link nav-btn " id="view-tab" data-bs-toggle="tab" data-bs-target="#view" type="button" role="tab" aria-controls="view" aria-selected="true">Обзор</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link nav-btn " id="lineup-tab" data-bs-toggle="tab" data-bs-target="#lineup" type="button" role="tab" aria-controls="lineup" aria-selected="false">Состав</button>
-        </li>
+  
 
-    </ul>
-
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="view" role="tabpanel" aria-labelledby="view-tab">
-        </div>
-        <div class="tab-pane fade" id="lineup" role="tabpanel" aria-labelledby="lineup-tab">
-            <div class="block-view">
+    
 
 
                 <h4 class="input-title">Состав команды</h4>
@@ -49,8 +46,15 @@
 
                 </div>
                 @endforeach
+                <a href="{{route('apply_team', [$team_id, $tournament_id] )}}" type="button" class="btn btn-success">Принять</a>
+        <!--  <a href="{{route('refuse_team', [$team_id, $tournament_id, $user_id] )}}" type="button" class="btn btn-danger">Отклонить</a> -->
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalRefuse">
+            Отклонить
+        </button>
             </div>
-        </div>
+         
+
+      
         <div class="modal fade" id="ModalRefuse" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -75,15 +79,9 @@
                 </div>
             </div>
         </div>
-        <a href="{{route('apply_team', [$team_id, $tournament_id] )}}" type="button" class="btn btn-success">Принять</a>
-        <!--  <a href="{{route('refuse_team', [$team_id, $tournament_id, $user_id] )}}" type="button" class="btn btn-danger">Отклонить</a> -->
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalRefuse">
-            Отклонить
-        </button>
-    </div>
+    
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
+   
 
 
 

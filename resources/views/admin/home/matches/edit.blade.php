@@ -16,17 +16,21 @@
                         <h4>{{$matches->match_name}}</h4>
                         <input type="hidden" name="matches[{{$i}}][update]" value="{{$matches->id}}">
                         <div class="form-row">
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-2">
                                 <label for="inputEmail4">Название матча</label>
                                 <input type="text" name="matches[{{$i}}][match_name]" class="form-control" placeholder="Введите название матча" value="{{$matches->match_name}}">
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-2">
                                 <label for="inputEmail4">Login</label>
                                 <input type="text" name="matches[{{$i}}][login]" class="form-control" placeholder="Введите Login матча" value="{{$matches->login}}">
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-2">
                                 <label for="inputEmail4">Password</label>
                                 <input type="text" name="matches[{{$i}}][password]" class="form-control" placeholder="Введите пароль матча" value="{{$matches->password}}">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputEmail4">Дата</label>
+                                <input type="text" name="matches[{{$i}}][date]" class="form-control datepickerInput " placeholder="Дата матча" value="{{$matches->date}}">
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="inputPassword4"></label>

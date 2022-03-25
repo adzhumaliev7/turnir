@@ -1,28 +1,30 @@
 @extends('admin.admin_layout')
 
 @section('content')
-@if($teams != null)
+@if($data != NULL)
 <div class="container">
+  <h3>Принятые</h3>
   <table class="table">
     <thead class="thead-light">
       <tr>
         <th scope="col">#</th>
         <th scope="col">Команда</th>
-
-
+        <th scope="col">Админ</th>
+        <th scope="col">Дата</th>
       </tr>
     </thead>
     <tbody>
-      @foreach($teams as $team)
-
+      @foreach($data as $item)
       <tr>
-        <td scope="row">{{$loop->index+1}}</td>
-        <td>{{$team->name}}</td>
+        <td>{{$item->id}}</td>
+        <td>{{$item->name}}</td>
+        <td>{{$item->admin}}</td>
+        <td>{{$item->created_at}}</td>
       </tr>
       @endforeach
     </tbody>
   </table>
-  {{$teams->links()}}
+  {{$data->links()}}
   @else
   <h4>Нет данных</h4>
   @endif

@@ -46,12 +46,48 @@ class Admin extends Model
    {
     
         $users = DB::table('users')
-         ->leftJoin('users_profile2', 'users.id', '=' , 'users_profile2.user_id')
-         ->select('users.*', 'users_profile2.verification','users_profile2.doc_photo', 'users_profile2.doc_photo2', 'users_profile2.nickname',  'users_profile2.game_id')->orderBy('users_profile2.id', 'desc')
+        ->join('team_members', 'users.id', '=', 'team_members.user_id')
+         ->join('team', 'team_members.team_id', '=' , 'team.id')
+         ->select('users.*', 'team.name as team_name')
+
+         ->orderBy('users.id', 'desc')
+         ->get();
+         return $users->count() ? $users : null;
+   }
+   public static function getVerifiedUsers()
+   {
+    
+        $users = DB::table('users')
+       
+         ->select('users.*')
+         ->where('users.verification', 'verified')
+         ->orderBy('users.id', 'desc')
          ->get();
          return $users->count() ? $users : null;
    }
 
+   public static function getVerificationUsers()
+   {
+    
+        $users = DB::table('users')
+       
+         ->select('users.*')
+         ->where('users.verification', 'on_check')
+         ->orderBy('users.id', 'desc')
+         ->get();
+         return $users->count() ? $users : null;
+   }
+   public static function blocked()
+   {
+    
+        $users = DB::table('users')
+       
+         ->select('users.*')
+         ->where('users.status', 'ban')
+         ->orderBy('users.id', 'desc')
+         ->get();
+         return $users->count() ? $users : null;
+   }
    public static function getModerators()
    {
 
@@ -78,22 +114,43 @@ class Admin extends Model
    }
    public static function getById($id)
    {
-      $users = DB::table('users_profile2')
-         ->join('users', 'users_profile2.user_id', '=', 'users.id')
-         ->select('users_profile2.*', 'users.status')
-         ->where('users_profile2.user_id', $id)->get();
+      $users= DB::table('users')->select( 'users.*')->where('users.id', $id)->get();
+      
           return $users->count() ? $users : null;
    }
-
+   public static function getLogBan($id)
+   {
+      $log_ban= DB::table('log_ban')->where('user_id', $id)->get();
+          return $log_ban->count() ? $log_ban : null;
+   }
+   public static function getLogVerified($id)
+   {
+      $log_verified= DB::table('log_verified')->where('user_id', $id)->get();
+      
+          return $log_verified->count() ? $log_verified : null;
+   }
+   public static function getLogRejected($id)
+   {
+      $log_rejected= DB::table('log_verif_rejected')->where('user_id', $id)->get();
+      
+          return $log_rejected->count() ? $log_rejected : null;
+   }
    public static function verified($id)
    {
-      return DB::table('users_profile2')->where('id', $id)->update(['verification' => 'verified']);
+      return DB::table('users')->where('id', $id)->update(['verification' => 'verified']);
+   }
+   public static function log_verified($data)
+   {
+      return DB::table('log_verified')->insert($data);
    }
    public static function rejected($id)
    {
-      return DB::table('users_profile2')->where('user_id', $id)->update(['verification' => 'rejected']);
+      return DB::table('users')->where('id', $id)->update(['verification' => 'rejected']);
    }
-
+   public static function log_rejected($data)
+   {
+      return DB::table('log_verif_rejected')->insert($data);
+   }
    public static function getTournaments()
    {
      
@@ -144,14 +201,15 @@ class Admin extends Model
    }
    public static function getTeamById($id)
    {
-      return DB::table('team')->select('name')->where('id', $id)->first();
+      return DB::table('team')->where('id', $id)->first();
    }
+  
    public static function geTeamMembers($team_id, $tournament_id)
    {
       return DB::table('tournaments_members')
          ->join('users', 'tournaments_members.user_id', '=', 'users.id')
-         ->join('users_profile2', 'tournaments_members.user_id', '=' ,'users_profile2.user_id' )
-         ->select('users.name', 'users.id',  'users_profile2.game_id',  'users_profile2.nickname')
+  
+         ->select('users.name', 'users.id',  'users.game_id',  'users.nickname')
          ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)
          ->get();
    }
@@ -160,9 +218,9 @@ class Admin extends Model
       return DB::table('tournaments_members')
          ->join('team_members', 'tournaments_members.user_id', '=', 'team_members.user_id')
         
-         ->select('team_members.user_id')
+        // ->select('team_members.user_id')
          ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)->where('team_members.role', 'captain')
-         ->first();
+         ->value('team_members.user_id');
    }
 
 
@@ -194,6 +252,10 @@ class Admin extends Model
    public static function addBan($id)
    {
       return DB::table('users')->where('id', $id)->update(['status' => 'ban']);
+   }
+   public static function setLogBan($data)
+   {
+      return DB::table('log_ban')->insert($data);
    }
    public static function unblock($id)
    {
@@ -366,7 +428,11 @@ class Admin extends Model
       DB::table('team')->where('id', $id)->update(['name' => $name]);
       DB::table('orders_team')->where('team_id', $id)->update(['status' => 1]);
    }
-
+   public static function log_change_name($data)
+   {
+      DB::table('log_change_name')->insert($data);
+     
+   }
    public static function getTeamMembersEmail($id){
          return DB::table('team_members')
          ->join('users', 'team_members.user_id', '=' ,'users.id')

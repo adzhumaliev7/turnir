@@ -11,6 +11,29 @@
             <h3>Упровления очками команды - {{$tournamentGroupTeam->team->name}}</h3>
             <h4>В этапе - {{$tournamentGroupTeam->stage->stage_name}}</h4>
 
+{{--            <h4 class="text-center">Игроки</h4>--}}
+{{--            <table class="table">--}}
+{{--                <thead>--}}
+{{--                <tr>--}}
+{{--                    <th scope="col">#</th>--}}
+{{--                    <th scope="col">name</th>--}}
+{{--                    <th scope="col">nickName</th>--}}
+{{--                    <th scope="col">game_id</th>--}}
+{{--                </tr>--}}
+{{--                </thead>--}}
+{{--                <tbody>--}}
+{{--                @foreach($tournamentGroupTeam->team->teammates->where('tournament_id',  $tournamentGroupTeam->turnir->id) as $player)--}}
+{{--                <tr>--}}
+{{--                    @dd($loop->)--}}
+{{--                    <th scope="row">{{$loop->iteration}}</th>--}}
+{{--                    <td>{{$player->user->name}}</td>--}}
+{{--                    <td>{{$player->user->nickname ?? ''}}</td>--}}
+{{--                    <td>{{$player->user->game_id ?? ''}}</td>--}}
+{{--                </tr>--}}
+{{--                @endforeach--}}
+{{--                </tbody>--}}
+{{--            </table>--}}
+
             @foreach($tournamentGroupTeam->group->matches as $key => $math)
                 <div class="">
                     <div class="text-bold">{{$math->match_name}}</div>
@@ -22,7 +45,6 @@
                     </div>
 
                     <div class="text-muted">Игроки</div>
-{{--                    matches[{{$teammate->id}}][{{$matches->id}}][update]--}}
                     <div class="row">
                         @foreach($tournamentGroupTeam->team->teammates->where('tournament_id',  $tournamentGroupTeam->turnir->id) as $player)
                             <input type="hidden" name="matches[{{$math->id}}][ИГРОК_{{$player->id}}][team_id]" value="{{$player->id}}">
@@ -30,7 +52,11 @@
                             <input type="hidden" name="matches[{{$math->id}}][ИГРОК_{{$player->id}}][update]"
                                    value="{{$player->matches->where('match_id', $math->id)->first()->id ?? false}}">
                             <div class="form-group col-3">
-                                <label>{{$player->user->name}}</label>
+                                <div class="mb-2" style="height: 100px">
+                                    <label>{{$player->user->name}}</label><br>
+                                    <span> {{$player->user->nickname ?? ''}} <span class="text-bold" style="font-size: 25px">_</span> {{$player->user->game_id ?? ''}}</span>
+                                </div>
+
                                 <input type="number" class="form-control"  placeholder="kills_pts"
                                        name="matches[{{$math->id}}][ИГРОК_{{$player->id}}][kills_pts]"
                                        value="{{$player->matches->where('match_id', $math->id)->first()->kills_pts ?? 0}}">

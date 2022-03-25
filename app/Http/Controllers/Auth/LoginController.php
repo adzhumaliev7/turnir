@@ -13,18 +13,18 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
     public function login(Request $request){
-         if(Auth::check()){
+       
+          if(Auth::check()){
             return redirect(route('main'));
         }
-        $formFields = $request->only(['email','password'],'verified', true);
-           // $formFields['status']=NULL;
-       // $formFields['verified']=true;
+        $formFields = $request->only(['email','password']);
+     
         if(Auth::attempt($formFields)){
             return redirect()->intended(route('main'));
         }
         return redirect(route('user.login'))->withErrors([
              'email' => 'не верный логин или пароль',
-         ]);
+         ]); 
     }
 
    /*  protected function attemptLogin(Request $request)

@@ -64,9 +64,9 @@
            @enderror
 
     </div>
- <div class="form-group col-md-8">
+ <div class="form-group col-md-10">
       <label for="inputPassword4">Описание турнира</label>
-      <textarea  class="form-control" name="description" id="" placeholder="Описание турнира"></textarea>
+      <textarea  class="form-control rules" name="description" id="" placeholder="Описание турнира"></textarea>
          @error('	description')
              <div class="alert alert-danger">Введите описание турнира</div>
            @enderror
@@ -75,23 +75,28 @@
      <h4>Основная информация</h4>
      <div class="form-row">
 
-   <div class="form-group col-md-4">
+        <div class="form-group col-md-4">
+            <label for="inputPassword4">Дата начала регистрации</label>
+            <input type="text" id="start_reg" name="start_reg" class="form-control @error('start_reg') is-invalid @enderror" placeholder="Начало регистрации">
+            @error('start_reg')
+               <div class="alert alert-danger">Введите дату начала регистрации</div>
+            @enderror
+        </div>
 
-      <label for="inputPassword4">Начало регистрации</label>
-      <input type="date" class="form-control" name="start_reg" id="" placeholder="Начало регистрации">
-         @error('start_reg')
-             <div class="alert alert-danger">Введите дату начала регистрации</div>
-           @enderror
+        <div class="form-group col-md-4">
+            <label for="inputPassword4">Дата завершеня регистрации</label>
+            <input type="text" id="end_reg" name="end_reg" class="form-control @error('end_reg') is-invalid @enderror" placeholder="Завершение регистрации">
+            @error('end_reg')
+                <div class="alert alert-danger">Введите дату завершение регистрации</div>
+            @enderror
+        </div>
+
     </div>
-   <div class="form-group col-md-4">
-      <label for="inputPassword4">Завершение регистрации</label>
-      <input type="date" class="form-control" name="end_reg" id="" placeholder="Завершение регистрации">
-         @error('end_reg')
-             <div class="alert alert-danger">Введите дату завершение регистрации</div>
-           @enderror
-      </div>
+  <div class="form-row">
 
-  </div>
+
+
+</div>
   <div class="form-row">
    <div class="form-group col-md-4">
       <label for="inputPassword4">Кол-во слотов</label>
@@ -102,17 +107,7 @@
     </div>
 
   </div>
- <h4>Правила</h4>
- <div class="form-row">
-   <div class="form-group col-md-4">
-      <label for="inputPassword4">Правила</label>
-      <input type="text" class="form-control" name="rule" id="" placeholder="Правила">
-         @error('rule')
-             <div class="alert alert-danger">Введите правила турнира</div>
-           @enderror
-    </div>
-  </div>
- <h4>Этапы</h4>
+  <h4>Этапы</h4>
  <div class="form-row">
    <div class="form-group col-md-4">
       <label for="inputPassword4">Дата начала турнира</label>
@@ -137,6 +132,17 @@
       </div>
 
   </div>
+ <h4>Правила</h4>
+ <div class="form-row">
+   <div class="form-group col-md-10">
+      <label for="inputPassword4">Правила</label>
+      <input type="text" class="form-control rules" name="rule" id="" placeholder="Правила">
+         @error('rule')
+             <div class="alert alert-danger">Введите правила турнира</div>
+           @enderror
+    </div>
+  </div>
+
 
 
    <input type="submit" class="btn btn-primary" name="submit" value="save"></input>

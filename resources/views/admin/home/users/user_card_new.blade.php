@@ -75,142 +75,205 @@
     /* Параметры рамки */
   }
 </style>
-
 @extends('admin.admin_layout')
-
 @section('content')
 
-@if($users != null)
-@foreach($users as $user)
-
 @if($user->verification =='verified')
-  <h3>Верифицирован</h3>
+<h3>Верифицирован</h3>
 @elseif($user->verification =='rejected')
-  <h3>Отклонен</h3>
-
+<h3>Отклонен</h3>
 @endif
-@endforeach
 
 
-   <div class="container">
- @foreach($users as $user)
- <div class="container">
-  <div class="row">
-    <div class="col-md-4">
-       @if($user_photo != NULL)
-            <a href=""  data-toggle="modal" data-target="#ModalLogo">
-              <img class="header__img" src="{{ asset("uploads/storage/img/userslogo/$user_photo")}}" width="250" height="250" alt="" alt="profile" />
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            @if($user->photo)
+            <a href="" data-toggle="modal" data-target="#ModalLogo">
+              <img class="header__img" src="{{ asset("uploads/storage/img/userslogo/$user->photo")}}" width="250" height="250" alt="" alt="profile" />
             </a>
- 
-           
             @else
-           <a href=""  data-toggle="modal" data-target="#ModalLogo">
-             <img src="{{ asset("uploads/storage/img/default/noimage.png")}}"  width="250" height="200" class="" style="opacity: .8">
-              </a>
-         
+            <a href="" data-toggle="modal" data-target="#ModalLogo">
+              <img src="{{ asset("uploads/storage/img/default/noimage.png")}}" width="250" height="200" class="" style="opacity: .8">
+            </a>
             @endif
+        </div>
+        <div class="col-4">
+            <p style="margin-top: 50px;">user_id: {{$user->id}}</p>
+            <p>Ник: {{$user->	name}}</p>
+        </div>
     </div>
-    <div class="col-md-8">
-      <div class="form-group row">
-    <label for="staticEmail" class="col-sm-2 col-form-label">ФИО</label>
-    <div class="col-sm-4">
-      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->fio}}">
-   
+
+    <h3>Общие</h3>
+    <div class="form-group row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">mail</label>
+        <div class="col-sm-4">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->email}}">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Статус</label>
+        <div class="col-sm-4">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="@if($user->status != null) Бан  @endif">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Команды</label>
+        <div class="col-sm-4">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->fio}}">
+        </div>
+    </div>
+    @if($user->bans->isNotEmpty())
+        <h3>Бан</h3>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form">Даты банов</label>
+            <div class="col-sm-4">
+                @foreach($user->bans as $ban)
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$ban->date}}">
+                @endforeach
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Причины банов</label>
+            <div class="col-sm-4">
+                @foreach($user->bans as $ban)
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$ban->description}}">
+                @endforeach
+            </div>
+        </div>
+    @endif
+
+    <h3>Верификация</h3>
+    <div class="form-group row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Верификация</label>
+        <div class="col-sm-4">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="
+               @if($user->verification == 'verified')
+                    вер
+                @elseif($user->verification == 'rejected')
+                    откл
+                @elseif($user->verification == 'on_check')
+                    На проверке
+                @endif
+            ">
+        </div>
+    </div>
+{{--    @dd($log_rejected)--}}
+    <div class="form-group row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Причины отказов</label>
+        <div class="col-sm-4">
+            @if($user->verifications->where('status', '0')->count() > 0)
+                @foreach($user->verifications->where('status', '0') as $item)
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$item->description}}">
+                @endforeach
+            @else
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="-">
+            @endif
       </div>
-  </div>
-  <div class="form-group row">
-    <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
-    <div class="col-sm-4">
-       <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->email}}">
+    </div>
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-2 col-form-label">Дата верификации</label>
+      <div class="col-sm-4">
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="
+        @if($user->verifications->where('status', 1)->count() > 0 )
+           @foreach($user->verifications->where('status', 1) as $item)
+           {{$item->date}}
+           @endforeach
+        @endif">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-2 col-form-label">Документы</label>
+        <div class="col-sm-4">
+        @if($user->doc_photo !=null && $user->doc_photo2 !=null)
+            <a id="myBtn" href="#" data-toggle="modal" data-target="#ModalPhoto">Просмотр докуметов</a></br>
+        @endif
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Админ верификации</label>
+        <div class="col-sm-4">
+        @if($user->verifications->where('status', 1)->count() > 0)
+            @foreach($user->verifications->where('status', 1) as $item)
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$item->moder_id}}">
+            @endforeach
+          @endif
+      </div>
     </div>
 
-  </div>
- <div class="form-group row">
-    <label for="inputPassword" class="col-sm-2 col-form-label">Login</label>
-    <div class="col-sm-4">
-        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->login}}">
+    <h3>Игровой профиль</h3>
+    <div class="form-group row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">Ник</label>
+        <div class="col-sm-4">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->nickname}}">
+        </div>
     </div>
-  </div>
-   <div class="form-group row">
-    <label for="inputPassword" class="col-sm-2 col-form-label">Дата рождения</label>
-    <div class="col-sm-4">
-        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->bdate}}">
+    <div class="form-group row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">Игровой ID</label>
+        <div class="col-sm-4">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->game_id}}">
+        </div>
     </div>
-  </div>
-   <div class="form-group row">
-    <label for="inputPassword" class="col-sm-2 col-form-label">Телефон</label>
-    <div class="col-sm-4">
-        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->phone}}">
+
+    <h3>Персональная информация</h3>
+    <div class="form-group row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">ФИО</label>
+        <div class="col-sm-4">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->fio}}">
+        </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <label for="inputPassword" class="col-sm-2 col-form-label">Страна / Город</label>
-    <div class="col-sm-4">
-         <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->country}} / {{$user->city}}">
+    <div class="form-group row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">Дата рождения</label>
+        <div class="col-sm-4">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->bdate}}">
+        </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <label for="inputPassword" class="col-sm-2 col-form-label">Ник</label>
-    <div class="col-sm-4">
-       <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->nickname}}">
+    <div class="form-group row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">Страна / Город</label>
+        <div class="col-sm-4">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->country}} / {{$user->city}}">
+        </div>
     </div>
+    <div class="form-group row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">Телефон</label>
+        <div class="col-sm-4">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->phone}}">
+        </div>
+    </div>
+
+    @if($user->doc_photo !=null && $user->doc_photo2 !=null && $user->verification =='on_check')
+    <a type="button" class="btn btn-success" href="{{ route('verified', $user->id) }}" class="message" data-title="Подтвердить">Подтвердить</a>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalRejected">
+      Отклонить
+    </button>
+    @endif
   </div>
 
-  <div class="form-group row">
-    <label for="inputPassword" class="col-sm-2 col-form-label">Игровой ID</label>
-    <div class="col-sm-4">
-      <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->game_id}}">
-    </div>
-  </div>
-  @if($user->doc_photo !=null && $user->doc_photo2  !=null)
-   <a id="myBtn" href="#" data-toggle="modal" data-target="#ModalPhoto">Просмотр докуметов</a></br>
-  @if($user->verification =='on_check')
-   
-    </br>
-    </br>
-     <a type="button" class="btn btn-success" href="{{ route('verified', $user->id) }}" class="message" data-title="Подтвердить">Подтвердить</a>
-      
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalRejected">
-          Отклонить
-        </button>
-  @endif
-@endif
-    </div>
-  </div>
-</div>
-   <div class="modal fade" id="ModalRejected" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
+<div class="modal fade" id="ModalRejected" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">Сообщение</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
-              </div>
-              <div class="modal-body">
-
-                <form method="POST" action="{{route('rejected', $user->user_id)}}">
-                  @csrf
-                  <textarea name="text" id="" cols="50" rows="10"></textarea>
-
-              </div>
-              <div class="modal-footer">
-
-                <button type="btn" class="btn btn-primary">Сохранить</button>
-                </form>
-             </div>
             </div>
-           </div>  
-  
-    @endforeach
-
-
+            <form method="POST" action="{{route('rejected', $user->id)}}">
+                <div class="modal-body">
+                    @csrf
+                    <textarea name="description" id="" cols="50" rows="10"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="btn" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 <div class="modal fade" id="ModalPhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-     
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -218,27 +281,9 @@
       <div class="modal-body">
         <img src="{{ asset("uploads/storage/img/verification/$user->doc_photo")}}" width="400" height="350" class="" style="opacity: .8">
         <img src="{{ asset("uploads/storage/img/verification/$user->doc_photo2")}}" width="400" height="350" class="img2" style="opacity: .8">
-
       </div>
     </div>
   </div>
 </div>
-@else
-<h3>Нет данных</h3>
-@endif
-<!-- 
-
-<div id="myModal" class="modal2">
-</div>
-
-<div class="modal-content">
-  <span class="close">&times;</span>
-  <div>
-
-  </div>
-</div>
- -->
-
-
 
 @endsection

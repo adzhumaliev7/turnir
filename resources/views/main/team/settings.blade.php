@@ -1,7 +1,20 @@
 @if(Session::has('flash_meassage'))
-                        <div class="alert alert-success" style="font-size: 16px;">{{Session::get('flash_meassage')}}</div>
-                 @endif
+        <div class="alert alert-success" style="font-size: 16px;">{{Session::get('flash_meassage')}}</div>
+@endif
+                 @if($tournaments != null)
+    @foreach($tournaments as $tournament)
+  
+        @if($tournament->active == 1)    
+            <?$disabled = 'disabled';?>
+        @else
+        <?$disabled = '';?>
+        @endif
+    @endforeach
+ @else   
+    <?$disabled = '';?>
+    @endif  
                 <form method="POST" action="{{route('orders_team_user', $team_id)}}" enctype="multipart/form-data">
+                <fieldset  <?echo $disabled;?>>
                     @csrf
                     <div class="col-lg-6">
                         <input name="name" placeholder="Название команды" type="tel" class="form-control  subtitle fw-normal input_border" id="">
@@ -13,11 +26,13 @@
                         </select>
                     </div>
                     <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
+                </fieldset >
                 </form>
 
                 @if($networks != null)
                 @foreach($networks as $network)
                 <form method="POST" action="{{route('add_networks_update', $team_id)}}" enctype="multipart/form-data">
+                <fieldset  <?echo $disabled;?>>
                     @csrf
                     <div class="row mt-4">
                         <p></p>
@@ -32,12 +47,14 @@
                         </div>
                     </div>
                     <button type="btn" class="btn  submit-btn btn--size btn--orange btn--margin" style="margin-right: 10px;">Сохранить</button>
-                    <a href="{{route('delete_team', $team_id)}}" class="btn  submit-btn btn--size  btn--margin">Удалить команду</a>
+                    <a href="" class="btn  submit-btn btn--size  btn--margin" onclick= "return alert2();">Удалить команду</a>
                     <a href="" class="btn  submit-btn btn--size  btn--margin" data-toggle="modal" data-target="#ModalLogo">Установить логотип</a>
+                    </fieldset >
                 </form>
                 @endforeach
                 @else
                 <form method="POST" action="{{route('add_networks', $team_id)}}" enctype="multipart/form-data">
+                <fieldset  <?echo $disabled;?>>
                     @csrf
                     <div class="row mt-4">
                         <h2>Ссылки на социальные сети</h2>
@@ -49,13 +66,13 @@
                         </div>
                     </div>
                     <button type="btn" class="btn  submit-btn btn--size btn--orange btn--margin" style="margin-right: 10px;">Сохранить</button>
-                    <a href="{{route('delete_team', $team_id)}}" class="btn  submit-btn btn--size  btn--margin">Удалить команду</a>
+                    <a href="" class="btn  submit-btn btn--size  btn--margin" onclick="return alert2();">Удалить команду</a>
                     <a href="" class="btn  submit-btn btn--size  btn--margin" data-toggle="modal" data-target="#ModalLogo">Установить логотип</a>
+                    </fieldset >
                 </form>
                 @endif
                 <div class="modal fade" id="ModalLogo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                     <div class="modal-dialog" role="document">
-
                         <div class="modal-content" style="font-size: 16px;">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLongTitle">Загрузить логотип</h5>
@@ -67,7 +84,6 @@
                                 <form method="POST" action="{{route('set_logo', $team_id)}}" enctype="multipart/form-data">
                                     @csrf
                                     <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="logo">
-
                                     <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
                                 </form>
                             </div>
@@ -76,3 +92,12 @@
                         </div>
                     </div>
                 </div>
+
+                <script>
+                function alert2(){
+                    if(confirm("Сначала выберете нового тимлида") ){
+     
+                     
+                    }
+            }
+            </script>

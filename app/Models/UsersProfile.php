@@ -18,9 +18,15 @@ class UsersProfile extends Model
 
      public function getById($id){
       
-          $data['data'] = DB::table('users_profile2')->where('user_id', $id)->get();
+        /*   $data['data'] = DB::table('users_profile2')
+      
+          ->where('user_id', $id)->get();
           $data['status'] = DB::table('users_profile2')->where('user_id', $id)->value('status');
           $data['verification'] = DB::table('users_profile2')->where('user_id', $id)->value('verification');
+          return $data['data']->count() ? $data : null; */
+          $data['data'] = DB::table('users')->where('id', $id)->get();
+          $data['status'] = DB::table('users')->where('id', $id)->value('exist_status');
+          $data['verification'] = DB::table('users')->where('id', $id)->value('verification');
           return $data['data']->count() ? $data : null;
    }
    public static function delete_profile($id){
@@ -44,17 +50,36 @@ class UsersProfile extends Model
           return $team->count() ? $team : null;
        
    }
-   public static function getMatchesById($id, $status){
+   public static function getMatchesById($team_id,$id, $status){
      
-      $tournaments = DB::table('tournaments_members')
-          ->join('tournaments', 'tournaments_members.tournament_id' ,'=', 'tournaments.id')
-         ->join('tournament_group_teams' ,'tournaments_members.team_id' ,'=' ,'tournament_group_teams.team_id')
+    /*   $tournaments = DB::table('tournament_group_teams')
+          ->leftjoin('tournaments', 'tournament_group_teams.tournament_id' ,'=', 'tournaments.id')
           ->join('tournament_groups' ,'tournament_group_teams.group_id' ,'=' ,'tournament_groups.id')
           ->join('tournament_matches', 'tournament_matches.group_id', '=' ,'tournament_group_teams.id')
           ->join('stages', 'tournament_matches.stage_id', '=' ,'stages.id')
-          ->select( 'tournaments.*','tournament_matches.login', 'tournament_matches.password',  'tournament_matches.match_name', 'tournament_groups.group_name', 'stages.stage_name')
+          //->join('tournaments', 'stages.tournament_id', '=' ,'tournaments.id')
+          ->select('tournaments.*','tournament_matches.login', 'tournament_matches.password',  'tournament_matches.match_name', 'tournament_groups.group_name', 'stages.stage_name', 'stages.tournament_id')
          //->select( 'tournament_group_teams.team_id')
-          ->where('tournaments_members.user_id', $id)->where('tournaments.active', $status)->orderBy('tournament_matches.id', 'DESC')
+          ->where('tournament_group_teams.team_id', $team_id)->where('tournaments.active', $status)->where('tournaments.status', 'save')
+          //->groupBy('tournaments.name')
+          ->orderBy('tournaments.name')
+          ->orderBy('stages.stage_name', 'desc')
+           ->get(); 
+        return $tournaments->count() ? $tournaments : null;  */
+          $tournaments = DB::table('tournament_group_teams')
+          ->leftjoin('tournaments', 'tournament_group_teams.tournament_id' ,'=', 'tournaments.id')
+          ->join('tournament_groups' ,'tournament_group_teams.group_id' ,'=' ,'tournament_groups.id')
+          ->join('team' ,'tournament_group_teams.team_id' ,'=' ,'team.id')
+          ->join('tournament_matches', 'tournament_group_teams.group_id', '=' ,'tournament_matches.group_id')
+          ->join('stages', 'tournament_matches.stage_id', '=' ,'stages.id')
+       
+          ->select('tournaments.*','tournament_matches.login', 'tournament_matches.password',  'tournament_matches.match_name', 'tournament_groups.group_name', 
+          'stages.stage_name', 'stages.tournament_id', 'team.name as team_name')
+        // ->select( 'tournament_group_teams.team_id')
+          ->where('tournament_group_teams.team_id', $team_id)->where('tournaments.active', $status)->where('tournaments.status', 'save')
+         
+          ->orderBy('tournaments.name')
+          ->orderBy('stages.stage_name', 'desc')
            ->get(); 
         return $tournaments->count() ? $tournaments : null; 
         
@@ -65,7 +90,7 @@ class UsersProfile extends Model
    }
 
    public function checkVerification($id){
-       $is_has = DB::table('users_profile2')->where('user_id', $id)->where('verification', 'verified')->exists();
+       $is_has = DB::table('users')->where('id', $id)->where('verification', 'verified')->exists();
        if($is_has==true){
           return true;
        }
@@ -74,7 +99,7 @@ class UsersProfile extends Model
    }
    public static function updateProfile($id, $data)
    {
-      return DB::table('users_profile2')->where('user_id', $id)->update($data);
+      return DB::table('users')->where('id', $id)->update($data);
    }
    public static function queryUpdate($data){
       return DB::table('orders')->insert($data);
@@ -91,3 +116,4 @@ class UsersProfile extends Model
    }
    
 }
+
