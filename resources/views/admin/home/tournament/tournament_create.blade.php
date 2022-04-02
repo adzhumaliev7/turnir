@@ -2,7 +2,7 @@
 
 @section('content')
 <div style="margin-left:100px;">
-
+@include('errorMessage')
         @if (session('error'))
 <div class="alert alert-danger">{{ session('error') }}</div>
 @endif
@@ -111,18 +111,12 @@
  <div class="form-row">
    <div class="form-group col-md-4">
       <label for="inputPassword4">Дата начала турнира</label>
-      <input type="date" class="form-control" name="tournament_start" id="" placeholder="Дата начала турнира">
+      <input type="text" class="form-control @error('tournament_start') is-invalid @enderror" name="tournament_start" id="" placeholder="Дата начала турнира">
          @error('tournament_start')
              <div class="alert alert-danger">Введите дату старта турнира</div>
            @enderror
     </div>
-   <div class="form-group col-md-4">
-      <label for="inputPassword4">Время турнира</label>
-      <input type="time" class="form-control" name="games_time" id="" placeholder="Время турнира">
-         @error('games_time')
-             <div class="alert alert-danger">Введите время турнира </div>
-           @enderror
-      </div>
+  
    <div class="form-group col-md-4">
       <label for="inputPassword4">Призовой фонд</label>
       <input type="text" class="form-control" name="price" id="" placeholder="100$">

@@ -1,4 +1,4 @@
-<form method="POST" action="{{route('update_profile')}}" enctype="multipart/form-data" >
+<form method="POST" action="{{route('update_profile')}}" enctype="multipart/form-data" <?= $disabled; ?>>
             @csrf
             @foreach($data['data'] as $dat )
       
@@ -8,13 +8,13 @@
 
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="name" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->name}}" <?= $disabled; ?>>
+                <input name="name" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->name}}" >
                 @error('name')
                 <div class="alert alert-danger">Введите логин</div>
                 @enderror
               </div>
               <div class="col-lg-6">
-                <input name="" placeholder="Email" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->email}}"  disabled>
+                <input name="" placeholder="Email" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->email}}" >
                 @error('email')
                 <div class="alert alert-danger">Такой email уже занят</div>
                 @enderror
@@ -25,13 +25,13 @@
             </h2>
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="phone" placeholder="Номер телефона" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->phone}}" <?= $disabled; ?>>
+                <input name="phone" placeholder="Номер телефона" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->phone}}" >
                 @error('phone')
                 <div class="alert alert-danger">Введите номер телефона</div>
                 @enderror
               </div>
               <div class="col-lg-6">
-                <input name="fio" placeholder="Имя Фамилия" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->fio}}" <?= $disabled; ?>>
+                <input name="fio" placeholder="Имя Фамилия" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->fio}}" >
                 @error('fio')
                 <div class="alert alert-danger">Введите имя</div>
                 @enderror
@@ -40,19 +40,19 @@
            
             <div class="row mt-4">
               <div class="col-lg-6">
-              <input name="country" placeholder="" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->country}}" <?= $disabled; ?>>
+              <input name="country" placeholder="" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->country}}">
                
               </div>
               <div class="col-lg-6">
-              <input name="timezone" placeholder="" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->timezone}}" <?= $disabled; ?>>
+              <input name="timezone" placeholder="" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->timezone}}" >
               </div>
             </div>
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="city" placeholder="Город" type="text " class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->city}}" <?= $disabled; ?>>
+                <input name="city" placeholder="Город" type="text " class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->city}}" >
               </div>
               <div class="col-lg-6">
-                <input name="bdate" placeholder="Дата рождения" type="date" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->bdate}}" <?= $disabled; ?>>
+                <input name="bdate" placeholder="Дата рождения" type="date" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->bdate}}" >
               </div>
             </div>
             <h2 class="title letter-spacing--none indent--row">
@@ -60,10 +60,10 @@
             </h2>
             <div class="row">
               <div class="col-lg">
-                <input placeholder="Nick name" name="nickname" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->nickname}}" <?= $disabled; ?>>
+                <input placeholder="Nick name" name="nickname" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->nickname}}">
               </div>
               <div class="col-lg">
-                <input placeholder="ID игрока в PUBG Mobile" type="text" name="game_id" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->game_id}}" <?= $disabled; ?>>
+                <input placeholder="ID игрока в PUBG Mobile" type="text" name="game_id" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->game_id}}">
              
                 @error('login')
                 <div class="alert alert-danger">Игровой id уже занят</div>

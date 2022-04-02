@@ -6,7 +6,9 @@ use App\Models\Stage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Tournament;
+use App\Models\TournamentMembers;
 use App\Models\User;
+use App\CustomClasses\ColectionPaginate;
 use Illuminate\Support\Facades\Auth;
 
 class TournamentController extends Controller
@@ -18,27 +20,41 @@ class TournamentController extends Controller
                $mail = Auth::user()->email;
           } else $mail = null;
           $tournaments = Tournament::getTournaments();
-          $date = date('Y-m-d'); 
-          if ($tournaments == NULL) {
-               $tournaments == "";
-          }
+      
+          if($tournaments !=null) $tournaments = ColectionPaginate::paginate($tournaments, 10);
+          $date = date('d.m.Y'); 
+                $a = '25-03-2022 16:26:00';    
+                $b = '26.03.2022 19:12';
+              //  dd(strtotime($date) < strtotime($b));    
           return view('main.tournament', [
                'mail' => $mail,
                'tournaments' => $tournaments,
                'date' => $date,
           ]);
      }
+
      public function matchViewNew($turnirId, $stageId = null, $groupId = null,  Request $request){
           $tournament = Tournament::withCount('order', 'stages')->findOrFail($turnirId);
-          $date = date('Y-m-d');  /// надо для проверки даты начала турнира
+          $date = date('d-m-Y');  /// надо для проверки даты начала турнира
           $teams_count = Tournament::teamsCount($turnirId);
             //команды зарегистрированные в турнир
-  
-          $teams = Tournament::getTeams($turnirId);
-  
+       
+          //$teams = Tournament::getTeams($turnirId);
+          $teams = $tournament->order()->where('status', 'accepted')->with('team:id,name')
+              ->addSelect([
+                  'memberCount' => TournamentMembers::select('tournament_id')
+                      ->whereColumn('team_id', 'tournamets_team.team_id')
+                      ->where('tournament_id', $turnirId)
+                      ->select(DB::raw('count(tournament_id)'))
+                      ->latest()
+                      ->take(1),
+                  ])
+              ->get();
+            
           $userTeam = Auth::user()->team ?? false;
-        
+       
           $tournametTeam = $userTeam ? $userTeam->order->where('tournament_id', $tournament->id)->first() : false;
+        
           $members = $userTeam ? $userTeam->teammatesTeam->load('user') : false;
   
   
@@ -118,7 +134,7 @@ class TournamentController extends Controller
         
            $members = $request->input('members');
    
-          if($members == null) {
+          /*  if($members == null) {
                return redirect()->back()->with('error_msg', 'вы не выбрали учасников команды');  
           }  
           if(count($members) < 3 ) {
@@ -126,23 +142,19 @@ class TournamentController extends Controller
           }   
           if(count($members) > 4 ) {
                return redirect()->back()->with('error_msg', 'превышен лимит участников (максимум 4 участника)');  
-          }   
+          }     */
            $user_id = Auth::user()->id;
           $team_id = Tournament::getTeamById($user_id);
           $team_id = (array) $team_id;
           $team_id = implode("", $team_id);
-
           $data = array(
                'tournament_id' => $id,
                'team_id' => $team_id,
                'status' => 'processed',
-
           );
-
           for ($i = 0; $i < count($members); $i++) { 
                DB::table('tournaments_members')->insert(['tournament_id' => $id, 'team_id' => $team_id, 'user_id' => $members[$i]]);
           }
-
           Tournament::joiToTournament($data);
           return redirect(route('match', $id));    
      }

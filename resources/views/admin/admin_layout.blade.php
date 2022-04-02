@@ -108,13 +108,15 @@
               </a>
             </li>
             @endif
-            <li class="nav-item menu-is-opening menu-open">
+            <li class="nav-item">
               <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
                 <p>
                   Пользователи
+                  <i class="fas fa-angle-left right"></i>
                 </p>
               </a>
-              <ul class="nav nav-treeview" style="display: block;">
+              <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <a href="{{route('allusers')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
@@ -160,34 +162,22 @@
                 </p>
               </a>
             </li>
-            <li class="nav-item">
-              <a href="{{route('help')}}" class="nav-link">
-                <i class="nav-icon far fa-alt"></i>
-                <p>
-                  Помощь
-                </p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{route('admin_feedback')}}" class="nav-link">
-                <i class="nav-icon far fa-alt"></i>
-                <p>
-                  Обратная связь
-                </p>
-              </a>
-            </li>
-            <li class="nav-item menu-is-opening menu-open">
-              <a href="#" class="nav-link">
 
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
                 <p>
                   Турниры
+                  <i class="fas fa-angle-left right"></i>
                 </p>
               </a>
-              <ul class="nav nav-treeview" style="display: block;">
+              <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <a href="{{route('admin_tournament')}}" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Активные турниры</p>
+                    <p>Активные турниры
+                   
+                    </p>
                   </a>
                 </li>
                 <li class="nav-item">
@@ -210,6 +200,50 @@
                 </li>
               </ul>
             </li>
+
+
+
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+                <p>
+                  Прочие
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+        
+        
+              <li class="nav-item">
+              <a href="{{route('help')}}" class="nav-link">
+                <i class="nav-icon far fa-alt"></i>
+                <p>
+                  Помощь
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{route('admin_feedback')}}" class="nav-link">
+                <i class="nav-icon far fa-alt"></i>
+                <p>
+                  Обратная связь
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{route('admin.posts')}}" class="nav-link">
+                <i class="nav-icon far fa-alt"></i>
+                <p>
+                  Новости
+                </p>
+              </a>
+            </li>
+              
+              </ul>
+            </li>
+
+
+        
 
           </ul>
         </nav>
@@ -319,7 +353,6 @@
     <script>
 
         $(document).ready(function() {
-
             $('.rules').summernote({
               disableDragAndDrop: true,
         height: 300,
@@ -336,14 +369,35 @@
         ['para', ['ul', 'ol', 'paragraph']],
         ['height', ['height']],
         ['table', ['table']],
-
+         ['insert',['picture','link','video','table']],
         ['view', ['fullscreen', 'codeview', 'help']],
         ['undo', ['undo']],
         ['redo', ['redo']],
         ],
                 });
-        });
+
+
+
+                editor.summernote(configFull);
+
+
+
+
+});
+       
     </script>
+
+    <script>
+
+
+
+
+
+    </script> 
+
+
+
+
 
    <script>
       var modal = document.getElementById("myModal");

@@ -161,8 +161,9 @@ class ProfileController extends Controller
 
     $id = Auth::user()->id;
     $verification = UsersProfile::getById($id);
-    if($verification['verification'] != null){
+  
       if ($request->hasFile('doc_photo') == true && $request->hasFile('doc_photo2') == true){
+      
       if($verification['verification'] =='rejected'){
          $data['verification'] = 'on_check'; 
       }
@@ -170,18 +171,18 @@ class ProfileController extends Controller
          $data['verification'] = 'verified'; 
       }else $data['verification'] = 'on_check'; 
   }
-  else  $data['verification'] = 'null';
-}  
+  else  $data['verification'] = NULL;
+
     $data['exist_status'] = 0;
 
       UsersProfile::updateProfile($id, $data);
-      
+
       if($request->input('game_id') != null){
-        Log_gameid::create(['oldvalue' => $request->input('old_game_id'), 'newvalue' => $request->input('game_id'), 'user_id' =>  $id, 'date' => Carbon::now()]);
+        Log_gameid::create(['oldvalue' => $request->input('old_game_id'), 'newvalue' => $request->input('game_id'), 'user_id' =>  $id, ]);
       }
-   
+
     \Session::flash('flash_meassage', 'Сохранено');
-    return redirect(route('profile'));   
+    return redirect()->back();    
   }
 
   public function createTeam(Request $request)
@@ -206,10 +207,10 @@ class ProfileController extends Controller
 
     if ($status == true) {
       \Session::flash('flash_meassage2', 'Сохранено');
-      return redirect('profile');
+      return redirect()->back();   
     } else {
       \Session::flash('flash_meassage_error', 'У вас уже есть команда');
-      return redirect('profile');
+      return redirect()->back();   
     }
   }
   public function deleteProfile($id)
@@ -227,25 +228,22 @@ class ProfileController extends Controller
 
     UsersProfile::queryUpdate($data);
     \Session::flash('flash_meassage', 'Ваш запрос отправлен');
-    return redirect('profile');
+    return redirect()->back();
   } 
   public function changePassword(Request $request){
     $validator = Validator::make($request->all(), [
       'oldpassword' => ['required'],
-     
-      'password' => ['required','confirmed'],
+    'password' => ['required','confirmed'],
      
   ]);
-
   if ($validator->fails()) {
     return response()->json(['error'=>$validator->errors()->all()]);
       
   }else{ 
-   
      $password = Hash::make($request->input('password'));
      User::changePassword(Auth::user()->id, $password);
      return response()->json(['success'=>'Пароль успешно изменен']);
-    
+  
   }
 }
 protected function validator(array $data)
@@ -255,7 +253,6 @@ protected function validator(array $data)
         'newpassword' => ['required','confirmed'],
     ]);
 }
-
   protected function uploadFiles($name, $path){
     $file_name = $name->getClientOriginalName();
    $type = $name->getClientOriginalExtension();

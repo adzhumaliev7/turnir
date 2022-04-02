@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\User;
 use App\Models\Team;
+use App\Models\Post;
 use App\Models\Log;
+use App\Models\Log_gameid;
 use App\Models\UsersProfile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -100,7 +102,9 @@ class HomeController extends Controller
   public function userCard($id)
   {
     $user = User::leftJoin('users_logo', 'users_logo.user_id', '=', 'users.id')->select('users.*', 'users_logo.photo')->findOrFail($id);
-    return view('admin.home.users.user_card_new', compact('user'));
+    $log_gameid = Log_gameid::get($id);
+   
+    return view('admin.home.users.user_card_new', compact('user', 'log_gameid'));
   }
 
   public function moderators()
@@ -266,6 +270,8 @@ class HomeController extends Controller
 
     return redirect()->route('orders_team');
   }
+
+
   public function search(Request $request)
 {
   $search = $request->input('search');

@@ -129,7 +129,8 @@
             <label for="staticEmail" class="col-sm-2 col-form">Даты банов</label>
             <div class="col-sm-4">
                 @foreach($user->bans as $ban)
-                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$ban->date}}">
+              
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{Carbon\Carbon::parse($ban->date)->format('d.m.Y')}}">
                 @endforeach
             </div>
         </div>
@@ -138,6 +139,14 @@
             <div class="col-sm-4">
                 @foreach($user->bans as $ban)
                 <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$ban->description}}">
+                @endforeach
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Админ</label>
+            <div class="col-sm-4">
+                @foreach($user->bans as $ban)
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$ban->user->name}}">
                 @endforeach
             </div>
         </div>
@@ -201,7 +210,7 @@
       </div>
     </div>
 
-    <h3>Игровой профиль</h3>
+    <a id="myBtn" href="#" data-toggle="modal" data-target="#ModalGameId"><h3>Игровой профиль</h3></a>
     <div class="form-group row">
         <label for="inputPassword" class="col-sm-2 col-form-label">Ник</label>
         <div class="col-sm-4">
@@ -225,7 +234,7 @@
     <div class="form-group row">
         <label for="inputPassword" class="col-sm-2 col-form-label">Дата рождения</label>
         <div class="col-sm-4">
-            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->bdate}}">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{Carbon\Carbon::parse($user->bdate)->format('d.m.Y')}}">
         </div>
     </div>
     <div class="form-group row">
@@ -285,5 +294,47 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="ModalGameId" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <hr style="background-color: orange">
+        <h3 class="text-center">Логи</h3>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Дата</th>
+                <th scope="col">С</th>
+                <th scope="col">На</th>
+            </tr>
+            </thead>
+            <tbody>
 
+        @if($log_gameid != null)
+            @foreach($log_gameid as $item)
+                <tr>
+                    <th scope="row">{{$loop->index+1}}</th>
+                    <td>{{Carbon\Carbon::parse($item->date)->format('d.m.Y')}}</td>
+                    <td> {{$item->oldvalue}} </td>
+                    <td> {{$item->newvalue}} </td>
+                    <td>
+                       
+                    </td>
+                </tr>
+            @endforeach
+         @else
+         <h3>нету логов</h3>   
+        @endif
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection

@@ -16,16 +16,19 @@
                                 <thead class=" thead-light">
                                     <tr>
                                         <th scope="col">Турнир</th>
+                                        <th scope="col">Участники</th>
                                         <th scope="col">Формат</th>
                                         <th scope="col">Дата</th>
                                     </tr>
                                 </thead>
-                                @foreach($tournaments as $tournament)
+                                @foreach($tournaments as $turnir)
                                 <tbody>
                                     <tr>
-                                        <td>{{$tournament->name}}</td>
-                                        <td>{{$tournament->format}}</td>
-                                        <td>{{$tournament->tournament_start}}</td>
+                                       
+                                        <td>{{$turnir->turnir->name}}</td>
+                                        <td>{{$turnir->members}}</td>
+                                        <td>{{$turnir->turnir->format}}</td>
+                                        <td>{{Carbon\Carbon::parse($turnir->turnir->tournament_start)->format('d.m.Y')}} </td>
                                     </tr>
                                  </tbody>
                                 @endforeach   

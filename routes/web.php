@@ -51,6 +51,8 @@ Route::post('/profile/changepassword', [\App\Http\Controllers\ProfileController:
 Route::post('/profile/query/{id}', [\App\Http\Controllers\ProfileController::class, 'query'])->name('query');
 Route::post('/profile/save_photo', [\App\Http\Controllers\ProfileController::class, 'savePhoto'])->name('save_photo');
 Route::get('/main', [\App\Http\Controllers\MainController::class, 'index'])->name('main');
+Route::get('/news', [\App\Http\Controllers\NewsController::class, 'index'])->name('news');
+Route::get('/news/{id}/show', [\App\Http\Controllers\NewsController::class, 'show'])->name('news.show');
 Route::get('/team/{id}/{user_id}', [\App\Http\Controllers\TeamController::class, 'index'])->middleware('auth')->name('team');
 
 Route::get('/generate/{id}/{user_id}', [\App\Http\Controllers\TeamController::class, 'generateLink'])->name('generate_link');
@@ -104,6 +106,16 @@ Route::middleware(['role:admin|moderator',  'middleware' => 'auth'],)->prefix('a
     Route::get('/verified/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'verified',])->name('verified');
     Route::post('/rejected/{id}', [\App\Http\Controllers\Admin\HomeController::class, 'rejected',])->name('rejected');
     Route::get('/tournament', [\App\Http\Controllers\Admin\TournamentController::class, 'index',])->name('admin_tournament');
+
+    //Нровсти 
+    Route::get('/posts', [\App\Http\Controllers\Admin\PostsController::class, 'posts',])->name('admin.posts');
+    Route::get('/posts/create', [\App\Http\Controllers\Admin\PostsController::class, 'posts_create',])->name('admin.posts.create');
+    Route::post('/posts/store', [\App\Http\Controllers\Admin\PostsController::class, 'posts_store',])->name('admin.posts.store');
+    Route::get('/posts/{id}/edit', [\App\Http\Controllers\Admin\PostsController::class, 'edit',])->name('admin.posts.edit');
+    Route::post('/posts/{id}/update', [\App\Http\Controllers\Admin\PostsController::class, 'update',])->name('admin.posts.update');
+    Route::get('/posts/{id}/delete', [\App\Http\Controllers\Admin\PostsController::class, 'destroy',])->name('admin.posts.delete');
+    Route::get('/posts/uploadfiles', [\App\Http\Controllers\Admin\PostsController::class, 'uploadfiles',])->name('admin.posts.upload');
+    Route::get('/posts/deletefiles', [\App\Http\Controllers\Admin\PostsController::class, 'deletefile',])->name('admin.posts.deletefile');
 
 
     Route::get('/stages/{id}', [\App\Http\Controllers\Admin\TournamentController::class, 'stages',])->name('stages');

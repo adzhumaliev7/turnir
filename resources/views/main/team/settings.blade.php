@@ -2,9 +2,9 @@
         <div class="alert alert-success" style="font-size: 16px;">{{Session::get('flash_meassage')}}</div>
 @endif
                  @if($tournaments != null)
-    @foreach($tournaments as $tournament)
-  
-        @if($tournament->active == 1)    
+    @foreach($tournaments as $turnir)
+
+        @if($turnir->turnir->active == 1)    
             <?$disabled = 'disabled';?>
         @else
         <?$disabled = '';?>
@@ -13,6 +13,9 @@
  @else   
     <?$disabled = '';?>
     @endif  
+        @if($disabled == 'disabled')
+            <div class="alert alert-danger" style="font-size: 16px;">Во время проведения турнира редактирование недоступно</div>
+        @endif
                 <form method="POST" action="{{route('orders_team_user', $team_id)}}" enctype="multipart/form-data">
                 <fieldset  <?echo $disabled;?>>
                     @csrf

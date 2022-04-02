@@ -16,10 +16,9 @@ class Team extends Model
       return $this->morphMany(Log::class,'model');
  }
 
-    public function ban(){
-        return $this->morphOne(Report::class,'ban');
-    }
-
+   public function bans(){
+      return $this->morphMany(Report::class,'ban');
+   }
    public function сaptain( ) {
       return $this->hasOne(User::class, 'id', 'user_id');
   }
@@ -106,13 +105,9 @@ public function network(){
    {
       $has_team = DB::table('team')->where('user_id', $user_id)->exists();
       //$is_team_members = DB::table('team_members')->where('user_id', $user_id)->exists();
-      if ($has_team == false) {
          $id = DB::table('team')->insertGetId($data);
          $data_m['team_id'] = $id;
          return DB::table('team_members')->insert($data_m);
-      } else {
-         return NULL;
-      }
    }
    public function addMembers($data)
    {
@@ -208,11 +203,19 @@ public function network(){
    } 
    public static function getTournaments($team_id){
      
-      $tournaments = DB::table('tournamets_team')
+     /*  $tournaments = DB::table('tournamets_team')
       ->join('tournaments', 'tournamets_team.tournament_id' ,'=', 'tournaments.id')
       ->select( 'tournaments.*')
       ->where('tournamets_team.team_id', $team_id)->where('tournamets_team.status', 'accepted')
-       ->get(); 
+       ->get();  */
+       $tournaments = Team::find($team_id)->order()->where('status', 'accepted')->with('turnir')->addSelect([
+         'members' => User::select('name')
+             ->join('tournaments_members', 'tournaments_members.user_id', '=', 'users.id')
+             ->whereColumn('team_id', 'tournamets_team.team_id')
+             ->whereColumn('tournaments_members.tournament_id', 'tournamets_team.tournament_id')
+             ->select(DB::raw('GROUP_CONCAT(name)'))
+             ->take(1),
+     ])->get(); 
     return $tournaments->count() ? $tournaments : null; 
    } 
    public static function getUsersEmail($id)

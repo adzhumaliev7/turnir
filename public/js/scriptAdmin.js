@@ -24,6 +24,18 @@ $('input[name="end_reg"]').datepicker({
     dateTimeSeparator: " "
 });
 
+$('input[name="date"]').datepicker({
+    timepicker: true,
+    clearButton: true,
+    minDate: new Date(),
+    dateTimeSeparator: " "
+});
+$('input[name="tournament_start"]').datepicker({
+    timepicker: true,
+    clearButton: true,
+    minDate: new Date(),
+    dateTimeSeparator: " "
+});
 //Не из заявок
 function format ( d ) {
     let turnirId = $('.teamTable').data('turnirid')

@@ -16,30 +16,7 @@
           </ul>
         </div>
     </div>
-    <nav class=" navbar navbar-expand-md navbar p-3 mb-5 bg-body rounded bg--none navbar-z">
-        <div class=" container-fluid header-indent">
-            <a class="navbar-brand title text-uppercase logo-indent-mr text-white pubg-hover px-2" href="{{route('main')}}">bigplay</a>
-            <button class="toggle-menu toggle-click button--none">
-                <span></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav w-100 justify-content-end">
-                    <li class="nav-item nav-item--active">
-                        <a class="nav__link-active nav-link nav-white pubg-hover" aria-current="page" href="{{route('tournament')}}">Турниры</a>
-                    </li>
-                    <li class="nav-item nav-item--active">
-                        <a class="nav-link nav-white pubg-hover" aria-current="page" href="{{route('rating')}}">Рейтинг</a>
-                    </li>
-                    <li class="nav-item nav-item--active ">
-                        <a class=" nav-link nav-white pubg-hover" aria-current="page" href="#">Помощь</a>
-                    </li>
-                    <li class="nav-item nav-item--active ">
-                        <a class=" nav-link nav-white pubg-hover" aria-current="page" href="{{route('feedback')}}">Обратная связь</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    @include('main.inc.nav_header')
 </div>
 <div class="main">
   <div class="container">
@@ -56,12 +33,10 @@
                 </div>
             </div>
             <div class="col-lg-4">
-
                 <h1 class="title text-capitalize font-sz">{{$team->name}}</h1>
                 @endforeach
                 @endif
                 <sub class="subtitle">pubg mobile</sub>
-
             </div>
             <div class="block d-flex justify-content-start" style="flex-direction:row-reverse">
                 @if($networks != null)
@@ -80,20 +55,32 @@
                 @endif
             </div>
         </div>
-        <ul class="nav nav-tabs nav-tabss" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link nav-btn " id="view-tab" data-bs-toggle="tab" data-bs-target="#view" type="button" role="tab" aria-controls="view" aria-selected="true">Обзор</button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link nav-btn " id="lineup-tab" data-bs-toggle="tab" data-bs-target="#lineup" type="button" role="tab" aria-controls="lineup" aria-selected="false">Турниры</button>
-            </li>
+         <ul class="nav nav-tabs nav-tabss" id="myTab" role="tablist">
+         <li class="nav-item" role="presentation">
+                      <button class="nav-link nav-btn "
+                       id="view-tab"
+                       data-bs-toggle="tab" 
+                       data-bs-target="#view" 
+                       type="button" role="tab" 
+                       aria-controls="view" 
+                       aria-selected="true">
+                        Обзор
+                      </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                      <button class="nav-link nav-btn " id="lineup-tab" data-bs-toggle="tab" data-bs-target="#lineup" type="button" role="tab" aria-controls="lineup" aria-selected="false">
+                        Турниры
+                      </button>
+                  </li>
             @if($chek_admin == 'true')
             <li class="nav-item" role="presentation">
-                <button class="nav-link nav-btn" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Настройки</button>
-            </li>
+                      <button class="nav-link nav-btn" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">
+                        Настройки
+                      </button>
+             </li>
             @endif
             <li class="nav-item" role="presentation">
-                <a href="{{route('profile')}}" class="nav-link nav-btn" >К профилю</a>
+                <a href="{{route('profile')}}" class="nav-link nav-btn">К профилю</a>
             </li>
         </ul>
 
@@ -110,7 +97,7 @@
                   
                     <h4 class="input-title">Пригласить друзей в команду</h4>
                     <span class="subtitle subtitle--regular d-block subtitle--twelve">Скопируйте ссылку и отправьте друзьям которые хотят присоедениться вк вашей команды</span>
-                    <input class="subtitle subtitle--regular url-input url-input--margin" type="text" id="myInput" value="http://showmatch/{{$link}}/{{$team_id}}">
+                    <input class="subtitle subtitle--regular url-input url-input--margin" type="text" id="myInput" value="http://showmatch2/{{$link}}/{{$team_id}}">
                     <button class="submit-btn btn--orange  btn--size btn--mr" onclick="myFunction()">Копировать</button>
                     <a href="{{route('generate_link',[$team_id,$user_id])}}" class="link_styles">Сгенерировать новую ссылку</a>
                     <div class="orange-line"></div>
@@ -118,7 +105,6 @@
                     @endif
                     @if(!$members==NULL)
                     @foreach($members as $member)
-
                     <div class="member-block d-flex justify-content-between member-block--border-b my-4 ">
                         <div class="member__item d-flex align-items-center">
                             <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -126,9 +112,7 @@
                             </svg>
                             <span class="item__tile item__tile--margin">{{$member->name}}</span>
                         </div>
-
                         @if($member->role=='captain')
-
                         <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M14.7474 18.6158C14.9556 18.6158 15.1623 18.5509 15.3387 18.4233C15.6673 18.1852 15.8208 17.7758 15.7314 17.3808L14.5091 11.9964L18.6544 8.36107C18.9591 8.09506 19.0755 7.6738 18.9504 7.28835C18.8253 6.90362 18.485 6.63123 18.082 6.59398L12.5972 6.09603L10.4287 1.02134C10.2688 0.648497 9.90464 0.407715 9.50005 0.407715C9.09546 0.407715 8.73132 0.648497 8.57143 1.02047L6.40294 6.09603L0.919016 6.59398C0.51515 6.63036 0.17478 6.90362 0.0496769 7.28835C-0.0754261 7.67308 0.0402546 8.09506 0.344965 8.36107L4.4903 11.9957L3.26798 17.3799C3.1784 17.7758 3.33206 18.1852 3.66054 18.4226C3.9883 18.6601 4.42536 18.6783 4.77052 18.4709L9.50005 15.6446L14.2296 18.4725C14.3895 18.5674 14.5676 18.6158 14.7474 18.6158ZM9.50005 14.427C9.3203 14.427 9.14229 14.4753 8.98225 14.5702L4.51872 17.2399L5.67233 12.1579C5.75466 11.7962 5.63188 11.4186 5.3524 11.1739L1.43827 7.74121L6.61676 7.27095C6.9896 7.23689 7.31025 7.00248 7.45594 6.65892L9.50005 1.86995L11.5466 6.65965C11.6907 7.00089 12.0114 7.23529 12.3834 7.26936L17.5626 7.73961L13.6486 11.1723C13.3682 11.4177 13.2456 11.7946 13.3287 12.1572L14.4814 17.239L10.0179 14.5702C9.85797 14.4753 9.67981 14.427 9.50005 14.427ZM12.6391 6.19417C12.6391 6.19417 12.6391 6.19504 12.6399 6.19577L12.6391 6.19417ZM6.36264 6.19185L6.36177 6.19345C6.36177 6.19258 6.36177 6.19258 6.36264 6.19185Z" fill="black" />
                         </svg>
@@ -145,13 +129,10 @@
                     @endforeach
                     @endif
                 </div>
-
             </div>
            <!-- Турниры -->
-            <div class="tab-pane fade" id="lineup" role="tabpanel" aria-labelledby="lineup-tab">
-               
-                        @include('main.team.tournaments')
-
+           <div class="tab-pane fade" id="lineup" role="tabpanel" aria-labelledby="lineup-tab">
+                @include('main.team.tournaments')
             </div>
             <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                 @include('main.team.settings')
@@ -159,29 +140,44 @@
         </div>
     </div>
 </div>
-    <script>
+
+
+
+<script>
+      const nav = qs1('tab');
+      console.log(nav)
+        if (nav && document.getElementById(nav)) {
+          document.getElementById(nav).click()
+        }
+      function qs1(key) {
+        key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, '\\$&');
+        var match = location.search.match(new RegExp('[?&]'+key+'=([^&]+)(&|$)'));
+        return match && decodeURIComponent(match[1].replace(/\+/g, ''));
+      }
+      $('#myTab .nav-link').on('click', function (e) {
+        var url = window.location.href;       
+        var urlSplit = url.split( '?' );       
+        var obj = { title : '', url: urlSplit[0] + '?tab=' + this.getAttribute('id')};       
+        history.pushState(obj, obj.title, obj.url);
+      })
+    </script> 
+            <script>
                 function alert(){
                     if(confirm("Вы подтверждаете операцию?") ){
-     
                        return(true);
                     }else{
                        return(false);
                     }
             }
             </script>
-            
-          
+
 <script>
-    
 function myFunction() {
    copyText = document.getElementById("myInput");
   copyText.select();
   document.execCommand("copy");
-  
 }
 </script>
+     @endsection
 
-
-
-
-        @endsection
+     

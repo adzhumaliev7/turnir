@@ -91,7 +91,7 @@
             @enderror
         </div>
 
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-4">  
             <label for="inputPassword4">Дата завершеня регистрации</label>
             <input type="text" id="end_reg" name="end_reg" class="form-control @error('end_reg') is-invalid @enderror" placeholder="Завершение регистрации" value="{{$tournament->end_reg}}"">
             @error('end_reg')
@@ -114,18 +114,12 @@
  <div class="form-row">
    <div class="form-group col-md-4">
       <label for="inputPassword4">Дата начала турнира</label>
-      <input type="date" class="form-control" name="tournament_start" id="" placeholder="Дата начала турнира" value="{{$tournament->tournament_start}}">
+      <input type="date"  class="form-control @error('tournament_start') is-invalid @enderror"  name="tournament_start" id="" placeholder="Дата начала турнира" value="{{$tournament->tournament_start}}">
          @error('tournament_start')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
-   <div class="form-group col-md-4">
-      <label for="inputPassword4">Время турнира</label>
-      <input type="time" class="form-control" name="games_time" id="" placeholder="Время турнира" value="{{$tournament->games_time}}">
-         @error('games_time')
-             <div class="alert alert-danger">{{$message}}</div>
-           @enderror
-      </div>
+  
 
        <div class="form-group col-md-4">
       <label for="inputPassword4">Призовой фонд</label>

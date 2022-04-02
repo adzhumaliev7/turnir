@@ -16,23 +16,19 @@
 
             <div class="row mb-3">
               <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Логин') }}</label>
-
               <div class="col-md-6">
-                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name">
-
+                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{old('name')}}" required autocomplete="name">
                 @error('name')
                 <span class="invalid-feedback" role="alert">
-                  <strong>{{ $message }}</strong>
+                  <strong>Такой логин уже занят</strong>
                 </span>
                 @enderror
               </div>
             </div>
             <div class="row mb-3">
               <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail адрес') }}</label>
-
               <div class="col-md-6">
                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
                 @error('email')
                 <span class="invalid-feedback" role="alert">
                   <strong>Такой email уже занят</strong>
@@ -42,16 +38,13 @@
             </div>
             <div class="row mb-3">
               <label for="country" class="col-md-4 col-form-label text-md-right">{{ __('Страна') }}</label>
-
               <div class="col-md-6">
                 <select name="country" id="country"  class="form-control @error('country') is-invalid @enderror"  autocomplete="new-country">
                 <option value="">Выбрать страну</option>
                   @foreach($countries as $country)
-    
                   <option value="{{$country}}">{{$country}}</option>
                   @endforeach
                 </select>
-
                 @error('country')
                 <span class="invalid-feedback" role="alert">
                   <strong>Выберите страну</strong>

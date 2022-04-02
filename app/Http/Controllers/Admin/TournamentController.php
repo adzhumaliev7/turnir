@@ -26,7 +26,7 @@ use App\Http\Requests\Admin\SaveTournamentRequest;
 use App\Http\Requests\Admin\EditTournamentRequest;
 use App\CustomClasses\ColectionPaginate;
 use TournamentTeam;
-
+use Carbon\Carbon;
 class TournamentController extends Controller
 {
 
@@ -251,7 +251,7 @@ class TournamentController extends Controller
         }
         Mail::to($email)->send(new ApplyTeamMail($email));
          Admin::applyTeam($id, $turnir_id);
-         Log_orders_team::create(['team_id'=> $id, 'admin'=> Auth::user()->name, 'log_type'=> 1 ,'tournament_id' => $turnir_id]);
+         Log_orders_team::create(['team_id'=> $id, 'admin'=> Auth::user()->name, 'log_type'=> 1 ,'tournament_id' => $turnir_id,]);
         return redirect(route('tournaments_teams', $turnir_id));
     }
 
@@ -267,7 +267,6 @@ class TournamentController extends Controller
       return view('admin.home.logs.log_refuse_team', compact('data'));
     }
 
-
     public function refuseTeam($id, $turnir_id, $user_id, Request $request)
     {
         $email = Admin::getUsersEmail($user_id);
@@ -275,7 +274,7 @@ class TournamentController extends Controller
         $text = $request->input('text');
         Mail::to($email)->send(new RefuseTeam($email, $text));
         Admin::refuseTeam($id, $turnir_id);
-        Log_orders_team::create(['team_id'=> $id, 'admin'=> Auth::user()->name,'description' => $text ,'log_type'=> 0 ,'tournament_id' => $turnir_id]);
+        Log_orders_team::create(['team_id'=> $id, 'admin'=> Auth::user()->name,'descriptions' => $text ,'log_type'=> 0 ,'tournament_id' => $turnir_id,]);
         return redirect(route('admin_tournament'));
     }
 

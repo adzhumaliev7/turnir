@@ -11,27 +11,23 @@
         }
     </style>
     <header>
-        <div class="profile-bg  header--pb header margin--none">
+        <div class="profile-bg   ">
             @include('main.inc.header')
             <div class="container header-container">
-                <div class="header-sz">
+              <div class="header-sz">
                     <div class="header__panel d-flex justify-content-center align-items-center flex-sm-nowrap flex-wrap">
-                        <div class="header__profile">
-                            <img src="{{ asset("uploads/storage/adminimg/turnir_logo/$tournament->file_label")}}"  width="250" height="250"  alt="profile" />
-                        </div>
+                      
                         <div class="header__nick">
                             <h1 class="title text-capitalize font-sz text--responsive text-light">
                                 {{$tournament->name}}
                             </h1>
-                            <p class="subtitle subtitle--gray text--responsive">
-                                {{$tournament->tournament_start}} {{$tournament->games_time}}
-                            </p>
-                            <p class="subtitle text--responsive text-light">{{$tournament->tournament_start}} {{$tournament->games_time}}</p>
+            
+                            <p class="subtitle text--responsive text-light">{{$tournament->tournament_start}} {{$tournament->games_time}} {{$tournament->country}}</p>
                             <p class="subtitle text--responsive text-light">Призовой фонд: {{$tournament->price}}</p>
-                            <p class="subtitle text--responsive text-light">Карта: </p>
-                            <p class="subtitle text--responsive text-light">Режим проведения: squad(4)</p>
-                            <p class="subtitle text--responsive text-light">Вид: от третьего лица</p>
-                            <p class="subtitle text--responsive text-light">Регистрация с {{$tournament->start_reg}} по {{$tournament->end_reg}}</p>
+
+                            <p class="subtitle text--responsive text-light">Формат:{{$tournament->format}}</p>
+                           
+                            <p class="subtitle text--responsive text-light">Призовой фонд с {{$tournament->price}}</p>
                             <p class="subtitle text--responsive text-light">Количество слотов {{$tournament->slot_kolvo}}</p>
                         </div>
                     </div>
@@ -44,7 +40,13 @@
             <div class="container">
                 <nav>
                     <div class="flex-wrap d-flex justify-content-start nav nav-tabs line--none flex-sm-nowrap" id="nav-tab" role="tablist">
-                        <button class="accordion__btn nav-link" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
+                        <button class="accordion__btn nav-link" 
+                        id="nav-home-tab" 
+                        data-bs-toggle="tab"
+                         data-bs-target="#nav-home"
+                          type="button" role="tab" 
+                          aria-controls="nav-home"
+                           aria-selected="true">
                             обзор
                             <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g clip-path="url(#clip0_107_89)">
@@ -139,7 +141,7 @@
             </div>
 
             <div class="tab-content tab-panels" id="nav-tabContent">
-                <div class="tab-pane overflow-hidden fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="tab-pane  fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 
                     <div class="container">
                         @if (\Session::has('error_msg'))
@@ -151,7 +153,7 @@
                         @endif
                         <div class="row">
                             <div class="col-lg">
-                                <p class="subtitle">{{$tournament->description}}</p>
+                                <p class="subtitle">{!!$tournament->description!!}</p>
 
                             </div>
                             <div class="col-lg-4">
@@ -164,7 +166,7 @@
                                         <p class="subtitle subtitle--semi-medium">до начала:</p>
                                         <div class="holding__timer">
                                             <div class="holding__wrapper">
-                                                <div class="holding__item holding__number" data-countdown="{{$tournament->end_reg}} "></div>
+                                                <div class="holding__item holding__number" data-countdown="{{Carbon\Carbon::parse($tournament->end_reg)->format('Y/m/d')}}"></div>
 
                                                 <div></div>
                                             </div>
@@ -218,7 +220,7 @@
 
                                         </details>
 
-                                        @if(($date > $tournament->tournament_start  ? "close" : "active") == 'active')
+                                        @if((strtotime($date) >= strtotime($tournament->tournament_start)  ? "close" : "active") == 'active')
 
                                             @if($userTeam)
                                                 @if(!$tournametTeam)
@@ -245,18 +247,17 @@
                                                             <h3>Ваша заявка отклонена</h3>
                                                         </div>
                                                     @endif
-
                                                 @endif
                                             @else
                                                 <div class="block-btn">
                                                     <h3>Принять участие может только капитан</h3>
                                                 </div>
                                             @endif
-                                        @elseif($tournament->start_reg > $date && $tournament->start_reg  != $date)
+                                        @elseif(strtotime($tournament->start_reg) > strtotime($date))
                                             <div class="block-btn">
                                                 <h3>Регистрация ещё не началась</h3>
                                             </div>
-                                        @elseif($tournament->start_reg <= $date && $tournament->end_reg >= $date)
+                                        @elseif(strtotime($date) > strtotime($tournament->end_reg))
                                             <div class="block-btn">
                                                 <h3>Регистрация закончилась</h3>
                                             </div>
@@ -274,33 +275,47 @@
 
 
                 </div>
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div class="tab-pane " id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <div class="container">
 
+                  
                         @if($teams != "")
                             @foreach($teams as $team)
+                        <table class="table" style="font-size: 16px;">
+                  <tr class="table--line">
+                    <td class="table--logo"></td>
+                    <th class="table--name table--head">Команда</td>
+                    <th class="table--flag"></td>
+                    <th class="table--members table--head">участники</td>
+                    <th class="table--status table--head">Статус</td>
+                  </tr>
+                  <tr class="table--line">
+                    <td class="table--logo">
+                      @if($team->logo != null)    
+                        <img class="" src="{{ asset("uploads/storage/img/teamlogo/$team->logo")}}" width="37" height="35" alt="" />
+                      @endif
+                    </td>
+                    <td class="table--name table--text">  {{$team->team->name }}</td>
+                    <td class="table--flag">
+                      <img src="assets/img/Rectangle 20.svg" alt="">
+                    </td>
+                    <td class="table--members table--text"> 
+                    ({{$team->memberCount}}/4)
+                    </td>
+                    <td class="table--status table--text">  
+                         @if($team->status == 'accepted')
+                         Принят
+                         @else
+                           На проверке
+                         @endif
+                    </td>
+                  </tr>
+                </table>
 
-                                <ul class="subtitle subtitle--list">
-                                    <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            @if($team->status == 'accepted')
-                                                <path d="M7.93126 3.75481C8.09911 3.92266 8.09911 4.19474 7.93126 4.3625L5.04866 7.24519C4.88081 7.41295 4.60882 7.41295 4.44097
-                                                7.24519L3.06874 5.87287C2.90089 5.70511 2.90089 5.43303 3.06874 5.26527C3.2365 5.09742 3.50858 5.09742 3.67635 5.26527L4.74477
-                                                6.33369L7.32357 3.75481C7.49142 3.58705 7.7635 3.58705 7.93126 3.75481ZM11 5.5C11 8.54012 8.5397 11 5.5 11C2.45988 11 0 8.5397
-                                                0 5.5C0 2.45988 2.4603 0 5.5 0C8.54012 0 11 2.4603 11 5.5ZM10.1406 5.5C10.1406 2.93488 8.06478 0.859375 5.5 0.859375C2.93488 0.859375
-                                                0.859375 2.93522 0.859375 5.5C0.859375 8.06512 2.93522 10.1406 5.5 10.1406C8.06512 10.1406 10.1406 8.06478 10.1406 5.5Z" fill="black"></path>
-                                            @else
-                                                <circle cx="5.5" cy="5.5" r="5" stroke="black"></circle>
-                                            @endif
-                                        </svg>
-                                        {{$team->name }}
-                                    </li>
-
-                                </ul>
-                            @endforeach
+                @endforeach
                         @else
                             <span class="subtitle subtitle--semi-medium">Нет команд</span>
-                        @endif
-
+                        @endif       
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-config-tab">
@@ -310,7 +325,8 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="nav-config" role="tabpanel" aria-labelledby="nav-config-tab">
-                    @if($tournament->tournament_start <= $date)
+                    <div class="container">
+                    @if($tournament->endDate($tournament->tournament_start))
                     <div class="tournament-page_content --full float">
                         <div class="top-link-b text-center">
                             @foreach($tournament->stages as $stageF)
@@ -326,9 +342,7 @@
                                     {{$groupF->group_name}}
                                 </a>
                             @endForeach
-
                         </div>
-
                         <div class="my-5">
                             <div class="table-pubg_wrapper js-sv-parent">
                                 <div class="table-pubg_left">
@@ -364,16 +378,20 @@
                                                 </th>
                                             </tr>
                                         </thead>
-
                                         <tbody>
-
                                             @foreach($group->tournamentGroupTeams ?? [] as $teamsF)
                                                 <tr>
                                                     <td>{{$loop->iteration}}</td>
                                                     <td>
                                                         <span class="table-pubg_team">
-                                                            <span class="table-pubg_team-img" style="background-image: url(https://images.pinger.kz/fit?file=storage%2Ffiles%2Fbd56a5ae257dc0ede5c52c080e64a895.jpg&amp;width=32&amp;height=32&amp;type=auto&amp;quality=95);"></span>
-                                                            <span class="table-pubg_team-text">{{$teamsF->team->name}}</span>
+                                                            <span class="table-pubg_team-img">
+                                                           
+                                                          <img class="" src="{{ asset("uploads/storage/img/teamlogo/".$teamsF->team->logo)}}" width="37" height="35" alt="" />   
+                                                          </span> 
+
+                                                         
+                                                        
+                                                            <span class="table-pubg_team-text">{{$teamsF->team->name}} </span>
                                                         </span>
                                                     </td>
                                                     <td>{{$teamsF->kills_pts ?? 0}}</td>
@@ -381,7 +399,6 @@
                                                     <td>{{$teamsF->kills_pts + $teamsF->place_pts}}</td>
                                                 </tr>
                                             @endforeach
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -397,9 +414,7 @@
                                                         </span>
                                                     </th>
                                                 @endforeach
-
                                             </tr>
-
                                             <tr>
                                                 @foreach($group->matches ?? [] as $matcthe)
                                                     <th>
@@ -422,11 +437,8 @@
                                                     </th>
                                                 @endforeach
                                             </tr>
-
                                         </thead>
-
                                         <tbody>
-
                                             @foreach($group->tournamentGroupTeams ?? [] as $teamsFF)
                                                 <tr>
                                                     @foreach($teamsFF->group->matches as $m => $matcheee)
@@ -448,17 +460,37 @@
                                     </table>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                     @else
                         <h3 class="text-center">Информация появится со стартом турнира</h3>
                     @endif
-
+                </div>
                 </div>
             </div>
         </div>
     </main>
+
+
+    <script>
+
+     const nav = qs('tab');
+     console.log(nav)
+        if (nav && document.getElementById(nav)) {
+          document.getElementById(nav).click()
+        }
+      
+      function qs(key) {
+        key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, '\\$&');
+        var match = location.search.match(new RegExp('[?&]'+key+'=([^&]+)(&|$)'));
+        return match && decodeURIComponent(match[1].replace(/\+/g, ''));
+      }
+      $('#nav-tab .accordion__btn').on('click', function (e) {
+        var url = window.location.href;        
+        var urlSplit = url.split( '?' );       
+        var obj = { title : '', url: urlSplit[0] + '?tab=' + this.getAttribute('id')};       
+        history.pushState(obj, obj.title, obj.url);
+      })
+    </script>
 
 @endsection

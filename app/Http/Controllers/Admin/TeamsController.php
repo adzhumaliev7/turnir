@@ -33,7 +33,7 @@ class TeamsController extends Controller
         foreach($team->groups as $group) {
             $countMathe += $group->tournamentMatchesResults->groupBy('match_id')->count();
         }
-
+     
 //        ВЫНЕСТИ В КОНФИГ
         $userStatus = [
             'verified' => 'верф',
@@ -204,26 +204,23 @@ class TeamsController extends Controller
             $nestedData['options'] = view('admin.home.inc.buttons', ['route' => ['show' => 'teams.show', 'ban' => 'teams.ban'], 'id' => $team->id, 'status' => $team->status])->render();
             $data[] = $nestedData;
         }
-
         $json_data = [
             "draw"            => intval($request->input('draw')),
             "recordsTotal"    => $sql->get()->count(),
             "recordsFiltered" => intval($totalFiltered),
             "data"            => $data
         ];
-
         return response()->json($json_data);
     }
-
     public function ban( StoreReportTeamRequest $request) {
         $data = $request->validated();
         $team = Team::findOrFail($data['ban_id']);
         if ( $team->status == 1) {
             $team->status = 0;
-            $team->ban()->create($data);
+            $team->bans()->create($data);
         }
         else {
-            $team->ban()->delete();
+            //$team->ban()->delete();
             $team->status = 1;
         }
         $team->save();

@@ -49,6 +49,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+   
 
     public function teamMembers() {
         return $this->hasMany(TeamMembers::class);
@@ -81,7 +82,6 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->token = null;
         $this->save();
     }
-
     public function setPasswordAttribute($password){
         $this->attributes['password'] = Hash::make($password);
     } 

@@ -189,25 +189,46 @@
                 <th scope="col">#</th>
                 <th scope="col">Дата</th>
                 <th scope="col">Тип</th>
+                <th scope="col">Причина</th>
                 <th scope="col">С</th>
                 <th scope="col">На</th>
             </tr>
             </thead>
             <tbody>
 
+            @foreach($team->bans->load('ban', 'user') as $ban)
+                <tr>
+                   
+                    <th scope="row">{{$ban->id}}</th>
+                    <td>
+                        @if($ban->created_at)
+                            {{$ban->created_at->format('Y.m.d')}}
+                        @endif
+                    </td>
+                    <td> Бан </td>
+                    <td>  {{$ban->description   ? $ban->description : '' }} </td>
+                    <td>
+                        {{$ban->ban ? $ban->user->name : 'пользователь удалён' }}
+                    </td>
+                    <td>
+                        {{$ban->ban ? $ban->ban->name : 'пользователь удалён' }}
+                    </td>
+                </tr>
+            @endforeach
+            
             @foreach($team->logs as $log )
                 <tr>
                     <th scope="row">{{$log->id}}</th>
                     <td>
                         @if($log->created_at)
-                        {{$log->created_at->format('Y.m.d')}}</td>
+                        {{$log->created_at->format('d.m.Y')}}</td>
                         @endif
                     <td> {{$log->type->description}} </td>
                     <td>
                         @if($log->log_type == 1)
                             {{$log->oldAdminUser->name ?? 'пользователь удалён'}}
                         @elseif($log->log_type == 2)
-                            {{$log->new_value}}
+                            {{$log->old_value}}
                         @endif
                     </td>
                     <td>

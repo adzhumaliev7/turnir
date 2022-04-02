@@ -18,7 +18,6 @@ class ColectionPaginate
             'path' => Paginator::resolveCurrentPath(),
             'pageName' => 'page',
         ]);
-
     }
 
     /**

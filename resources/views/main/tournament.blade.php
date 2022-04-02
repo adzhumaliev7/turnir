@@ -25,89 +25,62 @@
       </ul>
     </div>
   </div>
-  <nav class=" navbar navbar-expand-md navbar p-3 mb-5 bg-body rounded bg--none navbar-z">
-    <div class=" container-fluid header-indent">
-      <a class="navbar-brand title text-uppercase logo-indent-mr text-white pubg-hover px-2" href="{{route('main')}}">bigplay</a>
-      <button class="toggle-menu toggle-click button--none">
-        <span></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav w-100 justify-content-end">
-          <li class="nav-item nav-item--active">
-            <a class="nav__link-active nav-link nav-white pubg-hover" aria-current="page" href="{{route('tournament')}}">Турниры</a>
-          </li>
-
-          <li class="nav-item nav-item--active">
-            <a class="nav-link nav-white pubg-hover" aria-current="page" href="{{route('rating')}}">Рейтинг</a>
-          </li>
-
-          <li class="nav-item nav-item--active ">
-            <a class=" nav-link nav-white pubg-hover" aria-current="page" href="#">Помощь</a>
-          </li>
-          <li class="nav-item nav-item--active ">
-            <a class=" nav-link nav-white pubg-hover" aria-current="page" href="{{route('feedback')}}">Обратная связь</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  @include('main.inc.nav_header')
 </div>
 
 <div class="main">
   <div class="container">
-    <div class="row d-flex justify-content-between">
-      @if($tournaments != "")
-      @foreach($tournaments as $tournament)
-      <div class="col-lg-6 my-3">
-        <div class="pubg pubg-3">
+  @if($tournaments != null)
+  <div class="top row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
-          <div class=" pubg-wrapper ">
-            <div class="pubg-wrapper-backimg">
-              @if($tournament->file_label != null)
-              <img src="{{ asset("uploads/storage/adminimg/turnir_logo/$tournament->file_label")}}" />
-              @else
-              <img src="{{ asset("img/background/item-3.png")}}" />
-              @endif
-            </div>
-            <div class="pubg-block">
-              <h4 class="pubg__title pubg__title--margin">{{$tournament->name}}</h4>
-              <span class="pubg__price">
-                @if($date  <= $tournament->end_reg && $tournament->active != 0)
+  @foreach($tournaments as $tournament)
+            <div class="col">
+              <div class="card shadow-sm">
+              <div class="bg">
+                   
+                    <img src="{{asset("img/background/item-3.png")}}" class="bg-img" alt="bg" />
+                  </div>
+                    <div class="card-body">
+                        
+                    <h4 class="card-text__h4">{{$tournament->name}}</h4>
+                      <div class="card-text">
+                        <p class="card-text__game">
+                             
+               @if(strtotime($date) > strtotime($tournament->end_reg)   && $tournament->active == 1)
                   Игра
-                @elseif($date >= $tournament->start_reg && $date < $tournament->end_reg && $tournament->active != 0)
+                @elseif(strtotime($date) >= strtotime($tournament->start_reg) && strtotime($date) <= strtotime($tournament->end_reg)  && $tournament->active == 1 )
                 Регистрация
                 @else Завершен
+               @endif     
+
+                        </p>
+                     
+                        <p class="card-text__prize">Призовой фонд: {{$tournament->price}}</p>
+                        <p class="card-text__format">Формат: {{$tournament->format}}</p>  
+
+
+                        @if(strtotime($date) > strtotime($tournament->end_reg)   && $tournament->active == 1)
+                        <button onclick="document.location='{{route("match", $tournament->id)}}'" class="card-btn"> Смотреть</button>
+                @elseif(strtotime($date) >= strtotime($tournament->start_reg) && strtotime($date) <= strtotime($tournament->end_reg)  && $tournament->active == 1)
+                <button onclick="document.location='{{route("match", $tournament->id)}}'" class="card-btn"> Принять участие</button>
+                @else   <button onclick="document.location='{{route("match", $tournament->id)}}'" class="card-btn"> Смотреть</button>
                @endif
 
-
-
-                
-              </span>
-              <p class="pubg__text">{{$tournament->tournament_start}} {{$tournament->games_time}} {{$tournament->country}}</p>
-              <span class="pubg__price">Призовой фонд: {{$tournament->price}}</span>
-              <p class="pubg__text pubg__text--margin">Режим проведения: squad(4)</p>
-
-              @if($date  <= $tournament->end_reg && $tournament->active != 0)
-              <a href="{{ route('match', $tournament->id) }}" class="pubg__btn pubg__text--margin">Смотреть</a>
-                @elseif($date >= $tournament->start_reg && $date < $tournament->end_reg && $tournament->active != 0)
-                <a href="{{ route('match', $tournament->id) }}" class="pubg__btn pubg__text--margin">Принять участие</a>
-                @else  <a href="{{ route('match', $tournament->id) }}" class="pubg__btn pubg__text--margin">Смотреть</a>
-               @endif
-
-               
-             
+                      </div>
+                    </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-      @endforeach
-      @else
+            @endforeach
+          
+    
+            </div>
+            <span style="font-size:16px;">{{$tournaments->links()}}</span>
+            @else
       <h4> Турниров нет</h4>
       @endif
-    </div>
-
+        </div>
   </div>
-</div>
+
 
 
 @endsection

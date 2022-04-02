@@ -12,6 +12,7 @@ use App\Mail\DeleteMemberMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 class TeamController extends Controller
 {
     public function index($id,$us)
@@ -26,7 +27,16 @@ class TeamController extends Controller
         $networks = Team::getTeamNetworks($id);
         $matches = Team::getMatches($id);
         $tournaments = Team::getTournaments($id);
-        
+
+        /*  $tournaments = Team::find($id)->order()->where('status', 'accepted')->with('turnir')->addSelect([
+            'members' => User::select('name')
+                ->join('tournaments_members', 'tournaments_members.user_id', '=', 'users.id')
+                ->whereColumn('team_id', 'tournamets_team.team_id')
+                ->whereColumn('tournaments_members.tournament_id', 'tournamets_team.tournament_id')
+                ->select(DB::raw('GROUP_CONCAT(name)'))
+                ->take(1),
+        ])->get();  */
+      // dd($tournaments);
         return view('main.team', [
             'data' => $data,
             'members' => $members,
@@ -44,7 +54,7 @@ class TeamController extends Controller
     public function addMembers($link, $team_id)
     {
        $link_  = Team::getLink($team_id);
-    
+ 
         if($link == $link_){
          $team = Team::getTeamName($team_id);
         $user_id = Auth::user()->id;
@@ -83,9 +93,9 @@ class TeamController extends Controller
         $status = Auth::user()->status;
         if ($status == null) {
             Team::addMembers($data);
-            return redirect(route('profile'));
+            return redirect(route('team', [$id, $user_id]));
         } else
-            return redirect(route('profile')); 
+            return redirect()->back(); 
     }
 
     public function deleteMember($id,$team_id)
@@ -97,7 +107,7 @@ class TeamController extends Controller
         Team::deleteMember($id, $team_id);
 
         \Session::flash('flash_meassage_delete', 'Участник успешно удален');
-        return redirect(route('team', [$team_id, $user_id]));
+        return redirect()->back();
     }
     public function addAdmin($id, $team_id, $oldadmin)
     {
@@ -105,7 +115,7 @@ class TeamController extends Controller
         Team::addAdmin($id, $team_id);
       
         $team->logs()->create(['old_value' => $oldadmin, 'new_value' => $id, 'log_type' => 1]);
-        return redirect(route('profile')); 
+        return redirect()->back(); 
     }
     public function exitTeam($id, $team_id)
     {
@@ -130,7 +140,7 @@ class TeamController extends Controller
 
         Team::ordersTeam($id, $data, $country);
         \Session::flash('flash_meassage', 'Ваша заявка успешно отправлена');
-        return redirect(route('team', [$id, $user_id]));
+        return redirect()->back();
     }
 
     public function addNetworks($id, Request $request)
@@ -146,7 +156,7 @@ class TeamController extends Controller
             'telegram' => $request->input('telegram')
         );
         Team::setTeamNetworks($data);
-        return redirect(route('team', [$id, $user_id]));
+        return redirect()->back();
     }
 
     public function addNetworksUpdate($id, Request $request)
@@ -162,27 +172,23 @@ class TeamController extends Controller
             'telegram' => $request->input('telegram')
         );
         Team::updateTeamNetworks($id, $data);
-        return redirect(route('team', [$id, $user_id]));
+        return redirect()->back();
     }
 
     public function setLogo($id, Request $request)
     {
         $user_id = Auth::user()->id;
         $request->validate([
-
             // файл должен быть картинкой (jpeg, png, bmp, gif, svg или webp)
             'logo' => 'image',
-
             // поддерживаемые MIME файла (image/jpeg, image/png)
             'logo' => 'mimetypes:image/jpeg,image/png',
-
         ]);
         $name = $request->file('logo');
         $path = '/uploads/storage/img/teamlogo';
         $file_name = $this->uploadFiles($name, $path);
-
         Team::setLogo($id, $file_name);
-        return redirect(route('team', [$id, $user_id]));
+        return redirect()->back();
     }
 
     protected function uploadFiles($name, $path){

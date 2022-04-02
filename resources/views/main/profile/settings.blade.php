@@ -1,6 +1,9 @@
 <div class="row">
-  
+@if($disabled == 'disabled')
+            <div class="alert alert-danger" style="font-size: 16px;">Во время проведения турнира редактирование недоступно</div>
+        @endif
     <div class="col">
+   
     <form method="POST" action="{{route('update_profile')}}" enctype="multipart/form-data"  style="font-size: 16px;">
     <fieldset <?echo $disabled;?>>
             @csrf

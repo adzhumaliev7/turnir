@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\TournametsTeam;
+use Carbon\Carbon;
 class Tournament extends Model
 {
 
@@ -26,7 +27,9 @@ public function members() {
 //.Ахуенный код
 
 
-
+function endDate(string $date): bool{
+  return Carbon::parse($date)->isPast();
+}
 
 
 public static function getTournaments(){
@@ -60,7 +63,7 @@ public static function getTeams($tournament_id){
   $teams =  DB::table('tournamets_team')
   ->join('team', 'tournamets_team.team_id', '=', 'team.id')
   //->join('team_members', 'tournamets_team.team_id' , '=', 'team_members.team_id')
-   ->select('team.name','team.user_id','tournamets_team.team_id','tournamets_team.status')
+   ->select('team.name','team.logo','team.user_id','tournamets_team.team_id','tournamets_team.status')
   ->where('tournamets_team.tournament_id', $tournament_id)->where('tournamets_team.status', 'accepted')->get();
   return $teams->count() ? $teams : null;
 }

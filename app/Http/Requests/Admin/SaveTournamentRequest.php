@@ -39,7 +39,7 @@ class SaveTournamentRequest extends FormRequest
             'rule' => '',
             'header' => '',
             'tournament_start' => 'required',
-            'games_time' => '',  
+          
         ];
     }
 }
