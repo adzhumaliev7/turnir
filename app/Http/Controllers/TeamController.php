@@ -17,6 +17,11 @@ class TeamController extends Controller
 {
     public function index($id,$us)
     {
+       /*  $tems =Team::with(['teammates' => function($q) {
+            $q->where('status', 1);
+        } ])->get();
+        return view('poligon', compact('tems')); */
+
         $user_id = Auth::user()->id;
         $mail = Auth::user()->email;
         $data = Team::getTeamById2($id, $us);
@@ -53,6 +58,9 @@ class TeamController extends Controller
     }
     public function addMembers($link, $team_id)
     {
+
+      
+        $mail = Auth::user()->email;
        $link_  = Team::getLink($team_id);
  
         if($link == $link_){
@@ -67,7 +75,8 @@ class TeamController extends Controller
         return view('main.join_to_team', [
             'team' => $team,
             'id' => $team_id, 
-            'status' =>$status
+            'status' =>$status,
+            'mail' =>$mail
         ]); }
         else 
     		abort('404');
@@ -114,7 +123,7 @@ class TeamController extends Controller
         $team = Team::findOrFail($team_id);
         Team::addAdmin($id, $team_id);
       
-        $team->logs()->create(['old_value' => $oldadmin, 'new_value' => $id, 'log_type' => 1]);
+        $team->logs()->create(['old_value' => $oldadmin, 'new_value' => $id, 'log_type' => 1,'user_id' => Auth::id()]);
         return redirect()->back(); 
     }
     public function exitTeam($id, $team_id)
@@ -134,6 +143,7 @@ class TeamController extends Controller
         $data = array(
             'team_id' => $id,
             'name' => $request->input('name'),
+            'old_name' => $request->input('oldname'),
         );
         $data['status'] = 0;
         $country = $request->input('country');

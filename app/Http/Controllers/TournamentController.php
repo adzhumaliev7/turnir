@@ -19,28 +19,23 @@ class TournamentController extends Controller
                $id = Auth::user()->id;
                $mail = Auth::user()->email;
           } else $mail = null;
-          $tournaments = Tournament::getTournaments();
-      
-          if($tournaments !=null) $tournaments = ColectionPaginate::paginate($tournaments, 10);
-          $date = date('d.m.Y'); 
-                $a = '25-03-2022 16:26:00';    
-                $b = '26.03.2022 19:12';
-              //  dd(strtotime($date) < strtotime($b));    
+       
+         $tournaments = Tournament::where('status', 'save')->orderBy('tournament_start', 'desc')->orderBy('status', 'desc')->paginate(15);
           return view('main.tournament', [
                'mail' => $mail,
                'tournaments' => $tournaments,
-               'date' => $date,
           ]);
      }
-
      public function matchViewNew($turnirId, $stageId = null, $groupId = null,  Request $request){
           $tournament = Tournament::withCount('order', 'stages')->findOrFail($turnirId);
           $date = date('d-m-Y');  /// надо для проверки даты начала турнира
           $teams_count = Tournament::teamsCount($turnirId);
+          $active1 = 'active';
+          $active2 = '';
             //команды зарегистрированные в турнир
        
           //$teams = Tournament::getTeams($turnirId);
-          $teams = $tournament->order()->where('status', 'accepted')->with('team:id,name')
+          $teams = $tournament->order()->where('status', 'accepted')->with('team:id,name,logo')
               ->addSelect([
                   'memberCount' => TournamentMembers::select('tournament_id')
                       ->whereColumn('team_id', 'tournamets_team.team_id')
@@ -50,82 +45,36 @@ class TournamentController extends Controller
                       ->take(1),
                   ])
               ->get();
-            
+           
           $userTeam = Auth::user()->team ?? false;
-       
           $tournametTeam = $userTeam ? $userTeam->order->where('tournament_id', $tournament->id)->first() : false;
-        
           $members = $userTeam ? $userTeam->teammatesTeam->load('user') : false;
-  
-  
-          if (!$stageId) $stage = $tournament->stages->first();
-          else $stage = Stage::findOrFail($stageId)->load('groups');
+          
+          if (!$stageId) {
+          $stage = $tournament->stages->first();
+          }
+          else{ $stage = Stage::findOrFail($stageId)->load('groups'); 
+               $active1 = '';
+               $active2 = 'active';
+          }
   
           if (!$groupId){
               $group = $stage ?  $stage->groups()->with(['tournamentGroupTeams' => function($q) {
                   $q->orderBy('kills_pts', 'desc');
               }, 'tournamentGroupTeams.group.matches.res', 'matches', 'tournamentGroupTeams.team.teammates'])->first(): null;
+            
           } else {
               $group = TournamentGroup::findOrFail($groupId)->load(['tournamentGroupTeams' => function($q) {
                   $q->orderBy('kills_pts', 'desc');
               }, 'tournamentGroupTeams.group.matches.res', 'matches', 'tournamentGroupTeams.team.teammates']);
+              $active1 = '';
+              $active2 = 'active';
           }
-          return view('main.match_new', compact('tournament', 'teams_count','teams', 'members', 'date', 'tournametTeam', 'stage', 'group', 'userTeam'));
+          return view('main.match_new', compact('tournament', 'teams_count','teams', 'members', 'date', 'tournametTeam', 'stage', 'group', 'userTeam','active1', 'active2'));
       }
   
        public function matchView($turnirId, $stageId = null, $groupId = null,  Request $request){
-        /*     $tournament = Tournament::findOrFail($turnirId);
-            $tournament->withCount('order')->get();
-            $teams_count = Tournament::teamsCount($turnirId);
-  
-            $date = date('Y-m-d');  /// надо для проверки даты начала турнира
-            $turnir = $date > $tournament->tournament_start  ? "close" : "active";
-    //dump(Auth::user(), User::);
-            //////////////////////////////////////// разные проверки на капитана, на команлды и т.д говнокод
-  //команды зарегистрированные в турнир 
-            $teams = Tournament::getTeams($turnirId);
-  
-   //dd($tournament->order->first()->team, $teams);
-            if (Auth::check()) { //если пользователь авторизован
-                $user_id = Auth::id();
-                $captain_team_id = Tournament::checkTeam($user_id); // проверяем есть ли команда у зашедшего пользователя и является ли он капитаном
-  
-                if ($captain_team_id != null) { // если есть запись то получаем участников
-                    $members = Tournament::getMembers($captain_team_id);
-  
-                    $is_has_team = Tournament::hasTeam($turnirId,$captain_team_id);  // смотрим не зарегистрирована ли команда  в турнире
-                    if($is_has_team == true){
-                         $get_team_status = Tournament::getTeamStatus($turnirId, $captain_team_id);
-                    }
-                    else $get_team_status = null;
-            }
-            else{//обнуляем для обычных авторизованых пользователей
-            $members =null;
-            $is_has_team = false;
-            $get_team_status = null;
-            $captain_team_id = null;
-            }
-       }
-            else { // не для авторизованых
-                $members =null;
-                $is_has_team = false;
-                $get_team_status = null;
-                $captain_team_id = null;
-  
-       }
-  
-            return view('main.match', [
-                'tournament' => Tournament::find($turnirId),
-                'teams' => $teams,
-                'turnir' => $turnir,
-                'members' => $members,
-                'date' => $date ,
-                'teams_count'=> $teams_count,
-                'captain' => $captain_team_id,
-                'is_has_team' => $is_has_team,
-                'status' => $get_team_status,
-            ]);
-   */
+      
        }
      public function joinTournament($id, Request $request)
      {
@@ -157,5 +106,10 @@ class TournamentController extends Controller
           }
           Tournament::joiToTournament($data);
           return redirect(route('match', $id));    
+     }
+     public function revokeOrder($id, $team_id)
+     {
+           Tournament::revokeOrder($id, $team_id);
+           return redirect()->back()->with('error_msg', 'Вы отозвали заявку');
      }
 }

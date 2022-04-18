@@ -36,5 +36,10 @@ class AppServiceProvider extends ServiceProvider
             $orders_team = DB::table('orders')->where('status', 0)->count();
             $view->with('check', $check)->with('orders', $orders)->with('orders_team', $orders_team);
         });
+
+        view()->composer(['layouts.layout'], function ($view) {
+            $pages = DB::table('pages')->get();
+            $view->with('pages', $pages);
+        });
     }
 }

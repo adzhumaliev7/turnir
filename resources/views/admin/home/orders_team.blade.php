@@ -17,8 +17,8 @@
         <tbody>
             @foreach($orders as $order)
             <tr>
-                <td scope="row">{{$order->team_id}}</td>
-                <td>{{$order->name}}</td>
+                <td scope="row">{{$loop->index+1}}</td>
+                <td>{{$order->old_name}}</td>
                 <td>{{$order->new_name}}</td>
                 <td>
                     @if($order->status == 0) На рассмотрении
@@ -28,7 +28,7 @@
                 </td>
                 <td>
                     @if($order->status == 0)
-                    <button href="" class="btn btn-primary js-btn-apply"  data-id="{{$order->new_name}} " data-path="{{route('orders_team_apply',[$order->team_id, $order->name])}}">Принять</button>
+                    <button href="" class="btn btn-primary js-btn-apply"  data-id="{{$order->new_name}} " data-path="{{route('orders_team_apply',[$order->team_id, $order->old_name])}}">Принять</button>
                     <button href="" type="button"  class="btn btn-danger js-btn" data-id="Сообщение об отказе" data-path="{{route('orders_team_rejected', $order->team_id )}}">Отклонить</button>
                     @endif
                 </td>

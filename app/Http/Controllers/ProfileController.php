@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ProfileStoreRequest;
-use App\Models\Log_gameid;
+use App\Models\Log;
 use App\Models\UsersProfile;
 use App\Models\Team;
 use App\Models\User;
@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 class ProfileController extends Controller
 {
 
@@ -33,18 +34,13 @@ class ProfileController extends Controller
     $countries = config('app.countries');
     $teams = Team::getTeamById($id);
     $team_id = Team::getTeamId($id);
-
+      
     $verification_status = UsersProfile::checkVerification($id);
     $tournaments = UsersProfile::getMatchesById($team_id,$id, 1);
     $tournaments_old = UsersProfile::getMatchesById($team_id, $id, 0);
-
+    $checkTurnir =UsersProfile::checkTurnir($team_id);
    
-  if($tournaments != null){
-  
-  }else {
-    $tournaments = null;
-    $teams_count = null;
-  }
+
     return view('main.profile', [
       'mail' => $mail,
       'status' => $status,
@@ -57,7 +53,7 @@ class ProfileController extends Controller
       'timezones' => $timezones,
       'active' => $active,
       'user_name' => $user_name,
-     
+     'checkTurnir' => $checkTurnir,
       'countries'  => $countries,
       'user_photo' => $user_photo,
     ]);
@@ -144,7 +140,21 @@ class ProfileController extends Controller
 
   public function updateProfile(ProfileStoreRequest $request)
   {
-    
+    $request->validate([
+
+      // файл должен быть картинкой (jpeg, png, bmp, gif, svg или webp)
+     'doc_photo' => 'image',
+
+     // поддерживаемые MIME файла (image/jpeg, image/png)
+     'doc_photo' => 'mimetypes:image/jpeg,image/png|max:2000',
+
+        // файл должен быть картинкой (jpeg, png, bmp, gif, svg или webp)
+        'doc_photo2' => 'image',
+
+        // поддерживаемые MIME файла (image/jpeg, image/png)
+        'doc_photo2' => 'mimetypes:image/jpeg,image/png|max:2000',
+ ]);
+
     if ($request->hasFile('doc_photo') == true && $request->hasFile('doc_photo2') == true) {
       $name =  $request->file('doc_photo');
       $name2 =  $request->file('doc_photo2');
@@ -171,16 +181,37 @@ class ProfileController extends Controller
          $data['verification'] = 'verified'; 
       }else $data['verification'] = 'on_check'; 
   }
-  else  $data['verification'] = NULL;
+  else  
+    $data['verification'] = NULL;
+  
+  
+  $user = User::find($id);
 
     $data['exist_status'] = 0;
 
-      UsersProfile::updateProfile($id, $data);
+       UsersProfile::updateProfile($id, $data);
 
-      if($request->input('game_id') != null){
-        Log_gameid::create(['oldvalue' => $request->input('old_game_id'), 'newvalue' => $request->input('game_id'), 'user_id' =>  $id, ]);
+      if($request->input('game_id') != $user->game_id ){
+        Log::create([
+          'model_type' => 'App\Models\User',
+          'model_id' => $id,
+          'log_type' => '6',
+          'old_value' => $user->game_id,
+          'new_value' => $request->input('game_id'),
+          'user_id' => '',
+      ]);
       }
-
+       if($request->input('nickname') != $user->nickname  ){
+        Log::create([
+          'model_type' => 'App\Models\User',
+          'model_id' => $id,
+          'log_type' => '5',
+          'old_value' => $user->nickname,
+          'new_value' =>  $request->input('nickname'),
+          'user_id' => '',
+        
+      ]);
+      }  
     \Session::flash('flash_meassage', 'Сохранено');
     return redirect()->back();    
   }
@@ -207,6 +238,7 @@ class ProfileController extends Controller
 
     if ($status == true) {
       \Session::flash('flash_meassage2', 'Сохранено');
+      
       return redirect()->back();   
     } else {
       \Session::flash('flash_meassage_error', 'У вас уже есть команда');
@@ -215,8 +247,17 @@ class ProfileController extends Controller
   }
   public function deleteProfile($id)
   {
+    
+    $has_team = DB::table('team')->where('user_id', $id)->exists();
+    if($has_team == true){
+      $team_id = Team::getTeamId($id);
+      \Session::flash('flash_meassage_error', 'Перед тем как удалить команду выберите другого тимлида');
+      return redirect(route('team', [$team_id, $id]));
+    }
+    else{
     UsersProfile::delete_profile($id);
     return redirect('login');
+    }
   }
   public function query($id, Request $request){
     $data = $request->validate([
@@ -230,6 +271,8 @@ class ProfileController extends Controller
     \Session::flash('flash_meassage', 'Ваш запрос отправлен');
     return redirect()->back();
   } 
+
+
   public function changePassword(Request $request){
     $validator = Validator::make($request->all(), [
       'oldpassword' => ['required'],
@@ -242,8 +285,9 @@ class ProfileController extends Controller
   }else{ 
      $password = Hash::make($request->input('password'));
      User::changePassword(Auth::user()->id, $password);
+     
      return response()->json(['success'=>'Пароль успешно изменен']);
-  
+     return redirect()->back();
   }
 }
 protected function validator(array $data)

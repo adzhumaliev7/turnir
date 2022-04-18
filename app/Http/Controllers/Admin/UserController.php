@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function ban(StoreReportUserRequest $request) {
         $data = $request->validated();
-
+        $data['log_type'] = 7;
         $user = User::findOrFail($data['ban_id']);
         $status =  $user->status !='ban'  &&  $user->id != 1 ? 1: 0;
 
@@ -44,7 +44,6 @@ class UserController extends Controller
 
         return redirect()->back();
     }
-
 
     public function verified($id, Request $request)
     {
@@ -75,6 +74,7 @@ class UserController extends Controller
             'moder_id' => Auth::user()->name,
             'description' => $data['description'],
             'date' => Carbon::now(),
+            'status' => 0
         ];
 
         LogVerified::create($data);

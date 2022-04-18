@@ -4,27 +4,7 @@
 
 
 <div class="header-pubg__bg-2">
-  <div class="account-pubg__bg account__bg d-flex justify-content-end px-4">
 
-    <div class="dropdown">
-      @if($mail != null)
-      <button class="header__line header__txt button--none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-        {{$mail}}
-      </button>
-      @else
-      <a href="{{'login'}}" class="header__line header__txt " type="button">
-        Войти
-      </a>
-      <a href="{{'registration'}}" class="header__line header__txt " type="button">
-        Регистрация
-      </a>
-      @endif
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
-        <li><a class="dropdown-item header__txt text-dark" href="{{route('user.logout')}}">выйти</a></li>
-      </ul>
-    </div>
-  </div>
   @include('main.inc.nav_header')
 </div>
 
@@ -37,44 +17,65 @@
             <div class="col">
               <div class="card shadow-sm">
               <div class="bg">
-                   
-                    <img src="{{asset("img/background/item-3.png")}}" class="bg-img" alt="bg" />
+                    @if($tournament->file_label != null)
+                    <img src="{{ asset("uploads/storage/adminimg/turnir_logo/$tournament->file_label")}}" class="bg-img" />
+                    @else  
+                    <img src="{{asset("img/bigplay.jpg")}}" class="bg-img" />
+                    @endif
                   </div>
                     <div class="card-body">
                         
                     <h4 class="card-text__h4">{{$tournament->name}}</h4>
-                      <div class="card-text">
-                        <p class="card-text__game">
-                             
-               @if(strtotime($date) > strtotime($tournament->end_reg)   && $tournament->active == 1)
-                  Игра
-                @elseif(strtotime($date) >= strtotime($tournament->start_reg) && strtotime($date) <= strtotime($tournament->end_reg)  && $tournament->active == 1 )
-                Регистрация
-                @else Завершен
-               @endif     
-
-                        </p>
-                     
-                        <p class="card-text__prize">Призовой фонд: {{$tournament->price}}</p>
+                    <h4 class="card-text__format">Начало турнира: {{Carbon\Carbon::parse($tournament->tournament_start)->format('d.m.Y')}}</h4>
+                      <div class="card-text__format">
+                        <p class="card-text__format">
+                          Статус: 
+                           @if($tournament->active == 1) 
+                           @if($tournament->endDate($tournament->tournament_start))
+                            Игра
+                              @else
+                                @if($tournament->endDate($tournament->start_reg))
+                                 @if($tournament->endDate($tournament->end_reg))
+                                   Регистрация завершена
+                                  @else Регистрация   
+                                  @endif   
+                                  @else Регистрация еще не началась
+                                @endif
+                              @endif 
+                            @else Завершен      
+                          @endif  
+                        </p>   
+                        <p class="card-text__format">Призовой фонд: {{$tournament->price}}</p>
                         <p class="card-text__format">Формат: {{$tournament->format}}</p>  
 
-
-                        @if(strtotime($date) > strtotime($tournament->end_reg)   && $tournament->active == 1)
-                        <button onclick="document.location='{{route("match", $tournament->id)}}'" class="card-btn"> Смотреть</button>
-                @elseif(strtotime($date) >= strtotime($tournament->start_reg) && strtotime($date) <= strtotime($tournament->end_reg)  && $tournament->active == 1)
-                <button onclick="document.location='{{route("match", $tournament->id)}}'" class="card-btn"> Принять участие</button>
-                @else   <button onclick="document.location='{{route("match", $tournament->id)}}'" class="card-btn"> Смотреть</button>
-               @endif
-
+                        @if($tournament->active == 1)
+                           @if($tournament->endDate($tournament->tournament_start))
+                          
+                           <button onclick="document.location='{{route("match", $tournament->id)}}'" class="btn  submit-btn  mt-4"> Смотреть</button>
+                         
+                              @else
+                                @if($tournament->endDate($tournament->start_reg) )
+                                 @if($tournament->endDate($tournament->end_reg))
+                                 <button onclick="document.location='{{route("match", $tournament->id)}}'" class="btn  submit-btn  mt-4"> Смотреть</button>
+                                  @else
+                                 <button onclick="document.location='{{route("match", $tournament->id)}}'" class="btn  submit-btn  mt-4"> Смотреть</button>
+                                  @endif   
+                                @else 
+                                 <button onclick="document.location='{{route("match", $tournament->id)}}'" class="btn  submit-btn  mt-4"> Смотреть</button>
+                                @endif
+                              @endif 
+                            @else 
+                         
+                                 <button onclick="document.location='{{route("match", $tournament->id)}}'" class="btn  submit-btn  mt-4"> Смотреть</button>
+                                  
+                          @endif  
                       </div>
                     </div>
               </div>
             </div>
             @endforeach
-          
-    
             </div>
-            <span style="font-size:16px;">{{$tournaments->links()}}</span>
+            <span class="size_16">{{$tournaments->links()}}</span>
             @else
       <h4> Турниров нет</h4>
       @endif

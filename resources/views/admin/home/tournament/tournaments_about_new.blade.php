@@ -53,9 +53,9 @@
                 </div>
             @endif
 
-            <div class="my-5 table-box">
+            <div class="my-5 table-box example1-viewport">
                 @if($group)
-                <table id="example" class="display" style="width:100%">
+                <table id="example" class="display example1-content" style="width:100%">
                     <thead>
                     <tr>
                         <th @if($group->matches->isNotEmpty()) rowspan="2" @endIf>#</th>
@@ -94,7 +94,14 @@
                             <td><a href="{{route('team.destroy', $teamsF->id)}}"> <i class="fa fa-fw fa-times-circle text-danger"></i> </a> </td>
                             <td>
                                 <a href="{{route('team.show', $teamsF->id)}}" class="table-pubg_team">
-                                    <span class="table-pubg_team-img" style="background-image: url(https://images.pinger.kz/fit?file=storage%2Ffiles%2Fbd56a5ae257dc0ede5c52c080e64a895.jpg&amp;width=32&amp;height=32&amp;type=auto&amp;quality=95);"></span>
+                                <span class="table-pubg_team-img">
+                                    @if($teamsF->team->logo != null)
+                                <img class="" src="{{ asset("uploads/storage/img/teamlogo/".$teamsF->team->logo)}}" width="37" height="35" alt="" />   
+                                @else 
+                                <img class="" src="{{ asset("uploads/storage/img/default/noimage.png")}}" width="37" height="35" alt="" />   
+                                @endif
+                                </span> 
+                                  
                                     <span class="table-pubg_team-text">{{$teamsF->team->name}}</span>
                                 </a>
                             </td>

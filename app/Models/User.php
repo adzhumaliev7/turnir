@@ -48,8 +48,19 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-   
+    
+    public function logsFull() {
+        $logs = $this->logs()->select([  'id', 'log_type', 'description', 'table_name', 'created_at',  'user_id', 'old_value', 'new_value', ])
+            ->with(['type', 'user', 'newAdminUser', 'oldAdminUser']);
+        $bans = $this->bans()->select(['id', 'log_type', 'description', 'table_name', 'created_at',  'user_id', 'ban_id'   , 'ban_type' , ])->orderBy('created_at', 'desc');
+     
+        $all = $logs->unionAll($bans)->paginate(10);
+     
+        return $all;
+     }
+    public function logs(){
+        return $this->morphMany(Log::class,'model');
+   }
 
     public function teamMembers() {
         return $this->hasMany(TeamMembers::class);

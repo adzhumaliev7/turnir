@@ -27,9 +27,6 @@
 
   
 
-    
-
-
                 <h4 class="input-title">Состав команды</h4>
 
                 @foreach($members as $member)

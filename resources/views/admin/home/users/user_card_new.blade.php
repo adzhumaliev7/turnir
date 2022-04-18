@@ -114,13 +114,13 @@
     <div class="form-group row">
         <label for="staticEmail" class="col-sm-2 col-form-label">Статус</label>
         <div class="col-sm-4">
-            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="@if($user->status != null) Бан  @endif">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="@if($user->status != null) Бан  @endif  {{$status}}"  >
         </div>
     </div>
     <div class="form-group row">
         <label for="staticEmail" class="col-sm-2 col-form-label">Команды</label>
         <div class="col-sm-4">
-            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->fio}}">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$user->team->name ?? ''}}">
         </div>
     </div>
     @if($user->bans->isNotEmpty())
@@ -130,7 +130,7 @@
             <div class="col-sm-4">
                 @foreach($user->bans as $ban)
               
-                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{Carbon\Carbon::parse($ban->date)->format('d.m.Y')}}">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{Carbon\Carbon::parse($ban->date)->format('d.m.Y H:i:s')}}">
                 @endforeach
             </div>
         </div>
@@ -168,6 +168,7 @@
         </div>
     </div>
 {{--    @dd($log_rejected)--}}
+@if($user->verifications->where('status', '0')->count() > 0)
     <div class="form-group row">
         <label for="staticEmail" class="col-sm-2 col-form-label">Причины отказов</label>
         <div class="col-sm-4">
@@ -181,12 +182,36 @@
       </div>
     </div>
     <div class="form-group row">
+      <label for="staticEmail" class="col-sm-2 col-form-label">Дата Отказа</label>
+      <div class="col-sm-4">
+        <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="
+       
+           @foreach($user->verifications->where('status', 0) as $item)
+           {{Carbon\Carbon::parse($item->date)->format('d.m.Y H:i:s')}}
+           @endforeach
+      ">
+      </div>
+    </div>
+    <div class="form-group row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Админ верификации</label>
+        <div class="col-sm-4">
+        @if($user->verifications->where('status', 0)->count() > 0)
+            @foreach($user->verifications->where('status', 0) as $item)
+                    <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{$item->moder_id}}">
+            @endforeach
+          @endif
+      </div>
+    </div>
+   @else 
+
+
+    <div class="form-group row">
       <label for="staticEmail" class="col-sm-2 col-form-label">Дата верификации</label>
       <div class="col-sm-4">
         <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="
         @if($user->verifications->where('status', 1)->count() > 0 )
            @foreach($user->verifications->where('status', 1) as $item)
-           {{$item->date}}
+           {{Carbon\Carbon::parse($item->date)->format('d.m.Y H:i:s')}}
            @endforeach
         @endif">
       </div>
@@ -209,7 +234,7 @@
           @endif
       </div>
     </div>
-
+@endif
     <a id="myBtn" href="#" data-toggle="modal" data-target="#ModalGameId"><h3>Игровой профиль</h3></a>
     <div class="form-group row">
         <label for="inputPassword" class="col-sm-2 col-form-label">Ник</label>
@@ -234,7 +259,12 @@
     <div class="form-group row">
         <label for="inputPassword" class="col-sm-2 col-form-label">Дата рождения</label>
         <div class="col-sm-4">
-            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="{{Carbon\Carbon::parse($user->bdate)->format('d.m.Y')}}">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="
+            @if($user->bdate != null)
+            {{Carbon\Carbon::parse($user->bdate)->format('d.m.Y')}} 
+            @endif"
+            
+            >
         </div>
     </div>
     <div class="form-group row">
@@ -320,7 +350,7 @@
             @foreach($log_gameid as $item)
                 <tr>
                     <th scope="row">{{$loop->index+1}}</th>
-                    <td>{{Carbon\Carbon::parse($item->date)->format('d.m.Y')}}</td>
+                    <td>{{Carbon\Carbon::parse($item->date)->format('d.m.Y H:i:s')}}</td>
                     <td> {{$item->oldvalue}} </td>
                     <td> {{$item->newvalue}} </td>
                     <td>

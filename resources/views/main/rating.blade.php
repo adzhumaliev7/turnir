@@ -1,5 +1,5 @@
 @extends('layouts.layout')
-@section('title', 'Турнир')
+@section('title', 'Рейтинг')
 @section('content')
 
 
@@ -23,18 +23,18 @@
 </div>
 
 <main class="main d-flex flex-column">
-
+<div class="container">
     <h1 class="text text-capitalize font-sz text--responsive  px-4" >Рейтинг</h1>
 
     <table class="table indent--row table-block ">
         <tbody>
             <tr class="border-b border--none">
                 <td></td>
-                <td class="subtitle pubg-bg--orange border--none">Последняя игра</td>
-                <td class="subtitle pubg-bg--orange border--none">Страна</td>
-                <td class="subtitle pubg-bg--orange border--none">Тrnts</td>
-                <td class="subtitle pubg-bg--orange border--none">Kills</td>
-                <td class="subtitle bg--pubg-orange border--none">Points</td>
+                <td class="subtitle border--none">Последняя игра</td>
+                <td class="subtitle  border--none">Страна</td>
+                <td class="subtitle  border--none">Тrnts</td>
+                <td class="subtitle  border--none">Kills</td>
+                <td class="subtitle  border--none">Points</td>
             </tr>
             <tr class="bg-orange">
                 <!-- cell 1 -->
@@ -61,13 +61,13 @@
 
                 @endforeach
             </tr>
-            @else
-            <h1 class="title text-capitalize font-sz text--responsive  px-4">Нет данных</h1>
+          
             @endif
 
 
         </tbody>
     </table>
+    </div>
 </main>
 </header>
 

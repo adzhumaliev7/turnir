@@ -46,6 +46,15 @@ public function network(){
    return $this->hasOne(TeamsNetworks::class);
 }
 
+public function logsFull() {
+   $logs = $this->logs()->select([  'id', 'log_type', 'description', 'table_name', 'created_at',  'user_id', 'old_value', 'new_value', ])
+       ->with(['type', 'user', 'newAdminUser', 'oldAdminUser']);
+   $bans = $this->bans()->select(['id', 'log_type', 'description', 'table_name', 'created_at',  'user_id', 'ban_id'   , 'ban_type' , ])->orderBy('created_at', 'desc');
+
+   $all = $logs->unionAll($bans)->paginate(10);
+
+   return $all;
+}
    public static function getTeamById($id)
    {
       $is_has = DB::table('team_members')->where('user_id', $id)->exists();
@@ -195,7 +204,7 @@ public function network(){
       ->join('tournament_groups' ,'tournament_group_teams.group_id' ,'=' ,'tournament_groups.id')
       ->join('tournament_matches', 'tournament_matches.group_id', '=' ,'tournament_group_teams.id')
       ->join('stages', 'tournament_matches.stage_id', '=' ,'stages.id')
-      ->select( 'tournaments.*','tournament_matches.login', 'tournament_matches.password',  'tournament_matches.match_name', 'tournament_groups.group_name', 'stages.stage_name')
+      ->select( 'tournaments.*','tournament_matches.login', 'tournament_matches.password','tournament_matches.date',  'tournament_matches.match_name', 'tournament_groups.group_name', 'stages.stage_name')
      //->select( 'tournament_group_teams.team_id')
       ->where('tournamets_team.team_id', $team_id)
        ->get(); 

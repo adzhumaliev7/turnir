@@ -6,7 +6,8 @@
 
 
 <div class="container">
-<form action = "{{route('save_help')}}" >
+<form action = "{{route('admin.help.store')}}" method="POST" >
+   @csrf
    
   <div class="form-group">
     <label for="exampleFormControlInput1">Заголовок</label>
@@ -17,15 +18,15 @@
   </div>
   <div class="form-group">
     <label for="exampleFormControlInput1">Дата</label>
-    <input type="text" name="date_post"  class="form-control @error('date_post') is-invalid @enderror" placeholder="Начало регистрации">
+    <input type="text" name="date"  class="form-control @error('date') is-invalid @enderror" placeholder="Введите дату">
      @error('date_post')
              <div class="alert alert-danger">Введите заголовок</div>
     @enderror
   </div>
   <div class="form-group">
     <label for="exampleFormControlInput1">Описание</label>
-    <textarea  name="description" class="form-control rules" id="exampleFormControlInput1" placeholder="Описание"></textarea>
-     @error('description')
+    <textarea  name="text" class="form-control " id="ckeditor" placeholder="Описание"></textarea>
+     @error('text')
              <div class="alert alert-danger">Введите текст поста</div>
      @enderror
   </div>

@@ -1,44 +1,46 @@
 <div class="row">
-@if($disabled == 'disabled')
-            <div class="alert alert-danger" style="font-size: 16px;">Во время проведения турнира редактирование недоступно</div>
+      @if($disabled == 'disabled' && $ban == '')
+            <div class="alert alert-danger subtitle" >Во время проведения турнира редактирование недоступно</div>
+
+       @elseif($disabled == 'disabled' && $ban == 'ban')
+           <div class="alert alert-danger subtitle" >Во время бана редактирование недоступно</div>
         @endif
     <div class="col">
-   
-    <form method="POST" action="{{route('update_profile')}}" enctype="multipart/form-data"  style="font-size: 16px;">
+    <form method="POST" action="{{route('update_profile')}}" enctype="multipart/form-data" class="size_16">
     <fieldset <?echo $disabled;?>>
             @csrf
             @foreach($data['data'] as $dat )
-      
-          
             <h2 class="title letter-spacing--none indent--row">
              Основная информация
             </h2>
+
            <div class="form-group row">
                <label for="name" class="col-sm-3 col-form-label">Логин</label>
                <div class="col-sm-5">
-                 <input type="text" name="name"  class="form-control" id="" style="font-size: 16px;" value="{{$dat->name}}">
+                 <input type="text" name="name"  class="form-control subtitle" id=""  value="{{$dat->name}}">
                </div>
              </div>
              <div class="form-group row">
                <label for="email" class="col-sm-3 col-form-label">Email</label>
                <div class="col-sm-5">
-                 <input type="text" name="" class="form-control" readonly id="" placeholder="email" style="font-size: 16px;" value="{{$dat->email}}">
+                 <input type="text" name="" class="form-control subtitle" readonly id="" placeholder="email"  value="{{$dat->email}}">
                </div>
              </div>
-             <a href="" class="btn  submit-btn btn--size btn--orange " data-toggle="modal" data-target="#changePassword" style="margin-top: 20px;">Изменить пароль</a>
+          
+             <a class="btn  submit-btn  mt-4" data-toggle="modal" data-target="#changePassword">Изменить пароль</a>
              <h2 class="title letter-spacing--none indent--row">
             Игровой профиль
             </h2>
            <div class="form-group row">
                <label for="name" class="col-sm-3 col-form-label">Ник</label>
                <div class="col-sm-5">
-                 <input type="text" name="nickname"  class="form-control" id="" style="font-size: 16px;" value="{{$dat->nickname}}">
+                 <input type="text" name="nickname"  class="form-control subtitle" id="" value="{{$dat->nickname}}">
                </div>
              </div>
              <div class="form-group row">
                <label for="email" class="col-sm-3 col-form-label">Игровой ID</label>
                <div class="col-sm-5">
-                 <input type="text" name="game_id" class="form-control" id="" placeholder="" style="font-size: 16px;" value="{{$dat->game_id}}">
+                 <input type="text" name="game_id" class="form-control subtitle" id="" placeholder=""  value="{{$dat->game_id}}">
                  <input type="hidden" name="old_game_id" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->game_id}}">
                </div>
              </div>
@@ -48,19 +50,19 @@
            <div class="form-group row">
                <label for="name" class="col-sm-3 col-form-label">Телефон</label>
                <div class="col-sm-5">
-                 <input type="text" name="phone"  class="form-control" id="" style="font-size: 16px;" value="{{$dat->phone}}">
+                 <input type="text" name="phone"  class="form-control subtitle" id="" value="{{$dat->phone}}">
                </div>
              </div>
              <div class="form-group row">
                <label for="email" class="col-sm-3 col-form-label">Дата рождения</label>
                <div class="col-sm-5">
-                 <input type="date" name="bdate" class="form-control" id="" placeholder="email" style="font-size: 16px;" value="{{$dat->bdate}}">
+                 <input type="date" name="bdate" class="form-control subtitle"  id="" placeholder="email"  value="{{$dat->bdate}}">
                </div>
              </div>
              <div class="form-group row">
                <label for="email" class="col-sm-3 col-form-label">Страна</label>
                <div class="col-sm-5">
-               <select name="country" id="" style="font-size: 16px;" >
+               <select name="country" id="" style="font-size: 16px;" class="subtitle" >
                 <option value="{{$dat->country}}">{{$dat->country}}</option>
                   @foreach($countries as $country)
                   <option value="{{$dat->country}}">{{$country}}</option>
@@ -71,7 +73,7 @@
              <div class="form-group row">
                <label for="email" class="col-sm-3 col-form-label">Часовой пояс</label>
                <div class="col-sm-5">
-               <select name="timezone" id=""style="font-size: 16px;">
+               <select name="timezone" id=""style="font-size: 16px;" class="subtitle">
                     <option value="{{$dat->timezone}}">{{$dat->timezone}}</option>
                    @foreach($timezones as $timezone)
                   <option value="{{$timezone}}">{{$timezone}}</option>
@@ -80,15 +82,17 @@
                </div>
              </div>
              @endforeach
-             <button type="btn" class="btn  submit-btn btn--size btn--orange btn--margin" style="margin-right: 10px;">Сохранить</button>
-   <a href="{{route('delete_profile', $user_id)}}" class="btn  submit-btn btn--size  btn--margin">Удалить Профиль</a>
+             <button type="btn" class="btn  submit-btn  mt-4" style="margin-right: 10px;">Сохранить</button>
+
+             
+   <a href="{{route('delete_profile', $user_id)}}" class=" btn  submit-btn  mt-4">Удалить Профиль</a>
    </fieldset>
           </form>
     </div>
 
     <div class="col-md-6">
         <div class="form-group row">
-    <form method="POST" action="{{route('update_profile')}}" enctype="multipart/form-data"  style="font-size: 16px;">
+    <form method="POST" action="{{route('update_profile')}}" enctype="multipart/form-data" class="size_16" >
     <fieldset <?echo $disabled;?>>
             @csrf
             @foreach($data['data'] as $dat )
@@ -99,28 +103,38 @@
             <div class="form-group row">
                <label for="name" class="col-sm-3 col-form-label">ФИО</label>
                <div class="col-sm-5">
-                 <input type="text" name="fio"  class="form-control" id="" style="font-size: 16px;" value="{{$dat->fio}}">
+                 <input type="text" name="fio"  class="form-control subtitle" id=""  value="{{$dat->fio}}">
                </div>
              </div>
            <div class="form-group row">
                <label for="name" class="col-sm-3 col-form-label"></label>
                <div class="col-sm-10">
-               <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="doc_photo" >
+               <input type="file" class="form-control  subtitle" id="fileInput" name="doc_photo" >
                 <label class="subtitle" for="fileInput">Фото документа(паспорт, права id)</label>
+                @error('doc_photo')
+                <div class="alert alert-danger">Документ должен быть изображением и не превышать 2МБ </div>
+                @enderror
               </div>
              </div> 
              <div class="form-group row">
                <label for="email" class="col-sm-3 col-form-label"></label>
                <div class="col-sm-10">
-               <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput2" name="doc_photo2">
+               <input type="file" class="form-control  subtitle " id="fileInput2" name="doc_photo2">
+               
+                        
                 <label class="subtitle" for="fileInput2">фото с документом</label>
+                @error('doc_photo2')
+                <div class="alert alert-danger">Документ должен быть изображением и не превышать 2МБ </div>
+                @enderror
                </div>
              </div>
              <h4 style="opacity: 0.5; margin-top: 20px; ">**Фото с документом в руках</h4>
              <h4 style="opacity: 0.5;">*Обязательные поля для заполнения</h4>
+             <h4 style="opacity: 0.5;">*Документ обязательно должен быть изображением и не преавышать размер не более 5МБ</h4>
+           
              @endforeach
-    <p style="margin-top: 40px;">Статус: <?echo $h4;?></p>
-    <button type="btn" class="btn  submit-btn btn--size btn--orange btn--margin" style="margin-right: 150px; float:right">Сохранить</button>
+    <p class="   mt-5">Статус: <?echo $h4;?></p>
+    <button type="btn" class="btn  submit-btn  mt-4" style="float: right;">Сохранить</button>
     </fieldset>
           </form>
           </div>

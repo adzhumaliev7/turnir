@@ -6,7 +6,7 @@
 
 
 <div class="container">
-<form action = "{{route('admin.posts.update' ,$post_id)}}" method="POST" >
+<form action = "{{route('admin.posts.update' ,$post_id)}}" method="POST"  enctype="multipart/form-data">
    @csrf
 
   <div class="form-group">
@@ -30,14 +30,33 @@
   <div class="form-group col-md-4">
     <label for="exampleFormControlInput1">Автор</label>
     <input type="text" name=""  class="form-control " value="{{$posts->admin->name}}" readonly >
-
   </div>
-
 </div>
+<div class="form-group">
+      <label for="inputPassword4">Обложка</label>
+      @if($posts->label != null)
+
+      <img src="{{ asset("uploads/storage/img/posts/$posts->label")}}"  value="{{$posts->label}}" width="250" height="200" class="" style="opacity: .8">
+      <input class="input-footer " name="label" placeholder="Обложка" type="file">
+       @else
+       <label for="inputPassword4">Добавить обложку</label>
+       <input class="input-footer " name="label" placeholder="Обложка" type="file">
+         @error('label')
+             <div class="alert alert-danger">Загрузите фотографию</div>
+           @enderror
+          @endif
+    </div>
+    <div class="form-group">
+    <label for="exampleFormControlInput1">Описание</label>
+    <textarea  name="preview" class="form-control rules" id="ckeditor" value="">{{$posts->preview}}</textarea>
+     @error('preview')
+             <div class="alert alert-danger">Введите текст поста</div>
+     @enderror
+  </div>
   <div class="form-group">
     <label for="exampleFormControlInput1">Описание</label>
-    <textarea  name="text" class="form-control rules" id="exampleFormControlInput1" value="">{{$posts->text}}</textarea>
-     @error('description')
+    <textarea  name="text" class="form-control rules" id="ckeditor2" value="">{{$posts->text}}</textarea>
+     @error('text')
              <div class="alert alert-danger">Введите текст поста</div>
      @enderror
   </div>

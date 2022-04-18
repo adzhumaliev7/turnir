@@ -16,6 +16,7 @@
             <div class="col-lg-4">
                 <h1 class="title text-capitalize font-sz">{{$team->name}}</h1>
                 <div class="block d-flex justify-content-start" >
+                
                 @if($team->network)
                     @if($team->network->insta != null)
                     <a class="footer__social-icons footer__social-icons--indent footer__social-icons--instagram m-3"
@@ -31,7 +32,7 @@
                     @endif
                     @if($team->network->youtube != null)
                     <a class="footer__social-icons footer__social-icons--indent footer__social-icons--youtube m-3"
-                       style="font-size: 40px" href="{{$network->youtube}}">
+                       style="font-size: 40px" href="{{$team->network->youtube}}">
                         <i class="fab fa-youtube footer__icons"></i>
                     </a>
                     @endif
@@ -76,8 +77,8 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">nick</th>
-                <th scope="col">Pubg id</th>
                 <th scope="col">Pubg nick</th>
+                <th scope="col">Pubg id</th>
                 <th scope="col">Статус</th>
                 <th scope="col">Страна</th>
                 <th scope="col">Роль</th>
@@ -88,12 +89,30 @@
 
             @foreach($team->teammatesTeam as $member )
             <tr>
+               
                 <th scope="row">{{$member->id}}</th>
                 <td>{{$member->user->name}}</td>
                 <td>{{$member->user->nickname}}</td>
                 <td>{{$member->user->game_id}}</td>
-                <td>{{$userStatus[ $member->user->verification ?? 'defauld']}}</td>
-                <td>{{$member->user->country}}</td>
+                <td>
+                    
+                @if($member->user->status  == null)
+                    @if($member->user->verified == 1)  Активирован
+                    @else 
+                    Не активирован 
+                    @endif
+                    /
+
+                    @if($member->user->nickname != null && $member->user->game_id != null)
+                    Игровой
+                    @else 
+                    Не игрвой
+                    @endif
+                @else 
+                    Бан
+                @endif         
+                </td>
+                <td>{{$member->user->country}}</td> 
                 <td>{{$member->role}}</td>
                 <td><a href="{{route('users_card',$member->user->id )}}" class="btn btn-link"> Посмотреть </a> </td>
             </tr>
@@ -183,66 +202,68 @@
 
         <hr style="background-color: orange">
         <h3 class="text-center">Логи</h3>
-        <table class="table">
+        <table class="table table-bordered">
             <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Дата</th>
                 <th scope="col">Тип</th>
                 <th scope="col">Причина</th>
-                <th scope="col">С</th>
-                <th scope="col">На</th>
+                <th scope="col">Пред</th>
+                <th scope="col">Новый</th>
+                <th scope="col">Кто</th>
             </tr>
             </thead>
-            <tbody>
+        <tbody>
 
-            @foreach($team->bans->load('ban', 'user') as $ban)
-                <tr>
-                   
-                    <th scope="row">{{$ban->id}}</th>
-                    <td>
-                        @if($ban->created_at)
-                            {{$ban->created_at->format('Y.m.d')}}
-                        @endif
-                    </td>
-                    <td> Бан </td>
-                    <td>  {{$ban->description   ? $ban->description : '' }} </td>
-                    <td>
-                        {{$ban->ban ? $ban->user->name : 'пользователь удалён' }}
-                    </td>
-                    <td>
-                        {{$ban->ban ? $ban->ban->name : 'пользователь удалён' }}
-                    </td>
-                </tr>
-            @endforeach
-            
-            @foreach($team->logs as $log )
+            @foreach($logs as $log)
                 <tr>
                     <th scope="row">{{$log->id}}</th>
                     <td>
                         @if($log->created_at)
-                        {{$log->created_at->format('d.m.Y')}}</td>
-                        @endif
-                    <td> {{$log->type->description}} </td>
-                    <td>
-                        @if($log->log_type == 1)
-                            {{$log->oldAdminUser->name ?? 'пользователь удалён'}}
-                        @elseif($log->log_type == 2)
-                            {{$log->old_value}}
+                            {{$log->created_at->format('Y.m.d')}}
                         @endif
                     </td>
                     <td>
-                        @if($log->log_type == 1)
-                            {{$log->newAdminUser->name ?? 'пользователь удалён'}}
-                        @elseif($log->log_type == 2)
-                            {{$log->new_value}}
+                      
+                        {{$log->type->description }}
+                    </td>
+                    <td>  {{$log->description ? $log->description : '' }} </td>
+                    <td>
+                        @if($log->table_name == 'logs')
+                            @if($log->type->type == 'chengeTeamCapitan')
+                                {{$log->oldAdminUser->name ?? 'пользователь удалён'}}
+                            @elseif($log->type->type == 'changeTeamName')
+                                {{$log->old_value}}
+                            @elseif($log->type->type == 'rejectionOrders')
+                                {{$log->turnir? $log->turnir->name: 'Турнир удалили'}}
+                            @endif
+                        @elseif($log->table_name == 'reports')
+
                         @endif
                     </td>
+                    <td>
+                        @if($log->table_name == 'logs')
+                            @if($log->type->type == 'chengeTeamCapitan')
+
+                                {{$log->newAdminUser->name ?? 'пользователь удалён'}}
+                            @elseif($log->type->type == 'changeTeamName')
+                                {{$log->new_value}}
+                            @endif
+                        @elseif($log->table_name == 'reports')
+
+                        @endif
+                    </td>
+                    <td>
+                        {{$log->user ? $log->user->name: 'пользователь удалён' }}
+                    </td>
+
                 </tr>
             @endforeach
             </tbody>
+          
         </table>
-
+        <span class="d-flex justify-content-center">{{$logs->links()}}</span>
 
 
     </div>

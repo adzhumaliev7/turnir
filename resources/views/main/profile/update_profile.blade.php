@@ -8,13 +8,14 @@
 
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="name" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->name}}" >
+                <input name="name"  placeholder="*Ник" type="text" class="form-control  subtitle  " id="" value="Ник: {{$dat->name}}" readonly>
                 @error('name')
                 <div class="alert alert-danger">Введите логин</div>
                 @enderror
               </div>
               <div class="col-lg-6">
-                <input name="" placeholder="Email" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->email}}" >
+                <input name="" placeholder="Email" readonly type="text" class="form-control  subtitle " id="" value="Почта: {{$dat->email}}" readonly>
+            
                 @error('email')
                 <div class="alert alert-danger">Такой email уже занят</div>
                 @enderror
@@ -25,13 +26,13 @@
             </h2>
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="phone" placeholder="Номер телефона" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->phone}}" >
+                <input name="phone" placeholder="Номер телефона" type="tel" class="form-control  subtitle" id="" value="Телефон: {{$dat->phone}}" readonly>
                 @error('phone')
                 <div class="alert alert-danger">Введите номер телефона</div>
                 @enderror
               </div>
               <div class="col-lg-6">
-                <input name="fio" placeholder="Имя Фамилия" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->fio}}" >
+                <input name="fio" placeholder="Имя Фамилия" type="text" class="form-control  subtitle" id="" value="ФИО: {{$dat->fio}}" readonly>
                 @error('fio')
                 <div class="alert alert-danger">Введите имя</div>
                 @enderror
@@ -40,30 +41,22 @@
            
             <div class="row mt-4">
               <div class="col-lg-6">
-              <input name="country" placeholder="" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->country}}">
-               
+              <input name="country" placeholder="" type="tel" class="form-control  subtitle fw-normal " id="" value="Страна: {{$dat->country}}" readonly>
               </div>
               <div class="col-lg-6">
-              <input name="timezone" placeholder="" type="tel" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->timezone}}" >
+                <input name="bdate" placeholder="Дата рождения" type="date" class="form-control  subtitle " id="" value="{{$dat->bdate}}" readonly>
               </div>
             </div>
-            <div class="row mt-4">
-              <div class="col-lg-6">
-                <input name="city" placeholder="Город" type="text " class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->city}}" >
-              </div>
-              <div class="col-lg-6">
-                <input name="bdate" placeholder="Дата рождения" type="date" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->bdate}}" >
-              </div>
-            </div>
+          
             <h2 class="title letter-spacing--none indent--row">
               Игровой профиль PUBG MOBILE
             </h2>
             <div class="row">
               <div class="col-lg">
-                <input placeholder="Nick name" name="nickname" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->nickname}}">
+                <input placeholder="Nick name" name="nickname" type="text" class="form-control  subtitle  " id="" value="Игровой ник: {{$dat->nickname}}" readonly>
               </div>
               <div class="col-lg">
-                <input placeholder="ID игрока в PUBG Mobile" type="text" name="game_id" class="form-control input__profile subtitle fw-normal" id="" value="{{$dat->game_id}}">
+                <input placeholder="ID игрока в PUBG Mobile" type="text" name="game_id" class="form-control  subtitle  " id="" value="Игровой ID: {{$dat->game_id}}" readonly>
              
                 @error('login')
                 <div class="alert alert-danger">Игровой id уже занят</div>

@@ -16,6 +16,13 @@
     @enderror
   </div>
   <div class="form-group">
+    <label for="exampleFormControlInput1">nickname</label>
+    <input type="text" name="name" class="form-control" id="exampleFormControlInput1" placeholder="Имя ">
+     @error('nickname')
+             <div class="alert alert-danger">Такой email уже занят</div>
+    @enderror
+  </div>
+  <div class="form-group">
     <label for="exampleFormControlInput1">Пароль</label>
     <input type="password" name="password" class="form-control" id="exampleFormControlInput1" placeholder="Пароль">
      @error('password')

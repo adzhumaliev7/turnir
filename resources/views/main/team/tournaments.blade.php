@@ -1,4 +1,4 @@
-<div class="container">
+<div class="">
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#stage_1">Турниры</a>
@@ -9,6 +9,8 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="stage_1">
+
+ 
                        @if($tournaments != null)
 
                        
@@ -24,11 +26,10 @@
                                 @foreach($tournaments as $turnir)
                                 <tbody>
                                     <tr>
-                                       
                                         <td>{{$turnir->turnir->name}}</td>
                                         <td>{{$turnir->members}}</td>
                                         <td>{{$turnir->turnir->format}}</td>
-                                        <td>{{Carbon\Carbon::parse($turnir->turnir->tournament_start)->format('d.m.Y')}} </td>
+                                        <td>{{$turnir->turnir->tournament_start}} </td>
                                     </tr>
                                  </tbody>
                                 @endforeach   
@@ -44,7 +45,7 @@
                                     <tr>
                                         <th scope="col">{{$match->name}}#{{$loop->index +1}}.{{$match->stage_name}}.{{$match->match_name}}.Группа {{$match->group_name}}</th>
                                         <th scope="col">{{$match->format}}</th>
-                                        <th scope="col">{{$match->tournament_start}}</th>
+                                        <th scope="col">{{$match->date}}</th>
                                     </tr>
                                     @endforeach
                                 </thead>

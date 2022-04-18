@@ -15,6 +15,11 @@ return [
  
 
     'timezones' => [
+        'Asia/Almaty'          => "(GMT+06:00) Almaty",
+        'Asia/Bishkek'          => "(GMT+06:00) Bishkek",
+        'Europe/Kiev'          => "(GMT+02:00) Kyiv",
+        'Europe/Minsk'         => "(GMT+02:00) Minsk",
+      
          'Pacific/Midway'       => "(GMT-11:00) Midway Island",
     'US/Samoa'             => "(GMT-11:00) Samoa",
     'US/Hawaii'            => "(GMT-10:00) Hawaii",
@@ -73,8 +78,7 @@ return [
     'Europe/Helsinki'      => "(GMT+02:00) Helsinki",
     'Europe/Istanbul'      => "(GMT+02:00) Istanbul",
     'Asia/Jerusalem'       => "(GMT+02:00) Jerusalem",
-    'Europe/Kiev'          => "(GMT+02:00) Kyiv",
-    'Europe/Minsk'         => "(GMT+02:00) Minsk",
+
     'Europe/Riga'          => "(GMT+02:00) Riga",
     'Europe/Sofia'         => "(GMT+02:00) Sofia",
     'Europe/Tallinn'       => "(GMT+02:00) Tallinn",
@@ -96,8 +100,8 @@ return [
     'Asia/Kolkata'         => "(GMT+05:30) Kolkata",
     'Asia/Kathmandu'       => "(GMT+05:45) Kathmandu",
     'Asia/Yekaterinburg'   => "(GMT+06:00) Ekaterinburg",
-    'Asia/Almaty'          => "(GMT+06:00) Almaty",
-    'Asia/Bishkek'          => "(GMT+06:00) Bishkek",
+   
+ 
     'Asia/Dhaka'           => "(GMT+06:00) Dhaka",
     'Asia/Novosibirsk'     => "(GMT+07:00) Novosibirsk",
     'Asia/Bangkok'         => "(GMT+07:00) Bangkok",
@@ -193,7 +197,7 @@ return [
     |
     */
 
-    'timezone' => 'Etc/UTC',
+    'timezone' => 'Asia',
 
     /*
     |--------------------------------------------------------------------------
@@ -292,6 +296,8 @@ return [
          * Package Service Providers...
          */
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+        UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -301,7 +307,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-      
+
+        
+        Barryvdh\Elfinder\ElfinderServiceProvider::class
     ],
 
     /*
@@ -356,6 +364,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
+        	
+        'Image' => Intervention\Image\Facades\Image::class,
+
     ],
 
 ];

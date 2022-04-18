@@ -3,27 +3,7 @@
 @section('content')
 
 <div class="header-pubg__bg-2">
-  <div class="account-pubg__bg account__bg d-flex justify-content-end px-4">
-
-    <div class="dropdown">
-      @if($mail != null)
-      <button class="header__line header__txt button--none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-        {{$mail}}
-      </button>
-      @else
-      <a href="{{'login'}}" class="header__line header__txt " type="button">
-        Войти
-      </a>
-      <a href="{{'registration'}}" class="header__line header__txt " type="button">
-        Регистрация
-      </a>
-      @endif
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
-        <li><a class="dropdown-item header__txt text-dark" href="{{route('user.logout')}}">выйти</a></li>
-      </ul>
-    </div>
-  </div>
+  
   @include('main.inc.nav_header')
 </div>
 
@@ -34,8 +14,8 @@
 
             @foreach($posts as $post)
 				<div class="help d-flex">
-					<div>
-					
+					<div class="img_news" >
+					<img src="{{ asset("uploads/storage/img/posts/$post->label")}}"  value="{{$post->label}}" width="300" height="200" class="" style="opacity: .8">
 					</div>
 					<div class="help__container">
 						<p> 
@@ -52,11 +32,13 @@
 						</div>
                         <a href="{{route('news.show', $post->id)}}" class="help__text_link"> 
 						<p class="help__text">
-                        <?php $string = strip_tags($post->text);
+
+							{!!$post->preview!!}
+                        <?/*  $string = strip_tags($post->text);
                         	    $string = substr($string, 0, 300);
 	                            $string = rtrim($string, "!,.-");
                                 $string = substr($string, 0, strrpos($string, ' '));
-                                echo $string."… ";
+                                echo $string."… "; */
                       ?>
                       
 						</p>

@@ -6,9 +6,13 @@
         }
     </style>
     <div class="container mt-4">
-        <h3>Этап - {{$tournamentGroupTeam->stage->stage_name}}</h3>
-        <h3>Список участиников в команде - {{$tournamentGroupTeam->team->name}}</h3>
-        <h4>Капитан команды {{$tournamentGroupTeam->team->сaptain->name}} ?? '' </h4>
+        
+        <h3>Турнир - {{$tournamentGroupTeam->turnir->name}} Этап - {{$tournamentGroupTeam->stage->stage_name}} Группа - {{$tournamentGroupTeam->group->group_name}}</h3>
+     
+        <h3>Список участиников в команде - {{$tournamentGroupTeam->team->name}}</h3> 
+          
+    
+        <h4>Капитан команды {{$tournamentGroupTeam->team->сaptain->name}} ??  </h4>
 
         <a href="{{route('matches.edit', $tournamentGroupTeam->id)}}" class="btn btn-primary">Раздать очки матчей</a>
         <div class="table-pubg_wrapper js-sv-parent">

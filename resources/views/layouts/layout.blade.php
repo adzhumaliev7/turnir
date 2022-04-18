@@ -11,10 +11,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  
- 
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="application/javascript"></script>
+
 <script src="https://cdn.rawgit.com/hilios/jQuery.countdown/2.2.0/dist/jquery.countdown.min.js" type="application/javascript"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="{{asset("js/script.js")}}"></script>
@@ -24,8 +27,6 @@
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <!-- css -->
-  
-
   
 
 
@@ -79,9 +80,8 @@
                 Рейтинг
               </a>
             </li>
-
             <li>
-              <a class="main__link" href="{{route('help')}}">
+              <a class="main__link" href="{{route('main.help')}}">
                 Помощь
               </a>
             </li>
@@ -97,21 +97,24 @@
             <div class="row footer--index">
               <div class="col-lg-3 px-4">
                 <h4 class="title text-uppercase logo-indent-mr text-light footer__txt-mt">
-                  snowmatch
+                  bigplay
                 </h4>
                 <p class="footer__text text-light footer--subtext">
-                  Showmatch.pro - киберспортивная турнирная платформа для
+                Bigplay.pro - киберспортивная турнирная платформа для
                   мобильного гейминга
                 </p>
               </div>
+             
               <div class="col-lg-3 px-4 d-flex flex-column">
                 <a class="footer__link footer__txt-mt text-light" href="#">Сотрудничество</a>
-                <a class="footer__sublink" href="#">Пользовательское соглашение</a>
+                <a class="footer__sublink" href="{{route('terms')}}">Пользовательское соглашение</a>
+                <a class="footer__sublink" href="{{route('main.help')}}">Помощь</a>
               </div>
               <div class="col-lg-3 px-4 d-flex flex-column">
-                <a class="footer__link footer__txt-mt text-light" href="#">Правила и ограничения</a>
-                <a class="footer__sublink" href="#">Помощь</a>
-                <a class="footer__sublink" href="#">О проекте</a>
+                <a class="footer__link footer__txt-mt text-light" href="">Правила и ограничения</a>
+               @foreach($pages as $page)
+                   <a class="footer__sublink" href="{{route('page', [$page->page, $page->id])}}">{{$page->title}}</a>
+               @endforeach    
               </div>
               <div class="col-lg-3 px-4 d-flex flex-column">
                 <a class="footer__link footer__txt-mt text-light" href="#">Подписывайтесь на нас</a>
@@ -127,90 +130,37 @@
         </div>
       </footer>
   </div>
-     
+
+
   <script type="application/javascript">
-        $('[data-countdown]').each(function() {
-          var $this = $(this);
-          var finalDate = $(this).data('countdown');
-          $this.countdown(finalDate, function(event) {
+
+let timessss = $('#timesssssssss').data('time')
+let dataaaaa = Date.now() ;
+    $('[data-countdown]').each(function () {
+        var $this = $(this);
+        var finalDate = $(this).data('countdown');
+        $this.countdown(finalDate, function (event) {
+            // console.log(event.strftime('%D дней %H:%M:%S'))
             $this.html(event.strftime('%D дней %H:%M:%S'));
-          });
-        });
-      </script>
-
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  
-      <script>
-    function viewdiv(id) {
-        var el = document.getElementById(id);
-        var link = document.getElementById('toggleLink');
-        if (el.style.display == "block") {
-            el.style.display = "none";
-            link.innerText = link.getAttribute('data-text-hide');
-        } else {
-            el.style.display = "block";
-            link.innerText = link.getAttribute('data-text-show');
-        }
-    }
-
-</script>
-<!-- <script>
-         $('#changepassword').submit(function(e){
-            e.preventDefault();
-            $.ajax({
-                type:'POST',
-                url:  e.target.action,
-                data: $(this).serialize(),
-                headers: {
-                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (data){
-                 
-                },
-                error: function (data) {
- 
+          
+                if (event.timeStamp > timessss && dataaaaa < timessss) {
+                  
+                   setTimeout(location.reload(),9000);
                 }
-            });
-        }); 
-    </script> -->
-<!-- <script type="text/javascript">
-       $(document).ready(function() {
-           $(".btn-submit").click(function(e){
-               e.preventDefault();
-               var _token = $("input[name='_token']").val();
-               var old_password = $("input[name='old_password']").val();
-               var password = $("input[name='password']").val();
-               var password_confirmation = $("input[name='password_confirmation']").val();
-               
-          
-               $.ajax({
-                   url: "{{ route('changepassword') }}",
-                   type:'POST',
-                   data: {_token:_token, old_password:old_password, password:password, password_confirmation:password_confirmation},
-                   success: function(data) {
-                       if($.isEmptyObject(data.error)){
-                           alert(data.success);
-                       }else{
-                           printErrorMsg(data.error);
-                       }
-                   }
-               });
-          
-           }); 
-          
-           function printErrorMsg (msg) {
-               $(".print-error-msg").find("ul").html('');
-               $(".print-error-msg").css('display','block');
-               $.each( msg, function( key, value ) {
-                   $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
-               });
-           }
-       });
-   
-   
-   </script> -->
-   <script type="text/javascript">
+        });
+    });
+</script>
+<script src="https://unpkg.com/scrollbooster@2/dist/scrollbooster.min.js"></script>
+    <script>
+new ScrollBooster({
+  viewport: document.querySelector('.example1-viewport'),
+  content: document.querySelector('.example1-content'),
+  scrollMode: 'transform', // use CSS 'transform' property
+  direction: 'horizontal', // allow only horizontal scrolling
+  emulateScroll: true, // scroll on wheel events
+});
+</script>
+<script type="text/javascript">
        
        $(document).ready(function() {
            $(".btn-submit").click(function(e){
@@ -246,8 +196,33 @@
        });
    
    </script>
+  
 
-   
+
+
+<script>
+     const nav = qs('tab');
+     console.log(nav)
+        if (nav && document.getElementById(nav)) {
+          document.getElementById(nav).click()
+        }
+      
+      function qs(key) {
+        key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, '\\$&');
+        var match = location.search.match(new RegExp('[?&]'+key+'=([^&]+)(&|$)'));
+        return match && decodeURIComponent(match[1].replace(/\+/g, ''));
+      }
+      
+      $('#nav-tab .accordion__btn').on('click', function (e) {
+        var url = window.location.href;       
+        var urlSplit = url.split( '?' );       
+        var obj = { title : '', url: urlSplit[0] + '?tab=' + this.getAttribute('id')};       
+        history.pushState(obj, obj.title, obj.url);
+      })
+    </script>
+
+
+
   
 <!--  -->
 </body>

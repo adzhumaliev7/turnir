@@ -72,12 +72,11 @@ class UsersProfile extends Model
           ->join('team' ,'tournament_group_teams.team_id' ,'=' ,'team.id')
           ->join('tournament_matches', 'tournament_group_teams.group_id', '=' ,'tournament_matches.group_id')
           ->join('stages', 'tournament_matches.stage_id', '=' ,'stages.id')
-       
-          ->select('tournaments.*','tournament_matches.login', 'tournament_matches.password',  'tournament_matches.match_name', 'tournament_groups.group_name', 
+          ->select('tournaments.*','tournament_matches.login', 'tournament_matches.password', 'tournament_matches.date',  'tournament_matches.match_name', 'tournament_groups.group_name', 
           'stages.stage_name', 'stages.tournament_id', 'team.name as team_name')
         // ->select( 'tournament_group_teams.team_id')
           ->where('tournament_group_teams.team_id', $team_id)->where('tournaments.active', $status)->where('tournaments.status', 'save')
-         
+          ->orderBy('tournament_matches.date','desc')
           ->orderBy('tournaments.name')
           ->orderBy('stages.stage_name', 'desc')
            ->get(); 
@@ -113,6 +112,15 @@ class UsersProfile extends Model
    }
    public static function getUserPhoto($id){
       return DB::table('users_logo')->select('photo')->where('user_id', $id)->value('photo');
+   }
+
+   public function checkTurnir($team_id){
+      return DB::table('tournamets_team')
+      ->leftJoin('tournaments','tournamets_team.tournament_id' , '=', 'tournaments.id')
+      ->where('tournamets_team.team_id', $team_id)
+      ->where('tournamets_team.status', 'accepted')
+      ->where('tournaments.active',1)
+      ->exists();
    }
    
 }

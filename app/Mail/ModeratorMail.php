@@ -11,6 +11,7 @@ class ModeratorMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $user;
+    public $password;
    
     
     /**
@@ -18,9 +19,11 @@ class ModeratorMail extends Mailable
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user,  $password)
     {
         $this->user = $user;
+     
+        $this->password = $password;
     
     }
 
@@ -34,6 +37,9 @@ class ModeratorMail extends Mailable
 
         return $this->to($this->user)
             ->from('tournamentpubgtest@gmail.com', 'Модератор')
-            ->view('messages.moderator');
+            ->view('messages.moderator', [
+                'email' => $this->user,
+                'password' => $this->password,
+            ]);
     }
 }

@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Models\Team;
 use App\Models\Post;
 use App\Models\Log;
-use App\Models\Log_gameid;
+use App\Models\Log_users;
 use App\Models\UsersProfile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -102,9 +102,14 @@ class HomeController extends Controller
   public function userCard($id)
   {
     $user = User::leftJoin('users_logo', 'users_logo.user_id', '=', 'users.id')->select('users.*', 'users_logo.photo')->findOrFail($id);
-    $log_gameid = Log_gameid::get($id);
-   
-    return view('admin.home.users.user_card_new', compact('user', 'log_gameid'));
+    
+  
+   $status = $user->verified == 1 ? 'Активирован' : 'Зарегистрирован';
+   $status .= '/';
+   $status .= $user->nickname != null && $user->game_id != null ? 'Игровой' : 'Не игровой';
+   $logs = $user->logsFull();
+
+    return view('admin.home.users.user_card_new2', compact('user', 'logs', 'status'));
   }
 
   public function moderators()
@@ -134,7 +139,7 @@ class HomeController extends Controller
     $this->validator($request->all())->validate();
     $user =User::create($request->all());
     $user->assignRole('moderator');
-    Mail::to($request->input('email'))->send(new ModeratorMail($request->input('email')));
+    Mail::to($request->input('email'))->send(new ModeratorMail($request->input('email'), $request->input('password')));
   
     // return $user;
     return redirect(route('moderators'));
@@ -165,54 +170,6 @@ class HomeController extends Controller
     return redirect(route('moderators')); 
   }
 
-  public function help()
-  {
-
-    $help = Admin::getHelp();
-    if($help !=null) $help = ColectionPaginate::paginate($help, 15);
-    return view('admin.home.help.help', [
-      'help' => $help,
-    ]);
-  }
-  public function createHelp()
-  {
-    return view('admin.home.help.create_help');
-  }
-
-  public function saveHelp(Request $request)
-  {
-    $data  = $request->validate([
-
-      'title' => 'required',
-      'description' => 'required',
-      // 'password' => Hash::make($request->input('password')),
-    ]);
-
-    Admin::createHelp($data);
-
-    // return $user;
-
-    return redirect(route('help'));
-  }
-  public function editHelp($id)
-  {
-
-    $help = Admin::getHelpById($id);
-    return view('admin.home.help.edit_help', [
-      'help' => $help,
-    ]);
-  }
-
-  public function editHelpSave($id, Request $request)
-  {
-    $data = $request->validate([
-      'title' => '',
-      'description' => '',
-    ]);
-
-    Admin::editHelp($id, $data);
-    return redirect(route('help'));
-  }
 
   public function feedback()
   {
@@ -266,11 +223,22 @@ class HomeController extends Controller
     $name = $request->input('name');
 
     Admin::changeTeamName($id, $name);
-    $team->logs()->create(['old_value' => $oldname, 'new_value' => $name, 'log_type' => 2]);
+    $team->logs()->create(['old_value' => $oldname, 'new_value' => $name, 'log_type' => 2, 'user_id'=> Auth::id()]);
 
     return redirect()->route('orders_team');
   }
+  
+  public function ordersTeamRejected($id, Request $request)
+  {
+    $email = Admin::getTeamMembersEmailCaptain($id);
+    $text = $request->input('text');
+ 
+     Mail::to($email)->send(new RejectedChangeTeam($email, $text));
+    Admin::ordersTeamRejected($id);
+   
 
+    return redirect(route('orders_team')); 
+  }
 
   public function search(Request $request)
 {

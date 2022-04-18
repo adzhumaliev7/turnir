@@ -44,7 +44,7 @@
             <input type="submit" class="btn btn-primary" name="submit" value="save">
             <span id="addMatches" class="btn btn-primary"> Добавить ещё матч </span>
 
-            <input type="submit" class="btn btn-danger" name="submit" value="draft"></input>
+        
         </form>
         <a href="{{route('standings',[ $group->tournament_id, $group->stage_id, $group->id])}}" class="btn btn-link">Назад</a>
     </div>

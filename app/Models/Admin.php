@@ -216,7 +216,7 @@ class Admin extends Model
    public static function geTeamMembersUserid($team_id, $tournament_id)
    {
       return DB::table('tournaments_members')
-         ->join('team_members', 'tournaments_members.user_id', '=', 'team_members.user_id')
+         ->join('team_members', 'tournaments_members.team_id', '=', 'team_members.team_id')
         
         // ->select('team_members.user_id')
          ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)->where('team_members.role', 'captain')
@@ -417,8 +417,8 @@ class Admin extends Model
    {
    
          $orders = DB::table('orders_team')
-         ->join('team', 'orders_team.team_id' , '=', 'team.id')
-         ->select('orders_team.name as new_name', 'orders_team.team_id', 'orders_team.status', 'team.name')
+      
+         ->select('orders_team.name as new_name', 'orders_team.team_id', 'orders_team.status', 'orders_team.old_name')
          ->orderBy('orders_team.status', 'desc')
          ->get();
          return $orders->count() ? $orders : null;

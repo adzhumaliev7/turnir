@@ -3,27 +3,7 @@
 @section('content')
 
 <div class="header-pubg__bg-2">
-  <div class="account-pubg__bg account__bg d-flex justify-content-end px-4">
 
-    <div class="dropdown">
-      @if($mail != null)
-      <button class="header__line header__txt button--none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-        {{$mail}}
-      </button>
-      @else
-      <a href="{{'login'}}" class="header__line header__txt " type="button">
-        Войти
-      </a>
-      <a href="{{'registration'}}" class="header__line header__txt " type="button">
-        Регистрация
-      </a>
-      @endif
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
-        <li><a class="dropdown-item header__txt text-dark" href="{{route('user.logout')}}">выйти</a></li>
-      </ul>
-    </div>
-  </div>
   @include('main.inc.nav_header')
 </div>
 

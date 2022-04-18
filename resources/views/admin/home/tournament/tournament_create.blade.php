@@ -130,7 +130,7 @@
  <div class="form-row">
    <div class="form-group col-md-10">
       <label for="inputPassword4">Правила</label>
-      <input type="text" class="form-control rules" name="rule" id="" placeholder="Правила">
+      <textarea  class="form-control rules" name="rule" id="" placeholder="Правила"></textarea>
          @error('rule')
              <div class="alert alert-danger">Введите правила турнира</div>
            @enderror

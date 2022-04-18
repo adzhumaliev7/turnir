@@ -200,9 +200,6 @@
                 </li>
               </ul>
             </li>
-
-
-
             <li class="nav-item">
               <a href="#" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
@@ -212,10 +209,8 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
-        
-        
               <li class="nav-item">
-              <a href="{{route('help')}}" class="nav-link">
+              <a href="{{route('admin.help')}}" class="nav-link">
                 <i class="nav-icon far fa-alt"></i>
                 <p>
                   Помощь
@@ -239,11 +234,17 @@
               </a>
             </li>
               
-              </ul>
+            <li class="nav-item">
+              <a href="{{route('admin.pages')}}" class="nav-link">
+                <i class="nav-icon far fa-alt"></i>
+                <p>
+                  Генерация страниц 
+                </p>
+              </a>
             </li>
 
-
-        
+              </ul>
+            </li>
 
           </ul>
         </nav>
@@ -350,8 +351,34 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
       <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.7/summernote.js"></script>
       <script src="{{asset("js/scriptAdmin.js")}}"></script>
+
+      <script src="//cdn.ckeditor.com/4.18.0/full/ckeditor.js"></script>
+      <script>
+      var editor = CKEDITOR.replace( 'ckeditor',{
+        filebrowserUploadUrl: "{{route('ckeditor.image-upload', ['_token' => csrf_token() ])}}",
+        filebrowserUploadMethod: 'form'
+        } );
+
+        var editor = CKEDITOR.replace( 'ckeditor2',{
+        filebrowserUploadUrl: "{{route('ckeditor.image-upload', ['_token' => csrf_token() ])}}",
+        filebrowserUploadMethod: 'form'
+        } );
+      </script>
+
+
+
+
+
+
+
+
+
     <script>
 
+
+
+
+/* 
         $(document).ready(function() {
             $('.rules').summernote({
               disableDragAndDrop: true,
@@ -374,17 +401,34 @@
         ['undo', ['undo']],
         ['redo', ['redo']],
         ],
-                });
-
-
-
+      });
                 editor.summernote(configFull);
 
-
-
-
 });
-       
+function sendCMSFile(file) {
+    if (file.type.includes('image')) {
+        var name = file.name.split(".");
+        name = name[0];
+        var data = new FormData();
+        data.append('action', 'imgUpload');
+        data.append('file', file);
+        $.ajax({
+            url: "",
+            type: 'POST',
+            contentType: false,
+            cache: false,
+            processData: false,
+            dataType: 'JSON',
+            data: data,
+            success: function (url) {
+                $('#summernote').summernote('insertImage', url);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error(textStatus + " " + errorThrown);
+            }
+        });
+    }
+} */
     </script>
 
     <script>
@@ -681,6 +725,16 @@
           });
 
     </script>
+    <script src="https://unpkg.com/scrollbooster@2/dist/scrollbooster.min.js"></script>
+    <script>
+new ScrollBooster({
+  viewport: document.querySelector('.example1-viewport'),
+  content: document.querySelector('.example1-content'),
+  scrollMode: 'transform', // use CSS 'transform' property
+  direction: 'horizontal', // allow only horizontal scrolling
+  emulateScroll: true, // scroll on wheel events
+});
+</script>
 </body>
 
 </html>

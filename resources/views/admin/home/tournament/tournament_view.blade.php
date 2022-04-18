@@ -114,7 +114,7 @@
  <div class="form-row">
    <div class="form-group col-md-4">
       <label for="inputPassword4">Дата начала турнира</label>
-      <input type="date"  class="form-control @error('tournament_start') is-invalid @enderror"  name="tournament_start" id="" placeholder="Дата начала турнира" value="{{$tournament->tournament_start}}">
+      <input type="text"  class="form-control @error('tournament_start') is-invalid @enderror"  name="tournament_start" id="" placeholder="Дата начала турнира" value="{{$tournament->tournament_start}}">
          @error('tournament_start')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
