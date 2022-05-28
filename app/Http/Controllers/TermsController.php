@@ -10,9 +10,12 @@ class TermsController extends Controller
     public function index(){
         if(Auth::user() != null){
             $mail = Auth::user()->email;
+			   $active =  Auth::user()->verified;
         }
-        else $mail = null;
+          else {$mail = null;
+         $active = null;}
         $page = Pages::find(2);
-        return view('main.other.terms' , compact('mail', 'page'));
+		dd(1);
+        return view('main.other.terms' , compact('mail', 'page', 'active'));
     }
 }

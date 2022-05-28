@@ -10,7 +10,7 @@ class Pages extends Model
     use HasFactory;
 
     protected $table = 'pages';
-    protected $fillable = [ 'page','text' ,'title'];
+      protected $fillable = [ 'page','text' ,'title'];
 
 
     public static function getAll()

@@ -10,24 +10,23 @@ use App\Models\TournamentMatchesResult;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Models\Admin;
-use App\Models\Log_orders_team;
 use App\Mail\VerifiedMail;
 use App\Mail\ApplyTeamMail;
-use Illuminate\Support\Facades\Auth;
 use App\Mail\RefuseTeam;
 use App\Models\Log;
 use App\Models\Tournament;
 use App\Models\TournametsTeam;
 use App\Models\TournamentGroup;
+use App\Models\Log_orders_team;
 use App\Models\TournamentGroupTeam;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\TextUI\XmlConfiguration\Group;
 use App\Http\Requests\Admin\SaveTournamentRequest;
 use App\Http\Requests\Admin\EditTournamentRequest;
-use App\CustomClasses\ColectionPaginate;
+use Illuminate\Support\Facades\Auth;
 use TournamentTeam;
-use Carbon\Carbon;
+use App\CustomClasses\ColectionPaginate;
 class TournamentController extends Controller
 {
 
@@ -35,8 +34,7 @@ class TournamentController extends Controller
     {
 //        $tournaments = Admin::getTournaments();
         $tournaments = Tournament::withCount(['order'=> function($q) {return $q->where('status', 'processed');}])->paginate(30);
-    
-        
+     
         return view('admin.home.tournament.tournament', compact('tournaments'));
     }
 
@@ -46,9 +44,8 @@ class TournamentController extends Controller
         $start = $request->input('start');
         $dir = $request->input('order.0.dir');
         $search = $request->input('search.value');
-        $order = $request->input('columns.' . $request->input('order.0.column') . '.data');
-
-        $sql = Tournament::withCount(['order'=> function($q) {return $q->where('status', 'processed');}])->latest()
+  		 $order = $request->input('columns.' . $request->input('order.0.column') . '.data');
+         $sql = Tournament::withCount(['order'=> function($q) {return $q->where('status', 'processed');}])->latest()
             ->when($order == 'members', function ($query, $role) use ($dir) {
                 return $query->orderBy(
                     TournametsTeam::select('created_at')->whereColumn('tournamets_team.tournament_id', 'tournaments.id')->where('status', 'accepted')->take(1),
@@ -59,17 +56,13 @@ class TournamentController extends Controller
                 $q->OrWhere( 'name', 'LIKE',"%{$search}%");
                 $q->OrWhere('id','LIKE',"%{$search}%");
             });
-       
+
         $totalFiltered = $sql->count();
 
         $as = ['members' => 'name'];
         $tornirs = $sql->offset($start)->limit($limit)->orderBy($as[$order] ?? $order, $dir)->where('status','save')->get();
 
         $data = [];
-         
-
-
-  
         foreach ($tornirs as $tornir) {
 
             if($tornir->active == 1){ 
@@ -84,13 +77,13 @@ class TournamentController extends Controller
                    else   $status =  'Регистрация еще не началась'; 
            }
             else   $status ='Завершен';   
-            
+        
             $nestedData['id'] = $tornir->id;
             $nestedData['name'] = $tornir->name;
             $nestedData['format'] = $tornir->format;
             $nestedData['tournament_start'] = $tornir->tournament_start;
             $nestedData['members'] = $tornir->order->where('status', 'accepted')->count(). '/'.  $tornir->order->where('status', 'processed')->count() . '/'.$tornir->slot_kolvo;
-            $nestedData['status'] =  $status;
+            $nestedData['status'] = $status;
             $nestedData['options'] = view('admin.home.inc.buttons', [
                 'route' => ['deleteGet' => 'delete_tournament', 'edit' => 'tournament_view', 'show' => 'standings', 'duplicate' =>'duplication', 'order' => 'tournaments_teams'],
                 'id' => $tornir->id
@@ -136,7 +129,7 @@ class TournamentController extends Controller
         $data = $validated = $request->validated();
         $data['status'] = 'draft';
         Admin::editTournament($id, $data);
-        return redirect(route('admin_tournament'));
+        return redirect(route('draft_tournament'));
 
     }
 
@@ -165,7 +158,6 @@ class TournamentController extends Controller
             }
 
             $data = $validated = $request->validated();
-           
               if ($request->hasFile('file_label') == true ) {
             $data['file_label'] = $file_name;
            }
@@ -184,7 +176,7 @@ class TournamentController extends Controller
                 return back()->withError('Турнир ' . $request->input('name') . ' уже существует')->withInput();
             }
             \Session::flash('flash_meassage', 'Турнир добавлен');
-            return redirect(route('admin')); 
+            return redirect(route('admin_tournament'));
 
     }
     public function tournamentView($id)
@@ -246,7 +238,6 @@ class TournamentController extends Controller
         $members = Admin::geTeamMembers($id, $turnir_id);
 
         $user_id  = Admin::geTeamMembersUserid($id, $turnir_id);
-      
 
        /*  foreach ($user_id as $user => $value) {
             $user_id = $value;
@@ -271,21 +262,10 @@ class TournamentController extends Controller
           }
         }
         Mail::to($email)->send(new ApplyTeamMail($email));
-         Admin::applyTeam($id, $turnir_id);
-         Log_orders_team::create(['team_id'=> $id, 'admin'=> Auth::user()->name, 'log_type'=> 1 ,'tournament_id' => $turnir_id,]);
+        Admin::applyTeam($id, $turnir_id);
+    
+        Log_orders_team::create(['team_id'=> $id, 'admin'=> Auth::user()->name, 'log_type'=> 1 ,'tournament_id' => $turnir_id]);
         return redirect(route('tournaments_teams', $turnir_id));
-    }
-
-    public function logApplyAeams(){
-        //  $data = Log_orders_team::get();
-          $data = Log_orders_team::getAll(1);
-          if($data !=null) $data = ColectionPaginate::paginate($data, 15);
-        return view('admin.home.logs.log_apply_team', compact('data'));
-    }
-    public function logRejectedTeams(){
-        $data = Log_orders_team::getAll(0);
-        if($data !=null) $data = ColectionPaginate::paginate($data, 15);
-      return view('admin.home.logs.log_refuse_team', compact('data'));
     }
 
     public function refuseTeam($id, $turnir_id, $user_id, Request $request)
@@ -295,7 +275,7 @@ class TournamentController extends Controller
         $text = $request->input('text');
         Mail::to($email)->send(new RefuseTeam($email, $text));
         Admin::refuseTeam($id, $turnir_id);
-        Log::create([
+          Log::create([
             'model_type' => 'App\Models\Team',
             'model_id' => $id,
             'log_type' => '4',
@@ -303,10 +283,20 @@ class TournamentController extends Controller
             'old_value' => $turnir_id,
             'description' => $text,
         ]);
-        //Log_orders_team::create(['team_id'=> $id, 'admin'=> Auth::user()->name,'descriptions' => $text ,'log_type'=> 0 ,'tournament_id' => $turnir_id,]);
         return redirect(route('admin_tournament'));
     }
-
+ public function logApplyAeams(){
+        //  $data = Log_orders_team::get();
+          $data = Log_orders_team::getAll(1);
+          if($data !=null) $data = ColectionPaginate::paginate($data, 15);
+        return view('admin.home.logs.log_apply_team', compact('data'));
+    }
+    public function logRejectedTeams(){
+        $data = Log_orders_team::getAll(0);
+       
+        if($data !=null) $data = ColectionPaginate::paginate($data, 15);
+      return view('admin.home.logs.log_refuse_team', compact('data'));
+    }
     public function tournamentsAbout($id){
 
         $turnir = Tournament::find($id);

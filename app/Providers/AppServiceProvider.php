@@ -4,8 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
-
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 class AppServiceProvider extends ServiceProvider
@@ -28,16 +26,16 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
-
-       
+        
         view()->composer(['admin.admin_layout'], function ($view) {
             $check = DB::table('model_has_roles')->where('model_id', Auth::user()->id)->where('role_id', 3)->exists();
             $orders = DB::table('orders')->where('status', 0)->count();
-            $orders_team = DB::table('orders')->where('status', 0)->count();
-            $view->with('check', $check)->with('orders', $orders)->with('orders_team', $orders_team);
+            $orders_team = DB::table('orders_team')->where('status', 0)->count();
+            $activate = DB::table('users')->where('verified', 0)->count();
+            $view->with('check', $check)->with('orders', $orders)->with('orders_team', $orders_team)->with('activate', $activate);
         });
-
-        view()->composer(['layouts.layout'], function ($view) {
+        
+         view()->composer(['layouts.layout'], function ($view) {
             $pages = DB::table('pages')->get();
             $view->with('pages', $pages);
         });

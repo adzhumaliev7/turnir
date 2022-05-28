@@ -1,8 +1,7 @@
 @extends('layouts.layout')
-@section('title', 'Турнир')
+@section('title', $tournament->name)
+@section('description', $tournament->meta)
 @section('content')
-
-
     <style>
         .table-pubg_td-number{
             height: 100px;
@@ -15,16 +14,17 @@
     <header>
             @include('main.inc.header')
             <div class="container" id="timesssssssss" data-time="{{$tournament->end_reg->getTimestampMs()}}">
-          
+      
              <div class="row background-match d-flex align-items-center row-indent-mr">
-
+        
              <div class="col-lg-12">
-                <div class="turnir_head" style="margin: 10px; ">
+                <div style="margin: 10px; ">
+           
                             <h1 class="title text-capitalize font-sz text--responsive text-light">
                                 {{$tournament->name}}
                             </h1>
-                            <h5 class="text-white margin_span" style="opacity: .8;"> Статус:
-                            @if($tournament->active == 1) 
+                            <h5 class="text-white" style="opacity: .8;"> Статус:
+                              @if($tournament->active == 1) 
                            @if($tournament->endDate($tournament->tournament_start))
                             Игра
                               @else
@@ -32,7 +32,7 @@
                                  @if($tournament->endDate($tournament->end_reg))
                                    Регистрация завершена
                                   @else Регистрация   
-            
+                               
                                   @endif   
                                   @else Регистрация еще не началась
                                 @endif
@@ -42,7 +42,7 @@
                             </h5>       
                 </div>
 
-               <div class="m-3 turnir_info" > 
+                    <div class="m-3" > 
                 <span class="margin_span text-white margin_span" >
                 Начало турнира: {{$tournament->tournament_start}}    </span>
                 <span class="text-white margin_span ">{{$tournament->timezone}}</span>
@@ -50,10 +50,9 @@
                 <span class="text-white  margin_span"> Призовой фонд:  {{$tournament->price}} </span>
                 <span class="text-white margin_span "> Количество слотов {{$tournament->slot_kolvo}}</span>
                           
-                </div>                
+                </div>                  
             </div>
-           
-         
+
         </div>
            
         </div>
@@ -104,7 +103,7 @@
                                 8.58125C5.04688 8.22188 4.55 8 4 8H2C0.896875 8 0 8.89687 0 10V11C0 11.5531 0.446875 12 1 12H3.05938C3.25625 10.5188 4.15 9.27188 5.40938 8.58125Z" />
                             </svg>
                         </button>
-                        <button title="ИСПРАВИТЬ! ТИМА!" class="accordion__btn nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
+                        <button title="" class="accordion__btn nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
                             Правила
                             <svg width="20" height="20" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="sticky-note" class="svg-inline--fa fa-sticky-note fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                 <path fill="currentColor" d="M312 320h136V56c0-13.3-10.7-24-24-24H24C10.7 32 0 42.7 0 56v400c0 13.3 10.7 24 24 24h264V344c0-13.2 10.8-24 24-24zm129
@@ -134,7 +133,6 @@
 
             <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                 <div class="modal-dialog" role="document">
-
                     <div class="modal-content" style="font-size: 16px;">
                         <div class="modal-header">
                             <h5 class="modal-title" style="font-size: 16px;" id="exampleModalLongTitle">Выбрать участников (Минимум 3 игрока, максимум 4)</h5>
@@ -156,7 +154,7 @@
                                 @else
                                     <h3>Нет учасников</h3>
                                 @endif
-                                <button type="btn" class="btn  submit-btn  mt-4">Сохранить</button>
+                                <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -166,7 +164,7 @@
             </div>
 
             <div class="tab-content tab-panels" id="nav-tabContent">
-                <div class="tab-pane  fade show <?echo $active1?>" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="tab-pane  fade show  <?echo $active1?>" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 
                     <div class="container">
                         @if (\Session::has('error_msg'))
@@ -189,7 +187,7 @@
                                     <div class="holding holding-block">
                                         <p class="subtitle holding__title">Дата проведения</p>
                                         <span class="subtitle subtitle--semi-medium">{{$tournament->tournament_start}}</span>
-                                        <span class="subtitle subtitle--semi-medium d-block"> {{$tournament->timezone}} </span>
+                                       <span class="subtitle subtitle--semi-medium d-block"> {{$tournament->timezone}} </span>
                                         <hr>
                                           @if($tournament->endDate($tournament->start_reg)) 
                                         <p class="subtitle subtitle--semi-medium">до конца регистрации:</p>
@@ -206,35 +204,13 @@
                                         @endif
                                         <hr>
                                       
-                                      
                                         <details class="holding__accordion">
                                             <summary class="subtitle subtitle--semi-medium">Команды {{$teams_count}} / {{$tournament->slot_kolvo}}</summary>
-                                            @if($teams != null)
-                                                @foreach($teams as $team)
-                                                    <ul class="subtitle subtitle--list">
-                                                        <li class="subtitle subtitle--regular"><svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                @if($team->status == 'accepted')
-                                                                    <path d="M7.93126 3.75481C8.09911 3.92266 8.09911 4.19474 7.93126 4.3625L5.04866 7.24519C4.88081 7.41295 4.60882
-                                                                    7.41295 4.44097 7.24519L3.06874 5.87287C2.90089 5.70511 2.90089 5.43303 3.06874 5.26527C3.2365 5.09742 3.50858
-                                                                    5.09742 3.67635 5.26527L4.74477 6.33369L7.32357 3.75481C7.49142 3.58705 7.7635 3.58705 7.93126 3.75481ZM11
-                                                                    5.5C11 8.54012 8.5397 11 5.5 11C2.45988 11 0 8.5397 0 5.5C0 2.45988 2.4603 0 5.5 0C8.54012 0 11 2.4603 11
-                                                                    5.5ZM10.1406 5.5C10.1406 2.93488 8.06478 0.859375 5.5 0.859375C2.93488 0.859375 0.859375 2.93522 0.859375
-                                                                    5.5C0.859375 8.06512 2.93522 10.1406 5.5 10.1406C8.06512 10.1406 10.1406 8.06478 10.1406 5.5Z" fill="black"></path>
-
-                                                                @endif
-                                                            </svg>
-                                                            {{$team->name}}
-                                                        </li>
-
-                                                    </ul>
-                                                @endforeach
-                                            @else
-                                                <summary class="subtitle subtitle--semi-medium">Нет команд</summary>
-                                            @endif
+                                          
 
                                         </details>
-                                  <div id="ajax">        
-                                    @if($tournament->endDate($tournament->start_reg) == true)
+
+                                               @if($tournament->endDate($tournament->start_reg) == true)
                                         @if($tournament->endDate($tournament->end_reg) == false)
                                             @if($userTeam)
                                                 @if(!$tournametTeam)
@@ -248,20 +224,16 @@
                                                     @endif
                                                 @else
                                                     @if($tournametTeam->status == 'processed')
-                                                         @if($tournament->endDate($tournament->tournament_start) == false)
+                                                        @if($tournament->endDate($tournament->tournament_start) == false)
                                                             <div class="block-btn">
-                                                            <a href="{{route('revoke', [$tournametTeam->tournament_id,$tournametTeam->team_id])}}" class="btn  submit-btn  mt-4"  > Отозвать завяву</a>
+                                                            <a href="{{route('revoke', [$tournametTeam->tournament_id,$tournametTeam->team_id])}}" class="btn  submit-btn  mt-4"  > Отозвать заявку</a>
                                                             </div>
-                                                         @endif    
+                                                         @endif 
                                                     @elseif($tournametTeam->status == 'accepted')
-                                                      
-                                                     
-                                                         <div class="block-btn">
+                                                    <div class="block-btn">
                                                          <h3>Ваша команда зарегистрирована</h3>
-                                                        </div>
-                                                     
+                                                    </div>
                                                     @elseif($tournametTeam->status == 'not_accepted')
-                                                 
                                                         <div class="block-btn">
                                                             <h3>Ваша заявка отклонена</h3>
                                                         </div>
@@ -269,7 +241,7 @@
                                                 @endif
                                             @else
                                                 <div class="block-btn">
-                                                    <h3>Принять участие может только капитан</h3>
+                                                    <h3>Подать заявку может только капитан</h3>
                                                 </div>
                                             @endif
 
@@ -288,7 +260,6 @@
                                             </div>
                                         @endif
                                     @endif
-                                        </div>      
                                     </div>
                                 </form>
                             </div>
@@ -300,6 +271,9 @@
                 <div class="tab-pane " id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                     <div class="container">
 
+                  
+                        @if($teams != "")
+                          
                         <table class="table" style="font-size: 16px;">
                   <tr class="table--line">
                     <td class="table--logo"></td>
@@ -308,8 +282,7 @@
                     <th class="table--members table--head">участники</td>
                     <th class="table--status table--head">Статус</td>
                   </tr>
-                  @if($teams != "")
-                            @foreach($teams as $team)
+                    @foreach($teams as $team)
                   <tr class="table--line">
                     <td class="table--logo">
                  
@@ -326,6 +299,7 @@
                     ({{$team->memberCount}}/4)
                     </td>
                     <td class="table--status table--text"> 
+
                          @if($team->status == 'accepted')
                          Принят
                          @else
@@ -333,9 +307,10 @@
                          @endif
                     </td>
                   </tr>
-                  @endforeach
+                    @endforeach
+				
                 </table>
-            
+                 {!!$teams->appends(['tab'=>'nav-profile-tab'])->links()!!}
                         @else
                             <span class="subtitle subtitle--semi-medium">Нет команд</span>
                         @endif       
@@ -344,9 +319,9 @@
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-config-tab">
                     <div style="font-size: 16px;" class="container">
                        <div>{!!$tournament->rule!!}</div>
+
                     </div>
                 </div>
-
                 <div class="tab-pane fade show <?echo $active2?>" id="nav-config" role="tabpanel" aria-labelledby="nav-config-tab">
                     <div class="container">
                     @if($tournament->endDate($tournament->tournament_start))
@@ -366,8 +341,8 @@
                                 </a>
                             @endForeach
                         </div>
-                     
-                            <div class="table-pubg_wrapper js-sv-parent" >
+                        <div class="my-5 table-box">
+                            <div class="table-pubg_wrapper js-sv-parent">
                                 <div class="table-pubg_left">
                                     <table class="table-pubg">
                                         <thead>
@@ -411,6 +386,9 @@
                                                            
                                                           <img class="" src="{{ asset("uploads/storage/img/teamlogo/".$teamsF->team->logo)}}" width="37" height="35" alt="" />   
                                                           </span> 
+
+                                                         
+                                                        
                                                             <span class="table-pubg_team-text">{{$teamsF->team->name}} </span>
                                                         </span>
                                                     </td>
@@ -423,10 +401,10 @@
                                     </table>
                                 </div>
 
-                                <div class="table-pubg_main example1-viewport  table-box js-sv">
-                                    <table class="table-pubg example1-content" >
+                                <div class="example1-viewport table-pubg_main table-box js-sv ">
+                                    <table class=" example1-content table-pubg js-sv-selector " style="transform: translateX(0px);">
                                         <thead>
-                                            <tr >
+                                            <tr>
                                                 @foreach($group->matches ?? [] as $matcthe)
                                                     <th colspan="3">
                                                         <span class="table-pubg_link">
@@ -435,7 +413,7 @@
                                                     </th>
                                                 @endforeach
                                             </tr>
-                                            <tr >
+                                            <tr>
                                                 @foreach($group->matches ?? [] as $matcthe)
                                                     <th>
                                                         <div class="table-pubg_link"></div>
@@ -458,7 +436,7 @@
                                                 @endforeach
                                             </tr>
                                         </thead>
-                                        <tbody class="t">
+                                        <tbody>
                                             @foreach($group->tournamentGroupTeams ?? [] as $teamsFF)
                                                 <tr>
                                                     @foreach($teamsFF->group->matches as $m => $matcheee)
@@ -480,7 +458,7 @@
                                     </table>
                                 </div>
                             </div>
-                      
+                        </div>
                     </div>
                     @else
                         <h3 class="text-center">Информация появится со стартом турнира</h3>
@@ -493,31 +471,6 @@
 
 
     <script>
-
-/* var ts = null;
-function updateConsole(){
-    clearTimeout(ts);
-    ts = null;
-    jQuery.ajax({
-        url: '',
-        success: function(data){
-            $('#ajax').html();
-        },
-        complete: function(){
-            ts = setTimeout(function(){
-                updateConsole();
-            },1000);
-        }
-    });
-}
-$(document).ready(function(){
-    ts = setTimeout(function(){
-        updateConsole();
-    },1000);
-});
- */
-
-
 
      const nav = qs('tab');
      console.log(nav)
@@ -537,6 +490,5 @@ $(document).ready(function(){
         history.pushState(obj, obj.title, obj.url);
       })
     </script>
-
 
 @endsection

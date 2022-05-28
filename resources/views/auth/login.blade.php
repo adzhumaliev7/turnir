@@ -39,7 +39,18 @@
                 @enderror
               </div>
             </div>
-         
+            @if(\App\Models\LogFailedAuthentication::where('ip', \Request::getClientIp())->count() >= 3 )
+            <div class="row mb-3">
+            <div class="col-md-6 offset-md-4">
+            {!! NoCaptcha::display() !!}
+            @if ($errors->has('g-recaptcha-response'))
+              <span class="help-block">
+                  <strong class="text-danger">{{ $errors->first('g-recaptcha-response') }}</strong>
+              </span>
+          @endif
+          </div>
+            </div>
+          @endif  
             <div class="row mb-0">
               <div class="col-md-8 offset-md-4">
                 <button type="submit" class="btn btn-primary">
@@ -49,7 +60,7 @@
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('Забыли пароль?') }}
                                     </a>
-                      @endif
+                @endif
 
               </div>
             </div>
@@ -61,3 +72,6 @@
   </div>
 </div>
 @endsection
+@push('scripts')
+{!! NoCaptcha::renderJs() !!}
+@endpush

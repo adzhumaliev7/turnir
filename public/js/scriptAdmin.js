@@ -23,7 +23,6 @@ $('input[name="end_reg"]').datepicker({
     minDate: new Date(),
     dateTimeSeparator: " "
 });
-
 $('input[name="date"]').datepicker({
     timepicker: true,
     clearButton: true,

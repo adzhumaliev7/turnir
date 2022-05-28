@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="{{ asset("admin/plugins/summernote/summernote-bs4.min.css")}}">
     <link rel="stylesheet" href="{{ asset("css/jquery.dropdown.min.css")}}">
     <link rel="stylesheet" href="{{ asset("css/pinger.css")}}">
-    <link rel="stylesheet" href="{{ asset("css/datepicker.min.css")}}">
+  <link rel="stylesheet" href="{{ asset("css/datepicker.min.css")}}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
 </head>
 <style>
@@ -74,8 +74,8 @@
             <img src="{{ asset("admin/dist/img/user2-160x160.jpg")}}" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
-            <a href="{{route('admin')}}" class="d-block">Админ</a>
-            <a href="{{route('main')}}" class="d-block">На сайт</a>
+            <a href="{{ route('admin')}}" class="d-block">Админ</a>
+           <a class="" href="{{route('user.logout')}}">Выход</a>
           </div>
         </div>
 
@@ -94,7 +94,7 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
 
-          <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
@@ -108,6 +108,17 @@
               </a>
             </li>
             @endif
+  	@if($check == false)
+            <li class="nav-item">
+              <a href="{{route('admin_settings')}}" class="nav-link">
+                <i class="nav-icon far fa-alt"></i>
+                <p>
+                Смена данных админа
+                </p>
+              </a>
+            </li>
+           
+		  @endif 
             <li class="nav-item">
               <a href="#" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
@@ -144,6 +155,8 @@
               </ul>
             </li>
 
+
+			   
             <li class="nav-item">
               <a href="{{route('teams')}}" class="nav-link">
                 <i class="nav-icon far fa-alt"></i>
@@ -200,6 +213,9 @@
                 </li>
               </ul>
             </li>
+
+
+
             <li class="nav-item">
               <a href="#" class="nav-link">
               <i class="nav-icon fas fa-table"></i>
@@ -209,22 +225,7 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
-              <li class="nav-item">
-              <a href="{{route('admin.help')}}" class="nav-link">
-                <i class="nav-icon far fa-alt"></i>
-                <p>
-                  Помощь
-                </p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="{{route('admin_feedback')}}" class="nav-link">
-                <i class="nav-icon far fa-alt"></i>
-                <p>
-                  Обратная связь
-                </p>
-              </a>
-            </li>
+        
             <li class="nav-item">
               <a href="{{route('admin.posts')}}" class="nav-link">
                 <i class="nav-icon far fa-alt"></i>
@@ -233,8 +234,15 @@
                 </p>
               </a>
             </li>
-              
-            <li class="nav-item">
+              <li class="nav-item">
+              <a href="{{route('admin.help')}}" class="nav-link">
+                <i class="nav-icon far fa-alt"></i>
+                <p>
+                  Помощь
+                </p>
+              </a>
+            </li>
+             <li class="nav-item">
               <a href="{{route('admin.pages')}}" class="nav-link">
                 <i class="nav-icon far fa-alt"></i>
                 <p>
@@ -243,9 +251,25 @@
               </a>
             </li>
 
+            <li class="nav-item">
+              <a href="{{route('admin_feedback')}}" class="nav-link">
+                <i class="nav-icon far fa-alt"></i>
+                <p>
+                  Обратная связь
+                </p>
+              </a>
+            </li>
+               <li class="nav-item">
+              <a href="{{route('admin.meta.index')}}" class="nav-link">
+                <i class="nav-icon far fa-alt"></i>
+                <p>
+                  Описание страниц 
+                </p>
+              </a>
+            </li>
+              
               </ul>
             </li>
-
           </ul>
         </nav>
         <!-- /.sidebar-menu -->
@@ -294,7 +318,7 @@
                                     <form method="POST" action="">
                                         @csrf
                                         <input name="name" id="exampleModalLongTitle" cols="50" rows="10" value="" readonly="readonly"> </input>
-                                    
+
                                 </div>
                                 <div class="modal-footer">
 
@@ -307,7 +331,7 @@
 
     <!-- ./wrapper -->
 
-    <!-- jQuery -->
+     <!-- jQuery -->
     <script src="{{asset("admin/plugins/jquery/jquery.min.js")}}"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="{{asset("admin/plugins/jquery-ui/jquery-ui.min.js")}}"></script>
@@ -349,17 +373,17 @@
       <script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-      <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.7/summernote.js"></script>
+  
       <script src="{{asset("js/scriptAdmin.js")}}"></script>
-
-      <script src="//cdn.ckeditor.com/4.18.0/full/ckeditor.js"></script>
+    
+        <script src="//cdn.ckeditor.com/4.18.0/full/ckeditor.js"></script>
       <script>
       var editor = CKEDITOR.replace( 'ckeditor',{
         filebrowserUploadUrl: "{{route('ckeditor.image-upload', ['_token' => csrf_token() ])}}",
         filebrowserUploadMethod: 'form'
         } );
-
-        var editor = CKEDITOR.replace( 'ckeditor2',{
+        
+          var editor = CKEDITOR.replace( 'ckeditor2',{
         filebrowserUploadUrl: "{{route('ckeditor.image-upload', ['_token' => csrf_token() ])}}",
         filebrowserUploadMethod: 'form'
         } );
@@ -367,83 +391,9 @@
 
 
 
+     
 
-
-
-
-
-
-    <script>
-
-
-
-
-/* 
-        $(document).ready(function() {
-            $('.rules').summernote({
-              disableDragAndDrop: true,
-        height: 300,
-        emptyPara: '',
-        lang: 'ru-RU',
-        toolbar: [
-        ['codeview', ['codeview']],
-        ['style', ['style']],
-        ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['font', ['strikethrough', 'superscript', 'subscript']],
-        ['fontname', ['fontname']],
-        ['fontsize', ['fontsize']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        ['height', ['height']],
-        ['table', ['table']],
-         ['insert',['picture','link','video','table']],
-        ['view', ['fullscreen', 'codeview', 'help']],
-        ['undo', ['undo']],
-        ['redo', ['redo']],
-        ],
-      });
-                editor.summernote(configFull);
-
-});
-function sendCMSFile(file) {
-    if (file.type.includes('image')) {
-        var name = file.name.split(".");
-        name = name[0];
-        var data = new FormData();
-        data.append('action', 'imgUpload');
-        data.append('file', file);
-        $.ajax({
-            url: "",
-            type: 'POST',
-            contentType: false,
-            cache: false,
-            processData: false,
-            dataType: 'JSON',
-            data: data,
-            success: function (url) {
-                $('#summernote').summernote('insertImage', url);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.error(textStatus + " " + errorThrown);
-            }
-        });
-    }
-} */
-    </script>
-
-    <script>
-
-
-
-
-
-    </script> 
-
-
-
-
-
-   <script>
+  <script>
       var modal = document.getElementById("myModal");
 
       // Get the button that opens the modal
@@ -725,6 +675,7 @@ function sendCMSFile(file) {
           });
 
     </script>
+
     <script src="https://unpkg.com/scrollbooster@2/dist/scrollbooster.min.js"></script>
     <script>
 new ScrollBooster({
@@ -735,6 +686,8 @@ new ScrollBooster({
   emulateScroll: true, // scroll on wheel events
 });
 </script>
+
+
 </body>
 
 </html>

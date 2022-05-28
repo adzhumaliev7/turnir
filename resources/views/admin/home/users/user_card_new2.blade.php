@@ -3,12 +3,12 @@
 @section('content')
 
     <div class="container">
-    <a type="button" class="btn btn-success" href="{{route('allusers')}}" class="m-4" data-title="Подтвердить">К пользователям</a>
+         <a type="button" class="btn btn-success" href="{{route('allusers')}}" class="m-4" data-title="Назад">Назад</a>
         <div class="row background-gray d-flex align-items-center row-indent-mr">
             <div class="col-lg-3">
                 <div class="wrap">
-                    @if($user->photo)
-                    <img class="brd-img" src="{{ asset("uploads/storage/img/userslogo/$user->photo")}}" width="224" height="224" alt="">
+                   @if($user->logo)
+                    <img class="brd-img" src="{{ asset("uploads/storage/img/userslogo/" .$user->logo->photo)}}" width="224" height="224" alt="">
                     @else
                     <img class="brd-img" src="{{ asset("uploads/storage/img/default/noimage.png")}}"  width="224" height="224" class="" style="opacity: .8">
                     @endif
@@ -25,13 +25,17 @@
 
         <table class="table">
             <tbody>
+				  @if($check == false) 
                 <tr>
                     <th>mail</th>
                     <td>{{$user->email}}</td>
                 </tr>
+				  @endif
                 <tr>
                     <th>Статус</th>
-                    <td>@if($user->status != null) Бан  @endif  {{$status}}</td>
+                    <td>@if($user->status != null) Бан  @endif  {{$status}}  
+						@if($user->verified == 0) <a href="{{route('activate', $user->id)}}" class="btn btn-success">Активировать</a> @endif
+					</td>
                 </tr>
                 <tr>
                     <th>Команды</th>
@@ -56,6 +60,7 @@
                     <th>Игровой ID</th>
                     <td>{{$user->game_id}}</td>
                 </tr>
+				@if($check == false)  
                 <tr>
                     <th>ФИО</th>
                     <td>{{$user->fio}}</td>
@@ -76,10 +81,10 @@
                     <th>Телефон</th>
                     <td>{{$user->phone}}</td>
                 </tr>
-           
+            	@endif
             </tbody>
         </table>
-     
+       @if($check == false) 
         <hr style="background-color: orange">
 
         <h3>Верификация</h3>
@@ -171,8 +176,8 @@
             </tbody>
            
         </table>
-      
-        <hr style="background-color: orange">
+      @endif
+       <hr style="background-color: orange">
         <h3 class="text-center">Логи</h3>
         <table class="table table-bordered">
             <thead>
@@ -194,7 +199,7 @@
                     <th scope="row">{{$log->id}}</th>
                     <td>
                         @if($log->created_at)
-                            {{$log->created_at->format('Y.m.d')}}
+                            {{$log->created_at->format('d.m.Y H:i:s')}}
                         @endif
                     </td>
                     <td>
@@ -202,7 +207,7 @@
                     </td>
                     <td>  {{$log->description ? $log->description : '' }} </td>
                     <td>
-                    @if($log->table_name == 'logs')
+                           @if($log->table_name == 'logs')
                             @if($log->type->type == 'chengeNick')
                                 {{$log->old_value ?? 'пользователь удалён'}}
                             @elseif($log->type->type == 'chengeGameId')
@@ -213,7 +218,7 @@
                     @endif
                     </td>
                     <td>
-                    @if($log->table_name == 'logs')
+                              @if($log->table_name == 'logs')
                             @if($log->type->type == 'chengeNick')
                                 {{$log->new_value ?? 'пользователь удалён'}}
                             @elseif($log->type->type == 'chengeGameId')
@@ -224,6 +229,7 @@
                         @endif
                     </td>
                     <td>
+                          {{$log->user ? $log->user->name: '' }}
                     </td>
                 </tr>
             @endforeach
@@ -231,7 +237,37 @@
           
         </table>
         <span class="d-flex justify-content-center">{{$logs->links()}}</span>
+     <hr style="background-color: orange">
+        <h3 class="text-center">Ip</h3>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Дата</th>
+                <th scope="col">Ip</th>
+             
+            </tr>
+            </thead>
+        <tbody>
 
+            @foreach($ips as $ip)
+                <tr>
+                    <th scope="row">{{$loop->index+1}}</th>
+                    <td>
+                        {{$ip->created_at->format('d.m.Y H:i:s')}}
+                    </td>
+                    <td>
+                    {{$ip->ip}}
+                    </td>
+                
+                  
+                   
+                </tr>
+            @endforeach
+            </tbody>
+          
+        </table>
+        <span class="d-flex justify-content-center">{{$ips->links()}}</span>
 
     </div>
     <div class="modal fade" id="ModalPhoto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

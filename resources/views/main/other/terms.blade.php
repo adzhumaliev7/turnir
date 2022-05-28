@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="header-pubg__bg-2">
-
+  
   @include('main.inc.nav_header')
 </div>
 

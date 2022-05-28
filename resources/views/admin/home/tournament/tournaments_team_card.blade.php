@@ -27,6 +27,9 @@
 
   
 
+    
+
+
                 <h4 class="input-title">Состав команды</h4>
 
                 @foreach($members as $member)
@@ -44,7 +47,7 @@
                 </div>
                 @endforeach
                 <a href="{{route('apply_team', [$team_id, $tournament_id] )}}" type="button" class="btn btn-success">Принять</a>
-        <!--  <a href="{{route('refuse_team', [$team_id, $tournament_id, $user_id] )}}" type="button" class="btn btn-danger">Отклонить</a> -->
+
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalRefuse">
             Отклонить
         </button>
@@ -63,7 +66,7 @@
                     </div>
                     <div class="modal-body">
 
-                        <form method="POST" action="{{route('refuse_team', [$team_id, $tournament_id, $user_id] )}}">
+                        <form method="POST" action="{{route('refuse_team', [$team_id, $tournament_id, $team->user_id] )}}">
                             @csrf
                             <textarea name="text" id="" cols="50" rows="10"></textarea>
 

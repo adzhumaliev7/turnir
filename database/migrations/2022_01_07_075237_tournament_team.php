@@ -13,19 +13,13 @@ class TournamentTeam extends Migration
      */
     public function up()
     {
-           Schema::create('tournamets_team', function (Blueprint $table) {
+           Schema::create('touenamets_team', function (Blueprint $table) {
         $table->increments('id');
-        $table->integer('tournament_id')->unsigned();
-        $table->integer('team_id')->unsigned()->comment('Поле из team');
+        $table->integer('tournament_id');
+        $table->integer('team_id');
         $table->string('status', 100);
-
-        $table->foreign('tournament_id')->references('id')->on('tournaments')
-            ->onUpdate('cascade')->onDelete('cascade');
-
-        $table->foreign('team_id')->references('id')->on('team')
-            ->onUpdate('cascade')->onDelete('cascade');
-
-
+        $table->integer('group_id');
+     
         $table->timestamps();
     });
     }

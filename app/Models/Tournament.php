@@ -8,12 +8,10 @@ use App\Models\TournametsTeam;
 use Carbon\Carbon;
 class Tournament extends Model
 {
-
-//Ахуенный код
 protected $casts = [
-  'end_reg' => 'datetime:Y-m-d ',
+  'end_reg' => 'datetime:Y-m-d',
 ];
-
+//Ахуенный код
 protected $fillable = ['name'];
 
 public function stages(){
@@ -28,17 +26,12 @@ public function members() {
   return $this->hasMany(TournamentMembers::class);
 }
 
-function endDate(string $date): bool{
-  // config('app.timezone', 'UTC')
-  
-  return Carbon::parse($date, 'Asia/Almaty')->isPast();
-}
-
-function DateF(string $date): bool{
-  return Carbon::parse($date)->format('Y.m.d: H:m:s');
-}
 //.Ахуенный код
 
+
+function endDate(string $date): bool{
+  return Carbon::parse($date, 'Asia/Almaty')->isPast();
+}
 
 
 
@@ -86,9 +79,12 @@ public static function teamsCount($id){
 
  return DB::table('tournamets_team')->where('tournament_id', $id)->where('status', 'accepted')->count();
 }
+
 public static function checkTeam($user_id){
+
   return  DB::table('team_members')->where('user_id', $user_id)->where('role', 'captain')->value('team_id');
-} 
+
+}
 public static function hasTeam($turnir_id, $team_id){
 
   return  DB::table('tournamets_team')->where('tournament_id', $turnir_id)->where('team_id', $team_id)->exists();

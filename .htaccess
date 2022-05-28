@@ -1,8 +1,8 @@
 RewriteEngine on 
-RewriteCond %{HTTP_HOST} ^(www.)?showmatch2$ 
+RewriteCond %{HTTP_HOST} ^(www.)?bigplay.gg$ 
 RewriteCond %{REQUEST_URI} !^/public/ 
 RewriteCond %{REQUEST_FILENAME} !-f 
 RewriteCond %{REQUEST_FILENAME} !-d 
 RewriteRule ^(.*)$ /public/$1 
-RewriteCond %{HTTP_HOST} ^(www.)?showmatch2$ 
-RewriteRule ^(/)?$ public/index.php [L]
+RewriteCond %{HTTP_HOST} ^(www.)?bigplay.gg$ 
+RewriteRule ^(/)?$ /public/index.php [L]

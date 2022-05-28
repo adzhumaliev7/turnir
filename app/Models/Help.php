@@ -9,7 +9,7 @@ class Help extends Model
 {
     use HasFactory;
     protected $table = 'help';
-    protected $fillable = [ 'title', 'text', 'user_id', ];
+    protected $fillable = [ 'title', 'text', 'user_id',  'post_id'];
 
     public function admin(){
         return $this->hasOne(User::class, 'id', 'user_id');
@@ -18,7 +18,7 @@ class Help extends Model
 
     public static function getAll()
     {
-          $posts = DB::table('help')->leftJoin('users' , 'help.user_id', '=', 'users.id')->select('help.*', 'users.name')->orderBy('id', 'desc')->get();
+          $posts = DB::table('help')->leftJoin('users' , 'help.user_id', '=', 'users.id')->select('help.*', 'users.name')->orderBy('post_id', 'asc')->get();
           return $posts->count() ? $posts : null;
     }
 }

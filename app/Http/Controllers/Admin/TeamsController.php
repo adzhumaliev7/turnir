@@ -10,7 +10,6 @@ use App\Models\Report;
 use App\Models\Stage;
 use App\Models\StagesGroup;
 use App\Models\Team;
-use App\Models\Log;
 use App\Models\TeamsNetworks;
 use App\Models\Tournament;
 use App\Models\TournamentGroup;
@@ -28,39 +27,39 @@ use Illuminate\Support\Facades\DB;
 class TeamsController extends Controller
 {
     public function show($teamId) {
-         //Взять только нужные поля
-      
-         $team = Team::with([
-            //            'logs' => function($q) { $q->orderBy('created_at', 'asc');}, 'bans' => function($q) {$q->orderBy('created_at', 'asc'); } ,
-                            'teammates.turnir', 'teammates.user', 'teammatesTeam.user', 'сaptain', 'network',
-                            'groups.tournamentMatchesResults.matche', 'groups.turnir', 'groups.stage', 'groups.group'
-                        ])
-                        ->findOrFail($teamId);
-        
-                    $countMathe = 0;
-                    foreach($team->groups as $group) {
-                        $countMathe += $group->tournamentMatchesResults->groupBy('match_id')->count();
-                    }
-            
-            //        ВЫНЕСТИ В КОНФИГ
-                    $userStatus = [
-                        'verified' => 'верф',
-                        'rejected' => 'отклонен',
-                        'on_check' => ' на проверке',
-                        'defauld' => 'Статус пуст',
-                        'ban' => 'Забанен',
-                        'null' => 'nll'
-                    ];
-            
-                    $logs = $team->logsFull();
-            
-                    return view('admin.home.teams.show', compact('team', 'countMathe', 'userStatus', 'logs'));
-        //return view('admin.home.teams.show', compact('team', 'countMathe', 'userStatus', 'log_ref'));
+           //Взять только нужные поля
+
+        $team = Team::with([
+//            'logs' => function($q) { $q->orderBy('created_at', 'asc');}, 'bans' => function($q) {$q->orderBy('created_at', 'asc'); } ,
+                'teammates.turnir', 'teammates.user', 'teammatesTeam.user', 'сaptain', 'network',
+                'groups.tournamentMatchesResults.matche', 'groups.turnir', 'groups.stage', 'groups.group'
+            ])
+            ->findOrFail($teamId);
+
+        $countMathe = 0;
+        foreach($team->groups as $group) {
+            $countMathe += $group->tournamentMatchesResults->groupBy('match_id')->count();
+        }
+
+//        ВЫНЕСТИ В КОНФИГ
+        $userStatus = [
+            'verified' => 'верф',
+            'rejected' => 'отклонен',
+            'on_check' => ' на проверке',
+            'defauld' => 'Статус пуст',
+            'ban' => 'Забанен',
+            'null' => 'nll'
+        ];
+
+        $logs = $team->logsFull();
+
+        return view('admin.home.teams.show', compact('team', 'countMathe', 'userStatus', 'logs'));
     }
 
     public function showMath($tournamentGroupTeamsId, Request $request){
         $tournamentGroupTeam = TournamentGroupTeam::findOrFail($tournamentGroupTeamsId)->load('team.сaptain', 'team.teammates.user', 'team.teammates.matches', 'group.matches', 'turnir', 'stage');
         $matches = TournamentMatches::where('tournament_id',  $tournamentGroupTeam->turnir->id)->where('stage_id', $tournamentGroupTeam->stage->id)->get();
+
         return view('admin.home.tournament.team', compact('tournamentGroupTeam','matches'));
     }
 
@@ -214,18 +213,20 @@ class TeamsController extends Controller
             $nestedData['options'] = view('admin.home.inc.buttons', ['route' => ['show' => 'teams.show', 'ban' => 'teams.ban'], 'id' => $team->id, 'status' => $team->status])->render();
             $data[] = $nestedData;
         }
+
         $json_data = [
             "draw"            => intval($request->input('draw')),
             "recordsTotal"    => $sql->get()->count(),
             "recordsFiltered" => intval($totalFiltered),
             "data"            => $data
         ];
+
         return response()->json($json_data);
     }
-    public function ban(StoreReportTeamRequest $request) {
 
-      
-        $data = $request->validated();
+    public function ban( StoreReportTeamRequest $request) {
+        
+         $data = $request->validated();
         $data['log_type'] = 3;
         $team = Team::findOrFail($data['ban_id']);
         if ( $team->status == 1) {
@@ -240,6 +241,5 @@ class TeamsController extends Controller
         $team->save();
         return redirect()->back(); 
     }
-
 
 }

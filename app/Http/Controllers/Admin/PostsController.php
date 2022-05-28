@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 use App\Http\Requests\Admin\PostRequest;
 use App\Models\Post;
 use App\CustomClasses\ColectionPaginate;
@@ -28,15 +29,16 @@ class PostsController extends Controller
     public function posts_store(PostRequest $request)
     {
     
-        $name =  $request->file('label');
+       $name =  $request->file('label');
      
-        $path = '/uploads/storage/img/posts';
-        $file_name = $this->uploadFiles($name, $path);
+     $path = '/uploads/storage/img/posts';
+     $file_name = $this->uploadFiles($name, $path);
   
       $data = $validated = $request->validated();
-      Post::create(['title'=> $request->input('title'), 'user_id'=> Auth::user()->id,'text' => $request->input('text') , 'preview' => $request->input('preview') ,
+       Post::create(['title'=> $request->input('title'), 'user_id'=> Auth::user()->id,'text' => $request->input('text') , 'preview' => $request->input('preview') ,
       'date'=>  $request->input('date'), 'label'=> $file_name,]);
-      return redirect()->route('admin.posts'); 
+      
+      return redirect()->route('admin.posts');
     }
 
     public function edit($id){
@@ -45,12 +47,10 @@ class PostsController extends Controller
         return view('admin.home.posts.edit', compact('posts' ,'post_id'));
     }
     public function update($id, Request $request){
-     
-
-      $validated = $request->validate([
+         $validated = $request->validate([
             'title' => 'required',
             'text' => 'required',
-            'preview' => '',
+              'preview' => '',
             'date' => '',
         ]);
 
@@ -71,7 +71,7 @@ class PostsController extends Controller
         \Session::flash('flash_meassage', 'Запись удалена');
         return redirect()->route('admin.posts'); 
     }
-    protected function uploadFiles($name, $path){
+        protected function uploadFiles($name, $path){
       $file_name = $name->getClientOriginalName();
      $type = $name->getClientOriginalExtension();
      if ($type == 'png') $file_type = '.png';
@@ -82,5 +82,4 @@ class PostsController extends Controller
      $file->move(public_path() . $path, $file_name);
      return $file_name;
   }
-    
 }

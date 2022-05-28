@@ -47,7 +47,7 @@
           @endif
     </div>
     <div class="form-group">
-    <label for="exampleFormControlInput1">Описание</label>
+    <label for="exampleFormControlInput1">Превью</label>
     <textarea  name="preview" class="form-control rules" id="ckeditor" value="">{{$posts->preview}}</textarea>
      @error('preview')
              <div class="alert alert-danger">Введите текст поста</div>

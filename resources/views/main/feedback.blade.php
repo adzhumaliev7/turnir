@@ -3,7 +3,8 @@
 @section('content')
 
 <div class="header-pubg__bg-2">
-  @include('main.inc.nav_header')
+  
+    @include('main.inc.nav_header')
 </div>
 
 <div class="main">
@@ -11,7 +12,7 @@
   <div class="container">
 
     <!-- first item - 1 -->
-   
+    <div class="container">
       @if(Session::has('flash_meassage'))
       <div class="alert alert-success">{{Session::get('flash_meassage')}}</div>
       @endif
@@ -27,6 +28,7 @@
         </div>
         <h2 class="title letter-spacing--none my-2"> Телефон </h2>
         <div class="col-lg-6">
+
           <input name="phone" placeholder="Телефон" type="text" class="form-control input__profile subtitle fw-normal" id="">
           @error('phone')
           <div class="alert alert-danger">{{$message}}</div>
@@ -40,22 +42,21 @@
           <div class="alert alert-danger">{{$message}}</div>
           @enderror
         </div>
-        <h2 class="title letter-spacing--none my-2"> Сообщение</h2>
+        <h2 class="title letter-spacing--none my-2"> Сообщение </h2>
         <div class="col-lg-6">
 
-          <textarea name="description" placeholder="description" class="form-control input__profile subtitle fw-normal" id="" rows="10" cols="45"></textarea>
-          @error('emdescriptionail')
+         <textarea name="description" placeholder="Текст сообщения" class="form-control input__profile subtitle fw-normal" id="" rows="10" cols="45"></textarea>
+          @error('description')
           <div class="alert alert-danger">{{$message}}</div>
           @enderror
         </div>
 
 
 
-        <button type="button" class="  btn  submit-btn btn--size btn--orange  mt-4">Отправить</button>
-    
+        <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Отправить</button>
       </form>
 
-    
+    </div>
   </div>
 </div>
 

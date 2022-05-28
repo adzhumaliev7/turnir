@@ -75,7 +75,7 @@
     </div>
  <div class="form-group col-md-8">
       <label for="inputPassword4">Описание турнира</label>
-      <textarea  class="form-control rules" name="description" id="" placeholder="Описание турнира">{{$tournament->description}}</textarea>
+      <textarea  class="form-control " name="description" id="ckeditor" placeholder="Описание турнира">{{$tournament->description}}</textarea>
          @error('description')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
@@ -91,7 +91,7 @@
             @enderror
         </div>
 
-        <div class="form-group col-md-4">  
+        <div class="form-group col-md-4">
             <label for="inputPassword4">Дата завершеня регистрации</label>
             <input type="text" id="end_reg" name="end_reg" class="form-control @error('end_reg') is-invalid @enderror" placeholder="Завершение регистрации" value="{{$tournament->end_reg}}"">
             @error('end_reg')
@@ -119,7 +119,6 @@
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
-  
 
        <div class="form-group col-md-4">
       <label for="inputPassword4">Призовой фонд</label>
@@ -133,13 +132,22 @@
  <div class="form-row">
    <div class="form-group col-md-10">
       <label for="inputPassword4">Правила</label>
-      <textarea name="rule"  class ="rules" id="rules" placeholder="Правила" >{{$tournament->rule}}</textarea>
+      <textarea name="rule"  class ="form-control" id="ckeditor2" placeholder="Правила" >{{$tournament->rule}}</textarea>
          @error('rule')
              <div class="alert alert-danger">{{$message}}</div>
            @enderror
     </div>
   </div>
-
+  <h4>Мета - описание</h4>
+ <div class="form-row">
+   <div class="form-group col-md-10">
+      <label for="inputPassword4">Мета - описание</label>
+      <textarea  class="form-control" name="meta" id="" placeholder=">Введите описание для индексации">{{$tournament->meta}}</textarea>
+         @error('meta')
+             <div class="alert alert-danger">Введите описание для индексации</div>
+           @enderror
+    </div>
+  </div>
     @endforeach
    <button type="submit" class="btn btn-primary">Сохранить</button>
 </form>

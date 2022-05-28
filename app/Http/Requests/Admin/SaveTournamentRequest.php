@@ -33,13 +33,14 @@ class SaveTournamentRequest extends FormRequest
             'start_reg' => 'required',
             'price' => '',
             'end_reg' => 'required',
-           
-            'slot_kolvo' => '',
+         
+            'slot_kolvo' => 'required',
             'ligue' => '',
             'rule' => '',
             'header' => '',
             'tournament_start' => 'required',
-          
+			'meta' => '',
+            'games_time' => '',  
         ];
     }
 }

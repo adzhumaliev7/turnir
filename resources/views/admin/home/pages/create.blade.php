@@ -19,7 +19,7 @@
 
   <div class="form-group">
     <label for="exampleFormControlInput1">Заголовок</label>
-    <input type="text" name="title" class="form-control" id="">
+    <input type="text" name="title" class="form-control" id="exampleFormControlInput1">
      @error('title')
              <div class="alert alert-danger">Введите заголовок</div>
     @enderror

@@ -32,8 +32,8 @@
             </div>
             <div class="row mt-4">
               <div class="col-lg-6">
-                <input name="name" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('name')}}">
-                @error('name')
+                <input name="login" placeholder="*Ник" type="text" class="form-control input__profile subtitle fw-normal" id="" value="{{ old('login')}}">
+                @error('login')
                 <div class="alert alert-danger">Введите логин</div>
                 @enderror
               </div>
@@ -48,16 +48,13 @@
             <div class="row mt-4">
               <div class="col-lg-6">
                 <select name="country" id="" style="font-size: 16px;">
-                   @foreach($data['data'] as $dat )
-                   <option value="{{$dat->country}}">{{$dat->country}}</option>
-                   @endforeach
                   @foreach($countries as $country)
                   <option value="{{$country}}">{{$country}}</option>
                   @endforeach
                 </select>
               </div>
               <div class="col-lg-6">
-                <select name="timezone" id=""style="font-size: 16px;">
+                <select name="timezone" id="" style="font-size: 16px;">
                   @foreach($timezones as $timezone)
                   <option value="{{$timezone}}">{{$timezone}}</option>
                   @endforeach

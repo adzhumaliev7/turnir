@@ -13,7 +13,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+
 class PattyController extends Controller
 {
 
@@ -38,7 +38,7 @@ class PattyController extends Controller
     public function duplication($turnirId, Request $request) {
         $turnir = Tournament::with('stages.groups.matches', 'order')->findOrFail($turnirId);
         $turnir->increment('count');
-        $newTurnir = $turnir->replicate()->fill(['name' => $turnir->name . '_копия' .  $turnir->count]);
+        $newTurnir = $turnir->replicate()->fill(['name' => $turnir->name . '_копия' . $turnir->count]);
         $newTurnir->save();
 
         foreach ($turnir->order as $order) {

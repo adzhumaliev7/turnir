@@ -10,13 +10,14 @@
         <div class="col-md-12">
             <nav class =" navbar navbar-toggleable-md nvabar-light bg-faded">
             <a href="{{route('admin.help.create')}}" type="button" class="btn btn-success create_p">Добавить раздел помощи</a>
+               <a href="{{route('admin.help.filter')}}" type="button" class="btn btn-primary create_p">Отсортировать</a>
             </nav>
             <div class="card">
                 <div class="card-body">
                 <table class="table table-hover" >
                 
                     @if($posts != null)
-                      <h4>Новости</>  
+                      <h4>Помощь</h4>  
                     <thead>
                       <tr> 
                         <th>#</th>
@@ -27,7 +28,7 @@
                     <tbody>
                       <tr>
                        @foreach($posts as $post)
-                        <td>{{$post->id}}</td>
+                        <td>{{$loop->index+1}}</td>
                         <td>{{$post->title}}</td>
                         <td>{{$post->name}}</td>
                         <td><a href="{{route('admin.help.edit', $post->id)}}" type="button" class="btn btn-primary">Реадактировать</a> 

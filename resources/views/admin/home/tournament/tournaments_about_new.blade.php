@@ -55,7 +55,7 @@
 
             <div class="my-5 table-box example1-viewport">
                 @if($group)
-                <table id="example" class="display example1-content" style="width:100%">
+                <table id="example" data-order='[[ 5, "desc" ]]' class="display example1-content" style="width:100%">
                     <thead>
                     <tr>
                         <th @if($group->matches->isNotEmpty()) rowspan="2" @endIf>#</th>
@@ -95,13 +95,12 @@
                             <td>
                                 <a href="{{route('team.show', $teamsF->id)}}" class="table-pubg_team">
                                 <span class="table-pubg_team-img">
-                                    @if($teamsF->team->logo != null)
-                                <img class="" src="{{ asset("uploads/storage/img/teamlogo/".$teamsF->team->logo)}}" width="37" height="35" alt="" />   
-                                @else 
-                                <img class="" src="{{ asset("uploads/storage/img/default/noimage.png")}}" width="37" height="35" alt="" />   
-                                @endif
+                                 @if($teamsF->team->logo != null)
+                                    <img class="" src="{{ asset("uploads/storage/img/teamlogo/".$teamsF->team->logo)}}" width="37" height="35" alt="" />   
+                                    @else 
+                                    <img class="" src="{{ asset("uploads/storage/img/default/noimage.png")}}" width="37" height="35" alt="" />   
+                                    @endif
                                 </span> 
-                                  
                                     <span class="table-pubg_team-text">{{$teamsF->team->name}}</span>
                                 </a>
                             </td>

@@ -17,11 +17,16 @@ class Stages extends Migration
             $table->increments('id');
             $table->integer('stage_number')->nullable();
             $table->string('stage_name', 50)->nullable();
-            $table->integer('tournament_id')->unsigned();
-
-            $table->foreign('tournament_id')->references('id')->on('tournaments')
-                ->onUpdate('cascade')->onDelete('cascade');
-
+            $table->integer('tournament_id')->nullable();
+            $table->integer('team_id')->nullable();
+            $table->integer('group_id')->nullable();
+            $table->integer('match_id')->nullable();
+         
+            $table->integer('status')->nullable();
+            $table->integer('kills_pts')->nullable();
+            $table->integer('place_pts')->nullable();
+            $table->integer('total_pts')->nullable();
+            $table->integer('winner')->nullable();
             $table->timestamps();
         });
     }

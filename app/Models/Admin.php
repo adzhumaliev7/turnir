@@ -31,7 +31,10 @@ class Admin extends Model
          ->get();
    }
 
-
+  public static function userAcivate($id)
+   {
+      return DB::table('users')->where('id', $id)->update(['verified' => 1, 'token' => NULL]);
+   }
    public static function get()
    {
       $is_has = DB::table('users_profile2')->exists();
@@ -94,7 +97,7 @@ class Admin extends Model
    
       $moderators = DB::table('users')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
-            ->select('id', 'email')
+            ->select('id', 'email', 'name')
             ->where('role_id', 3)
             ->get();
          return $moderators->count() ? $moderators : null;
@@ -168,7 +171,7 @@ class Admin extends Model
 
    public static function draftTournamentsActive($id)
    {
-      return DB::table('tournaments')->where('id', $id)->update(['status' => 'save']);
+      return DB::table('tournaments')->where('id', $id)->update(['status' => 'save',  'active'=>1]);
    }
    public static function createTournament($data)
    {
@@ -216,7 +219,7 @@ class Admin extends Model
    public static function geTeamMembersUserid($team_id, $tournament_id)
    {
       return DB::table('tournaments_members')
-         ->join('team_members', 'tournaments_members.team_id', '=', 'team_members.team_id')
+         ->join('team_members', 'tournaments_members.user_id', '=', 'team_members.user_id')
         
         // ->select('team_members.user_id')
          ->where('tournaments_members.tournament_id', $tournament_id)->where('tournaments_members.team_id', $team_id)->where('team_members.role', 'captain')
@@ -417,16 +420,16 @@ class Admin extends Model
    {
    
          $orders = DB::table('orders_team')
-      
-         ->select('orders_team.name as new_name', 'orders_team.team_id', 'orders_team.status', 'orders_team.old_name')
-         ->orderBy('orders_team.status', 'desc')
+       
+         ->select('orders_team.name as new_name', 'orders_team.team_id', 'orders_team.status', 'orders_team.old_name', 'orders_team.id')
+         ->orderBy('orders_team.id', 'desc')
          ->get();
          return $orders->count() ? $orders : null;
    }
-   public static function changeTeamName($id, $name)
+   public static function changeTeamName($id, $name ,  $order_id)
    {
       DB::table('team')->where('id', $id)->update(['name' => $name]);
-      DB::table('orders_team')->where('team_id', $id)->update(['status' => 1]);
+      DB::table('orders_team')->where('id', $order_id)->update(['status' => 1]);
    }
    public static function log_change_name($data)
    {
@@ -458,7 +461,7 @@ class Admin extends Model
    public static function ordersTeamRejected($id)
    {
       //  DB::table('users_profile2')->where('user_id', $id)->update(['status' => 0]);
-      DB::table('orders_team')->where('team_id', $id)->update(['status' => 2]);
+      DB::table('orders_team')->where('id', $id)->update(['status' => 2]);
    }
 
    public static function createStage($data){

@@ -6,20 +6,22 @@ margin: 30px;
 }
 details span{
 
-font-size: 2rem;
+font-size: 1.8rem;
 margin: 10px;
 }
 details summary span {
-    background: url("../img/arrow_r.jpg") no-repeat scroll 0 0;
+    background: url("../public/img/arrow_r.jpg") no-repeat scroll 0 0;
     margin-left: -20px;
     padding-left:20px;
 }
 details[open] summary span {
-    background: url("../img/arrow_d.jpg") no-repeat scroll 0 0;
+    background: url("../public/img/arrow_d.jpg") no-repeat scroll 0 0;
     margin-left: -20px;
     padding-left:20px;
 }
-
+  .text_a {
+    text-align:center;
+  }
 </style>
 
 @extends('layouts.layout')
@@ -45,10 +47,9 @@ details[open] summary span {
   @endforeach
 @endif
   </div>
-  
 </div>
 <div class="container">
-  <h1 class="help__h1">Есть вопросы</h1>
+  <h1 class="help__h1">Остались вопросы?</h1>
   <div class="text_a">
   <a href="{{route('feedback')}}"   class="btn  submit-btn btn--size btn--orange btn--margin">Задать вопрос</a>
   </div>

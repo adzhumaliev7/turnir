@@ -23,13 +23,12 @@ class PostRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'title' => 'required',
+         return [
+             'title' => 'required',
             'label' => 'required',
             'preview' => 'required',
             'date' => '',
             'text' => 'required',
-           
          
         ];
     }

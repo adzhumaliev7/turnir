@@ -4,12 +4,12 @@
 
 
 <div class="header-pubg__bg-2">
-
-  @include('main.inc.nav_header')
+  
+   @include('main.inc.nav_header')
 </div>
 
 <div class="main">
-  <div class="container">
+ <div class="container">
   @if($tournaments != null)
   <div class="top row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
@@ -26,54 +26,51 @@
                     <div class="card-body">
                         
                     <h4 class="card-text__h4">{{$tournament->name}}</h4>
-                    <h4 class="card-text__format">Начало турнира: {{Carbon\Carbon::parse($tournament->tournament_start)->format('d.m.Y')}}</h4>
+                         <h4 class="card-text__format">Старт турнира: {{Carbon\Carbon::parse($tournament->tournament_start)->format('d.m.Y')}}</h4>
                       <div class="card-text__format">
                         <p class="card-text__format">
-                          Статус: 
+                             Статус:
                            @if($tournament->active == 1) 
                            @if($tournament->endDate($tournament->tournament_start))
                             Игра
                               @else
-                                @if($tournament->endDate($tournament->start_reg))
-                                 @if($tournament->endDate($tournament->end_reg))
+                                @if($tournament->endDate($tournament->start_reg) )
+                                 @if($tournament->endDate($tournament->end_reg) )
                                    Регистрация завершена
                                   @else Регистрация   
+                               
                                   @endif   
                                   @else Регистрация еще не началась
                                 @endif
                               @endif 
                             @else Завершен      
                           @endif  
-                        </p>   
+                          </p>   
                         <p class="card-text__format">Призовой фонд: {{$tournament->price}}</p>
                         <p class="card-text__format">Формат: {{$tournament->format}}</p>  
 
                         @if($tournament->active == 1)
                            @if($tournament->endDate($tournament->tournament_start))
-                          
                            <button onclick="document.location='{{route("match", $tournament->id)}}'" class="btn  submit-btn  mt-4"> Смотреть</button>
-                         
                               @else
                                 @if($tournament->endDate($tournament->start_reg) )
                                  @if($tournament->endDate($tournament->end_reg))
                                  <button onclick="document.location='{{route("match", $tournament->id)}}'" class="btn  submit-btn  mt-4"> Смотреть</button>
                                   @else
-                                 <button onclick="document.location='{{route("match", $tournament->id)}}'" class="btn  submit-btn  mt-4"> Смотреть</button>
+                                  <button onclick="document.location='{{route("match", $tournament->id)}}'" class="btn  submit-btn  mt-4"> Принять участие</button>
                                   @endif   
-                                @else 
-                                 <button onclick="document.location='{{route("match", $tournament->id)}}'" class="btn  submit-btn  mt-4"> Смотреть</button>
+                                @else <button onclick="document.location='{{route("match", $tournament->id)}}'" class="btn  submit-btn  mt-4"> Смотреть</button>
                                 @endif
                               @endif 
                             @else 
-                         
-                                 <button onclick="document.location='{{route("match", $tournament->id)}}'" class="btn  submit-btn  mt-4"> Смотреть</button>
-                                  
+                            <button onclick="document.location='{{route("match", $tournament->id)}}'" class="btn  submit-btn  mt-4"> Смотреть</button>      
                           @endif  
                       </div>
                     </div>
               </div>
             </div>
             @endforeach
+            
             </div>
             <span class="size_16">{{$tournaments->links()}}</span>
             @else
@@ -81,7 +78,6 @@
       @endif
         </div>
   </div>
-
 
 
 @endsection

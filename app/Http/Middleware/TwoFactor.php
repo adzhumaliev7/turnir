@@ -16,8 +16,12 @@ class TwoFactor
      */
     public function handle(Request $request, Closure $next)
     {
+       
         $user = auth()->user();
-        if (auth()->check() && $user->two_factor_code) {
+       // \Auth::user()->update(['two_factor_expires_at' => now()]);
+       
+        if(auth()->check() && $user->two_factor_code  &&  $user->role->role_id == 2) {
+           
             if ($user->two_factor_expires_at->lt(now())) {
                 User::resetTwoFactorCode();
                 auth()->logout();
@@ -28,6 +32,7 @@ class TwoFactor
                 return redirect()->route('verify.index');
             }
         }
+    
         return $next($request);
     }
     

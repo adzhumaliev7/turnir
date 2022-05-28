@@ -21,7 +21,8 @@
         <tr>
 
           <th>Email</th>
-          <th></th>
+         <th>Ник</th>
+		<th></th>
         </tr>
       </thead>
       <tbody>
@@ -30,7 +31,7 @@
 
 
           <td>{{$moderator->email}}</td>
-
+ 	<td>{{$moderator->name}}</td>
           <td> <a href="{{route('change_password',$moderator->id)}}" type="button" class="btn btn-success">Изменить пароль</a>
            <a href="{{route('delete_moderators',$moderator->id)}}" type="button" class="btn btn-danger">Удалить</a></td>
           @endforeach

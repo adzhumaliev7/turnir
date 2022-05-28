@@ -9,11 +9,13 @@ class AboutController extends Controller
     public function index(){
         if(Auth::user() != null){
             $mail = Auth::user()->email;
+			  $active =  Auth::user()->verified;
         }
-        else $mail = null;
+          else {$mail = null;
+            $active = null;}
         $page = Pages::find(1);
         //$help = DB::table('help')->leftJoin('users' , 'help.user_id', '=', 'users.id')->select('help.*', 'users.name')->orderBy('help.id','desc')->paginate(15);
         
-        return view('main.other.about' , compact('mail', 'page'));
+        return view('main.other.about' , compact('mail', 'page', 'active'));
     }
 }

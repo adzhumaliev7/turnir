@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function ban(StoreReportUserRequest $request) {
         $data = $request->validated();
-        $data['log_type'] = 7;
+  $data['log_type'] = 7;
         $user = User::findOrFail($data['ban_id']);
         $status =  $user->status !='ban'  &&  $user->id != 1 ? 1: 0;
 
@@ -44,7 +44,6 @@ class UserController extends Controller
 
         return redirect()->back();
     }
-
     public function verified($id, Request $request)
     {
         $user = User::findOrFail($id);
@@ -82,7 +81,7 @@ class UserController extends Controller
         return redirect()->route('allusers');
     }
 
-    public function getDataList(Request $request) {
+      public function getDataList(Request $request) {
         $limit = $request->input('length');
         $start = $request->input('start');
         $dir = $request->input('order.0.dir');
@@ -91,7 +90,7 @@ class UserController extends Controller
 
         $filter = $request->get('verification', false);
 
-        $sql = User::with('team')->select('users.*')
+        $sql = User::with('team', 'teamMembers.team')->select('users.*')
             ->when($filter, function ($query, $role) use($request, $filter) {
                 return $query->where($filter[0], $filter[1]);
             })
@@ -114,6 +113,8 @@ class UserController extends Controller
         $users = $sql->offset($start)->limit($limit)->orderBy($as[$order]  ?? $order,$dir)->get();
 
         $data = [];
+//        dd(User::find(1)->teamMembers->first()->team->name);
+		   $userRoleId = Auth::user()->role->role_id;
         foreach ($users as $user) {
             $status = "";
             $status .= $user->verified == 1 ? 'Активирован' : 'Зарегистрирован';
@@ -124,10 +125,10 @@ class UserController extends Controller
             $nestedData['id'] = $user->id;
             $nestedData['name'] = $user->name;
             $nestedData['nickname'] = $user->nickname;
-            $nestedData['email'] = $user->email;
+            $nestedData['email'] =  $userRoleId == 2 ? $user->email: "";
             $nestedData['status'] = $status;
             $nestedData['game_id'] = $user->game_id;
-            $nestedData['team'] = $user->team->name ?? 'Нет команды';
+            $nestedData['team'] = $user->teamMembers->first()->team->name ?? 'Нет команды';
             $nestedData['options'] = view('admin.home.inc.buttons', [
                 'route' => ['show' => 'users_card', 'ban' => 'user.ban'],
                 'id' => $user->id, 'status' => $user->status !='ban'  &&  $user->id != 1 ? 1: 0

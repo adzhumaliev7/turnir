@@ -122,20 +122,24 @@
                                 <form action="post">
                                     <div class="holding holding-block">
                                         <p class="subtitle holding__title">Дата проведения</p>
-                                        <span class="subtitle subtitle--semi-medium">{{$tournament->end_reg}}</span>
+                                        <span class="subtitle subtitle--semi-medium">{{$tournament->tournament_start}}</span>
                                         <span class="subtitle subtitle--semi-medium d-block">{{$tournament->games_time}} {{$tournament->country}} {{$tournament->timezone}}</span>
                                         <hr>
                                         <p class="subtitle subtitle--semi-medium">до начала:</p>
                                         <div class="holding__timer">
                                             <div class="holding__wrapper">
-                                                <div class="holding__item holding__number" data-countdown=" {{$tournament->tournament_start}} "></div>
+                                                <div class="holding__item holding__number" data-countdown="{{$tournament->tournament_start}}"></div>
 
                                                 <div></div>
                                             </div>
                                             <div class="holding__wrapper">
+
                                             </div>
                                         </div>
                                         <hr>
+
+
+
                                         <div class="block">
                                             <svg class="config" width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M6.5 0C2.90715 0 0 2.9074 0 6.5C0 10.0928 2.9074 13 6.5 13C10.0928 13 13 10.0926 13 6.5C13 2.90715 10.0926 0 6.5 0ZM6.5 11.9844C3.46854 11.9844 1.01562 9.53126 1.01562 6.5C1.01562 3.46854 3.46874 1.01562 6.5 1.01562C9.53146 1.01562 11.9844 3.46874 11.9844 6.5C11.9844 9.53146 9.53126 11.9844 6.5 11.9844Z" fill="black"></path>
@@ -150,6 +154,7 @@
                                             </ul>
                                         </div>
                                         <details class="holding__accordion">
+
                                             <summary class="subtitle subtitle--semi-medium">Команды {{$teams_count}} / {{$tournament->slot_kolvo}}</summary>
 
                                             @if($teams != null)
@@ -199,6 +204,7 @@
                                                             <h3>Ваша заявка отклонена</h3>
                                                         </div>
                                                     @endif
+
                                                 @endif
                                               @else
                                               <div class="block-btn">
@@ -213,6 +219,7 @@
                                                 <div class="block-btn">
                                                     <h3>Регистрация закончилась</h3>
                                                 </div>
+
                                         @else
                                             <div class="block-btn">
                                                 <h3>Турнир закончился</h3>

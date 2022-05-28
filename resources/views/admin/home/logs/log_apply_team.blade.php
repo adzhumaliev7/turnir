@@ -21,7 +21,7 @@
         <td>{{$item->name}}</td>
         <td>{{$item->admin}}</td>
         <td>{{$item->tournament_name}}</td>
-        <td> {{Carbon\Carbon::parse($item->created_at)->format('d-m-Y')}}</td>
+           <td> {{Carbon\Carbon::parse($item->created_at)->format('d-m-Y')}}</td>
       </tr>
       @endforeach
     </tbody>

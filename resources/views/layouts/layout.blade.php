@@ -5,19 +5,18 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="discription" content= '@yield("description")' >
   <title> @yield('title')</title>
 
   <!-- ! google fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-
-
+  
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" type="application/javascript"></script>
-
 <script src="https://cdn.rawgit.com/hilios/jQuery.countdown/2.2.0/dist/jquery.countdown.min.js" type="application/javascript"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="{{asset("js/script.js")}}"></script>
@@ -28,7 +27,32 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <!-- css -->
   
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LHC5L7E68E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'G-LHC5L7E68E');
+</script>
+  
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+   (function(m,e,t,r,i,k,a){m[i]=m[i]function(){(m[i].a=m[i].a[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(88689831, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true,
+        trackHash:true
+   });
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/88689831" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 
 
   <link rel="stylesheet" href="{{asset("css/style.css")}}">
@@ -80,6 +104,7 @@
                 Рейтинг
               </a>
             </li>
+
             <li>
               <a class="main__link" href="{{route('main.help')}}">
                 Помощь
@@ -96,7 +121,7 @@
           <div class="container">
             <div class="row footer--index">
               <div class="col-lg-3 px-4">
-                <h4 class="title text-uppercase logo-indent-mr text-light footer__txt-mt">
+                 <h4 class="title text-uppercase logo-indent-mr text-light footer__txt-mt">
                   bigplay
                 </h4>
                 <p class="footer__text text-light footer--subtext">
@@ -104,8 +129,7 @@
                   мобильного гейминга
                 </p>
               </div>
-             
-              <div class="col-lg-3 px-4 d-flex flex-column">
+               <div class="col-lg-3 px-4 d-flex flex-column">
                 <a class="footer__link footer__txt-mt text-light" href="#">Сотрудничество</a>
                 <a class="footer__sublink" href="{{route('terms')}}">Пользовательское соглашение</a>
                 <a class="footer__sublink" href="{{route('main.help')}}">Помощь</a>
@@ -119,10 +143,9 @@
               <div class="col-lg-3 px-4 d-flex flex-column">
                 <a class="footer__link footer__txt-mt text-light" href="#">Подписывайтесь на нас</a>
                 <div class="block d-flex justify-content-start w-100">
-                  <a class="footer__social-icons footer__social-icons--indent footer__social-icons--telegram" href="#"><i class="fab fa-telegram footer__icons"></i></a>
-                  <a class="footer__social-icons footer__social-icons--indent footer__social-icons--youtube" href="#"><i class="fab fa-youtube footer__icons"></i></a>
-                  <a class="footer__social-icons footer__social-icons--indent footer__social-icons--discord" href="#"><i class="fab fa-discord footer__icons"></i></a>
-                  <a class="footer__social-icons footer__social-icons--instagram" href="#"><i class="fab fa-instagram footer__icons"></i></a>
+                  <a class="footer__social-icons footer__social-icons--indent footer__social-icons--telegram" href="https://t.me/+3gpT2AO3-I03NTZi"><i class="fab fa-telegram footer__icons"></i></a>
+                  <a class="footer__social-icons footer__social-icons--indent footer__social-icons--discord" href="https://discord.gg/ASxHzZnxRJ"><i class="fab fa-discord footer__icons"></i></a>
+                  <a class="footer__social-icons footer__social-icons--instagram" href="https://www.instagram.com/bigplay.gg/"><i class="fab fa-instagram footer__icons"></i></a>
                 </div>
               </div>
             </div>
@@ -130,12 +153,10 @@
         </div>
       </footer>
   </div>
-
-
+     
   <script type="application/javascript">
-
-let timessss = $('#timesssssssss').data('time')
-let dataaaaa = Date.now() ;
+   let timessss = $('#timesssssssss').data('time')
+let dataaaaa = Date.now();
     $('[data-countdown]').each(function () {
         var $this = $(this);
         var finalDate = $(this).data('countdown');
@@ -144,23 +165,106 @@ let dataaaaa = Date.now() ;
             $this.html(event.strftime('%D дней %H:%M:%S'));
           
                 if (event.timeStamp > timessss && dataaaaa < timessss) {
-                  
-                   setTimeout(location.reload(),9000);
+                   
+                 setTimeout(location.reload(),15000);
+                 location.reload();
                 }
         });
     });
+      </script>
+
+<script>
+     const nav = qs('tab');
+     console.log(nav)
+        if (nav && document.getElementById(nav)) {
+          document.getElementById(nav).click()
+        }
+      
+      function qs(key) {
+        key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, '\\$&');
+        var match = location.search.match(new RegExp('[?&]'+key+'=([^&]+)(&|$)'));
+        return match && decodeURIComponent(match[1].replace(/\+/g, ''));
+      }
+      
+      $('#nav-tab .accordion__btn').on('click', function (e) {
+        var url = window.location.href;       
+        var urlSplit = url.split( '?' );       
+        var obj = { title : '', url: urlSplit[0] + '?tab=' + this.getAttribute('id')};       
+        history.pushState(obj, obj.title, obj.url);
+      })
+    </script>
+
+
+      <script>
+    function viewdiv(id) {
+        var el = document.getElementById(id);
+        var link = document.getElementById('toggleLink');
+        if (el.style.display == "block") {
+            el.style.display = "none";
+            link.innerText = link.getAttribute('data-text-hide');
+        } else {
+            el.style.display = "block";
+            link.innerText = link.getAttribute('data-text-show');
+        }
+    }
+
 </script>
-<script src="https://unpkg.com/scrollbooster@2/dist/scrollbooster.min.js"></script>
-    <script>
-new ScrollBooster({
-  viewport: document.querySelector('.example1-viewport'),
-  content: document.querySelector('.example1-content'),
-  scrollMode: 'transform', // use CSS 'transform' property
-  direction: 'horizontal', // allow only horizontal scrolling
-  emulateScroll: true, // scroll on wheel events
-});
-</script>
-<script type="text/javascript">
+<!-- <script>
+         $('#changepassword').submit(function(e){
+            e.preventDefault();
+            $.ajax({
+                type:'POST',
+                url:  e.target.action,
+                data: $(this).serialize(),
+                headers: {
+                    'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (data){
+                 
+                },
+                error: function (data) {
+ 
+                }
+            });
+        }); 
+    </script> -->
+<!-- <script type="text/javascript">
+       $(document).ready(function() {
+           $(".btn-submit").click(function(e){
+               e.preventDefault();
+               var _token = $("input[name='_token']").val();
+               var old_password = $("input[name='old_password']").val();
+               var password = $("input[name='password']").val();
+               var password_confirmation = $("input[name='password_confirmation']").val();
+               
+          
+               $.ajax({
+                   url: "{{ route('changepassword') }}",
+                   type:'POST',
+                   data: {_token:_token, old_password:old_password, password:password, password_confirmation:password_confirmation},
+                   success: function(data) {
+                       if($.isEmptyObject(data.error)){
+                           alert(data.success);
+                       }else{
+                           printErrorMsg(data.error);
+                       }
+                   }
+               });
+          
+           }); 
+          
+           function printErrorMsg (msg) {
+               $(".print-error-msg").find("ul").html('');
+               $(".print-error-msg").css('display','block');
+               $.each( msg, function( key, value ) {
+                   $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+               });
+           }
+       });
+   
+   
+   </script> -->
+   <script type="text/javascript">
        
        $(document).ready(function() {
            $(".btn-submit").click(function(e){
@@ -196,33 +300,16 @@ new ScrollBooster({
        });
    
    </script>
-  
 
-
-
-<script>
-     const nav = qs('tab');
-     console.log(nav)
-        if (nav && document.getElementById(nav)) {
-          document.getElementById(nav).click()
-        }
-      
-      function qs(key) {
-        key = key.replace(/[*+?^$.\[\]{}()|\\\/]/g, '\\$&');
-        var match = location.search.match(new RegExp('[?&]'+key+'=([^&]+)(&|$)'));
-        return match && decodeURIComponent(match[1].replace(/\+/g, ''));
-      }
-      
-      $('#nav-tab .accordion__btn').on('click', function (e) {
-        var url = window.location.href;       
-        var urlSplit = url.split( '?' );       
-        var obj = { title : '', url: urlSplit[0] + '?tab=' + this.getAttribute('id')};       
-        history.pushState(obj, obj.title, obj.url);
-      })
-    </script>
-
-
-
+   <script src="https://unpkg.com/scrollbooster@2/dist/scrollbooster.min.js"></script>
+    <script>
+new ScrollBooster({
+  viewport: document.querySelector('.example1-viewport'),
+  content: document.querySelector('.example1-content'),
+  scrollMode: 'native',
+  direction: 'horizontal'
+});
+</script>
   
 <!--  -->
 </body>

@@ -842,7 +842,7 @@ ul.navbar-nav {
   background-color: #C4C4C4;
 }
 .background-match {
-  background-image: url(../img/background/bg-profile.png);
+  background-image: url(../img/background/match_bigplay.png);
 }
 
 .brd-img {
@@ -856,6 +856,19 @@ ul.navbar-nav {
 }
 
 @media screen and (max-width: 600px) {
+.help {
+    margin: 20px 0px;
+    flex-direction: column;
+    padding: 0 15px;
+}
+.help__title{
+	font-size: 2.5rem;
+}
+.img_news {
+    margin-right: 0;
+    align-self: center;
+	margin: 0 0 15px 0;
+}
   .font-sz {
     font-size: 2.2rem;
     letter-spacing: 0;
@@ -972,6 +985,9 @@ ul.navbar-nav {
   font-size: 1.8rem;
 }
 @media (max-width:750px){
+    .example1-viewport.table-pubg_main.table-box.js-sv {
+      display: contents;
+     }
   .input-title{
     font-size: 1.7rem;
     text-align: center;
@@ -1181,7 +1197,7 @@ ul.navbar-nav {
     margin-right: auto; 
     height: 100vh;
     width: 100%;
-    background-image: url("../img/background/bg-header.png");
+    background-image: url("../img/background/header_bigplay.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -1194,7 +1210,7 @@ ul.navbar-nav {
     display: block;
     margin-left: auto;
     margin-right: auto; 
-    background-image: url("../img/background/bg-header.png");
+    background-image: url("../img/background/header_bigplay.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -1813,7 +1829,7 @@ a.nav-link.nav-white.pubg-bg--orange {
 
 .profile-bg {
   width: 100%;
-  background: url("../img/background/bg.png");
+  background: url("../img/background/profile_bigplay.png");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -1830,7 +1846,25 @@ a.nav-link.nav-white.pubg-bg--orange {
   display: -ms-flexbox;
   display: flex;
 }
-
+.team-bg {
+  width: 100%;
+  background: url("../img/background/team_bigplay.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 100%;
+  flex: 1 1 100%;
+  min-height: 100%;
+  row-gap: 110px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
 @media (max-width:750px){
   /* .header-pubg__bg-2{
     display: none;
@@ -1847,6 +1881,10 @@ a.nav-link.nav-white.pubg-bg--orange {
     margin: 0 auto;
   }
   .profile-bg {
+    width: 100%;
+    row-gap: 0;
+  }
+    .team-bg {
     width: 100%;
     row-gap: 0;
   }
@@ -2634,6 +2672,7 @@ input[placeholder]::placeholder {
 }
 
 @media (max-width: 320px) {
+    
   .social {
     top: 23rem;
   }
@@ -3028,10 +3067,9 @@ font-size: 16px;
 .mobile-menu{
   display:none
   }
-  @media (max-width:650px) {
-    .example1-viewport.table-pubg_main.table-box.js-sv {
-      display: contents;
-  }
+
+  @media (max-width:750px) {
+
   .mobile-menu {
     /* position: fixed; */
     display: flex;
@@ -3150,7 +3188,8 @@ font-size: 16px;
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
   }}
-  .img_news{
+  
+    .img_news{
     margin-right: 20px;
   }
 /* style container */

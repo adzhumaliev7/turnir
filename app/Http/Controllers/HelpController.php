@@ -10,9 +10,11 @@ class HelpController extends Controller
     public function index(){
         if(Auth::user() != null){
             $mail = Auth::user()->email;
+			  $active =  Auth::user()->verified;
         }
-        else $mail = null;
-        $help = DB::table('help')->leftJoin('users' , 'help.user_id', '=', 'users.id')->select('help.*', 'users.name')->orderBy('help.id','desc')->paginate(15);
-        return view('main.help.index' , compact('mail' ,'help'));
+          else {$mail = null;
+         $active = null;}
+        $help = DB::table('help')->leftJoin('users' , 'help.user_id', '=', 'users.id')->select('help.*', 'users.name')->orderBy('help.post_id','asc')->paginate(15);
+        return view('main.help.index' , compact('mail' ,'help', 'active'));
     }
 }

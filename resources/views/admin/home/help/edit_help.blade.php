@@ -29,7 +29,8 @@
 
   <div class="form-group col-md-4">
     <label for="exampleFormControlInput1">Автор</label>
-    <input type="text" name=""  class="form-control " value="{{$posts->admin->name}}" readonly >
+	
+    <input type="text" name=""  class="form-control " value="{{$posts->admin->name ?? ''}}" readonly >
 
   </div>
 

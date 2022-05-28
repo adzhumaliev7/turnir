@@ -1,18 +1,16 @@
 @extends('admin.admin_layout')
 
 @section('content')
-@if($users != "")
+
 
 <div class="container">
   <table class="table">
     <thead class="thead-light">
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Телефон</th>
-        <th scope="col">ФИО</th>
         <th scope="col">Почта</th>
-        <th scope="col">Город</th>
-        <th scope="col">Статус</th>
+        <th scope="col">Ник</th>
+    
         <th scope="col"></th>
       </tr>
     </thead>
@@ -20,30 +18,20 @@
       @foreach($users as $user)
 
       <tr>
-        <td scope="row">{{$user->id}}</td>
-        <td>{{$user->phone}}</td>
-        <td>{{$user->fio}}</td>
+        <td scope="row">{{$loop->index+1}}</td>
+   
+      
         <td>{{$user->email}}</td>
-        <td>{{$user->city}}
-
-
-        </td>
-        <td>
-          @if($user->verification=='verified')
-          Верифицирован
-          @elseif($user->verification=='rejected')Вернут на доработку
-          @else Не верефицирован
-          @endif
-        </td>
-        <td><a href="{{route('users_card', $user->id)}}" class="btn btn-primary">Просмотр</a>
+        <td>{{$user->name}}</td>
+       
+        <td><a href="{{route('activate', $user->id)}}" class="btn btn-success">Активировать</a>
         
         </td>
       </tr>
       @endforeach
     </tbody>
+  
   </table>
-  @else
-  <h4>Нет данных</h4>
-  @endif
+  {{$users->links()}}
 </div>
 @endsection

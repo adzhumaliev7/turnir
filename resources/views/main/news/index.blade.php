@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="header-pubg__bg-2">
-  
+
   @include('main.inc.nav_header')
 </div>
 
@@ -14,8 +14,8 @@
 
             @foreach($posts as $post)
 				<div class="help d-flex">
-					<div class="img_news" >
-					<img src="{{ asset("uploads/storage/img/posts/$post->label")}}"  value="{{$post->label}}" width="300" height="200" class="" style="opacity: .8">
+					<div  class="img_news">
+						<img src="{{ asset("uploads/storage/img/posts/$post->label")}}"  value="{{$post->label}}" width="250" height="200" class="" style="opacity: .8">
 					</div>
 					<div class="help__container">
 						<p> 
@@ -32,7 +32,7 @@
 						</div>
                         <a href="{{route('news.show', $post->id)}}" class="help__text_link"> 
 						<p class="help__text">
-
+                     
 							{!!$post->preview!!}
                         <?/*  $string = strip_tags($post->text);
                         	    $string = substr($string, 0, 300);
@@ -40,6 +40,7 @@
                                 $string = substr($string, 0, strrpos($string, ' '));
                                 echo $string."… "; */
                       ?>
+                      
                       
 						</p>
                         </a>

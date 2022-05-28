@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
@@ -26,6 +27,22 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'country',
+        'session_id',
+        'two_factor_code',
+        'two_factor_expires_at',
+        'phone' ,
+        'fio' ,
+        'timezone' ,
+        'city' ,
+        'bdate' ,
+        'nickname' ,
+        'game_id' ,
+        'doc_photo',
+        'doc_photo2',
+        'verification',
+          'exist_status',
+          'status',
+        'verified',
         'two_factor_code',
         'two_factor_expires_at',
     ];
@@ -47,6 +64,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'two_factor_expires_at' => 'datetime',
     ];
     
     public function logsFull() {
@@ -58,6 +76,26 @@ class User extends Authenticatable implements MustVerifyEmail
      
         return $all;
      }
+   public function getip() {
+        $ip = $this->user_ip()->select([  'ip', 'created_at']);
+        $all = $ip->latest()->paginate(10);
+        return $all;
+     }
+
+     public function role()
+    {
+        return $this->hasOne(ModelHasRoles::class, 'model_id', 'id');
+    }
+    
+    public function user_ip()
+    {
+        return $this->hasOne(Ip_log::class, 'user_id', 'id');
+    }
+
+     public function logo(){
+        return $this->hasOne(Users_logo::class, 'user_id', 'id');
+   }
+
     public function logs(){
         return $this->morphMany(Log::class,'model');
    }
@@ -90,7 +128,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function confirmEmail()
     {
         $this->verified = true;
-        $this->token = null;
+        //$this->token = null;
         $this->save();
     }
     public function setPasswordAttribute($password){
@@ -106,18 +144,22 @@ class User extends Authenticatable implements MustVerifyEmail
     public static function changePassword($id, $password){
         return DB::table('users')->where('id', $id)->update(['password' => $password]);
     }
-   /*  public function generateTwoFactorCode()
+    public static function test($id, $key){
+        return DB::table('users')->where('id', $id)->update(['session_id' => $key]);
+    }
+    public function generateTwoFactorCode()
     {
         $this->timestamps = false;
         $this->two_factor_code = rand(100000, 999999);
         $this->two_factor_expires_at = now()->addMinutes(10);
         $this->save();
     }
+
     public function resetTwoFactorCode()
     {
         $this->timestamps = false;
         $this->two_factor_code = null;
         $this->two_factor_expires_at = null;
         $this->save();
-    } */
+    }
 }

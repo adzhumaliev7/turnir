@@ -1,7 +1,6 @@
 @extends('layouts.layout')
 @section('title', 'Профиль')
 @section('content')
-
 <header>    
   <div class="header-pubg__bg-2">
       @include('main.inc.nav_header')
@@ -25,21 +24,22 @@
             @endif
           </div>
           <div class="header__nick">
-            @if(!$data==NULL)
-            @foreach($data['data'] as $dat)
-            <h1 class="title  text-capitalize font-sz text--responsive" style=" color: white;">{{$user_name}} <span  class=" subtitle--gray">(*{{$dat->id}})</span></h1>
-            <sub class="subtitle subtitle--gray text--responsive"><? if ($dat->verification == 'verified') {
-                                                                    echo "Верифицирован";
-                                                                  } elseif ($dat->verification == 'rejected'){
-                                                                    echo "Отклонен";
-                                                                  }else  echo "Не верифицирован";
+            @if(!$user==NULL)
+         
+            <h1 class="title  text-capitalize font-sz text--responsive" style=" color: white;">{{$user_name}} <span  class=" subtitle--gray">(*{{$user->id}})</span></h1>
+            <sub class="subtitle  text-light text--responsive"><? if ($user->nickname != null && $user->game_id != null  ) {
+                                                                    echo "Игровой";
+                                                                  } else{
+                                                                    echo "Не игровой";
+                                                                  }
                                                                    ?></sub>
-            <sub class="subtitle subtitle--gray text--responsive"><? if ($active == 1) {
+                                                                    <sub class="subtitle text-light text--responsive"> | </sub>
+            <sub class="subtitle  text-light text--responsive"><? if ($active == 1) {
                                                                     echo "Активирован";
                                                                   } else {
                                                                     echo "Не Активирован";
                                                                   } ?></sub>
-            @endforeach
+        
             @else
             <h1 class="title text-capitalize font-sz" style="color: white;">{{$user_name}}</h1>
             <sub class="subtitle subtitle--gray text--responsive">Не верифицирован</sub>
@@ -166,15 +166,14 @@
             </nav>
           </div>
         </div>
-          
-    <div class=" container tab-content tab-panels" id="nav-tabContent">
-
+    <div class="tab-content tab-panels" id="nav-tabContent">
       <div class="container">
 
-        @error('text')
+    @error('text')
                 <div class="alert alert-danger" style="font-size: 16px;">Введите текст сообщения      
                 <a type="button" class="close close_styles" data-dismiss="alert" aria-label="Close" >
-            <span aria-hidden="true">&times;</span>  </a></div>
+            <span aria-hidden="true">&times;</span>  </a><
+              /div>
                 
                 @enderror
       @if (session('error'))
@@ -192,16 +191,16 @@
       <div class="tab-pane active  " id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab">
         <div class="container">
 
-          @if($data != NULL )
+          @if($user != NULL )
 
-          @foreach($data['data'] as $dat)
-          <? if ($dat->verification == 'verified') {
+         
+          <? if ($user->verification == 'verified') {
 
             $h4 = 'Аккаунт верифицирован';
-          } elseif ($dat->verification == 'on_check'  && $dat->doc_photo != null &&  $dat->doc_photo2 != null ) {
+          } elseif ($user->verification == 'on_check'  && $user->doc_photo != null &&  $user->doc_photo2 != null ) {
 
             $h4 = 'Аккаунт на проверке';
-          } elseif ($dat->verification == 'rejected') {
+          } elseif ($user->verification == 'rejected') {
 
             $h4 = 'Вернут на доработку';
           } else {
@@ -209,20 +208,21 @@
             $h4 = 'Пройти верификацию';
           }
           ?>
-          @endforeach
+        
           @else
           <?
 
           $h4 = 'Аккаунт не верифицирован';
           ?>
           @endif
-          @if($data != NULL)
-          <?  if($data['verification'] == 'rejected'){
+        
+          @if($user != NULL)
+          <?  if($user['verification'] == 'rejected'){
       
             $disabled = '';
         }
          else {
-            if( $data['status'] == 0){
+            if( $user['status'] == 0){
             $disabled = 'disabled';
             }else{
                $disabled = '';
@@ -239,18 +239,20 @@
           <span class="title letter-spacing--none">Мои команды</span>
           @if($teams)
           @foreach($teams as $team)
-          <div class="col-md-3">
+          <div class="col-md-5">
             <div class="col d-flex justify-content-between border--block">
-              <a class="title " style="text-decoration: none;" href="{{ route('team', [$team->team_id, $team->user_id] ) }}">
+              <a  class="title " style="text-decoration: none;" href="{{ route('team', [$team->team_id, $team->user_id] ) }}">
                 <p class="block-team__text">{{$team->name}}</p>
               </a>
               <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M14.7474 18.6157C14.9556 18.6157 15.1623 18.5508 15.3387 18.4232C15.6673 18.185 15.8208 17.7757 15.7314 17.3806L14.5091 11.9963L18.6544 8.36095C18.9591 8.09494 19.0755 7.67368 18.9504 7.28823C18.8253 6.9035 18.485 6.63111 18.082 6.59386L12.5972 6.09591L10.4287 1.02122C10.2688 0.648375 9.90464 0.407593 9.50005 0.407593C9.09546 0.407593 8.73132 0.648375 8.57143 1.02035L6.40294 6.09591L0.919016 6.59386C0.51515 6.63024 0.17478 6.9035 0.0496769 7.28823C-0.0754261 7.67296 0.0402546 8.09494 0.344965 8.36095L4.4903 11.9956L3.26798 17.3798C3.1784 17.7757 3.33206 18.185 3.66054 18.4225C3.9883 18.6599 4.42536 18.6782 4.77052 18.4708L9.50005 15.6444L14.2296 18.4724C14.3895 18.5673 14.5676 18.6157 14.7474 18.6157ZM9.50005 14.4269C9.3203 14.4269 9.14229 14.4752 8.98225 14.5701L4.51872 17.2397L5.67233 12.1578C5.75466 11.7961 5.63188 11.4185 5.3524 11.1738L1.43827 7.74109L6.61676 7.27083C6.9896 7.23676 7.31025 7.00236 7.45594 6.6588L9.50005 1.86983L11.5466 6.65952C11.6907 7.00077 12.0114 7.23517 12.3834 7.26924L17.5626 7.73949L13.6486 11.1722C13.3682 11.4176 13.2456 11.7945 13.3287 12.1571L14.4814 17.2389L10.0179 14.5701C9.85797 14.4752 9.67981 14.4269 9.50005 14.4269ZM12.6391 6.19405C12.6391 6.19405 12.6391 6.19492 12.6399 6.19564L12.6391 6.19405ZM6.36264 6.19173L6.36177 6.19333C6.36177 6.19246 6.36177 6.19246 6.36264 6.19173Z" fill="black" />
               </svg>
             </div>
+          
           </div>
           @endforeach
           @endif
+        
           @if(Session::has('flash_meassage2'))
           <div class="alert alert-success">{{Session::get('flash_meassage2')}}
           <a type="button" class="close close_styles" data-dismiss="alert" aria-label="Close" >
@@ -260,15 +262,15 @@
           @if(Session::has('flash_meassage_error'))
           <div class="alert alert-danger">{{Session::get('flash_meassage_error')}}
           <a type="button" class="close close_styles" data-dismiss="alert" aria-label="Close" >
-            <span aria-hidden="true">&times;</span> </a>
+            <span aria-hidden="true">&times;</span>  </a>
           </div>
           @endif
           @if($status == NULL)
           @if($active == 1)
           <form method="POST" action="{{route('createteam')}}">
             @csrf
-            <input class="input-footer mt 20" name="name" placeholder="Название команды" type="text" ></br>
-            <button type="btn" class="btn  submit-btn  mt-4">Создать</button>
+            <input class="input-footer" name="name" placeholder="Название команды" type="text" style="margin-top:20px;">
+            <button class="btn  submit-btn  mt-4">Создать</button>
           </form>
           @else
           <h4>Для создания команды Вы должны пройти активацию</h4>
@@ -278,9 +280,11 @@
           @endif
         </div>
       </div>
-      <div class="tab-pane " id="nav-tourney" role="tabpanel" aria-labelledby="nav-config-tab">
-        <span class="title letter-spacing--none title--pl-sm">Мои турниры</span>
+      <div class="tab-pane" id="nav-tourney" role="tabpanel" aria-labelledby="nav-config-tab">
+       
+
         <div class="container">
+             <span class="title letter-spacing--none title--pl-sm">Мои турниры</span>
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#stage_1">Текущие</a>
@@ -289,29 +293,29 @@
                             <a class="nav-link" data-toggle="tab" href="#stage_2">Прошедшие</a>
                         </li>
                     </ul>
-              <div class="tab-content">
+                    <div class="tab-content">
                         <div class="tab-pane fade show active" id="stage_1">
                        @if($tournaments != null)
-                       <table class="table " style="font-size: 16px;">
-                                <thead>
+                            <table class="table" style="font-size: 16px;">
+                                <thead class=" thead-light">
                                  <tr>
-                                  <th class="col">Матчи</th>
-                                  <th class="col">Формат</th>
-                                  <th class="col">Команда</th>
-                                  <th class="col">Дата</th>
-                                  <th class="col">Логин</th>
-                                  <th class="col">Пароль</th>
+                                  <td class="col">Матчи</td>
+                                  <td class="col">Формат</td>
+                                  <td class="col">Команда</td>
+                                  <td class="col">Дата</td>
+                                  <td class="col">Логин</td>
+                                  <td class="col">Пароль</td>
                                 </tr>
                               </thead>
                 @foreach($tournaments as $tournament)
                 <tbody>  
-                <tr >
-                  <td><b>{{$tournament->name}} .{{$tournament->stage_name}}.{{$tournament->group_name}}.{{$tournament->match_name}}</b></td>
-                  <td >{{$tournament->format}}</td>
-                  <td >{{$tournament->team_name}}</td>
-                  <td >{{$tournament->date}}</td>
-                  <td >{{$tournament->login}}</td>
-                  <td >{{$tournament->password}}</td>
+                <tr class="">
+                  <td class=""><b>{{$tournament->name}} .{{$tournament->stage_name}}.{{$tournament->group_name}}.{{$tournament->match_name}}</b></td>
+                  <td class="">{{$tournament->format}}</td>
+                  <td class="">{{$tournament->team_name}}</td>
+                  <td class="">{{$tournament->date}}</td>
+                  <td class="">{{$tournament->login}}</td>
+                  <td class="">{{$tournament->password}}</td>
                 </tr>
                 </tbody>
                 @endforeach
@@ -326,16 +330,16 @@
                                 <thead class=" thead-light">
                                
                                  <tr>
-                                  <th class="col">Матчи</th>
-                                  <th class="col">Формат</th>
-                                  <th class="col">Команда</th>
-                                  <th class="col">Дата</th>
+                                  <td class="col">Матчи</td>
+                                  <td class="col">Формат</td>
+                                  <td class="col">Команда</td>
+                                  <td class="col">Дата</td>
                                     </tr>
                                      </thead>
                 @foreach($tournaments_old as $tournament)
                 <tbody>
                   <tr>
-                     <td class=""><b>{{$tournament->name}} .{{$tournament->stage_name}}.{{$tournament->group_name}}.{{$tournament->match_name}}</b></td>
+                    <td class=""><b>{{$tournament->name}} .{{$tournament->stage_name}}.{{$tournament->group_name}}.{{$tournament->match_name}}</b></td>
                      <td class="">{{$tournament->format}}</td>
                      <td class="">{{$tournament->team_name}}</td>
                      <td class="">{{$tournament->tournament_start}}</td>  
@@ -363,31 +367,34 @@
        @else  <?php $disabled = 'disabled';
                     $ban = 'ban';?>
      @endif
+     
       @include('main.profile.settings')
+        
 
+         
         </div>
       </div>
     </div>
-  
+  </div>
 </main>
 
 
  <div class="modal fade" id="ModalLogo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                     <div class="modal-dialog" role="document">
 
-                        <div class="modal-content" class="size_16">
+                        <div class="modal-content" style="font-size: 16px;">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLongTitle">Загрузить аватар</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body" class="size_16">
+                            <div class="modal-body" style="font-size: 16px;">
                                 <form action="{{route('save_photo')}}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <input type="file" class="form-control input__profile subtitle fw-normal" id="fileInput" name="logo">
 
-                                     <button type="btn" class="btn nav-link btn--orange mt-4">Сохранить</button>
+                                    <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -401,7 +408,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle" class="size_16">Сообщение</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle" style="font-size:16px;">Сообщение</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -410,11 +417,11 @@
 
         <form method="POST" action="{{route('query', $user_id)}}">
           @csrf
-          <textarea name="text" id="" cols="50" rows="10" class="size_16"></textarea>
+          <textarea name="text" id="" cols="50" rows="10" style="font-size:16px;"></textarea>
 
       </div>
       <div class="modal-footer">
-      <button type="btn" class="btn nav-link btn--orange mt-4">Сохранить</button>
+        <button type="btn" class="btn btn-primary" style="font-size:16px;">Сохранить</button>
         </form>
       </div>
     </div>
@@ -423,7 +430,7 @@
 
 <div class="modal fade" id="changePassword" tabindex="-1" role="dialog" aria-labelledby="changePassword" aria-hidden="true">
 <div class="alert alert-danger print-error-msg" style="display:none">
-        <ul class="size_16"></ul>
+        <ul style="font-size: 16px;"></ul>
     </div>
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -434,11 +441,14 @@
         </button>
       </div>
       <div class="modal-body">
-      <form class="size_16">
+
+     
+       
+      <form style="font-size: 16px;">
         {{ csrf_field() }}
         <div class="form-group">
             <label>Старый пароль</label>
-            <input type="text" style="font-size: 16px;" name="oldpassword" class="form-control" placeholder="">
+            <input type="text" " name="oldpassword" class="form-control subtitle" placeholder="">
         </div>
         <div class="form-group">
             <label>Новый пароль</label>
@@ -449,7 +459,7 @@
             <input id="password-confirm" type="password" class="form-control subtitle" name="password_confirmation" required autocomplete="new-password">
         </div>
         <div class="form-group">
-        <button type="btn" class="btn  submit-btn  mt-4 btn-submit">Сохранить</button>
+            <button class="btn  submit-btn  mt-4 btn-submit" style="font-size: 16px;">Сохранить</button>
         </div>
     </form>
       </div>

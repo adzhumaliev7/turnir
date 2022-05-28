@@ -11,7 +11,7 @@
         <th scope="col">Команда</th>
         <th scope="col">Админ</th>
         <th scope="col">Описание</th>
-         <th scope="col">Турнир</th>
+        <th scope="col">Турнир</th>
         <th scope="col">Дата</th>
       </tr>
     </thead>
@@ -22,8 +22,8 @@
         <td>{{$item->name}}</td>
         <td>{{$item->admin}}</td>
         <td>{{$item->descriptions}}</td>
-        <td>{{$item->tournament_name}}</td>
-        <td> {{Carbon\Carbon::parse($item->created_at)->format('d-m-Y')}}</td>
+     <td>{{$item->tournament_name}}</td>
+     <td> {{Carbon\Carbon::parse($item->created_at)->format('d-m-Y')}}</td>
       </tr>
       @endforeach
     </tbody>

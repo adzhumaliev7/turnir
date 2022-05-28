@@ -14,7 +14,7 @@ return [
     */
  
 
-    'timezones' => [
+   'timezones' => [
         'Asia/Almaty'          => "(GMT+06:00) Almaty",
         'Asia/Bishkek'          => "(GMT+06:00) Bishkek",
         'Europe/Kiev'          => "(GMT+02:00) Kyiv",
@@ -133,15 +133,34 @@ return [
     'Pacific/Auckland'     => "(GMT+12:00) Auckland",
     'Pacific/Fiji'         => "(GMT+12:00) Fiji",
     ],
-
-    'countries' => [
-        'Kazakhstan'       => "Kazakhstan",
-        'Kyrgyzstan'             => "Kyrgyzstan",
-        'Russia'            => "Russia",
-        'USA'            => "USA",
-        'Ukraine'            => "Ukraine",
-        'Belarus'   => "Belarus",
+    
+          'countries' => [
+         "Kazakhstan",
+       "Kyrgyzstan",
+       "Uzbekistan",
+         "Russia",
+         "Armenia",
+         'Azerbaijan', 
+         "Ukraine",
+         "Belarus",
+         "Moldova",
+         
+       
+        'Afghanistan', 
+        'Albania', 'Algeria', 
+        'American Samoa', 
+        'Andorra', 'Angola',
+         'Anguilla', 'Antigua and Barbuda',
+        'Argentina',  'Aruba', 
+        'Australia', 
+        'Austria',
+        'Bangladesh',
+        'Barbados', 
+        'Bahamas', 
+        'Bahrain',
+        'Belgium', 'Belize', 'Benin', 'Bermuda', 'Bhutan', 'Bolivia', 'Bosnia and Herzegovina', 'Botswana', 'Brazil', 'British Indian Ocean Territory', 'British Virgin Islands', "USA", 'Brunei Darussalam', 'Bulgaria', 'Burkina Faso', 'Burma', 'Burundi', 'Cambodia', 'Cameroon', 'Canada', 'Cape Verde', 'Cayman Islands', 'Central African Republic', 'Chad', 'Chile', 'China', 'Christmas Island', 'Cocos (Keeling) Islands', 'Colombia', 'Comoros', 'Congo-Brazzaville', 'Congo-Kinshasa', 'Cook Islands', 'Costa Rica', 'Croatia', 'Cyprus', 'Czech Republic', 'Denmark', 'Djibouti', 'Dominica', 'Dominican Republic', 'East Timor', 'Ecuador', 'El Salvador', 'Egypt', 'Equatorial Guinea', 'Eritrea', 'Estonia', 'Ethiopia', 'Falkland Islands', 'Faroe Islands', 'Federated States of Micronesia', 'Fiji', 'Finland', 'France', 'French Guiana', 'French Polynesia', 'French Southern Lands', 'Gabon', 'Gambia', 'Georgia', 'Germany', 'Ghana', 'Gibraltar', 'Greece', 'Greenland', 'Grenada', 'Guadeloupe', 'Guam', 'Guatemala', 'Guernsey', 'Guinea', 'Guinea-Bissau', 'Guyana', 'Haiti', 'Heard and McDonald Islands', 'Honduras', 'Hong Kong', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iraq', 'Ireland', 'Isle of Man', 'Israel', 'Italy', 'Jamaica', 'Japan', 'Jersey', 'Jordan',  'Kenya', 'Kiribati', 'Kuwait',  'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Libya', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macau', 'Macedonia', 'Madagascar', 'Malawi', 'Malaysia', 'Maldives', 'Mali', 'Malta', 'Marshall Islands', 'Martinique', 'Mauritania', 'Mauritius', 'Mayotte', 'Mexico', 'Monaco', 'Mongolia', 'Montenegro', 'Montserrat', 'Morocco', 'Mozambique', 'Namibia', 'Nauru', 'Nepal', 'Netherlands', 'New Caledonia', 'New Zealand', 'Nicaragua', 'Niger', 'Nigeria', 'Niue', 'Norfolk Island', 'Northern Mariana Islands', 'Norway', 'Oman', 'Pakistan', 'Palau', 'Panama', 'Papua New Guinea', 'Paraguay', 'Peru', 'Philippines', 'Pitcairn Islands', 'Poland', 'Portugal', 'Puerto Rico', 'Qatar', 'R?union', 'Romania',  'Rwanda', 'Saint Barth?lemy', 'Saint Helena', 'Saint Kitts and Nevis', 'Saint Lucia', 'Saint Martin', 'Saint Pierre and Miquelon', 'Saint Vincent', 'Samoa', 'San Marino', 'Saudi Arabia', 'Senegal', 'Serbia', 'Seychelles', 'Sierra Leone', 'Singapore', 'Sint Maarten', 'Slovakia', 'Slovenia', 'Solomon Islands', 'Somalia', 'South Africa', 'South Georgia', 'South Korea', 'Spain', 'Sri Lanka', 'Sudan', 'Suriname', 'Svalbard and Jan Mayen', 'Sweden', 'Swaziland', 'Switzerland', 'Syria', 'Taiwan',  'Tanzania', 'Thailand', 'Togo', 'Tokelau', 'Tonga', 'Trinidad and Tobago', 'Tunisia', 'Turkey', 'Turkmenistan', 'Turks and Caicos Islands', 'Tuvalu', 'Uganda','United Arab Emirates', 'United Kingdom', 'United States', 'Uruguay', 'Vanuatu', 'Vatican City', 'Vietnam', 'Venezuela', 'Wallis and Futuna', 'Western Sahara', 'Yemen', 'Zambia', 'Zimbabwe'
     ],
+    
     
     'name' => env('APP_NAME', 'SHOWMATCH'),
 
@@ -197,7 +216,7 @@ return [
     |
     */
 
-    'timezone' => 'Asia',
+    'timezone' => 'Asia/Bishkek',
 
     /*
     |--------------------------------------------------------------------------
@@ -296,8 +315,6 @@ return [
          * Package Service Providers...
          */
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
-        UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -307,9 +324,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-
-        
-        Barryvdh\Elfinder\ElfinderServiceProvider::class
+      
     ],
 
     /*
@@ -364,9 +379,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
-        	
-        'Image' => Intervention\Image\Facades\Image::class,
-
     ],
 
 ];

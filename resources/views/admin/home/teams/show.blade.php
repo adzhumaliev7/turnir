@@ -95,15 +95,13 @@
                 <td>{{$member->user->nickname}}</td>
                 <td>{{$member->user->game_id}}</td>
                 <td>
-                    
                 @if($member->user->status  == null)
                     @if($member->user->verified == 1)  Активирован
                     @else 
                     Не активирован 
                     @endif
                     /
-
-                    @if($member->user->nickname != null && $member->user->game_id != null)
+                      @if($member->user->nickname != null && $member->user->game_id != null)
                     Игровой
                     @else 
                     Не игрвой
@@ -200,7 +198,7 @@
         </div>
 
 
-        <hr style="background-color: orange">
+          <hr style="background-color: orange">
         <h3 class="text-center">Логи</h3>
         <table class="table table-bordered">
             <thead>
@@ -214,19 +212,18 @@
                 <th scope="col">Кто</th>
             </tr>
             </thead>
-        <tbody>
+            <tbody>
 
             @foreach($logs as $log)
                 <tr>
                     <th scope="row">{{$log->id}}</th>
                     <td>
                         @if($log->created_at)
-                            {{$log->created_at->format('Y.m.d')}}
+                            {{$log->created_at->format('d.m.Y H:i:s')}}
                         @endif
                     </td>
                     <td>
-                      
-                        {{$log->type->description }}
+                        {{$log->type->description}}
                     </td>
                     <td>  {{$log->description ? $log->description : '' }} </td>
                     <td>

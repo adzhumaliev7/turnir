@@ -17,11 +17,6 @@ class TeamController extends Controller
 {
     public function index($id,$us)
     {
-       /*  $tems =Team::with(['teammates' => function($q) {
-            $q->where('status', 1);
-        } ])->get();
-        return view('poligon', compact('tems')); */
-
         $user_id = Auth::user()->id;
         $mail = Auth::user()->email;
         $data = Team::getTeamById2($id, $us);
@@ -32,16 +27,8 @@ class TeamController extends Controller
         $networks = Team::getTeamNetworks($id);
         $matches = Team::getMatches($id);
         $tournaments = Team::getTournaments($id);
-
-        /*  $tournaments = Team::find($id)->order()->where('status', 'accepted')->with('turnir')->addSelect([
-            'members' => User::select('name')
-                ->join('tournaments_members', 'tournaments_members.user_id', '=', 'users.id')
-                ->whereColumn('team_id', 'tournamets_team.team_id')
-                ->whereColumn('tournaments_members.tournament_id', 'tournamets_team.tournament_id')
-                ->select(DB::raw('GROUP_CONCAT(name)'))
-                ->take(1),
-        ])->get();  */
-      // dd($tournaments);
+           $active =  Auth::user()->verified;
+        
         return view('main.team', [
             'data' => $data,
             'members' => $members,
@@ -53,16 +40,16 @@ class TeamController extends Controller
             'tournaments' => $tournaments,
             'matches' => $matches,
             'mail' => $mail,
-            'link' => $link
+            'link' => $link,
+			'active' => $active,
         ]);
     }
     public function addMembers($link, $team_id)
     {
-
-      
-        $mail = Auth::user()->email;
+        
+         $mail = Auth::user()->email;
        $link_  = Team::getLink($team_id);
- 
+    $active =  Auth::user()->verified;
         if($link == $link_){
          $team = Team::getTeamName($team_id);
         $user_id = Auth::user()->id;
@@ -76,7 +63,8 @@ class TeamController extends Controller
             'team' => $team,
             'id' => $team_id, 
             'status' =>$status,
-            'mail' =>$mail
+             'mail' =>$mail,
+			'active' => $active,
         ]); }
         else 
     		abort('404');
@@ -93,18 +81,24 @@ class TeamController extends Controller
     public function addMembersApply($id)
     {
         
-        $user_id = Auth::user()->id;
-        $data = array(
-            'team_id' => $id,
-            'user_id' => $user_id,
-            'role' => 'member'
-        );
-        $status = Auth::user()->status;
-        if ($status == null) {
-            Team::addMembers($data);
+          $user_id = Auth::user()->id;
+        if(Team::checkHasTeam($id, $user_id) == false)
+        {
+            $data = array(
+                'team_id' => $id,
+                'user_id' => $user_id,
+                'role' => 'member'
+            );
+            $status = Auth::user()->status;
+            if ($status == null) {
+                Team::addMembers($data);
+                return redirect(route('team', [$id, $user_id]));
+            } else
+                return redirect()->back(); 
+        }else {
+            \Session::flash('flash_meassage_delete', 'У вас уже есть команда');
             return redirect(route('team', [$id, $user_id]));
-        } else
-            return redirect()->back(); 
+        }
     }
 
     public function deleteMember($id,$team_id)
@@ -123,7 +117,7 @@ class TeamController extends Controller
         $team = Team::findOrFail($team_id);
         Team::addAdmin($id, $team_id);
       
-        $team->logs()->create(['old_value' => $oldadmin, 'new_value' => $id, 'log_type' => 1,'user_id' => Auth::id()]);
+       $team->logs()->create(['old_value' => $oldadmin, 'new_value' => $id, 'log_type' => 1,'user_id' => Auth::id()]);
         return redirect()->back(); 
     }
     public function exitTeam($id, $team_id)

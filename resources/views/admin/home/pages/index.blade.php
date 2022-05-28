@@ -33,7 +33,7 @@
                         <td>{{$page->title}}</td>
                     
                         <td><a href="{{route('admin.pages.edit', $page->id)}}" type="button" class="btn btn-primary">Реадактировать</a> 
-                        <a href="{{route('admin.pages.delete', $page->id)}}" type="button" class="btn btn-danger">Удалить</a> 
+                       <a href="{{route('admin.pages.delete', $page->id)}}" type="button" class="btn btn-danger">Удалить</a> 
                       </tr>
                       @endforeach
                   

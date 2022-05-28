@@ -39,6 +39,7 @@ class EditTournamentRequest extends FormRequest
             'ligue' => '',
             'rule' => '',
             'header' => '',
+			 'meta' => '',
             'tournament_start' => '',
             'games_time' => '',  
         ];

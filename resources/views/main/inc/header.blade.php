@@ -2,12 +2,17 @@
     <div class="account-pubg__bg account__bg d-flex justify-content-end px-4">
         <div class="dropdown">
             @if(Auth::check())
+			  @if($active != 1)
+                    <a href="{{route('confirm_message')}}" class=" header__txt button--none " type="button">
+                     Отправить сообщение для активации
+                    </a>
+                    @endif
                 <button class="header__line header__txt button--none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     {{Auth::user()->email}}
                 </button>
             @else
-            
-                <nav class="nav" >
+               
+                    <nav class="nav" >
                 <a href="{{route('user.login')}}" class="flex-sm-fill text-sm-center text-light nav-link" type="button">
                     Войти
                 </a>
@@ -15,7 +20,6 @@
                     Регистрация
                 </a>
                 </nav>
-
             @endif
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a class="dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
@@ -23,7 +27,7 @@
             </ul>
         </div>
     </div>
-    <nav class="mobile-menu">
+     <nav class="mobile-menu">
               <div class="mobile-menu__header">
                 <a
                   class="mobile-menu__a"
@@ -53,7 +57,7 @@
                   </li>
                 </ul>
               </div>
-            </nav>         
+            </nav> 
     <nav class=" navbar navbar-expand-md navbar p-3 bg-body rounded bg--none navbar-z">
         <div class=" container-fluid header-indent">
             <a class="navbar-brand title text-uppercase logo-indent-mr text-dark pubg-hover px-2" href="{{route('main')}}">bigplay</a>
@@ -66,12 +70,13 @@
                         <a class="nav__link-active nav-link nav-white pubg-hover" aria-current="page" href="{{route('tournament')}}">Турниры</a>
                     </li>
 
+               
 
                     <li class="nav-item nav-item--active ">
                         <a class=" nav-link nav-white pubg-hover" aria-current="page" href="{{route('main.help')}}">Помощь</a>
                     </li>
-                    <li class="nav-item nav-item--active ">
-                        <a class=" nav-link nav-white pubg-hover" aria-current="page" href="{{route('news')}}">Новости</a>
+                     <li class="nav-item nav-item--active ">
+                         <a class=" nav-link nav-white pubg-hover" aria-current="page" href="{{route('news')}}">Новости</a>
                     </li>
                     <li class="nav-item nav-item--active ">
                         <a class=" nav-link nav-white pubg-hover" aria-current="page" href="{{route('feedback')}}">Обратная связь</a>

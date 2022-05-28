@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 06 2022 г., 17:02
--- Версия сервера: 10.4.19-MariaDB
+-- Время создания: Фев 10 2022 г., 12:46
+-- Версия сервера: 10.5.11-MariaDB
 -- Версия PHP: 7.4.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -110,26 +110,21 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (8, '2021_11_27_091503_team', 5),
 (9, '2021_11_27_123328_teams_members', 6),
 (10, '2021_12_07_093441_tournament', 7),
+(11, '2021_12_10_124641_tournament_teams', 8),
 (12, '2021_12_15_080556_help', 9),
 (13, '2022_01_04_135333_feedback', 10),
 (14, '2022_01_06_133328_test', 11),
+(15, '2022_01_07_075237_tournament_team', 12),
 (16, '2022_01_07_114341_stage_2', 13),
 (17, '2022_01_08_062352_stage_3', 14),
+(18, '2022_01_17_083957_team_members', 15),
 (19, '2022_01_18_120003_add_verified_token', 16),
 (20, '2022_01_21_064958_winners', 17),
 (21, '2022_01_21_103649_tournament_results', 18),
 (22, '2022_01_26_062840_orders', 19),
 (23, '2022_01_26_130809_orders_to_changteam', 20),
 (24, '2022_01_27_103825_teams_networks', 21),
-(25, '2022_02_02_222722_users_logo', 22),
-(62, '2022_02_11_130223_stages', 23),
-(63, '2022_02_11_132642_tournament_groups', 23),
-(64, '2022_02_15_231230_tournament_group_teams', 23),
-(65, '2022_02_17_095113_matches', 23),
-(67, '2022_02_17_201424_create_stages_group_table', 23),
-(70, '2022_01_07_075237_tournament_team', 25),
-(71, '2022_01_17_083957_team_members', 26),
-(72, '2022_02_17_100301_matches_results', 27);
+(25, '2022_02_02_222722_users_logo', 22);
 
 -- --------------------------------------------------------
 
@@ -160,9 +155,31 @@ CREATE TABLE `model_has_roles` (
 --
 
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
+(1, 'App\\Models\\User', 2),
 (1, 'App\\Models\\User', 3),
+(1, 'App\\Models\\User', 4),
+(1, 'App\\Models\\User', 5),
+(1, 'App\\Models\\User', 7),
+(1, 'App\\Models\\User', 8),
+(1, 'App\\Models\\User', 9),
+(1, 'App\\Models\\User', 10),
+(1, 'App\\Models\\User', 11),
+(1, 'App\\Models\\User', 12),
+(1, 'App\\Models\\User', 13),
+(1, 'App\\Models\\User', 15),
+(1, 'App\\Models\\User', 16),
+(1, 'App\\Models\\User', 17),
+(1, 'App\\Models\\User', 18),
+(1, 'App\\Models\\User', 19),
+(1, 'App\\Models\\User', 20),
+(1, 'App\\Models\\User', 21),
+(1, 'App\\Models\\User', 22),
+(1, 'App\\Models\\User', 23),
+(1, 'App\\Models\\User', 24),
+(1, 'App\\Models\\User', 25),
 (2, 'App\\Models\\User', 1),
-(3, 'App\\Models\\User', 2);
+(3, 'App\\Models\\User', 6),
+(3, 'App\\Models\\User', 14);
 
 -- --------------------------------------------------------
 
@@ -184,7 +201,23 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `user_id`, `text`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'qqq', 1, NULL, NULL);
+(1, 1, 'aaaaa', 1, NULL, NULL),
+(2, 7, 'asaddd', 1, NULL, NULL),
+(3, 1, 'eewwefwef', 1, NULL, NULL),
+(4, 13, 'еарар', 1, NULL, NULL),
+(5, 1, '66', 1, NULL, NULL),
+(6, 1, 'y', 1, NULL, NULL),
+(7, 1, 'y', 1, NULL, NULL),
+(8, 1, '32r2r32', 1, NULL, NULL),
+(9, 1, 'yyyy', 1, NULL, NULL),
+(10, 1, '5675', 1, NULL, NULL),
+(11, 1, '7777', 1, NULL, NULL),
+(12, 1, '6666', 1, NULL, NULL),
+(13, 7, '5555', 1, NULL, NULL),
+(14, 1, '1313', 1, NULL, NULL),
+(15, 7, '123', 0, NULL, NULL),
+(16, 1, '44', 1, NULL, NULL),
+(17, 1, 'yyy', 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -200,6 +233,24 @@ CREATE TABLE `orders_team` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `orders_team`
+--
+
+INSERT INTO `orders_team` (`id`, `team_id`, `name`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'зАНГЕЦУ', 2, NULL, NULL),
+(2, 7, 'ytturu', 2, NULL, NULL),
+(3, 8, 'qqqqq', 1, NULL, NULL),
+(4, 3, 'asdwdwd', 1, NULL, NULL),
+(5, 3, 'aaaaaaaaa', 1, NULL, NULL),
+(6, 3, '12313123', 1, NULL, NULL),
+(7, 1, '22131', 2, NULL, NULL),
+(8, 1, '111111', 2, NULL, NULL),
+(9, 1, '22424', 2, NULL, NULL),
+(10, 10, '2222', 1, NULL, NULL),
+(11, 1, 'туц', 2, NULL, NULL),
+(12, 10, '22222222222222222222222222', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -282,35 +333,6 @@ CREATE TABLE `role_has_permissions` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `stages`
---
-
-CREATE TABLE `stages` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `stage_number` int(11) DEFAULT NULL,
-  `stage_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tournament_id` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `stages_group`
---
-
-CREATE TABLE `stages_group` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `group_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `stages_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Структура таблицы `stage_1`
 --
 
@@ -325,6 +347,13 @@ CREATE TABLE `stage_1` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `stage_1`
+--
+
+INSERT INTO `stage_1` (`id`, `tournament_id`, `team_id`, `status`, `group_id`, `points`, `winner`, `created_at`, `updated_at`) VALUES
+(1, 2, 6, NULL, 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -375,7 +404,6 @@ CREATE TABLE `team` (
   `role` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `country` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `logo` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -384,9 +412,14 @@ CREATE TABLE `team` (
 -- Дамп данных таблицы `team`
 --
 
-INSERT INTO `team` (`id`, `user_id`, `user_name`, `name`, `role`, `country`, `logo`, `link`, `created_at`, `updated_at`) VALUES
-(1, '1', NULL, 'test', 'captain', NULL, NULL, 'UG0xdEN0WkcwQWt6NTlST2Z1SlFRQk9Ia1VXSWE1Umg=', NULL, NULL),
-(2, '3', NULL, 'PUBG', 'captain', NULL, NULL, 'ODFaZUZVakhOUnRYSHI4NzRVTERPalZaT0lUZ1dCalA=', NULL, NULL);
+INSERT INTO `team` (`id`, `user_id`, `user_name`, `name`, `role`, `country`, `logo`, `created_at`, `updated_at`) VALUES
+(1, '1', NULL, '22424', 'captain', 'Kazakhstan', NULL, NULL, NULL),
+(2, '8', NULL, 'команда 2\\', 'captain', NULL, NULL, NULL, NULL),
+(3, '9', NULL, '12313123', 'captain', 'Kazakhstan', NULL, NULL, NULL),
+(6, '13', NULL, '1111212', 'captain', 'Kazakhstan', NULL, NULL, NULL),
+(8, '12', NULL, 'qeqweqwe', 'captain', 'Kazakhstan', NULL, NULL, NULL),
+(9, '15', NULL, 'aaaaaaaaa', 'captain', NULL, NULL, NULL, NULL),
+(10, '7', NULL, '22222222222222222222222222', 'captain', 'Kazakhstan', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -406,6 +439,13 @@ CREATE TABLE `teams_networks` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `teams_networks`
+--
+
+INSERT INTO `teams_networks` (`id`, `team_id`, `insta`, `discord`, `vk`, `facebook`, `youtube`, `telegram`, `created_at`, `updated_at`) VALUES
+(1, 3, '@wwwedq', 'aaaayyr', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -428,10 +468,13 @@ CREATE TABLE `team_members` (
 
 INSERT INTO `team_members` (`id`, `team_id`, `user_id`, `role`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, 'captain', NULL, NULL),
-(3, 2, 3, 'captain', NULL, NULL),
-(4, 2, 4, 'member', NULL, NULL),
-(5, 2, 5, 'member', NULL, NULL),
-(6, 2, 6, 'member', NULL, NULL);
+(2, 2, 8, 'captain', NULL, NULL),
+(6, 3, 9, 'captain', NULL, NULL),
+(9, 6, 13, 'captain', NULL, NULL),
+(12, 8, 12, 'captain', NULL, NULL),
+(22, 9, 15, 'captain', NULL, NULL),
+(23, 1, 15, 'member', NULL, NULL),
+(24, 10, 7, 'captain', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -466,6 +509,15 @@ CREATE TABLE `tournaments` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `tournaments`
+--
+
+INSERT INTO `tournaments` (`id`, `name`, `tournament_start`, `country`, `countries`, `format`, `games_time`, `timezone`, `file_label`, `description`, `start_reg`, `slot_kolvo`, `end_reg`, `rule`, `layouts`, `description2`, `date_t`, `time_t`, `file_2`, `price`, `status`, `active`, `created_at`, `updated_at`) VALUES
+(1, 'Турнир1', '2022-01-26', 'Киргизия', 'Киргизия', '11', '16:26:00', '(GMT-11:00) Samoa', 'screenshot.png', 'ффффф', '2022-01-21', 32, '2022-01-24', '1) без матов 2) че то там 3) еще че то там', NULL, NULL, NULL, NULL, NULL, '100', 'save', 1, NULL, NULL),
+(2, 'Турири 2', '2023-01-10', 'Киргизия', 'Киргизия', '11', '17:13:00', '(GMT-09:00) Alaska', 'screenshot.png', '1111', '2022-01-23', 21, '2023-01-11', '1) без матов 2) че то там 3) еще че то там', NULL, NULL, NULL, NULL, NULL, '111', 'save', 1, NULL, NULL),
+(3, 'wrwerewrwer', NULL, 'Киргизия', 'Киргизия', '11', NULL, '(GMT-11:00) Samoa', 'ffc311ee5ad0061e4aa74336f51f3980.png', 'qwewe', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'save', 1, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -474,80 +526,20 @@ CREATE TABLE `tournaments` (
 
 CREATE TABLE `tournaments_members` (
   `id` int(10) UNSIGNED NOT NULL,
-  `tournament_id` int(10) UNSIGNED NOT NULL,
-  `team_id` int(10) UNSIGNED NOT NULL COMMENT 'Id команды из таблицы team',
-  `user_id` int(10) UNSIGNED NOT NULL,
+  `tournament_id` int(11) NOT NULL,
+  `team_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- --------------------------------------------------------
-
 --
--- Структура таблицы `tournament_groups`
+-- Дамп данных таблицы `tournaments_members`
 --
 
-CREATE TABLE `tournament_groups` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `group_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tournament_id` int(10) UNSIGNED NOT NULL,
-  `stage_id` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `tournament_group_teams`
---
-
-CREATE TABLE `tournament_group_teams` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `group_id` int(10) UNSIGNED NOT NULL,
-  `tournament_id` int(10) UNSIGNED NOT NULL,
-  `team_id` int(10) UNSIGNED NOT NULL COMMENT 'Айди команды таблица team',
-  `stage_id` int(10) UNSIGNED NOT NULL,
-  `kills_pts` int(11) DEFAULT NULL,
-  `place_pts` int(11) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `tournament_matches`
---
-
-CREATE TABLE `tournament_matches` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `match_name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `group_id` int(10) UNSIGNED NOT NULL,
-  `tournament_id` int(10) UNSIGNED NOT NULL,
-  `stage_id` int(10) UNSIGNED NOT NULL,
-  `login` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `tournament_matches_results`
---
-
-CREATE TABLE `tournament_matches_results` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `match_id` int(10) UNSIGNED NOT NULL,
-  `team_id` int(10) UNSIGNED NOT NULL COMMENT 'Айди игрока из таблицы tournaments_members',
-  `tournament_group_teams_id` int(10) UNSIGNED NOT NULL,
-  `kills_pts` int(11) DEFAULT NULL,
-  `place_pts` int(11) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO `tournaments_members` (`id`, `tournament_id`, `team_id`, `user_id`, `created_at`, `updated_at`) VALUES
+(2, 2, 2, 7, NULL, NULL),
+(3, 2, 6, 13, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -573,12 +565,21 @@ CREATE TABLE `tournament_results` (
 
 CREATE TABLE `tournamets_team` (
   `id` int(10) UNSIGNED NOT NULL,
-  `tournament_id` int(10) UNSIGNED NOT NULL,
-  `team_id` int(10) UNSIGNED NOT NULL COMMENT 'Поле из team',
+  `tournament_id` int(11) NOT NULL,
+  `team_id` int(11) NOT NULL,
   `status` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `group_id` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `tournamets_team`
+--
+
+INSERT INTO `tournamets_team` (`id`, `tournament_id`, `team_id`, `status`, `group_id`, `created_at`, `updated_at`) VALUES
+(1, 2, 2, 'processed', NULL, NULL, NULL),
+(2, 2, 6, 'accepted', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -603,12 +604,26 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `name`, `password`, `verified`, `token`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'admin@gmail.com', 'admin', '$2y$10$LHNCR8qycEDQestU4XL63eBDEAIGiVX642VtHI7ldsPUsxL892TmC', 1, 'HuBMPmW2snOmjLFv3ZOXaX3FzeCrFp', NULL, '2022-03-05 04:50:59', '2022-03-05 04:50:59'),
-(2, 'moder@gmail.com', NULL, '$2y$10$kX5DFF3X8JdfjQjrsMWYM.hHN8PvN79uELU31UQ8r8HY2KmbDaKxq', 0, 'Ji6qFcRjLPTLKhHgaFRMaNC2dgYaCu', NULL, '2022-03-05 08:32:56', '2022-03-05 08:32:56'),
-(3, 'aidar300799@gmail.com', 'Aidar', '$2y$10$CQR.JVwmOnkBV4Nf5Sm4RuCXoxwpJ.EDdB.rmOkXp.5RBTPYoktum', 1, NULL, NULL, '2022-03-05 10:42:09', '2022-03-05 10:42:33'),
-(4, 'test', 'test', '', 0, NULL, NULL, NULL, NULL),
-(5, 'test2', 'test2', '', 0, NULL, NULL, NULL, NULL),
-(6, 'test3', 'test3', '', 0, NULL, NULL, NULL, NULL);
+(1, 'admin@gmail.com', 'Admin', '$2y$10$MxF60gU1oV1mph50Yu02IOWdgoSgcy4SRllvtbH6jHnjHnnZ4AHqG', 1, NULL, NULL, '2022-01-22 03:11:18', '2022-01-22 03:11:18'),
+(4, 'aidar11300799@gmail.com', 'aww', '$2y$10$pSAyFl992mQV79CiQcHPK.6htkPEF.Lp0RGIr1QpRiu10GybQIVo2', 0, 'Rmufr5YfStFZZZ7cwsLk6AzClzcwA2', NULL, '2022-01-24 03:49:04', '2022-01-24 03:49:04'),
+(7, 'adzhumaliev7@mail.ru', 'aidar', '$2y$10$7RIxWAZYwbAFuuW59jomo.bQw7zSNYhRzaJI257tbeTFimqMYw6S.', 1, 'a1jT1P5RWN6Kx2PrZgqBRyAHKsl2HM', NULL, '2022-01-26 02:08:56', '2022-01-26 02:08:56'),
+(9, 'aidar300799@gmail.com', 'Айдар Талантбекович Джумалиев', '$2y$10$hkxo189wFurjTE2Z6Shspuuxo/H2UupHm3Q/Ru49D0YfUPjhBzJ5y', 1, 'WCFzQ6ExcLAYnagXazhuXgWHZzVM04', NULL, '2022-02-01 03:34:04', '2022-02-01 03:34:04'),
+(10, 'aiadar300799@gmail.com', 'Айдар Талантбекович Джумалиев', '$2y$10$CqZzHS4iOYysivSLTnV4iuaKN3sJORE26CBgX/ma1jxTrZqHzQP3W', 0, 'isr6WbpCBM0SMp5CS5JU2gstNqCoBy', NULL, '2022-02-01 07:19:34', '2022-02-01 07:19:34'),
+(11, 'aidar30110799@gmail.com', 'Айдар Талантбекович Джумалиев', '$2y$10$LbKYh6oolSpRODZk.ahDo.3mlTpwUniOLqjA9BVyHXZnSMg8Q7FD6', 1, 'v0BPdFN66SeJkVQZN0AzERH603plwq', NULL, '2022-02-02 10:46:20', '2022-02-02 10:46:20'),
+(12, 'test@gmail.com', 'test', '$2y$10$5vW44cmBm28t4DGZzxrQC.9wHTwjr96M5ouwVSsm3zFjRnb6JDvfO', 1, '3rVdTHGQ5YkKxiJRZ3WPzpYt3ciVMg', NULL, '2022-02-03 02:48:09', '2022-02-03 02:48:09'),
+(13, 'test1@gmail.com', 'test1', '$2y$10$9X.Meya/UBVC56UL5WVdXuwLqWicmm8wNp9T7k9suTk0RMi2myFzm', 1, '', NULL, '2022-02-04 09:07:59', '2022-02-04 09:07:59'),
+(14, 'moderator1@gmail.com', NULL, '$2y$10$JOhZVzqGCwHgPqEMSu1DReop6QzYE9vbmHqjsGtwQam83c5qYWmL.', 0, 'BnHzWeYfHWfsGvK5gQTpkZuPypplWP', NULL, '2022-02-05 07:49:20', '2022-02-05 07:49:20'),
+(15, 'test10@gmail.com', 'test10@gmail.com', '$2y$10$HHw5UhtLLqhHIAa3d6WrBueVbvwV42IgvDoJkNvlqY0HL2VGEUjxu', 1, 'XoXt1XZiyfw7VVFekYp8Fi8zruBiom', NULL, '2022-02-05 11:17:51', '2022-02-05 11:17:51'),
+(16, 'aidar30079911@gmail.com', 'Айдар Талантбекович Джумалиев', '$2y$10$xtIlZW84JfNOYh./PQDT0.LQCPQf6dAIIpaG7MjS5sTVsqY4jlyFi', 0, 'fUlllBlALeNXNqs3bmcDM6ngWPVnHv', NULL, '2022-02-06 12:42:05', '2022-02-06 12:42:05'),
+(17, 'aidar30qwe9@gmail.com', 'Айдар Талантбекович Джумалиев', '$2y$10$64U9nAUVEzDzmM2Zin02yuYZoPRsmheUlgYTmC58AYJWdHABdnAh6', 0, 'SfuDg6FepPaDrQifb87E4UWEqTqqbK', NULL, '2022-02-06 12:44:34', '2022-02-06 12:44:34'),
+(18, 'aidar300asdddwq799@gmail.com', 'Айдар Талантбекович Джумалиев', '$2y$10$8wrth7cfKCPax90U/pWCJumjeapvsOJgt5y1PDmrw0T0v1/2RKv4C', 0, 'yr5UMdVKHV7MW54Bd9EaX2dlIHzRKP', NULL, '2022-02-06 12:57:22', '2022-02-06 12:57:22'),
+(19, 'aidar3011110799@gmail.com', 'Айдар Талантбекович Джумалиев', '$2y$10$JkCgidPWhEf6pAYxMsr.f.2Kv0Gm7770bs46osF9qXs2tz/XLfq/K', 0, 'VjrdhSG4OMvhbFJUzIAi4cCrkg1Vsw', NULL, '2022-02-06 12:58:09', '2022-02-06 12:58:09'),
+(20, 'testtest@gmail.com', '111', '$2y$10$EKe34pLLrtGNL2LShvcGjuoFJ0qDDWbhdyaBmW.OsTMD91jtqrlF.', 0, 'ZLtjESLS0EQItTOPs6WNfb7c3VmKSv', NULL, '2022-02-06 12:59:38', '2022-02-06 12:59:38'),
+(21, 'aidar3007222229@gmail.com', 'Айдар Талантбекович Джумалиев', '$2y$10$jzDXJr0XTL.zUpgz9/uKnOB87Dn1/0K1MA1dDu9xsYNh6fqiHsCI.', 0, '5BoJnvw69eNMf7okhynHAUIGdZbtmF', NULL, '2022-02-06 13:03:04', '2022-02-06 13:03:04'),
+(22, 'aidar3eeeee00799@gmail.com', 'Айдар Талантбекович Джумалиев', '$2y$10$NNsXviXpdSCY5uBAWsgAO.yWX490gSPi02D7ZIPyMLAC43w.XHtcW', 0, 'QGB8DNQ2KtGunOCIjApqMZn3BuV8rj', NULL, '2022-02-06 13:03:50', '2022-02-06 13:03:50'),
+(23, 'aidar3007qqwqeqwe99@gmail.com', 'Айдар Талантбекович Джумалиев', '$2y$10$OvAPIFU9XOFoFSHrfPJ9VOpQAzXFhnshtlXO6J04gJyuXCIqgVgdq', 0, 'IrResnTG9UWXCt7pNGZQpV3rvPc46P', NULL, '2022-02-06 13:04:24', '2022-02-06 13:04:24'),
+(24, 'aidar3007111199@gmail.com', 'Айдар Талантбекович Джумалиев', '$2y$10$q7kLhGODuYab7YQ49scLjeX/wyXpSwpHAQ5y.jiDOHMJjsxsJozAS', 0, 'Z0tOtcOrj32UV6b71EIp4lrSsNFjOk', NULL, '2022-02-06 13:05:18', '2022-02-06 13:05:18'),
+(25, 'testnew@gmail.com', 'Айдар', '$2y$10$e.xjs2iInNiQqUfq9Nr/tehSH0Z3/DApyucSvqGmTCy9qC2Q6LNR2', 0, 'qmbzvZej2MhVCWI8AkeAaHNNHtfeDb', NULL, '2022-02-09 10:09:00', '2022-02-09 10:09:00');
 
 -- --------------------------------------------------------
 
@@ -623,6 +638,13 @@ CREATE TABLE `users_logo` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `users_logo`
+--
+
+INSERT INTO `users_logo` (`id`, `user_id`, `photo`, `created_at`, `updated_at`) VALUES
+(1, 1, '768cd605bc77a80d4cdc7b3fd552f803.png', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -656,7 +678,12 @@ CREATE TABLE `users_profile2` (
 --
 
 INSERT INTO `users_profile2` (`id`, `doc_photo`, `doc_photo2`, `phone`, `fio`, `login`, `email`, `country`, `timezone`, `city`, `bdate`, `nickname`, `game_id`, `verification`, `status`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, NULL, NULL, NULL, NULL, NULL, NULL, 'Kazakhstan', '(GMT-11:00) Midway Island', NULL, NULL, NULL, NULL, 'on_check', 1, 1, NULL, NULL);
+(1, 'adcbb5c18a75784261327aec9a0feff1.png', 'ffc311ee5ad0061e4aa74336f51f3980.png', '+996708715281', 'Admin', NULL, 'admin@gmail.com', 'Киргизия1y', '(GMT-11:00) Midway Island', 'Бишкек2', NULL, 'admin', '11111111', 'verified', 1, 1, NULL, NULL),
+(6, 'C:\\OpenServer\\userdata\\temp\\upload\\php45A1.tmp', 'C:\\OpenServer\\userdata\\temp\\upload\\php45C1.tmp', '+996708715281', 'test', 'aasa', 'adzhumaliev7@mail.ru', NULL, '(GMT-11:00) Midway Island', NULL, '2022-02-06', 'aaa', '1232444', 'rejected', 0, 7, NULL, NULL),
+(7, NULL, NULL, '5544546456', NULL, NULL, 'test3@gmail.com', NULL, '(GMT-11:00) Midway Island', 'Бишкек', NULL, 'test 4', '5544546456', 'on_check', 1, 8, NULL, NULL),
+(8, NULL, NULL, NULL, NULL, NULL, 'aidar30110799@gmail.com', NULL, '(GMT-11:00) Midway Island', NULL, '2022-02-02', NULL, NULL, 'on_check', 0, 11, NULL, NULL),
+(9, NULL, 'C:\\OpenServer\\userdata\\temp\\upload\\phpDFA2.tmp', '7yutiti', 'test Admin', 'test1', 'test1@gmail.com', 'Kyrgyzstan', '(GMT-11:00) Midway Island', 'Бишкек', '2022-02-04', 'test1', '2132114545', 'on_check', 1, 13, NULL, NULL),
+(13, NULL, NULL, NULL, 'test Admin', NULL, NULL, 'Kazakhstan', '(GMT-11:00) Midway Island', NULL, NULL, NULL, NULL, 'on_check', 0, 25, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -766,19 +793,6 @@ ALTER TABLE `role_has_permissions`
   ADD KEY `role_has_permissions_role_id_foreign` (`role_id`);
 
 --
--- Индексы таблицы `stages`
---
-ALTER TABLE `stages`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `stages_tournament_id_foreign` (`tournament_id`);
-
---
--- Индексы таблицы `stages_group`
---
-ALTER TABLE `stages_group`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Индексы таблицы `stage_1`
 --
 ALTER TABLE `stage_1`
@@ -826,46 +840,7 @@ ALTER TABLE `tournaments`
 -- Индексы таблицы `tournaments_members`
 --
 ALTER TABLE `tournaments_members`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `tournaments_members_tournament_id_foreign` (`tournament_id`),
-  ADD KEY `tournaments_members_team_id_foreign` (`team_id`),
-  ADD KEY `tournaments_members_user_id_foreign` (`user_id`);
-
---
--- Индексы таблицы `tournament_groups`
---
-ALTER TABLE `tournament_groups`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `tournament_groups_tournament_id_foreign` (`tournament_id`),
-  ADD KEY `tournament_groups_stage_id_foreign` (`stage_id`);
-
---
--- Индексы таблицы `tournament_group_teams`
---
-ALTER TABLE `tournament_group_teams`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `tournament_group_teams_group_id_foreign` (`group_id`),
-  ADD KEY `tournament_group_teams_tournament_id_foreign` (`tournament_id`),
-  ADD KEY `tournament_group_teams_team_id_foreign` (`team_id`),
-  ADD KEY `tournament_group_teams_stage_id_foreign` (`stage_id`);
-
---
--- Индексы таблицы `tournament_matches`
---
-ALTER TABLE `tournament_matches`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `tournament_matches_group_id_foreign` (`group_id`),
-  ADD KEY `tournament_matches_tournament_id_foreign` (`tournament_id`),
-  ADD KEY `tournament_matches_stage_id_foreign` (`stage_id`);
-
---
--- Индексы таблицы `tournament_matches_results`
---
-ALTER TABLE `tournament_matches_results`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `tournament_matches_results_match_id_foreign` (`match_id`),
-  ADD KEY `tournament_matches_results_team_id_foreign` (`team_id`),
-  ADD KEY `tournament_matches_results_tournament_group_teams_id_foreign` (`tournament_group_teams_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `tournament_results`
@@ -877,9 +852,7 @@ ALTER TABLE `tournament_results`
 -- Индексы таблицы `tournamets_team`
 --
 ALTER TABLE `tournamets_team`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `tournamets_team_tournament_id_foreign` (`tournament_id`),
-  ADD KEY `tournamets_team_team_id_foreign` (`team_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `users`
@@ -934,19 +907,19 @@ ALTER TABLE `help`
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT для таблицы `orders_team`
 --
 ALTER TABLE `orders_team`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT для таблицы `permissions`
@@ -967,22 +940,10 @@ ALTER TABLE `roles`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT для таблицы `stages`
---
-ALTER TABLE `stages`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT для таблицы `stages_group`
---
-ALTER TABLE `stages_group`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT для таблицы `stage_1`
 --
 ALTER TABLE `stage_1`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `stage_2`
@@ -1000,55 +961,31 @@ ALTER TABLE `stage_3`
 -- AUTO_INCREMENT для таблицы `team`
 --
 ALTER TABLE `team`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT для таблицы `teams_networks`
 --
 ALTER TABLE `teams_networks`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `team_members`
 --
 ALTER TABLE `team_members`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT для таблицы `tournaments`
 --
 ALTER TABLE `tournaments`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `tournaments_members`
 --
 ALTER TABLE `tournaments_members`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT для таблицы `tournament_groups`
---
-ALTER TABLE `tournament_groups`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT для таблицы `tournament_group_teams`
---
-ALTER TABLE `tournament_group_teams`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT для таблицы `tournament_matches`
---
-ALTER TABLE `tournament_matches`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT для таблицы `tournament_matches_results`
---
-ALTER TABLE `tournament_matches_results`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `tournament_results`
@@ -1060,25 +997,25 @@ ALTER TABLE `tournament_results`
 -- AUTO_INCREMENT для таблицы `tournamets_team`
 --
 ALTER TABLE `tournamets_team`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT для таблицы `users_logo`
 --
 ALTER TABLE `users_logo`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `users_profile2`
 --
 ALTER TABLE `users_profile2`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT для таблицы `winners`
@@ -1108,59 +1045,6 @@ ALTER TABLE `model_has_roles`
 ALTER TABLE `role_has_permissions`
   ADD CONSTRAINT `role_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `role_has_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
-
---
--- Ограничения внешнего ключа таблицы `stages`
---
-ALTER TABLE `stages`
-  ADD CONSTRAINT `stages_tournament_id_foreign` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Ограничения внешнего ключа таблицы `tournaments_members`
---
-ALTER TABLE `tournaments_members`
-  ADD CONSTRAINT `tournaments_members_team_id_foreign` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tournaments_members_tournament_id_foreign` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tournaments_members_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Ограничения внешнего ключа таблицы `tournament_groups`
---
-ALTER TABLE `tournament_groups`
-  ADD CONSTRAINT `tournament_groups_stage_id_foreign` FOREIGN KEY (`stage_id`) REFERENCES `stages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tournament_groups_tournament_id_foreign` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Ограничения внешнего ключа таблицы `tournament_group_teams`
---
-ALTER TABLE `tournament_group_teams`
-  ADD CONSTRAINT `tournament_group_teams_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `tournament_groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tournament_group_teams_stage_id_foreign` FOREIGN KEY (`stage_id`) REFERENCES `stages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tournament_group_teams_team_id_foreign` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tournament_group_teams_tournament_id_foreign` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Ограничения внешнего ключа таблицы `tournament_matches`
---
-ALTER TABLE `tournament_matches`
-  ADD CONSTRAINT `tournament_matches_group_id_foreign` FOREIGN KEY (`group_id`) REFERENCES `tournament_groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tournament_matches_stage_id_foreign` FOREIGN KEY (`stage_id`) REFERENCES `stages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tournament_matches_tournament_id_foreign` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Ограничения внешнего ключа таблицы `tournament_matches_results`
---
-ALTER TABLE `tournament_matches_results`
-  ADD CONSTRAINT `tournament_matches_results_match_id_foreign` FOREIGN KEY (`match_id`) REFERENCES `tournament_matches` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tournament_matches_results_team_id_foreign` FOREIGN KEY (`team_id`) REFERENCES `tournaments_members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tournament_matches_results_tournament_group_teams_id_foreign` FOREIGN KEY (`tournament_group_teams_id`) REFERENCES `tournament_group_teams` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Ограничения внешнего ключа таблицы `tournamets_team`
---
-ALTER TABLE `tournamets_team`
-  ADD CONSTRAINT `tournamets_team_team_id_foreign` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tournamets_team_tournament_id_foreign` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

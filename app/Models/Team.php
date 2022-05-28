@@ -19,6 +19,7 @@ class Team extends Model
    public function bans(){
       return $this->morphMany(Report::class,'ban');
    }
+
    public function сaptain( ) {
       return $this->hasOne(User::class, 'id', 'user_id');
   }
@@ -49,12 +50,13 @@ public function network(){
 public function logsFull() {
    $logs = $this->logs()->select([  'id', 'log_type', 'description', 'table_name', 'created_at',  'user_id', 'old_value', 'new_value', ])
        ->with(['type', 'user', 'newAdminUser', 'oldAdminUser']);
-   $bans = $this->bans()->select(['id', 'log_type', 'description', 'table_name', 'created_at',  'user_id', 'ban_id'   , 'ban_type' , ])->orderBy('created_at', 'desc');
+   $bans = $this->bans()->select(['id', 'log_type', 'description', 'table_name', 'created_at',  'user_id', 'ban_id'   , 'ban_type' , ]);
 
-   $all = $logs->unionAll($bans)->paginate(10);
+   $all = $logs->unionAll($bans)->orderBy('created_at', 'desc')->paginate(10);
 
    return $all;
 }
+
    public static function getTeamById($id)
    {
       $is_has = DB::table('team_members')->where('user_id', $id)->exists();
@@ -114,15 +116,23 @@ public function logsFull() {
    {
       $has_team = DB::table('team')->where('user_id', $user_id)->exists();
       //$is_team_members = DB::table('team_members')->where('user_id', $user_id)->exists();
+      if ($has_team == false) {
          $id = DB::table('team')->insertGetId($data);
          $data_m['team_id'] = $id;
          return DB::table('team_members')->insert($data_m);
+      } else {
+         return NULL;
+      }
    }
    public function addMembers($data)
    {
       return DB::table('team_members')->insert($data);
    }
-
+	
+   public static function checkHasTeam($team_id, $user_id)
+   {
+      return  DB::table('team_members')->where('team_id', $team_id)->where('user_id', $user_id)->exists();
+   }
    public function deleteMember($id,$team_id)
    {
       return DB::table('team_members')->where('user_id', $id)->where('team_id', $team_id)->delete();
@@ -198,21 +208,36 @@ public function logsFull() {
 
    public static function getMatches($team_id){
      
-      $tournaments = DB::table('tournamets_team')
+      $tournaments = DB::table('tournament_group_teams')
+          ->leftjoin('tournaments', 'tournament_group_teams.tournament_id' ,'=', 'tournaments.id')
+          ->join('tournament_groups' ,'tournament_group_teams.group_id' ,'=' ,'tournament_groups.id')
+        ->join('team' ,'tournament_group_teams.team_id' ,'=' ,'team.id')
+          ->join('tournament_matches', 'tournament_group_teams.group_id', '=' ,'tournament_matches.group_id')
+          ->join('stages', 'tournament_matches.stage_id', '=' ,'stages.id')
+          ->select('tournaments.*','tournament_matches.login', 'tournament_matches.password','tournament_matches.date',  'tournament_matches.match_name', 'tournament_groups.group_name', 'stages.stage_name', 'stages.tournament_id' , 'team.name as team_name')
+          ->where('tournament_group_teams.team_id', $team_id)->where('tournaments.status', 'save')
+           ->orderBy('tournament_matches.date','desc')
+          ->orderBy('tournaments.name')
+          ->orderBy('stages.stage_name', 'desc')
+           ->get(); 
+        return $tournaments->count() ? $tournaments : null; 
+     
+     
+     /* $tournaments = DB::table('tournamets_team')
       ->join('tournaments', 'tournamets_team.tournament_id' ,'=', 'tournaments.id')
      ->join('tournament_group_teams' ,'tournamets_team.team_id' ,'=' ,'tournament_group_teams.team_id')
       ->join('tournament_groups' ,'tournament_group_teams.group_id' ,'=' ,'tournament_groups.id')
       ->join('tournament_matches', 'tournament_matches.group_id', '=' ,'tournament_group_teams.id')
       ->join('stages', 'tournament_matches.stage_id', '=' ,'stages.id')
-      ->select( 'tournaments.*','tournament_matches.login', 'tournament_matches.password','tournament_matches.date',  'tournament_matches.match_name', 'tournament_groups.group_name', 'stages.stage_name')
+      ->select( 'tournaments.*','tournament_matches.login', 'tournament_matches.password', 'tournament_matches.date', 'tournament_matches.match_name', 'tournament_groups.group_name', 'stages.stage_name')
      //->select( 'tournament_group_teams.team_id')
       ->where('tournamets_team.team_id', $team_id)
        ->get(); 
-    return $tournaments->count() ? $tournaments : null; 
+    return $tournaments->count() ? $tournaments : null; */
    } 
    public static function getTournaments($team_id){
      
-     /*  $tournaments = DB::table('tournamets_team')
+      /*  $tournaments = DB::table('tournamets_team')
       ->join('tournaments', 'tournamets_team.tournament_id' ,'=', 'tournaments.id')
       ->select( 'tournaments.*')
       ->where('tournamets_team.team_id', $team_id)->where('tournamets_team.status', 'accepted')

@@ -2,15 +2,22 @@
  <div class="account-pubg__bg account__bg d-flex justify-content-end px-4" >
                 <div class="dropdown  " >
                     @if($mail != null)
+					
+					  @if($active != 1)
+                    <a href="{{route('confirm_message')}}" class=" header__txt button--none " type="button">
+                     Отправить сообщение для активации
+                    </a>
+                    @endif
+					
                     <button class=" header__txt button--none dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     {{$mail}}
                     </button>
                     @else
                     <nav class="nav" >
-                      <a href="{{'login'}}" class="flex-sm-fill text-sm-center text-light nav-link " type="button">
+ <a href="{{route('user.login')}}" class="flex-sm-fill text-sm-center text-light nav-link " type="button">
                           Войти
                       </a>
-                      <a href="{{'registration'}}" class="text-light flex-sm-fill text-sm-center  nav-link    btn-dark " type="button">
+                      <a href="{{route('user.registration')}}" class="text-light flex-sm-fill text-sm-center  nav-link    btn-dark " type="button">
                           Регистрация
                       </a>
                     </nav>
@@ -23,7 +30,7 @@
                     </ul>
                 </div>
             </div>
-          <nav class="mobile-menu">
+         <nav class="mobile-menu">
               <div class="mobile-menu__header">
                 <a
                   class="mobile-menu__a"

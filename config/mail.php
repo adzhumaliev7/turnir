@@ -93,7 +93,7 @@ return [
 
     'from' => [
         'address' => 'tournamentpubgtest@gmail.com',
-        'name' => 'showmatch',
+        'name' => 'bigplay',
     ],
     'encryption' => env('MAIL_ENCRYPTION', 'tls'),
     /*
@@ -114,12 +114,12 @@ return [
             resource_path('views/vendor/mail'),
         ],
     ],
-    'stream' => [
+ 'stream' => [
         'ssl' => [
       'allow_self_signed' => true,
       'verify_peer' => false,
       'verify_peer_name' => false,
         ],
-    ],  
+    ], 
 
 ];

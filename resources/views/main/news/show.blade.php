@@ -14,7 +14,7 @@
   <div class="info-help">
 					<div>
 						
-						<p class="help__title" style="margin-top:35px;">Новая версия PUBG MOBILE</p>
+						<p class="help__title" style="margin-top:35px;">{{$post->title}}</p>
 						<p class="help__text info-help__text">
 						{!!$post->text!!}
 						</p>

@@ -20,8 +20,8 @@
                 <fieldset  <?echo $disabled;?>>
                     @csrf
                     <div class="col-lg-6">
-                        <input name="name" placeholder="Название команды" type="text" class="form-control  subtitle fw-normal input_border input_styles" id="">
-                        @foreach($data as $item)
+                        <input name="name" placeholder="Название команды" type="tel" class="form-control  subtitle fw-normal input_border input_styles" id="">
+                         @foreach($data as $item)
                         <input name="oldname"  type="hidden" value="{{$item->name}}">
                         @endforeach
                         <p></p>
@@ -54,7 +54,7 @@
                     </div>
                     <button type="btn" class="btn  submit-btn  mt-4" style="margin-right: 10px;">Сохранить</button>
                     <a href="" class="btn  submit-btn  mt-4" onclick= "return alert2();">Удалить команду</a>
-            
+                    
                     </fieldset >
                 </form>
                 @endforeach
@@ -71,8 +71,9 @@
                             <input name="youtube" placeholder="youtube.com/" type="text" class="form-control input_styles  subtitle fw-normal input_border" id="">
                         </div>
                     </div>
-                    <button type="btn" class="btn  submit-btn  mt-4 mr-5">Сохранить</button>
+                    <button type="btn" class="btn  submit-btn  mt-4" style="margin-right: 10px;">Сохранить</button>
                     <a href="" class="btn  submit-btn  mt-4" onclick="return alert2();">Удалить команду</a>
+                  
                     </fieldset >
                 </form>
                 @endif

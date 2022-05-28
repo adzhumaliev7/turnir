@@ -9,7 +9,7 @@
   @csrf
   <div class="form-group">
     <label for=""></label>
-    <input type="text" name="password" class="form-control" id="" placeholder="Введите название категогии">
+    <input type="text" name="password" class="form-control" id="" placeholder="Введите новый пароль">
      @error('password')
              <div class="alert alert-danger">Введите новый пароль</div>
     @enderror

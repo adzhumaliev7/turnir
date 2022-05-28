@@ -47,15 +47,10 @@ class PagesController extends Controller
           \Session::flash('flash_meassage', 'Сохранено');
           return redirect()->route('admin.pages');   
     }
-
     public function destroy($id){
       $post = Pages::findOrFail($id);
       $post->delete(); 
       \Session::flash('flash_meassage', 'Запись удалена');
       return redirect()->route('admin.pages'); 
   }
-  
-
 }
-
-

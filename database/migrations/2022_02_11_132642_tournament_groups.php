@@ -15,16 +15,18 @@ class TournamentGroups extends Migration
     {
         Schema::create('tournament_groups', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('group_number')->nullable();
             $table->string('group_name', 50)->nullable();
-            $table->integer('tournament_id')->unsigned();
-            $table->integer('stage_id')->unsigned();
-
-            $table->foreign('tournament_id')->references('id')->on('tournaments')
-                ->onUpdate('cascade')->onDelete('cascade');
-
-            $table->foreign('stage_id')->references('id')->on('stages')
-                ->onUpdate('cascade')->onDelete('cascade');
-
+            $table->integer('tournament_id')->nullable();
+            $table->integer('team_id')->nullable();
+            $table->integer('stage_id')->nullable();
+            $table->integer('match_id')->nullable();
+         
+            $table->integer('status')->nullable();
+            $table->integer('kills_pts')->nullable();
+            $table->integer('place_pts')->nullable();
+            $table->integer('total_pts')->nullable();
+            $table->integer('winner')->nullable();
             $table->timestamps();
         });
     }
