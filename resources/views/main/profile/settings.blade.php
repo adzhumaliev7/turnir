@@ -19,6 +19,9 @@
                <label for="name" class="col-sm-3 col-form-label">Логин</label>
                <div class="col-sm-5">
                  <input type="text" name="name"  class="form-control subtitle" id=""  value="{{$user->name}}">
+                 @error('name')
+                <div class="alert alert-danger">этот Логин уже уже занят</div>
+                @enderror
                </div>
              </div>
              <div class="form-group row">
@@ -76,9 +79,9 @@
                <label for="email" class="col-sm-3 col-form-label">Страна</label>
                <div class="col-sm-5">
                <select name="country" id="" style="font-size: 16px;" class="subtitle" >
-                <option value="{{$user->country}}">{{$user->country}}</option>
+                <option value="">{{$user->country}}</option>
                   @foreach($countries as $country)
-                  <option value="{{$user->country}}">{{$country}}</option>
+                  <option value="{{$country}}">{{$country}}</option>
                   @endforeach
                 </select>
                </div>

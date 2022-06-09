@@ -29,7 +29,7 @@ class DeleteMemberMail extends Mailable
     public function build()
     {
         return $this->to($this->user)
-            ->from('tournamentpubgtest@gmail.com', 'Вы были удалены из команды')
+            ->from('bigplaypro@gmail.com', 'Вы были удалены из команды')
             ->view('messages.delete_member');
     }
 }

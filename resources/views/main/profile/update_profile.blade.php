@@ -86,4 +86,5 @@
           
             @else <button type="btn" class="forms__btn btn nav-link btn--orange mt-4">Сохранить</button>
             @endif
+             <a type="btn" href="profile?tab=nav-config-tab" class="forms__btn btn nav-link btn--orange mt-4">Редактировать профиль</a>
           </form>

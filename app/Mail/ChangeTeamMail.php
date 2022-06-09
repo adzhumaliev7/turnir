@@ -32,7 +32,7 @@ class ChangeTeamMail extends Mailable
     {
 
         return $this->to($this->user)
-            ->from('tournamentpubgtest@gmail.com', 'Изменение названия команды!')
+            ->from('bigplaypro@gmail.com', 'Изменение названия команды!')
             ->view('messages.change_team');
     }
 }

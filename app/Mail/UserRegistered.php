@@ -29,7 +29,7 @@ class UserRegistered extends Mailable
     public function build()
     {
         return $this->to($this->user->email)
-            ->from('tournamentpubgtest@gmail.com', 'Регистрация')
+            ->from('bigplaypro@gmail.com', 'Регистрация')
             ->view('auth.confirm');
 
       /*   Mail::send(['text' => 'messages.refuse'], ['name', 'wwww'], function ($message) use ($em) {

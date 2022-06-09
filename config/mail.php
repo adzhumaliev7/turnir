@@ -33,18 +33,29 @@ return [
     |
     */
 
-    'mailers' => [
+   /*  'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.gmail.com'),
-            'port' => env('MAIL_PORT', 587),
+            'host' => env('MAIL_HOST', 'imap.yandex.ru'),
+            'port' => env('MAIL_PORT', 587 ),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'auth_mode' => null,
-        ],
-
+        ], */
+	    'mailers' => [
+            'smtp' => [
+                'transport' => 'smtp',
+                'host' => env('MAIL_HOST', 'smtp.google.com'),
+                'port' => env('MAIL_PORT', 587),
+                'encryption' => env('MAIL_ENCRYPTION', 'tls '),
+                'username' => env('MAIL_USERNAME'),
+                'password' => env('MAIL_PASSWORD'),
+                'timeout' => null,
+                'auth_mode' => null,
+            ],
+            
         'ses' => [
             'transport' => 'ses',
         ],
@@ -92,7 +103,7 @@ return [
     */
 
     'from' => [
-        'address' => 'tournamentpubgtest@gmail.com',
+        'address' => 'bigplaypro@gmail.com',
         'name' => 'bigplay',
     ],
     'encryption' => env('MAIL_ENCRYPTION', 'tls'),
@@ -114,12 +125,12 @@ return [
             resource_path('views/vendor/mail'),
         ],
     ],
- 'stream' => [
+    'stream' => [
         'ssl' => [
-      'allow_self_signed' => true,
-      'verify_peer' => false,
-      'verify_peer_name' => false,
+            'allow_self_signed' => true,
+            'verify_peer'       => false,
+            'verify_peer_name'  => false,
         ],
-    ], 
+    ],
 
 ];

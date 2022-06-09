@@ -137,6 +137,12 @@ class ProfileController extends Controller
    $user = User::find(Auth::user()->id);
   
     $data['exist_status'] = 0;
+    if($request->input('name') != $user->name ){
+      $request->validate([
+        'name' => 'unique:users',
+    ]);
+    }
+
     if($request->input('nickname') != $user->nickname ){
       $request->validate([
     
@@ -150,10 +156,7 @@ class ProfileController extends Controller
     ]); 
      } 
 	  
-    
-  
       if($request->input('game_id') != $user->game_id){
-		  
         Log::create([
           'model_type' => 'App\Models\User',
           'model_id' => Auth::user()->id,

@@ -32,7 +32,7 @@ class OredrsMail extends Mailable
     {
 
         return $this->to($this->user)
-            ->from('tournamentpubgtest@gmail.com', 'Заявка на добавление данных')
+            ->from('bigplaypro@gmail.com', 'Заявка на добавление данных')
             ->view('messages.order', [
                 'text' => $this->text,
             ]);

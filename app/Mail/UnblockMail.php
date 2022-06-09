@@ -29,7 +29,7 @@ class UnblockMail extends Mailable
     public function build()
     {
         return $this->to($this->user)
-        ->from('tournamentpubgtest@gmail.com', 'Разблокировка')
+        ->from('bigplaypro@gmail.com', 'Разблокировка')
         ->view('messages.unblock');
     }
 }

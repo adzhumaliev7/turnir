@@ -46,6 +46,12 @@
       <img class="animation__shake" src="{{ asset("admin/dist/img/AdminLTELogo.png")}}" alt="AdminLTELogo" height="60" width="60">
     </div>
 
+@if(Session::has('success'))
+          <div class="alert alert-success">{{Session::get('success')}}
+          <a type="button" class="close close_styles" data-dismiss="alert" aria-label="Close" >
+            <span aria-hidden="true">&times;</span>  </a>
+          </div>
+          @endif
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
       <!-- Left navbar links -->
@@ -65,7 +71,11 @@
         <img src="{{ asset("admin/dist/img/AdminLTELogo.png")}}" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Админ панель</span>
       </a>
-
+      @if($check == false)
+      <a class="" href="{{route('extra')}}">Выключить сайт</a> /
+      <a class="" href="{{route('extraUp')}}">Включить</a>
+		  @endif 
+      
       <!-- Sidebar -->
       <div class="sidebar">
         <!-- Sidebar user panel (optional) -->

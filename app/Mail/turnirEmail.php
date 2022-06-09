@@ -28,7 +28,7 @@ class turnirEmail extends Mailable
      */
     public function build()
     {
-         return $this->from('example@example.com', 'Example')
+         return $this->from('bigplaypro@gmail.com', 'Example')
                 ->view('messages.refuse');
         // return $this->view('view.name');
     }

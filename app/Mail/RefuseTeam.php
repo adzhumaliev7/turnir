@@ -32,7 +32,7 @@ class RefuseTeam extends Mailable
     public function build()
     {
          return $this->to($this->user)
-            ->from('tournamentpubgtest@gmail.com', 'Отказ заявки')
+            ->from('bigplaypro@gmail.com', 'Отказ заявки')
             ->view('messages.rejected_team', [
                 'text' => $this->text
             ]);

@@ -26,6 +26,12 @@
                 
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li><a class= "  dropdown-item header__txt text-dark" href="{{route('profile')}}">профиль</a></li>
+                        <li><a  href="profile?tab=nav-team-tab" class=" dropdown-item header__txt text-dark">команды</a></li>
+                        <li><a  href="profile?tab=nav-tourney-tab" class=" dropdown-item header__txt text-dark">турниры</a></li>
+                        <li><a  href="profile?tab=nav-config-tab" class=" dropdown-item header__txt text-dark">настройка</a></li>
+                       
+                        
+              
                         <li><a class="  dropdown-item header__txt text-dark" href="{{route('user.logout')}}">выйти</a></li>
                     </ul>
                 </div>

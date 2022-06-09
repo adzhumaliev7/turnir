@@ -106,7 +106,7 @@ class TeamController extends Controller
         $user_id = Auth::user()->id;
         $email = Team::getUsersEmail($id);
       
-        Mail::to($email)->send(new DeleteMemberMail($email));
+        //Mail::to($email)->send(new DeleteMemberMail($email));
         Team::deleteMember($id, $team_id);
 
         \Session::flash('flash_meassage_delete', 'Участник успешно удален');

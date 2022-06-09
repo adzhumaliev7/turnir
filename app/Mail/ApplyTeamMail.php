@@ -29,7 +29,7 @@ class ApplyTeamMail extends Mailable
     public function build()
     {
         return $this->to($this->user)
-        ->from('tournamentpubgtest@gmail.com', 'Одобрение заявки!')
+        ->from('bigplaypro@gmail.com', 'Одобрение заявки!')
         ->view('messages.apply_team');
     }
 }

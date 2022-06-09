@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 
+
 Route::get('/', [\App\Http\Controllers\MainController::class, 'index'])->name('main');
 Auth::routes();
 Route::name('user.')->group(function () {
@@ -91,6 +92,16 @@ Route::get('verify/resend', [\App\Http\Controllers\Auth\TwoFactorController::cla
 Route::resource('verify', \App\Http\Controllers\Auth\TwoFactorController::class)->only(['index', 'store']);
 Route::middleware(['role:admin|moderator', 'auth', 'twofactor'],)->prefix('admin_panel')->group(function () {
 
+    Route::get('/extra', function () {
+        Artisan::call('down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"');
+        return redirect()->back()->with('success', 'your message,here');  
+    })->name('extra');
+    
+    Route::get('/up', function () {
+        Artisan::call('up');
+        return redirect()->back()->with('success', 'your message,here');  
+    })->name('extraUp');
+    
     Route::get('/', [\App\Http\Controllers\Admin\HomeController::class, 'index'])->name('admin');
     //  Route::get('/users',[\App\Http\Controllers\Admin\HomeController::class, 'usersView']);
     Route::get('/users', [\App\Http\Controllers\Admin\HomeController::class, 'usersView'])->name('users');

@@ -293,7 +293,7 @@
                     </td>
                     <td class="table--name table--text">  {{$team->team->name }}</td>
                     <td class="table--flag">
-                      <img src="assets/img/Rectangle 20.svg" alt="">
+                  
                     </td>
                     <td class="table--members table--text"> 
                     ({{$team->memberCount}}/4)
@@ -460,6 +460,7 @@
                             </div>
                         </div>
                     </div>
+                    <script>console.log('hac');</script>
                     @else
                         <h3 class="text-center">Информация появится со стартом турнира</h3>
                     @endif

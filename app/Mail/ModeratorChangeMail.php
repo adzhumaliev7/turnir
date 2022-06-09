@@ -32,7 +32,7 @@ class ModeratorChangeMail extends Mailable
     public function build()
     {
          return $this->to($this->user)
-        ->from('tournamentpubgtest@gmail.com', 'Смена пароля')
+        ->from('bigplaypro@gmail.com', 'Смена пароля')
         ->view('messages.moderator_change', [
             'password' => $this->password,
         ]);

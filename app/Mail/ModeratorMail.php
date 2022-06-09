@@ -36,7 +36,7 @@ class ModeratorMail extends Mailable
     {
 
         return $this->to($this->user)
-            ->from('tournamentpubgtest@gmail.com', 'Модератор')
+            ->from('bigplaypro@gmail.com', 'Модератор')
             ->view('messages.moderator', [
                 'email' => $this->user,
                 'password' => $this->password,

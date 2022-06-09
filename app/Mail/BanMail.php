@@ -36,7 +36,7 @@ class BanMail extends Mailable
     {
         
         return $this->to($this->user)
-            ->from('tournamentpubgtest@gmail.com', 'Ban')
+            ->from('bigplaypro@gmail.com', 'Ban')
             ->view('messages.ban', [
                 'text' => $this->text,
             ]);

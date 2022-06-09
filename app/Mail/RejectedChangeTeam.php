@@ -31,7 +31,7 @@ class RejectedChangeTeam extends Mailable
     public function build()
     {
         return $this->to($this->user)
-            ->from('tournamentpubgtest@gmail.com', '')
+            ->from('bigplaypro@gmail.com', '')
             ->view('messages.rejected_team', [
                 'text' => $this->text
             ]);

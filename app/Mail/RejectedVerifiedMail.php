@@ -31,7 +31,7 @@ class RejectedVerifiedMail extends Mailable
     public function build()
     {
          return $this->to($this->user)
-            ->from('tournamentpubgtest@gmail.com', '')
+            ->from('bigplaypro@gmail.com', '')
             ->view('messages.rejected', [
                 'text' => $this->text
             ]);

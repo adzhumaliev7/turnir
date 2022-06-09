@@ -32,7 +32,7 @@ class VerifiedMail extends Mailable
     public function build()
     {
         return $this->to($this->user)
-            ->from('tournamentpubgtest@gmail.com', 'Отказ в регистрации команды')
+            ->from('bigplaypro@gmail.com', 'Отказ в регистрации команды')
             ->view('messages.refuse', [
                 'text' => $this->text,
             ]);
